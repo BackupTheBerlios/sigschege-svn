@@ -63,8 +63,10 @@ public:
   /// Return the scaling factor file_dpi/screen_dpi
   int scale(void) { return scale_fact; }
   void build_views(void);
-  /// Save the figure in the fig file 'filename'
+  /// Save the figure in the fig file 'filename'.
   bool save(string filename);
+  /// Directly export into a foreign format.
+  bool export_fig2dev(string language, string filename);
 
 private:
   /// A flat list to be passed to views

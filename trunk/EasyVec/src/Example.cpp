@@ -52,29 +52,29 @@ int main(void) {
 
   EasyVec mypic;
 
-//   EasyVecElmPolyline *line1 =  mypic.polyline();
-
-//   line1->add_point(Schortens);
-//   line1->add_point(1000, 500);
-//   line1->add_point(500, 1000);
-//   line1->add_point(1000, 1000);
-
-//   EasyVecElmCompound *cmp1 =  mypic.compound();
-//   EasyVecElmCompound *cmp1a =  cmp1->compound();
-
-//   EasyVecElmPolyline *line2 =  cmp1a->polyline();
-
-//   line2->add_points(points1);
-//   EasyVecElmCompound *cmp2 =  mypic.compound();
-//   EasyVecElmPolyline *line3 =  cmp2->polyline();
-//   line3->add_point(Schortens+Prag);
-//   line3->add_point(Prag);
-//   line3->add_point(Schortens);
-//   line3->add_point(Dortmund);
-//   line3->pen_color(4);
+  EasyVecElmPolyline *line1 =  mypic.polyline();
+  
+  line1->add_point(Schortens);
+  line1->add_point(1000, 500);
+  line1->add_point(500, 1000);
+  line1->add_point(1000, 1000);
+  
+  EasyVecElmCompound *cmp1 =  mypic.compound();
+  EasyVecElmCompound *cmp1a =  cmp1->compound();
+  
+  EasyVecElmPolyline *line2 =  cmp1a->polyline();
+  
+  line2->add_points(points1);
+  EasyVecElmCompound *cmp2 =  mypic.compound();
+  EasyVecElmPolyline *line3 =  cmp2->polyline();
+  line3->add_point(Schortens+Prag);
+  line3->add_point(Prag);
+  line3->add_point(Schortens);
+  line3->add_point(Dortmund);
+  line3->pen_color(4);
 
   mypic.save("example.fig");
-
+  
   EasyVecElmText *txt = mypic.text();
   txt->setText("Moin");
   EVPosInt text_ul, text_lr;
@@ -101,4 +101,8 @@ int main(void) {
 
   cout << "Lower Right is " << text_lr << endl;
   mypic.save("example_text.fig");
+
+
+  mypic.export_fig2dev("eps", "example_text.eps");
+  
 }

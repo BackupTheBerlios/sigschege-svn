@@ -27,6 +27,7 @@
 #include "EasyVecElmText.h"
 #include <fstream>
 #include <iostream>
+#include <cstdlib>
 
 
 
@@ -98,4 +99,19 @@ bool EasyVec::save(string filename) {
   fig_file << file_dpi << " 2" << endl;
   save_content(fig_file); // method from base class EasyVecElmCompound to save compound content
   return true;
+}
+
+bool EasyVec::export_fig2dev(string language, string filename) {
+  string tmpfigfile = filename + "_tmp.fig";
+  string fig2dev_cmd = "fig2dev ";
+  save(tmpfigfile);
+  fig2dev_cmd += "-L " + language + " -F " + tmpfigfile + " " + filename;
+  
+  int ret_stat = system(fig2dev_cmd.c_str());
+
+  fig2dev_cmd = "rm -f ";
+  fig2dev_cmd += tmpfigfile;
+  system(fig2dev_cmd.c_str());
+
+  return ret_stat==0;
 }

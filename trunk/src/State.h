@@ -67,11 +67,13 @@ class State {
     stateName = newStateName;
   };
 
+  //! Set the new state by two strings.
   bool setStateByString(string stateString1, string stateString2);
 
   //! Return the state to be drawn, will be Zero, One or X.
   drawStateType getDrawState(void);
 
+  //! Return just the state name.
   string getStateName(void) {
     return stateName;
   }
@@ -79,6 +81,7 @@ class State {
   //! Check if drawState is the draw state from this object.
   bool isDrawState(string drawStateString);
 
+  //! Check if the draw state of this object is identical to the given one.
   bool operator==(const State::drawStateType state); 
   
  private:

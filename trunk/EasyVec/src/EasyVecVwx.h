@@ -42,10 +42,12 @@ public:
   virtual void clear(void);
   
   void OnPaint(wxPaintEvent& event);
+  void OnMouse(wxMouseEvent& event);
 private:
   DECLARE_EVENT_TABLE();
   // pointer to wxPaintDC object for current onPaint event
   wxPaintDC *onPaintPaintDCp;
+  int maxDist;
 };
 
 

@@ -47,6 +47,18 @@ EasyVecElm::~EasyVecElm() {
   // notify owner? 
 };
 
+bool EasyVecElm::checkProximity(EVPosInt selPos, EVPosInt point, int fuzzyFact, int &fuzzyRes) {
+  int deltaX = abs(point.xpos()-selPos.xpos());
+  int deltaY = abs(point.ypos()-selPos.ypos());
+  if (deltaX>fuzzyFact || deltaY>fuzzyFact) {
+    return false;
+  } else {
+    fuzzyRes = static_cast<int>(sqrt(static_cast<double>(deltaX)*deltaX+static_cast<double>(deltaY)*deltaY));
+    if (fuzzyRes>fuzzyFact) return false;
+    else return true;
+  }
+}
+
 
 const int easyvec_std_colors[][3] = {
   {0, 0, 0},          // 0 = black

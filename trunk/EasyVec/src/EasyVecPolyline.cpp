@@ -107,7 +107,18 @@ void EasyVecPolyline::saveElm(ofstream &fig_file) {
 
 void EasyVecPolyline::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                                     list<EasyVecElmHit> &hits) {
-  
+  vector<EVPosInt>::iterator pointsIt;
+  int fuzzyRes;
+  int i = 0;
+  for ( pointsIt = points.begin(); pointsIt != points.end(); ++pointsIt, ++i ) {
+    if (checkProximity(pos, (*pointsIt), fuzzyFact, fuzzyRes)) {
+      EasyVecElmHit newHit;
+      newHit.elmP = this;
+      newHit.distance = fuzzyRes;
+      newHit.idx = i;
+      hits.push_back(newHit);
+    }
+  }
 }
 
 void EasyVecPolyline::debugPrint(ostream &dest, bool verbose, int depth) {

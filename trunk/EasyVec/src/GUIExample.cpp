@@ -202,6 +202,7 @@ BEGIN_EVENT_TABLE(MyFrame, wxFrame)
   EVT_BUTTON(BUTTON_DASHY, MyFrame::toggleDashedLines)
   EVT_BUTTON(BUTTON_BOXES, MyFrame::toggleBoxes)
   EVT_BUTTON(BUTTON_ARROWS, MyFrame::toggleArrows)
+  EVT_RIGHT_DOWN(MyFrame::OnMouse)
 END_EVENT_TABLE()
 
 void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event) )
@@ -324,8 +325,16 @@ void MyFrame::toggleBoxes(wxCommandEvent& event) {
   canvas->refreshAll();
 }
 
+void MyFrame::OnMouse(wxMouseEvent& event)
+{
+  EVPosInt pos(event.m_x, event.m_y);
+  cout << "MOUSE @ " << pos << endl;
+}
+
+
 void MyFrame::save(wxCommandEvent& event) {
-  mainpic->save("demogui_result.fig");
+  mainpic->save("demogui_result.fig");  
+  
 }
 
 void MyFrame::add_pline_point(wxCommandEvent& event) {

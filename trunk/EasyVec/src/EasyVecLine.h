@@ -43,6 +43,7 @@ public:
   void lineThickness(int newThickness) { elmThickness=newThickness; }
   int lineThickness(void) { return elmThickness; }
 
+  /// The available line styles as defined in the fig format (3.2)
   enum lineStyleType {
     solid,
     dashed,
@@ -52,10 +53,8 @@ public:
     dash_triple_dotted
   };
 
-  friend class EasyVecPolyline;
-  friend class EasyVecBox;
   
-private:
+protected:
   int elmLineStyle;
   double elmStyleValue;
   int elmThickness;

@@ -1,5 +1,5 @@
 // \file 
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of EasyVec - Vector Figure Creation Library.
 // 
@@ -32,6 +32,15 @@ EVPosInt &EVPosInt::operator-(const EVPosInt &destination) const {
     rv->cy -= destination.cy;
     return *rv;
   };
+
+EVPosInt &EVPosInt::operator*(int mult) const {
+    EVPosInt *rv = new EVPosInt;
+    *rv = *this;
+    rv->cx *= mult;
+    rv->cy *= mult;
+    return *rv;
+  
+}
 
 EVPosInt &EVPosInt::operator/=(double divisor) {
   cx = static_cast<int>(cx / divisor);

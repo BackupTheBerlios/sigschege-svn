@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of EasyVec - Vector Figure Creation Library.
 // 
@@ -43,6 +43,8 @@ public:
   EVPosInt &set(int x, int y) { cx=x; cy=y; return *this; };
   /// Subtraction operator.
   EVPosInt &operator-(const EVPosInt &destination) const;
+  /// Multiplication (with an int) operator.
+  EVPosInt &operator*(int mult ) const;
   /// Division assignment operator.
   EVPosInt &operator/=(double divisor);
   /// Division operator.

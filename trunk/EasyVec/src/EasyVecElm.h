@@ -87,6 +87,9 @@ public:
   virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<EasyVecElmHit> &hits) = 0;
 
+  /// Check if the selected position is near the point.
+  static bool checkProximity(EVPosInt selPos, EVPosInt point, int fuzzyFact, int &fuzzyRes);
+  
 protected:
   EasyVecCompound *parent; // needed to inform the owner about change events
   EasyVecFigure *figure; // needed to access global picture states

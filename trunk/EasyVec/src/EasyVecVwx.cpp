@@ -33,6 +33,7 @@ using namespace std;
 
 BEGIN_EVENT_TABLE(EasyVecVwx, wxWindow)
     EVT_PAINT(EasyVecVwx::OnPaint)
+    EVT_RIGHT_DOWN(EasyVecVwx::OnMouse)
 END_EVENT_TABLE()
 
 // Define a constructor for my canvas
@@ -41,6 +42,7 @@ EasyVecVwx::EasyVecVwx(EasyVecFigure *picture, wxFrame *frame, int x, int y, int
 {
   cout << "constr: " << this << endl;
   SetBackgroundColour(*wxWHITE);
+  maxDist = 5*mypicture->scale()+5;
 }
 
 
@@ -186,4 +188,13 @@ void EasyVecVwx::OnPaint(wxPaintEvent& WXUNUSED(event) )
   //dc.DrawRectangle()
   mypicture->drawView(this);
   onPaintPaintDCp = 0;
+}
+
+void EasyVecVwx::OnMouse(wxMouseEvent& event)
+{
+  EVPosInt pos(event.m_x, event.m_y);
+  cout << "MOUSE @ " << pos << endl;
+  list<EasyVecElmHit> hits;
+  mypicture->getElmNearPos(pos*mypicture->scale(), maxDist, true, true, hits);
+  cout << "HITS " << hits.size() << endl;
 }

@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of EasyVec - Vector Figure Creation Library.
 // 
@@ -186,7 +186,6 @@ void EasyVecCompound::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchic
     if (hierarchical || (typeid(**membersIt) != typeid(EasyVecCompound)))
       (*membersIt)->getElmNearPos(pos, fuzzyFact, hierarchical, withCompounds, hits);
   }
- 
 }
 
 

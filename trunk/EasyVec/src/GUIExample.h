@@ -48,6 +48,7 @@ public:
     void toggleDashedLines(wxCommandEvent& event);
     void toggleBoxes(wxCommandEvent& event);
     void toggleArrows(wxCommandEvent& event);
+    void OnMouse(wxMouseEvent& event);
     void save(wxCommandEvent& event);
     void TestNotebookSizers(wxCommandEvent& event);
     void About(wxCommandEvent& event);
@@ -69,7 +70,7 @@ private:
 #define BUTTON_DASHY 108
 #define BUTTON_BOXES 109
 #define BUTTON_ARROWS 110
-
+#define MOUSE_RIGHT_DWN 111
 
 #endif /* _DEMOGUI_H */
 

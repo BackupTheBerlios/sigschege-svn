@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of EasyVec - Vector Figure Creation Library.
 // 
@@ -77,7 +77,21 @@ void EasyVecBox::saveElm(ofstream &fig_file) {
 
 void EasyVecBox::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                                     list<EasyVecElmHit> &hits) {
-  
+  vector<EVPosInt> allCorners(4);
+  allCorners[0] = elm_upper_left;
+  allCorners[1] = EVPosInt(elm_lower_right.xpos(), elm_upper_left.ypos());
+  allCorners[2] = EVPosInt(elm_upper_left.xpos(), elm_lower_right.ypos());
+  allCorners[3] = elm_lower_right;
+  int fuzzyRes, i;
+  for (i=0; i<4; i++) {
+    if (checkProximity(pos, allCorners[i], fuzzyFact, fuzzyRes)) {
+      EasyVecElmHit newHit;
+      newHit.elmP = this;
+      newHit.distance = fuzzyRes;
+      newHit.idx = i;
+      hits.push_back(newHit);
+    }
+  }
 }
 
 

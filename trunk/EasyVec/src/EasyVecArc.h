@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004, 2005 by Ulf Klaperski
+// Copyright 2005 by Ulf Klaperski
 //
 // This file is part of EasyVec - Vector Figure Creation Library.
 // 
@@ -24,11 +24,12 @@
 // $Id$
 
 
-#ifndef _EASYVECELMBOX_H
-#define _EASYVECELMBOX_H _EASYVECELMBOX_H 
+#ifndef _EASYVECARC_H
+#define _EASYVECARC_H _EASYVECARC_H 
 
 #include "EVPosInt.h"
 #include "EasyVecLine.h"
+#include "EasyVecArrow.h"
 #include "EasyVecElm.h"
 #include "EasyVecCompound.h"
 #include "EasyVecView.h"
@@ -36,44 +37,32 @@
 
 using namespace std;
 
-/// An EasyVec box element - corresponds to fig element polyline:box and polyline:arcbox
-class EasyVecBox : public EasyVecElm, public EasyVecLine  {
+/// An EasyVecFigure polyline element - corresponds to fig element polyline (not box)
+class EasyVecArc : public EasyVecElm, public EasyVecLine, public EasyVecArrow {
 public:
   /// general constructor with no extra arguments
-  EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
-    : EasyVecElm(parent_compound, figure_compound) {};
-  /// general constructor accepting corner points
-  EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound, EVPosInt upper_left, EVPosInt lower_right);
+  EasyVecArc(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound);
+  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
 
-  /// Return the limits of this element
-  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
-    upper_left  = elm_upper_left;
-    lower_right = elm_lower_right;
-  }
-  /// set both corners of the box
-  void set_corners(EVPosInt upper_left, EVPosInt lower_right) {
-    upper_left  = elm_upper_left;
-    lower_right = elm_lower_right;
-  }
-  
+  /// Set point number num to the given position.
+  void setPoint(int num, EVPosInt newPosition);
+  /// Set all three points.
+  void setPoints(EVPosInt newPoint1, EVPosInt newPoint2, EVPosInt newPoint3);
+
   vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
-
-  /// send draw commands to the given view
   virtual void draw(EasyVecView* view);
-  /// save element into a fig file
   virtual void saveElm(ofstream &fig_file);
+  /// Print some (or some more) information about this figure element.
+  virtual void debugPrint(ostream &dest, bool verbose, int depth);
 
   /// find a figure element near the given position.
   virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<EasyVecElmHit> &hits);
 
-  /// Print some (or some more) information about this figure element.
-  virtual void debugPrint(ostream &dest, bool verbose, int depth);
-
-
 private:
-  EVPosInt elm_upper_left, elm_lower_right;
+  EVPosInt elmPoint1, elmPoint2, elmPoint3;
+  bool isPieWedge;
 };
 
-#endif /* _EASYVECELMBOX_H */
+#endif /* _EASYVECARC_H */
 

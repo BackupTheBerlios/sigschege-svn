@@ -34,12 +34,36 @@ TimingDiagram::TimingDiagram() {
 TimingDiagram::~TimingDiagram() {
 }
 
-/// Create a empty Layout Text Object
+void TimingDiagram::paint() {
+  vector< Handle<LayoutObject> >::iterator LayoutObjectIter;
+  for (LayoutObjectIter = cLayoutList.begin(); LayoutObjectIter != cLayoutList.end(); LayoutObjectIter++){
+    LayoutObjectIter->Object()->paint();
+  }
+}
+
+/*!
+ * Export the Timingdiagram to a xfig-format
+ * \param file XFig File Name
+ */
+void TimingDiagram::exportFig(string file) {
+  paint();
+  cEasyVec.save(file);
+}
+
+/*!
+ * Add a LayoutObject to the end of the list
+ * \param newLayoutObject Handel to the Layoutobject that should be added
+ */
+void TimingDiagram::addLast(Handle<LayoutObject> newLayoutObject) {
+  cLayoutList.push_back(newLayoutObject);
+}
+
 /*!
  * This Function will return a pointer to a Text Layout Object without a text
  */
 Handle <TimLabel> TimingDiagram::createTimLabel() {
   Handle<TimLabel> newTimLabel = new TimLabel;
+  newTimLabel->setCompound(cEasyVec.compound());
   return newTimLabel;
 }
 

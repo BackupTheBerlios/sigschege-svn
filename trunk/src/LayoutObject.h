@@ -42,6 +42,8 @@ public:
 
   void setCompound(EasyVecCompound *newCompound);
 
+  EasyVecCompound* getCompound();
+
   //! Paint this Layout Object
   virtual void paint(void);
 
@@ -96,11 +98,35 @@ public:
   //! Return the current reference count 
   int objRefCount() { return refCount; }
 
+  //! Set the Upper Left position
+  void setULPos(int u, int l);
+
+  //! Set the Upper Left position
+  void setULPos(EVPosInt newPos);
+
+  //! Set the Bottom Right position
+  void setBRPos(int b, int r);
+
+  //! Set the Bottom Right position
+  void setBRPos(EVPosInt newPos);
+
+  //! Return the Upper Left position
+  EVPosInt& getULPos();
+
+  //! Return the Bottom Right position
+  EVPosInt& getBRPos();
+
+  int getUpperPos();
+  int getLeftPos();
+  int getBottomPos();
+  int getRightPos();
+
 private:
   int refCount;
   Handle<LayoutObject> reference;
   vector< Handle<LayoutObject> > referrers;
   EasyVecCompound *evListCompound;
+  EVPosInt cULPos, cBRPos;
 };
 
 #endif

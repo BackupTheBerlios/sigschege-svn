@@ -64,7 +64,19 @@ void TimLabel::setText(string newText) {
  * Paint this text layout object
  */
 void TimLabel::paint(void) {
-  cout << "Paint Label" << endl;
+  EasyVecText *text;
+  // first we have to clear out compound
+  getCompound()->clear();
+
+  // and then we can draw out new stuff
+  LayoutObject::paint();
+
+  // Draw the Text
+  text = getCompound()->text();
+  text->setText(cText);
+  text->setFont(cFontType);
+  text->setSize(cFontSize);
+  text->setOrigin(EVPosInt(getLeftPos(),getBottomPos()));
 }
 
 /// Set the Font Type

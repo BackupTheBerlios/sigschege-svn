@@ -42,11 +42,76 @@ void LayoutObject::setCompound(EasyVecCompound *newCompound) {
   evListCompound = newCompound;
 }
 
+EasyVecCompound* LayoutObject::getCompound() {
+  return evListCompound;
+}
+
 /*!
  * Paint this Layout Object
  */
 void LayoutObject::paint(void) {
-  cout << "Paint" << endl;
+  // first we have to clear out compound
+  getCompound()->clear();
+
+  // and then we can draw out new stuff
+  getCompound()->box(cULPos, cBRPos);
+}
+
+/*!
+ * Set the Upper Left Position
+ * \param u Upper part of the Upper Left Position
+ * \param l Left part of the Upper Left Position
+ */
+void LayoutObject::setULPos(int u, int l) {
+  cULPos.sety(u);
+  cULPos.setx(l);
+}
+
+/*!
+ * Set the Upper Left position
+ * \param newPos Set newPos as new Upper Left Position
+ */
+void LayoutObject::setULPos(EVPosInt newPos) {
+  cULPos = newPos;
+}
+
+/*!
+ * Set the Bottom Right Position
+ * \param b Bottom part of the Bottom Right Position
+ * \param r Right part of the Bottom Right Position
+ */
+void LayoutObject::setBRPos(int b, int r) {
+  cBRPos.sety(b);
+  cBRPos.setx(r);
+}
+
+/*!
+ * Set the Bottom Right position
+ * \param newPos Set newPos as new Bottom Right Position
+ */
+void LayoutObject::setBRPos(EVPosInt newPos) {
+  cBRPos = newPos;
+}
+
+EVPosInt& LayoutObject::getULPos() {
+  return(cULPos);
+}
+
+EVPosInt& LayoutObject::getBRPos() {
+  return(cBRPos);
+}
+
+int LayoutObject::getUpperPos() {
+  return cULPos.ypos();
+}
+int LayoutObject::getLeftPos() {
+  return cULPos.xpos();
+}
+int LayoutObject::getBottomPos() {
+  return cBRPos.ypos();
+}
+int LayoutObject::getRightPos() {
+  return cBRPos.xpos();
 }
 
 bool LayoutObject::registerReferrer(Handle<LayoutObject> newReferrer) {

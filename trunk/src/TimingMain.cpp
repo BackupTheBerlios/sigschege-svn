@@ -34,9 +34,22 @@ void layout (void) {
   TimingDiagram tim;
 
   Handle<TimLabel> Label1 = tim.createTimLabel();
+  Handle<TimLabel> Label2 = tim.createTimLabel();
+  
+  Label1->setULPos(0,0);
+  Label1->setBRPos(1000,1000);
+  Label1->setText("Hello World!");
+  Label1->setFontType(2);
+  Label1->setFontSize(10);
+  
+  Label2->setULPos(1100,0);
+  Label2->setBRPos(2100,1000);
 
-  Label1->paint();
+  tim.addLast(Label1.Object());
+  tim.addLast(Label2.Object());
 
+
+  tim.exportFig("test.fig");
   return;
 }
 

@@ -34,6 +34,7 @@ using namespace std;
 #include <string>
 #include <EasyVecFigure.h>
 #include "EventList.h"
+#include <vector>
 
 //! The TimingDiagram Class is the toplevel class that contains the layout and the objects of a timing diagram.
 /*!
@@ -48,10 +49,20 @@ public:
   //! The standard destructor
   ~TimingDiagram();
 
+  //! Draw the whole Timing Diagram
+  void paint();
+
+  //! Add a LayoutObject to the Objectlist
+  void addLast(Handle<LayoutObject> newLayoutObject);
+
+  //! Export the Timing Diagram to a xfig file
+  void exportFig(string file);
+
   //! Create a empty Layout Text Object
   Handle<TimLabel> createTimLabel();
 
 private:
+  vector< Handle<LayoutObject> > cLayoutList;
   EasyVecFigure    cEasyVec;
 };
 #endif // _H_TIMING

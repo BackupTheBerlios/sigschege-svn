@@ -37,69 +37,100 @@ EasyVecArc::EasyVecArc(EasyVecCompound* parent_compound, EasyVecFigure* figure_c
 };
 
 
+static int quadrant(double angle) {
+  if (angle<0) angle += 2*M_PI;
+  if (angle<M_PI_2) {
+    return 0;
+  } else if (angle<M_PI) {
+    return 1;
+  } else if (angle<M_PI_2*3) {
+    return 2;
+  } else return 3;
+}
+
+static double asinq(double x, double y, double r) {
+  
+  double phi = asin(fabs(y)/r);
+  
+  if (x<0 && y>0) phi = M_PI-phi;
+  else if (x<0 && y<0) phi = M_PI+phi;
+  else if (x>0 && y<0) phi = 2*M_PI-phi;
+  return phi;
+}
 
 void EasyVecArc::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
-//   vector<EVPosInt>::iterator points_iter = points.begin();
-//   if (points_iter==points.end()) {
-//     upper_left = EVPosInt(0,0); // no points! how should we behave???
-//     lower_right = EVPosInt(0,0);
-//   } else {
-//     lower_right = upper_left = *points_iter;
-//     while (++points_iter!=points.end()) {
-//       upper_left.min_values(*points_iter);
-//       lower_right.max_values(*points_iter);
-//     }
-//   }
+  int qs, qe;
+  upper_left = lower_right = elmPoint1;
+  upper_left.minValues(elmPoint2);
+  lower_right.maxValues(elmPoint2);
+  upper_left.minValues(elmPoint3);
+  lower_right.maxValues(elmPoint3);
+  
+
+  qs = clockwise? quadrant(phi3) : quadrant(phi1);
+  qe = clockwise? quadrant(phi1) : quadrant(phi3);
+
+  while (qs!=qe) {
+    if (qs==3) {
+      lower_right.setx(static_cast<int>(xCenter+radius));
+      qs = 0;
+    } else {
+      if (qs==0) upper_left.sety(static_cast<int>(yCenter+radius));
+      else if (qs==1) upper_left.setx(static_cast<int>(xCenter-radius));
+      else if (qs==2) lower_right.sety(static_cast<int>(yCenter-radius));
+      qs++;
+    }
+  }
 }
 
 void EasyVecArc::computeArc(void) {
-  EVPosInt p1, p2, p3, ptmp;
-  double y0, x0, x1, y1, x2, y2, x3, y3;
-  double phi1, phi2;
-  p1 = elmPoint1;
-  p2 = elmPoint2;
-  p3 = elmPoint3;
-  if ((p1.xpos()-p2.xpos())==0) {
-    ptmp = p1;
-    p1 = p3;
-    p3 = ptmp;
-  } else if ((p3.xpos()-p1.xpos())==0) {
-    ptmp = p1;
-    p1 = p2;
-    p2 = ptmp;
-  }
+   EVPosInt p1, p2, p3, ptmp;
+   double y0, x0, x1, y1, x2, y2, x3, y3;
+   p1 = elmPoint1;
+   p2 = elmPoint2;
+   p3 = elmPoint3;
+   if ((p1.xpos()-p2.xpos())==0) {
+     ptmp = p1;
+     p1 = p3;
+     p3 = ptmp;
+   } else if ((p3.xpos()-p1.xpos())==0) {
+     ptmp = p1;
+     p1 = p2;
+     p2 = ptmp;
+   }
 
-  x1 = p1.xpos(); y1 = p1.ypos();
-  x2 = p2.xpos(); y2 = p2.ypos();
-  x3 = p3.xpos(); y3 = p3.ypos();
+   x1 = p1.xpos(); y1 = p1.ypos();
+   x2 = p2.xpos(); y2 = p2.ypos();
+   x3 = p3.xpos(); y3 = p3.ypos();
 
-  y0 = 0.5 * ((x3-x1)*(x2*x2-x1*x1+y2*y2-y1*y1)-(x2-x1)*(x3*x3-x1*x1+y3*y3-y1*y1)) / ((y1-y3)*(x2-x1)-(x3-x1)*(y1-y2));
-  x0 = (0.5 * (x3*x3-x1*x1+y3*y3-y1*y1) + y0*(y1-y3)) / (x3-x1);
-  xCenter = x0;
-  yCenter = y0;
-  radius = (x1-x0)*(x1-x0)+(y1-y0)*(y1-y0);
-  phi1 = asin((y1-y0)/radius);
-  phi2 = asin((y2-y0)/radius);
-  clockwise = (phi2>phi1);
-  cout << "X Center: " << x0 << " Y Center: " << y0 << " clockwise:" << clockwise << endl;
+   y0 = 0.5 * ((x3-x1)*(x2*x2-x1*x1+y2*y2-y1*y1)-(x2-x1)*(x3*x3-x1*x1+y3*y3-y1*y1)) / ((y1-y3)*(x2-x1)-(x3-x1)*(y1-y2));
+   x0 = (0.5 * (x3*x3-x1*x1+y3*y3-y1*y1) + y0*(y1-y3)) / (x3-x1);
+   xCenter = x0;
+   yCenter = y0;
+   radius = sqrt((x1-x0)*(x1-x0)+(y1-y0)*(y1-y0));
+   phi1 = asinq(x1-x0, y1-y0, radius);
+   phi2 = asinq(x2-x0, y2-y0, radius);
+   phi3 = asinq(x3-x0, y3-y0, radius);
+   clockwise = !((phi2>phi1 && (phi3<phi1 || phi3>phi2)) || (phi2<phi1 && (phi3<phi1 && phi3>phi2))); 
+   cout << "X Center: " << x0 << " Y Center: " << y0 << " clockwise:" << clockwise << endl;
 }
 
 void EasyVecArc::setPoint(int num, EVPosInt newPosition) {
-  switch (num) {
-  case 0:
-    elmPoint1 = newPosition;
-    break;
-  case 1:
-    elmPoint2 = newPosition;
-    break;
-  case 2:
-    elmPoint3 = newPosition;
-    break;
-  default:
-    throw string("Illegal value for point in arc");
-  }
-  computeArc();
-  parent->handleChange(this);
+   switch (num) {
+   case 0:
+     elmPoint1 = newPosition;
+     break;
+   case 1:
+     elmPoint2 = newPosition;
+     break;
+   case 2:
+     elmPoint3 = newPosition;
+     break;
+   default:
+     throw string("Illegal value for point in arc");
+   }
+   computeArc();
+   parent->handleChange(this);
 }
 
 void EasyVecArc::setPoints(EVPosInt newPoint1, EVPosInt newPoint2, EVPosInt newPoint3) {
@@ -110,24 +141,15 @@ void EasyVecArc::setPoints(EVPosInt newPoint1, EVPosInt newPoint2, EVPosInt newP
   parent->handleChange(this);
 }
 
+void EasyVecArc::setArc(EVPosInt center, double radius, bool clockwise, double angle1, double angle3) {
+  // TODO
+}
+
+
 void EasyVecArc::draw(EasyVecView* view) {
-  double styleLength = elmStyleValue*15;
-//   vector<EVPosInt>::iterator points_iter1, points_iter2;
-//   EVPosInt oldPoint;
-//   points_iter1 = points.begin();
-//   if (points_iter1==points.end()) return;
-//   points_iter2 = points_iter1;
-//   points_iter2++;
-//   if (backwardArrow() && points_iter2 != points.end()) 
-//     view->drawArrow((*points_iter1), (*points_iter2), elmPenColor, elmArrows[1]);
-//   while (points_iter2 != points.end()) {
-//     view->drawLine((*points_iter1), (*points_iter2), elmThickness, elmPenColor, elmLineStyle, styleLength);
-//     oldPoint = *points_iter1;
-//     points_iter1 = points_iter2;
-//     ++points_iter2;
-//   }
-//   if (forwardArrow() && points.size()>1) 
-//     view->drawArrow((*points_iter1), oldPoint, elmPenColor, elmArrows[0]);
+   double styleLength = elmStyleValue*15;
+   view->drawArc(EVPosInt(xCenter, yCenter), radius, phi1,
+                 phi3, elmThickness, elmPenColor, elmLineStyle, styleLength);
 }
 
 
@@ -167,8 +189,11 @@ void EasyVecArc::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, b
 }
 
 void EasyVecArc::debugPrint(ostream &dest, bool verbose, int depth) {
-  dest << string(depth, ' ') << "Arc " << endl;
-  if (verbose) {
-    dest << string(depth+4, ' ') << elmPoint1 << " -> " << elmPoint2 << " -> " << elmPoint3 << endl;
-  }
+   dest << string(depth, ' ') << "Arc " << endl;
+   if (verbose) {
+     dest << string(depth+4, ' ') << elmPoint1 << " -> " << elmPoint2 << " -> " << elmPoint3 << endl;
+     dest << string(depth+4, ' ') << "Center: " << xCenter << ":" << yCenter << "Radius: " << radius
+          << " Direction: " << (clockwise? "" : "counter") << "clockwise " << endl << string(depth+4, ' ')
+          << " PHI1=" << phi1 << " PHI2=" << phi2  << " PHI3=" << phi3 << endl; 
+   }
 }

@@ -92,8 +92,8 @@ void EasyVecCompound::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right
     lower_right = member_point_max;
     while (++members_iter!=members.end()) {
       (*members_iter)->getBoundingBox(member_point_min, member_point_max);
-      upper_left.min_values(member_point_min);
-      lower_right.max_values(member_point_max);
+      upper_left.minValues(member_point_min);
+      lower_right.maxValues(member_point_max);
     }
   }
 };

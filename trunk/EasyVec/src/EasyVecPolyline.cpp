@@ -44,8 +44,8 @@ void EasyVecPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right
   } else {
     lower_right = upper_left = *points_iter;
     while (++points_iter!=points.end()) {
-      upper_left.min_values(*points_iter);
-      lower_right.max_values(*points_iter);
+      upper_left.minValues(*points_iter);
+      lower_right.maxValues(*points_iter);
     }
   }
 }
@@ -126,8 +126,7 @@ void EasyVecPolyline::debugPrint(ostream &dest, bool verbose, int depth) {
   if (verbose) {
     vector<EVPosInt>::iterator pointsIt;
     for ( pointsIt = points.begin(); pointsIt != points.end(); ++pointsIt ) {
-      dest << string(depth+4, ' ') << (*pointsIt) << " -> ";
+      dest << string(depth+4, ' ') << (*pointsIt) << " -> " << endl;
     }
-    dest << endl;
   }
 }

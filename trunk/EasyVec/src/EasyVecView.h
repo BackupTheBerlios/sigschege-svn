@@ -51,11 +51,23 @@ public:
   /*! 
    * \param from Startpoint of the line.
    * \param to   Endpoint of the line.
+   * \param width Width of the line.
    * \param color Pen color of the line.
    * \param lineStyle The line style (solid, dashed, dotted, dash-dotted).
    * \param styleLength The length of the dashes or spaces between dashes or dots.
    */
   virtual void drawLine(EVPosInt from, EVPosInt to, int width, int color, int lineStyle, double styleLength) = 0;
+  /// Draw a single arc to the view. Used by Arc. The arc is drawn counterclockwise.
+  /*! 
+   * \param center Center of the arc circle.
+   * \param radius Radius of the circle.
+   * \param phiStart  Start angle of the arc. 
+   * \param phiEnd End angle of the arc.
+   * \param width Width of the arc.
+   * \param lineStyle The arc style (solid, dashed, dotted, dash-dotted).
+   * \param styleLength The length of the dashes or spaces between dashes or dots.
+   */
+  virtual void drawArc(EVPosInt center, int radius, double phiStart, double phiEnd, int width, int color, int lineStyle, double styleLength) = 0;
   /// Draw the character given in buffer to the view.
   virtual void drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
   // Draw an arrow head (of a line).  

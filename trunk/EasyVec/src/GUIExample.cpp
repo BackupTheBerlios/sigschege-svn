@@ -33,6 +33,7 @@
 #include "EasyVecElm.h"
 #include "EasyVecPolyline.h"
 #include "EasyVecBox.h"
+#include "EasyVecArc.h"
 #include "EasyVecText.h"
 #include "EasyVecVwx.h"
 #include <list>
@@ -51,6 +52,7 @@ IMPLEMENT_APP(MyApp);
 EasyVecPolyline* mainline;
 list<EasyVecPolyline *> dlines;
 list<EasyVecPolyline *> alines;
+list<EasyVecArc *> arcs;
 list<EasyVecBox *> boxes;
 EasyVecFigure *mainpic;
 
@@ -129,6 +131,7 @@ bool MyApp::OnInit()
   wxButton *btn1 = new wxButton(panel, BUTTON_DASHY, _T("Toggle dashed lines")) ;
   wxButton *btn2 = new wxButton(panel, BUTTON_BOXES, _T("Toggle boxes")) ;
   wxButton *btn3 = new wxButton(panel, BUTTON_ARROWS, _T("Toggle arrow lines")) ;
+  wxButton *btn4 = new wxButton(panel, BUTTON_ARCS, _T("Toggle arcs")) ;
 
   canvas = new EasyVecVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
   // Set constraints for canvas subwindow
@@ -140,14 +143,15 @@ bool MyApp::OnInit()
   canvas->SetConstraints(c2);
   
   wxLayoutConstraints *b1 = new wxLayoutConstraints;
-  b1->centreX.SameAs    (panel, wxCentreX);
+  //b1->centreX.SameAs    (panel, wxCentreX);
   b1->top.SameAs        (panel, wxTop, 5);
   b1->width.PercentOf   (panel, wxWidth, 20);
   b1->height.AsIs       ();
+  b1->left.SameAs       (panel, wxLeft);
   btn1->SetConstraints(b1);
 
   wxLayoutConstraints *b2 = new wxLayoutConstraints;
-  b2->centreX.SameAs    (panel, wxCentreX);
+  //b2->centreX.SameAs    (panel, wxCentreX);
   b2->top.SameAs        (panel, wxTop, 5);
   b2->width.PercentOf   (panel, wxWidth, 20);
   b2->left.SameAs       (btn1, wxRight);
@@ -155,12 +159,20 @@ bool MyApp::OnInit()
   btn2->SetConstraints(b2);
   
   wxLayoutConstraints *b3 = new wxLayoutConstraints;
-  b3->centreX.SameAs    (panel, wxCentreX);
+  //b3->centreX.SameAs    (panel, wxCentreX);
   b3->top.SameAs        (panel, wxTop, 5);
   b3->width.PercentOf   (panel, wxWidth, 20);
   b3->left.SameAs       (btn2, wxRight);
   b3->height.AsIs       ();
   btn3->SetConstraints(b3);
+
+  wxLayoutConstraints *b4 = new wxLayoutConstraints;
+  //b3->centreX.SameAs    (panel, wxCentreX);
+  b4->top.SameAs        (panel, wxTop, 5);
+  b4->width.PercentOf   (panel, wxWidth, 20);
+  b4->left.SameAs       (btn3, wxRight);
+  b4->height.AsIs       ();
+  btn4->SetConstraints(b4);
 
 
 //   b2->top.Below         (btn1, 5);
@@ -202,6 +214,7 @@ BEGIN_EVENT_TABLE(MyFrame, wxFrame)
   EVT_BUTTON(BUTTON_DASHY, MyFrame::toggleDashedLines)
   EVT_BUTTON(BUTTON_BOXES, MyFrame::toggleBoxes)
   EVT_BUTTON(BUTTON_ARROWS, MyFrame::toggleArrows)
+  EVT_BUTTON(BUTTON_ARCS, MyFrame::toggleArcs)
   EVT_RIGHT_DOWN(MyFrame::OnMouse)
 END_EVENT_TABLE()
 
@@ -295,6 +308,33 @@ void MyFrame::toggleArrows(wxCommandEvent& event) {
       if (!mainpic->remove(*alineIt)) cerr << "ERROR: DashedLine element did not exist!" << endl; 
     }
     alines.clear();
+  }
+  mainpic->updating(true);
+  canvas->refreshAll();
+}
+
+void MyFrame::toggleArcs(wxCommandEvent& event) {
+  mainpic->updating(false);
+  if (arcs.empty()) {
+    EasyVecArc *arc;
+    for (int i=0; i<8; i++) {
+      arc = mainpic->arc(EVPosInt(100+i*500,4000), EVPosInt(200+i*500,4500), EVPosInt(400+i*500,4000));
+      //arc->lineThickness(1+(i&3));
+      //if ((i&1)==1) aline->forwardArrow(true);
+      //if ((i&1)==1) aline->penColor(3);
+      //if ((i&2)==2) aline->backwardArrow(true);
+      //aline->backwardArrowType(3);
+      //aline->forwardArrowType(EasyVecArrow::closed_indented_butt);
+      //aline->forwardArrowSize(1.0, 100.0, 250.0);
+      //aline->forwardArrowSize(1.0, 50.0, 250.0);
+      arcs.push_back(arc);
+    }
+  } else {
+    list<EasyVecArc*>::iterator arcIt;
+    for ( arcIt = arcs.begin(); arcIt != arcs.end(); ++arcIt ) {
+      if (!mainpic->remove(*arcIt)) cerr << "ERROR: ARC element did not exist!" << endl; 
+    }
+    arcs.clear();
   }
   mainpic->updating(true);
   canvas->refreshAll();

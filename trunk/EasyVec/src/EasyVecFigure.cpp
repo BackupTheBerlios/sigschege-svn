@@ -73,9 +73,11 @@ void EasyVecFigure::drawView(EasyVecView* view) {
     sortMembersByDepth();
     members_flat_valid = true;
     vector<EasyVecElm*>::iterator members_iter;
+    cout << "================================================================================" << endl;
     for ( members_iter = members_flat.begin(); members_iter != members_flat.end(); ++members_iter ) {
+      cout << "DRAWING: ";
+      (*members_iter)->debugPrint(cout, true, 10);
       (*members_iter)->draw(view);
-      // (*members_iter)->debugPrint(cout, true, 4);
     }
     viewIsDirty = false;
   } else {

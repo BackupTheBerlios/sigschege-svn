@@ -39,6 +39,8 @@ public:
   EVPosInt() { cx = cy = 0; }
   /// General constructor to initialize coordinate from two ints.
   EVPosInt(int x, int y) {cx = x; cy = y;}
+  /// General constructor to initialize coordinate from two doubles.
+  EVPosInt(double x, double y) {cx = static_cast<int>(x); cy = static_cast<int>(y);}
   /// Function to set both coordinates. returns reference to result.
   EVPosInt &set(int x, int y) { cx=x; cy=y; return *this; };
   /// Subtraction operator.
@@ -59,12 +61,12 @@ public:
   /// Return the angle of a line (against X-axis).
   double angle(const EVPosInt &dest) const;
   /// Set the coordinates of this to the minimum of this and the other EVPosInt object. 
-  inline void min_values(const EVPosInt &other) {
+  inline void minValues(const EVPosInt &other) {
     cx = cx<other.cx?cx:other.cx;
     cy = cy<other.cy?cy:other.cy;
   }
   /// Set the coordinates of this to the maximum of this and the other EVPosInt object. 
-  inline void max_values(const EVPosInt &other) {
+  inline void maxValues(const EVPosInt &other) {
     cx = cx>other.cx?cx:other.cx;
     cy = cy>other.cy?cy:other.cy;
   }

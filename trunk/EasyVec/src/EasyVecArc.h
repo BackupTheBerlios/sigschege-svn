@@ -48,6 +48,8 @@ public:
   void setPoint(int num, EVPosInt newPosition);
   /// Set all three points.
   void setPoints(EVPosInt newPoint1, EVPosInt newPoint2, EVPosInt newPoint3);
+  /// Set arc geometry by center, radius, direction and angles.
+  void setArc(EVPosInt center, double radius, bool clockwise, double angle1, double angle3);
 
   vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(EasyVecView* view);
@@ -64,6 +66,7 @@ private:
   bool isPieWedge;
   double xCenter, yCenter, radius;
   bool clockwise;
+  double phi1, phi2, phi3;
 
   void computeArc(void);
   

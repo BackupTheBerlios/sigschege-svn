@@ -102,8 +102,32 @@ void EasyVecVwx::drawLine(EVPosInt from, EVPosInt to, int width, int color, int 
       activePhase = !activePhase;
     }
   }
+  
   if (onPaintPaintDCp==0) delete paintPtr;
 }
+
+void EasyVecVwx::drawArc(EVPosInt center, int radius, double phiStart, double phiEnd, int width, int color, int lineStyle, double styleLength) {
+  wxColour wxMyColour(easyvec_std_colors[color][0], easyvec_std_colors[color][1], easyvec_std_colors[color][2]);
+  wxPen wxMyPen(wxMyColour, width, 5);
+  wxWindowDC *paintPtr;
+  int xscale = mypicture->scale();
+  if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
+  else paintPtr = new wxClientDC;
+  
+  paintPtr->SetPen(wxMyPen);
+  
+  paintPtr->DrawArc((center.xpos()+radius*cos(phiStart))/xscale, (center.ypos()+radius*sin(phiStart))/xscale,
+                    (center.xpos()+radius*cos(phiEnd))/xscale, (center.ypos()+radius*sin(phiEnd))/xscale,
+                    center.xpos()/xscale, center.ypos()/xscale);
+
+  
+  cout << "ARC: X0=" << center.xpos()+radius*cos(phiStart) << " Y0=" << center.ypos()+radius*sin(phiStart)
+       << " X1=" << center.xpos()+radius*cos(phiEnd) << " Y1=" << center.ypos()+radius*sin(phiEnd)
+       << " PHIS=" << phiStart << " PHIE=" << phiEnd << endl;
+  if (onPaintPaintDCp==0) delete paintPtr;
+}
+
+
 
 void EasyVecVwx::drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
   int x,y, bit_no, bit_val;

@@ -247,7 +247,8 @@ void EventList::paint(void) {
   where = before_visible;
   y0end = y0;
   y1end = y1;
-  double percentageNewStart, percentageNewEnd; 
+  double percentageNewStart;
+  double percentageNewEnd; 
   
   double oldEndX = cOrigin.xpos();
 
@@ -485,7 +486,7 @@ void EventList::paint(void) {
   // Add the last point of the signal
   if (sigline0!=0) {
     if (currentState==State::Z) {
-      sigline0->addPoint(EVPosInt(xMax, vertPosFromState(State::Z, State::Z, percentageNewEnd)));
+      sigline0->addPoint(EVPosInt(xMax, vertPosFromState(State::Z, State::Z, 1.0)));
     } else {
       sigline0->addPoint(EVPosInt(xMax, y0end));
     }

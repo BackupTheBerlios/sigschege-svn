@@ -51,6 +51,8 @@ public:
   int ypos(void) const { return cy; };
   /// Return the distance between two positions as double.
   double distance(const EVPosInt &destination) const;
+  /// Return the angle of a line (against X-axis).
+  double angle(const EVPosInt &dest) const;
   /// Set the coordinates of this to the minimum of this and the other EVPosInt object. 
   inline void min_values(const EVPosInt &other) {
     cx = cx<other.cx?cx:other.cx;

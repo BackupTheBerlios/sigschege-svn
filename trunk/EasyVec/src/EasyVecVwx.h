@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of EasyVec - Vector Figure Creation Library.
 // 
@@ -37,6 +37,8 @@ public:
              long style=wxTE_MULTILINE);
   virtual void drawLine(EVPosInt from, EVPosInt to, int color, int lineStyle, double StyleLength);
   virtual void drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color);
+  virtual void drawArrow(const EVPosInt &tip, double angle, int color, int arrType, int arrStyle);
+  virtual void refreshAll(void);
   virtual void clear(void);
   
   void OnPaint(wxPaintEvent& event);

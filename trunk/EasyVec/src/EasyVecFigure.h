@@ -47,9 +47,12 @@ class EasyVecFigure : public EasyVecCompound {
 public:
   /// constructor
   EasyVecFigure();
-  
+
+  /// Draw the figure to this view.
   void drawView(EasyVecView* view);
+
   // do we need a copy constructor?
+  
   virtual void handleChange(EasyVecElm*);
 
   /// Register a view showing this figure.
@@ -86,6 +89,8 @@ private:
   bool members_flat_valid;
   /// Used to suspend view updating during several changes.
   bool noViewUpdate;
+  /// Views don't reflect current figure and need redrawing.
+  bool viewIsDirty;
   /// List of views which show this figure
   vector<EasyVecView*> views;
   /// Resolution in fig file

@@ -62,7 +62,6 @@ bool EasyVecCompound::remove(EasyVecElm* elm) {
   elmIt = find(members.begin(), members.end(), elm);
   if (elmIt!=members.end()) {
     members.erase(elmIt);
-    delete *elmIt;
     return true;
   } else {
     return false;

@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of EasyVec - Vector Figure Creation Library.
 // 
@@ -29,6 +29,7 @@
 
 #include "EVPosInt.h"
 #include "EasyVecLine.h"
+#include "EasyVecArrow.h"
 
 
 class EasyVecFigure;
@@ -42,8 +43,17 @@ class EasyVecView {
 public:
   EasyVecView(EasyVecFigure *picture);
   virtual ~EasyVecView();
+  /// Draw a single line to the view. Used by Polyline, Box and others. 
   virtual void drawLine(EVPosInt from, EVPosInt to, int color, int lineStyle, double styleLength) = 0;
+  /// Draw the character given in buffer to the view.
   virtual void drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
+  // Draw an arrow head (of a line).  
+  virtual void drawArrow(const EVPosInt &tip, double angle, int color, int arrType, int arrStyle) = 0;
+  // Draw an arrow head (of a line). This is just a convenience function which calculates the angle from the line.  
+  void drawArrow(const EVPosInt &tip, const EVPosInt &from, int color, int arrType, int arrStyle);
+  /// Force a redraw of the complete figure area.
+  virtual void refreshAll(void) = 0;
+  /// Clear the figure area.
   virtual void clear(void) = 0;
 
 protected:

@@ -62,13 +62,13 @@ public:
   virtual void debugPrint(ostream &dest, bool verbose, int depth) = 0;
   
   /// Return the pen color of this object.
-  int pen_color(void);
+  int penColor(void);
   /// Set the pen color of this object.
-  bool pen_color(int new_color);
+  bool penColor(int new_color);
   /// Return the fill color of this object.
-  int fill_color(void);
+  int fillColor(void);
   /// Set the fill color of this object.
-  bool fill_color(int new_color);
+  bool fillColor(int new_color);
   /// Return the depth (layer) of this object.
   int depth(void);
   /// Set the depth (layer) of this object.
@@ -82,25 +82,25 @@ protected:
   int elmDepth;
 };
 
-inline bool EasyVecElm::pen_color(int new_color) {
+inline bool EasyVecElm::penColor(int new_color) {
   if (new_color>=0 && new_color<512) {
     elmPenColor=new_color;
     return true;
   } else return false;
 }
 
-inline int EasyVecElm::pen_color(void) {
+inline int EasyVecElm::penColor(void) {
   return elmPenColor;
 }
 
-inline bool EasyVecElm::fill_color(int new_color) {
+inline bool EasyVecElm::fillColor(int new_color) {
   if (new_color>=0 && new_color<512) {
     elmFillColor=new_color;
     return true;
   } else return false;
 }
 
-inline int EasyVecElm::fill_color(void) {
+inline int EasyVecElm::fillColor(void) {
   return elmFillColor;
 }
 

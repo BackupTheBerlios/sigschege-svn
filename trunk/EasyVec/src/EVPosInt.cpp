@@ -42,3 +42,11 @@ double EVPosInt::distance(const EVPosInt &dest) const {
     return sqrt(static_cast<double>(xdist)*xdist+static_cast<double>(ydist)*ydist);
   }
 }
+
+double EVPosInt::angle(const EVPosInt &from) const {
+  double angl;
+  int xdiff = xpos()-from.xpos();
+  angl = atan(static_cast<double>(ypos()-from.ypos())/xdiff);
+  if (xdiff<0) angl += M_PI;
+  return angl;
+}

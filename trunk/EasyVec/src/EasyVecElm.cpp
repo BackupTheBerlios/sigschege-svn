@@ -37,8 +37,8 @@ EasyVecElm::EasyVecElm(void) {
 EasyVecElm::EasyVecElm(EasyVecCompound *parent_compound, EasyVecFigure *figure_compound) {
   parent = parent_compound;
   figure = figure_compound;
-  elmPenColor = parent->pen_color();
-  elmFillColor = parent->fill_color();
+  elmPenColor = parent->penColor();
+  elmFillColor = parent->fillColor();
   elmDepth = parent->depth();
   
 };

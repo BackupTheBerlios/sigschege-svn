@@ -38,6 +38,7 @@ EasyVecFigure::EasyVecFigure() : EasyVecCompound() {
   // creation of a new figure won't happen too often...
   EasyVecText::initFreetype(); 
   noViewUpdate = false;
+  viewIsDirty = true;
   members_flat_valid = false;
   file_dpi = 1200;
   setScreenDpi(80);
@@ -60,18 +61,26 @@ void EasyVecFigure::buildViews(void) {
       (*views_iter)->clear();
       drawView(*views_iter);
     }
+    viewIsDirty = false;
+  } else {
+    viewIsDirty = true;
   }
 }
 
 void EasyVecFigure::drawView(EasyVecView* view) {
-  members_flat = flatList();
-  sortMembersByDepth();
-  cout << "========================================" << endl;
-  members_flat_valid = true;
-  vector<EasyVecElm*>::iterator members_iter;
-  for ( members_iter = members_flat.begin(); members_iter != members_flat.end(); ++members_iter ) {
-    (*members_iter)->draw(view);
-    (*members_iter)->debugPrint(cout, true, 4);
+  if (!noViewUpdate) {
+    members_flat = flatList();
+    sortMembersByDepth();
+    cout << "========================================" << endl;
+    members_flat_valid = true;
+    vector<EasyVecElm*>::iterator members_iter;
+    for ( members_iter = members_flat.begin(); members_iter != members_flat.end(); ++members_iter ) {
+      (*members_iter)->draw(view);
+      // (*members_iter)->debugPrint(cout, true, 4);
+    }
+    viewIsDirty = false;
+  } else {
+    viewIsDirty = true;
   }
 }
 

@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of EasyVec - Vector Figure Creation Library.
 // 
@@ -30,6 +30,11 @@ EasyVecView::EasyVecView(EasyVecFigure *picture) {
   picture->registerView(this);
   mypicture = picture;
 };
+
+void EasyVecView::drawArrow(const EVPosInt &tip, const EVPosInt &from, int color, int arrType, int arrStyle) {
+  double angle = tip.angle(from);
+  drawArrow(tip, angle, color, arrType, arrStyle);
+}
 
 
 EasyVecView::~EasyVecView() {

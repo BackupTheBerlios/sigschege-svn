@@ -151,7 +151,7 @@ int main(void) {
   line3->addPoint(Prag);
   line3->addPoint(Schortens);
   line3->addPoint(Dortmund);
-  line3->pen_color(4);
+  line3->penColor(4);
   line3->forwardArrow(true);
   line3->forwardArrowType(EasyVecArrow::closed_pointed_butt);
 

@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of EasyVec - Vector Figure Creation Library.
 // 
@@ -96,7 +96,6 @@ void EasyVecVwx::drawLine(EVPosInt from, EVPosInt to, int color, int lineStyle, 
     }
   }
   if (onPaintPaintDCp==0) delete paintPtr;
-  //Refresh();
 }
 
 void EasyVecVwx::drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
@@ -125,9 +124,26 @@ void EasyVecVwx::drawChar(EVPosInt origin, int rows, int width, int pitch, unsig
       }
     }
   }
-
   if (onPaintPaintDCp==0) delete paintPtr;
-  //Refresh();
+}
+
+
+void EasyVecVwx::drawArrow(const EVPosInt &tip, double angle, int color, int arrType, int arrStyle) {
+  wxWindowDC *paintPtr;
+  if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
+  else paintPtr = new wxClientDC;
+
+  wxColour wxMyColour(easyvec_std_colors[color][0], easyvec_std_colors[color][1], easyvec_std_colors[color][2]);
+  wxPen wxMyPen(wxMyColour, 1, 1);
+  paintPtr->SetPen(wxMyPen);
+
+  for (int i=-1; i<2; i+=2) {
+    double rAngle=angle+2.681*i;
+    EVPosInt from(static_cast<int>(tip.xpos()+10*cos(rAngle)), static_cast<int>(tip.ypos()+10*sin(rAngle)));
+    paintPtr->DrawLine(from.xpos(), from.ypos(), tip.xpos(), tip.ypos());
+  }
+  
+  if (onPaintPaintDCp==0) delete paintPtr;
 }
 
 
@@ -135,6 +151,14 @@ void EasyVecVwx::clear(void) {
   cout << "Clear" << endl;
   Clear();
 }
+
+void EasyVecVwx::refreshAll(void) {
+  int width, height;
+  GetClientSize(&width, &height);
+  wxRect rect = wxRect(0, 0, width, height);
+  Refresh(true, &rect);
+}
+
 
 // Define the repainting behaviour
 void EasyVecVwx::OnPaint(wxPaintEvent& WXUNUSED(event) )

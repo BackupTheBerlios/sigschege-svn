@@ -32,6 +32,7 @@
 #include "EasyVecFigure.h"
 #include "EasyVecElm.h"
 #include "EasyVecPolyline.h"
+#include "EasyVecBox.h"
 #include "EasyVecText.h"
 #include "EasyVecVwx.h"
 #include <list>
@@ -42,55 +43,19 @@ using namespace std;
 
 MyFrame   *frame = (MyFrame *) NULL;
 wxMenuBar *menu_bar = (wxMenuBar *) NULL;
+EasyVecVwx *canvas;
+
 
 IMPLEMENT_APP(MyApp);
 
 EasyVecPolyline* mainline;
 list<EasyVecPolyline *> dlines;
+list<EasyVecPolyline *> alines;
+list<EasyVecBox *> boxes;
 EasyVecFigure *mainpic;
 
 MyApp::MyApp()
 {
-}
-
-static void gen_dlines(void) {
-  EasyVecPolyline *dline;
-  for (int i=100; i<5000; i+=1000) {
-    dline = mainpic->polyline();
-    dline->addPoint(3000, 4000);
-    dline->addPoint(i, 100);
-    dline->lineStyle(EasyVecLine::dashed);
-    dline->styleValue(8.0);
-    dlines.push_back(dline);
-    
-    dline = mainpic->polyline();
-    dline->addPoint(3000, 4000);
-    dline->addPoint(i+200, 100);
-    dline->lineStyle(EasyVecLine::dotted);
-    dline->styleValue(8.0);
-    dlines.push_back(dline);
-    
-    dline = mainpic->polyline();
-    dline->addPoint(3000, 4000);
-    dline->addPoint(i+400, 100);
-    dline->lineStyle(EasyVecLine::dash_dotted);
-    dline->styleValue(5.0);
-    dlines.push_back(dline);
-    
-    dline = mainpic->polyline();
-    dline->addPoint(3000, 4000);
-    dline->addPoint(i+600, 100);
-    dline->lineStyle(EasyVecLine::dash_double_dotted);
-    dline->styleValue(8.0);
-    dlines.push_back(dline);
-    
-    dline = mainpic->polyline();
-    dline->addPoint(3000, 4000);
-    dline->addPoint(i+800, 100);
-    dline->lineStyle(EasyVecLine::dash_triple_dotted);
-    dline->styleValue(8.0);
-    dlines.push_back(dline);
-  }
 }
 
 
@@ -112,7 +77,7 @@ bool MyApp::OnInit()
   EasyVecText *ntext;
   ntext = ev_pic->text();
   ntext->setText("This is an EasyVec Demo");
-  ntext->pen_color(2);
+  ntext->penColor(2);
   ntext->setOrigin(EVPosInt(300, 1000));
   ntext->depth(55);
   EVPosInt ul, lr;
@@ -161,9 +126,11 @@ bool MyApp::OnInit()
   panel->SetConstraints(c1);
 
   // Create some panel items
-  wxButton *btn1 = new wxButton(panel, -1, _T("Toggle dashed lines")) ;
+  wxButton *btn1 = new wxButton(panel, BUTTON_DASHY, _T("Toggle dashed lines")) ;
+  wxButton *btn2 = new wxButton(panel, BUTTON_BOXES, _T("Toggle boxes")) ;
+  wxButton *btn3 = new wxButton(panel, BUTTON_ARROWS, _T("Toggle arrow lines")) ;
 
-  EasyVecVwx *canvas = new EasyVecVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
+  canvas = new EasyVecVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
   // Set constraints for canvas subwindow
   wxLayoutConstraints *c2 = new wxLayoutConstraints;
   c2->left.SameAs       (frame, wxLeft);
@@ -175,12 +142,27 @@ bool MyApp::OnInit()
   wxLayoutConstraints *b1 = new wxLayoutConstraints;
   b1->centreX.SameAs    (panel, wxCentreX);
   b1->top.SameAs        (panel, wxTop, 5);
-  b1->width.PercentOf   (panel, wxWidth, 80);
+  b1->width.PercentOf   (panel, wxWidth, 20);
   b1->height.AsIs       ();
   btn1->SetConstraints(b1);
 
+  wxLayoutConstraints *b2 = new wxLayoutConstraints;
+  b2->centreX.SameAs    (panel, wxCentreX);
+  b2->top.SameAs        (panel, wxTop, 5);
+  b2->width.PercentOf   (panel, wxWidth, 20);
+  b2->left.SameAs       (btn1, wxRight);
+  b2->height.AsIs       ();
+  btn2->SetConstraints(b2);
+  
+  wxLayoutConstraints *b3 = new wxLayoutConstraints;
+  b3->centreX.SameAs    (panel, wxCentreX);
+  b3->top.SameAs        (panel, wxTop, 5);
+  b3->width.PercentOf   (panel, wxWidth, 20);
+  b3->left.SameAs       (btn2, wxRight);
+  b3->height.AsIs       ();
+  btn3->SetConstraints(b3);
 
-//   wxLayoutConstraints *b2 = new wxLayoutConstraints;
+
 //   b2->top.Below         (btn1, 5);
 //   b2->left.SameAs       (panel, wxLeft, 5);
 //   b2->width.PercentOf   (panel, wxWidth, 40);
@@ -195,12 +177,6 @@ bool MyApp::OnInit()
 //   b3->right.SameAs      (panel, wxRight, 5);
 //   b3->bottom.SameAs     (panel, wxBottom, 5);
 //   mtext->SetConstraints(b3);
-
-
-  
-
-
-
 
   frame->Show(TRUE);
 
@@ -223,6 +199,9 @@ BEGIN_EVENT_TABLE(MyFrame, wxFrame)
   EVT_MENU(LAYOUT_TOGGLE_SCREENDPI, MyFrame::toggleScreenDpi)
   EVT_MENU(LAYOUT_TOGGLE_DASHY, MyFrame::toggleDashedLines)
   EVT_MENU(LAYOUT_SAVE, MyFrame::save)
+  EVT_BUTTON(BUTTON_DASHY, MyFrame::toggleDashedLines)
+  EVT_BUTTON(BUTTON_BOXES, MyFrame::toggleBoxes)
+  EVT_BUTTON(BUTTON_ARROWS, MyFrame::toggleArrows)
 END_EVENT_TABLE()
 
 void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event) )
@@ -233,13 +212,50 @@ void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event) )
 void MyFrame::toggleScreenDpi(wxCommandEvent& event) {
   if (mainpic->getScreenDpi()==80) mainpic->setScreenDpi(160);
   else  mainpic->setScreenDpi(80);
-  Refresh();
+  canvas->refreshAll();
 }
 
 void MyFrame::toggleDashedLines(wxCommandEvent& event) {
   mainpic->updating(false);
-  if (dlines.empty()) gen_dlines();
-  else {
+  if (dlines.empty()) {
+    EasyVecPolyline *dline;
+    for (int i=100; i<5000; i+=1000) {
+      dline = mainpic->polyline();
+      dline->addPoint(3000, 4000);
+      dline->addPoint(i, 100);
+      dline->lineStyle(EasyVecLine::dashed);
+      dline->styleValue(8.0);
+      dlines.push_back(dline);
+      
+      dline = mainpic->polyline();
+      dline->addPoint(3000, 4000);
+      dline->addPoint(i+200, 100);
+      dline->lineStyle(EasyVecLine::dotted);
+      dline->styleValue(8.0);
+      dlines.push_back(dline);
+      
+      dline = mainpic->polyline();
+      dline->addPoint(3000, 4000);
+      dline->addPoint(i+400, 100);
+      dline->lineStyle(EasyVecLine::dash_dotted);
+      dline->styleValue(5.0);
+      dlines.push_back(dline);
+      
+      dline = mainpic->polyline();
+      dline->addPoint(3000, 4000);
+      dline->addPoint(i+600, 100);
+      dline->lineStyle(EasyVecLine::dash_double_dotted);
+      dline->styleValue(8.0);
+      dlines.push_back(dline);
+      
+      dline = mainpic->polyline();
+      dline->addPoint(3000, 4000);
+      dline->addPoint(i+800, 100);
+      dline->lineStyle(EasyVecLine::dash_triple_dotted);
+      dline->styleValue(8.0);
+      dlines.push_back(dline);
+    }
+  } else {
     list<EasyVecPolyline*>::iterator dlineIt;
     for ( dlineIt = dlines.begin(); dlineIt != dlines.end(); ++dlineIt ) {
       if (!mainpic->remove(*dlineIt)) cerr << "ERROR: DashedLine element did not exist!" << endl; 
@@ -247,7 +263,62 @@ void MyFrame::toggleDashedLines(wxCommandEvent& event) {
     dlines.clear();
   }
   mainpic->updating(true);
-  Refresh();
+  canvas->refreshAll();
+}
+
+
+void MyFrame::toggleArrows(wxCommandEvent& event) {
+  mainpic->updating(false);
+  if (alines.empty()) {
+    EasyVecPolyline *aline;
+    for (int i=900; i<8000; i+=499) {
+      aline = mainpic->polyline();
+      aline->addPoint(i, 200);
+      aline->addPoint(4000, 3000);
+      aline->addPoint(8500-i, 5000);
+      aline->lineStyle(EasyVecLine::solid);
+      aline->styleValue(8.0);
+      if ((i&1)==1) aline->forwardArrow(true);
+      if ((i&1)==1) aline->penColor(3);
+      if ((i&2)==2) aline->backwardArrow(true);
+      aline->backwardArrowType(i&3);
+      aline->forwardArrowType((i+1)&3);
+      alines.push_back(aline);
+    }
+  } else {
+    list<EasyVecPolyline*>::iterator alineIt;
+    for ( alineIt = alines.begin(); alineIt != alines.end(); ++alineIt ) {
+      if (!mainpic->remove(*alineIt)) cerr << "ERROR: DashedLine element did not exist!" << endl; 
+    }
+    alines.clear();
+  }
+  mainpic->updating(true);
+  canvas->refreshAll();
+}
+
+void MyFrame::toggleBoxes(wxCommandEvent& event) {
+  mainpic->updating(false);
+  if (boxes.empty()) {
+    EasyVecBox *dbox;
+    for (int i=100; i<4000; i+=499) {
+      dbox = mainpic->box(EVPosInt(i*2, 4200-i), EVPosInt((i+500)*2, 4200-i+500));
+      dbox->lineStyle(EasyVecLine::dashed);
+      dbox->styleValue(static_cast<double>(i&15));
+      boxes.push_back(dbox);
+
+      dbox = mainpic->box(EVPosInt((i+200)*2, 4200-i+200), EVPosInt((i+500+200)*2, 4200-i+500+200));
+      dbox->penColor(i&7);
+      boxes.push_back(dbox);
+    }
+  } else {
+    list<EasyVecBox*>::iterator boxIt;
+    for ( boxIt = boxes.begin(); boxIt != boxes.end(); ++boxIt ) {
+      if (!mainpic->remove(*boxIt)) cerr << "ERROR: Box element did not exist!" << endl;
+    }
+    boxes.clear();
+  }
+  mainpic->updating(true);
+  canvas->refreshAll();
 }
 
 void MyFrame::save(wxCommandEvent& event) {
@@ -264,5 +335,5 @@ void MyFrame::add_pline_point(wxCommandEvent& event) {
   cout << "add_pline_point =" << x << ":" << y << endl;
   mainline->addPoint(static_cast<int>(x), static_cast<int>(y)); 
   mainpic->updating(true);
-  Refresh();
+  canvas->refreshAll();
 }

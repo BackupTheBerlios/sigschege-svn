@@ -1,0 +1,41 @@
+
+This is the README for Sigschege, the SIGnal SCHEdule GEnerator
+
+A software for creating timing diagrams for digital electrical circuits  
+
+Subversion Id: $Id: $
+
+
+* Requirements
+
+ANCI C++ compliant compiler, standard compliant C++ STL
+
+freetype2 library
+ 
+transfig/fig2dev
+
+Recommended: xfig
+
+
+* Building from source (distribution tarball)
+
+This project uses the standard GNU configure build flow. See the file
+INSTALL for generic install instructions.
+
+* Building from source (Subversion snapshot)
+
+aclocal
+automake --add-missing
+autoconf
+./configure
+make
+make install
+
+* Debugging
+
+Disable optimization:
+
+make distclean
+CXX=-g ./configure
+make
+

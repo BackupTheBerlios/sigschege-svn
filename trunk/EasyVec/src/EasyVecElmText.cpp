@@ -33,6 +33,8 @@ using namespace std;
 
 FT_Library  EasyVecElmText::freetype_lib;
 bool EasyVecElmText::freetype_already_initialized = false;
+bool EasyVecElmText::fix_fig2dev_quirk = false;
+
 
 const char* easyvec_font_files[] = {
   "/var/lib/defoma/gs.d/dirs/fonts/n021003l.pfb", // 0 = NimbusRomNo9L-Regu = Times-Roman
@@ -115,7 +117,7 @@ void EasyVecElmText::draw(EasyVecView* view) {
                              resolution);    /* vertical device resolution      */
   if (ft_fail!=0) cerr << "Setting face size failed" << endl;
 
-  if (view!=0) text_width = text_height = 0;
+  if (view==0) text_width = text_height = 0;
 
   old_glyph_i = 0;
   char_origin = elm_origin/master->scale();

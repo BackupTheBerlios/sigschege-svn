@@ -83,7 +83,7 @@ int main(void) {
   //txt->setText("Use pipes rather than intermediate files");
   txt->getBoundingBox(text_ul, text_lr);
 
-  EasyVecElmBox *textbox =  mypic.box(text_ul-EVPosInt(400, 400), text_lr+EVPosInt(400, 400));
+  EasyVecElmBox *textbox =  mypic.box(text_ul-EVPosInt(0, 0), text_lr+EVPosInt(0, 0));
   
   // EasyVecElmPolyline *line4 =  mypic.polyline();
   // line4->add_point(text_lr);

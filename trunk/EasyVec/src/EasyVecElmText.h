@@ -55,6 +55,14 @@ public:
   /// Set the origin of the text in the figure.
   bool setOrigin(EVPosInt new_origin);
   static bool initFreetype(void); // will be called by EasyVec class
+  /// Switch the fig2dev_fontfix on/off. Must be true for xfig/transfig versions before 3.2.5, false otherwise.
+  /*!
+   * This fixes a bug concerning font sizes for transfig/fig2dev for versions before 3.2.5. Instead
+   * of the default dpi size of 1200 a dpi value of 1080 was used just for text.
+   */
+  void fig2dev_fontfix(bool needed) {
+    fix_fig2dev_quirk = needed;
+  };  
 
 private:
   EVPosInt elm_origin;
@@ -68,8 +76,8 @@ private:
   bool initEasyVecElmText();
   void updateDimensions(); // must be called by all methods which change text size!
 
-  // must be true for transfig<3.2.5   TODO: make this a variable
-  const static bool fix_fig2dev_quirk = true;
+  // must be true for transfig<3.2.5 
+  static bool fix_fig2dev_quirk;
 };
 
 

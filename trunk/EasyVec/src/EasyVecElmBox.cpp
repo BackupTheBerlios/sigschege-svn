@@ -67,11 +67,11 @@ void EasyVecElmBox::saveElm(ofstream &fig_file) {
            << " 0 -1 0.0 0 0 0 0 0 " << 5 << endl;
   fig_file << " ";
   
-  fig_file << elm_upper_left.xpos()  << " " << elm_upper_left.ypos()
-           << elm_lower_right.xpos() << " " << elm_upper_left.ypos()
-           << elm_lower_right.xpos() << " " << elm_lower_right.ypos()
-           << elm_upper_left.xpos() << " " << elm_lower_right.ypos()
-           << elm_upper_left.xpos() << " " << elm_upper_left.ypos();
+  fig_file << elm_upper_left.xpos()  << " " << elm_upper_left.ypos()  << " "
+           << elm_lower_right.xpos() << " " << elm_upper_left.ypos()  << " "
+           << elm_lower_right.xpos() << " " << elm_lower_right.ypos() << " "
+           << elm_upper_left.xpos()  << " " << elm_lower_right.ypos() << " "
+           << elm_upper_left.xpos()  << " " << elm_upper_left.ypos();
 
   fig_file << endl;
 }

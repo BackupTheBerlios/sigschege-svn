@@ -29,6 +29,7 @@
 using namespace std;
 
 #include "Layout.h"
+#include "LayoutText.h"
 #include "LayoutList.h"
 #include "Event.h"
 #include "EventList.h"

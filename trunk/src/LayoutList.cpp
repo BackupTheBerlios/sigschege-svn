@@ -38,8 +38,8 @@ Layout* LayoutList::getLayout(size_t index) {
   return((Layout*) getObject(index));
 }
 
-size_t LayoutList::createLayout() {
-  return(createObject(new Layout()));
+size_t LayoutList::createLayout(Layout *nLayout) {
+  return(createObject(nLayout));
 }
 
 bool LayoutList::deleteLayout(size_t index) {

@@ -25,20 +25,42 @@
 
 using namespace std;
 
-#include "Timing.h"
+#include "LayoutText.h"
+#include <iostream>
+#include <EasyVecElmText.h>
 
-Timing::Timing() {
-  TopLayout = myLayoutList.createLayout(new LayoutText());
-  myLayoutList.getLayout(TopLayout)->setBox(0,0,1000,1000);
+/*!
+ * This constructor will create an layout object without a parent.
+ */
+LayoutText::LayoutText():Layout(){
+  cText = "Hello World";
 }
 
-Timing::~Timing() {
+LayoutText::~LayoutText(){
 }
 
-void Timing::paint() {
-  myLayoutList.getLayout(TopLayout)->paint(myEasyVec);
+/*!
+ * Return a TEXT Id
+ * \return Layout Object ID of this object (TEXT)
+ */
+LayoutID LayoutText::getID() {
+  return(TEXT);
 }
 
-void Timing::save(string filename) {
-  myEasyVec.save(filename);
+/*!
+ * Paint this text layout object
+ */
+void LayoutText::paint(EasyVec& cEasyVec) {
+  
+  cEasyVec.box(getUL(),getBR());
+
+
+  EasyVecElmText *txt2 = cEasyVec.text();
+
+  txt2->setOrigin(EVPosInt(getUL().xpos(), getBR().ypos()));
+  txt2->setSize(22);
+  txt2->setFont(15);
+  txt2->setText(cText.c_str());
+  txt2->getBoundingBox(getUL(), getBR());
+
 }

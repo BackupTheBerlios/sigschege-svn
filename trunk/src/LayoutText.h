@@ -1,5 +1,5 @@
 // -*- c++ -*-
-// \file  
+// \file 
 // Copyright 2004 by Ingo Hinrichs
 //
 // This file is part of Sigschege - Signal Schedule Generator
@@ -23,22 +23,34 @@
 //
 // $Id: $
 
+#ifndef _H_LAYOUT_Text
+#define _H_LAYOUT_Text
+
 using namespace std;
 
-#include "Timing.h"
+#include "Layout.h"
+#include <string>
 
-Timing::Timing() {
-  TopLayout = myLayoutList.createLayout(new LayoutText());
-  myLayoutList.getLayout(TopLayout)->setBox(0,0,1000,1000);
-}
+/// Layout Text Class
+/*!
+ * This Text Layout Class can be used as header or footer
+ */
+class LayoutText : public Layout {
+public:
+  /// The standard constructor
+  LayoutText();
+  
+  /// The standard destructor
+  ~LayoutText();
+  
+  /// Return the ID of this layout object
+  LayoutID getID();
 
-Timing::~Timing() {
-}
+  /// paint the layout object
+  void paint(EasyVec& cEasyVec);
 
-void Timing::paint() {
-  myLayoutList.getLayout(TopLayout)->paint(myEasyVec);
-}
+private:
+  string cText;
+};
 
-void Timing::save(string filename) {
-  myEasyVec.save(filename);
-}
+#endif // _H_LAYOUT_TEXT

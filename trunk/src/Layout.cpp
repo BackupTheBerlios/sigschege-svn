@@ -128,7 +128,7 @@ void Layout::setBox(int l, int u, int r, int b) {
  * Return the Upper Left corner of the layout object
  * \return The Upper Left Point
  */
-const EVPosInt &Layout::getUL() {
+EVPosInt &Layout::getUL() {
   return(cUL);
 }
 
@@ -136,7 +136,7 @@ const EVPosInt &Layout::getUL() {
  * Retrun the Bottom Right corner of the layout object
  * \return The Bottom Right Point
  */
-const EVPosInt &Layout::getBR() {
+EVPosInt &Layout::getBR() {
   return(cBR);
 }
 
@@ -145,11 +145,11 @@ const EVPosInt &Layout::getBR() {
  */
 void Layout::paint(EasyVec& cEasyVec) {
   printf("Boundary Box: (%i,%i)(%i,%i)\n",cUL.xpos(), cUL.ypos(),cBR.xpos(), cBR.ypos());
-  // cEasyVec.box(cUL,cBR);
-  EasyVecElmPolyline *line1 = cEasyVec.polyline();
-  line1->add_point(cUL.xpos(),cUL.ypos());
-  line1->add_point(cBR.xpos(),cUL.ypos());
-  line1->add_point(cBR.xpos(),cBR.ypos());
-  line1->add_point(cUL.xpos(),cBR.ypos());
-  line1->add_point(cUL.xpos(),cUL.ypos());
+  cEasyVec.box(cUL,cBR);
+  //EasyVecElmPolyline *line1 = cEasyVec.polyline();
+  //line1->add_point(cUL.xpos(),cUL.ypos());
+  //line1->add_point(cBR.xpos(),cUL.ypos());
+  //line1->add_point(cBR.xpos(),cBR.ypos());
+  //line1->add_point(cUL.xpos(),cBR.ypos());
+  //line1->add_point(cUL.xpos(),cUL.ypos());
 }

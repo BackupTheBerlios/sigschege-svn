@@ -57,7 +57,7 @@ public:
    * \return the position of the layout object that was created.
    * \sa deleteLayout isEmpty
    */
-  size_t createLayout();
+  size_t createLayout(Layout *nLayout);
   
   //! Delete a Layout Object
   /*! 

@@ -33,7 +33,7 @@ using namespace std;
 #include <EasyVec.h>
 #include <EasyVecElmPolyline.h>
 
-enum LayoutID {BASIC};
+enum LayoutID {BASIC,TEXT};
 
 /// A Layout Class
 /*!
@@ -75,13 +75,13 @@ public:
   void setBox(int l, int u, int r, int b);
 
   /// return the Upper Left Point
-  const EVPosInt &getUL();
+  EVPosInt &getUL();
 
   /// return the Bottom Right Point
-  const EVPosInt &getBR();
+  EVPosInt &getBR();
 
   /// paint the layout object
-  void paint(EasyVec& cEasyVec);
+  virtual void paint(EasyVec& cEasyVec);
 
 private:
   EVPosInt cUL;

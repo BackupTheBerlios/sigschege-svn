@@ -25,14 +25,14 @@
 
 using namespace std;
 
-#include "LayoutText.h"
+#include "Label.h"
 #include <iostream>
 #include <EasyVecElmText.h>
 
 /*!
  * This constructor will create an layout object without a parent.
  */
-LayoutText::LayoutText():Layout(){
+Label::Label():Layout(){
   cFontType = 14;
   cFontSize = 20;
 }
@@ -41,21 +41,21 @@ LayoutText::LayoutText():Layout(){
  * This constructor will create an layout object without a parent.
  * newText will be set as Text
  */
-LayoutText::LayoutText(string newText):Layout(){
+Label::Label(string newText):Layout(){
   cText = newText;
   cFontType = 14;
   cFontSize = 20;
 }
 
 
-LayoutText::~LayoutText(){
+Label::~Label(){
 }
 
 /*!
  * Return a TEXT Id
  * \return Layout Object ID of this object (TEXT)
  */
-LayoutID LayoutText::getID() {
+LayoutID Label::getID() {
   return(TEXT);
 }
 
@@ -63,14 +63,14 @@ LayoutID LayoutText::getID() {
  * Set a new Text
  * \param newText the new text
  */
-void LayoutText::setText(string newText) {
+void Label::setText(string newText) {
   cText = newText;
 }
 
 /*!
  * Paint this text layout object
  */
-unsigned int LayoutText::paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned int yOffset) {
+unsigned int Label::paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned int yOffset) {
   int text_width  = 0;
   int text_height = 0;
   int width;
@@ -102,11 +102,11 @@ unsigned int LayoutText::paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned
 }
 
 /// Set the Font Type
-void LayoutText::setFontType(int new_font) {
+void Label::setFontType(int new_font) {
   cFontType = new_font;
 }
 
 /// Set the Font Size
-void LayoutText::setFontSize(int new_size) {
+void Label::setFontSize(int new_size) {
   cFontSize = new_size;
 }

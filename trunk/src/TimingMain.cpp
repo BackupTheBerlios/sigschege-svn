@@ -39,10 +39,10 @@ int main (int ARGC, char **ARGV) {
   tim.setBorderRight(100);
   tim.setBorderBottom(100);
 
-  LayoutText *hello  = tim.createLayoutText("Hello");
-  LayoutText *world  = tim.createLayoutText("World!");
-  LayoutText *Slice1 = tim.createLayoutText();
-  LayoutText *Slice2 = tim.createLayoutText();
+  Label *hello  = tim.createLabel("Hello");
+  Label *world  = tim.createLabel("World!");
+  Label *Slice1 = tim.createLabel();
+  Label *Slice2 = tim.createLabel();
 
   hello->setFontType(11);
   hello->setFontSize(10);

@@ -29,7 +29,7 @@
 using namespace std;
 
 #include "Layout.h"
-#include "LayoutText.h"
+#include "Label.h"
 #include "LayoutList.h"
 #include "Event.h"
 #include "EventList.h"
@@ -50,10 +50,10 @@ public:
   ~TimingDiagram();
 
   /// Create a empyt Layout Text Object
-  LayoutText* createLayoutText();
+  Label* createLabel();
 
   /// Create a Layout Text Object with the Text newText
-  LayoutText* createLayoutText(string newText);
+  Label* createLabel(string newText);
 
   /// Set the width of the whole TimingDiagram Diagram
   void setWidth(int new_width);

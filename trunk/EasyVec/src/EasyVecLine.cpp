@@ -30,6 +30,6 @@
 EasyVecLine::EasyVecLine() {
   elmLineStyle = 0;
   elmStyleValue = 10.0;
-  elmThickness = 0;
+  elmThickness = 1;
 }
 

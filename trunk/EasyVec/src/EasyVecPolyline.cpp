@@ -106,7 +106,7 @@ void EasyVecPolyline::saveElm(ofstream &fig_file) {
   string fwd_arr_line = "1 1 1.00 60.00 120.00";  
   string bwd_arr_line = "1 1 1.00 60.00 120.00";
   
-  fig_file << "2 1 " << elmLineStyle << " " << elmThickness<< " " << elmPenColor << " " << elmFillColor << " " << elm_depth
+  fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elm_depth
            << " 0 -1 " << elmStyleValue << " 0 0 0 " << (elmForwardArrow? 1 : 0) << " "
            << (elmBackwardArrow? 1 : 0) << " " << points.size() << endl;
   if (elmForwardArrow) {

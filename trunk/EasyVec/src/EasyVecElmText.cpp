@@ -75,7 +75,7 @@ const char* easyvec_font_files[] = {
 
 bool EasyVecElmText::initFreetype(void) {
   if (freetype_already_initialized) return true;
-  int freetype_fail = FT_InitFreetype( &freetype_lib );
+  int freetype_fail = FT_Init_FreeType( &freetype_lib );
   if (freetype_fail==0) {
     freetype_already_initialized = true;
     return true;

@@ -36,18 +36,18 @@ using namespace std;
 #include <string>
 #include <EasyVec.h>
 
-//! The Timing Class is the toplevel class that contains the layout and the objects of a timing diagram.
+//! The TimingDiagram Class is the toplevel class that contains the layout and the objects of a timing diagram.
 /*!
  * This class represents a timing diagram comprised layout objects,timing diagram objects like signal or floating objects.
  * Also all used event will be administered by this class.
  */
-class Timing {
+class TimingDiagram {
 public:
   /// The standard constructor
-  Timing();
+  TimingDiagram();
 
   /// The standard destructor
-  ~Timing();
+  ~TimingDiagram();
 
   /// Create a empyt Layout Text Object
   LayoutText* createLayoutText();
@@ -55,7 +55,7 @@ public:
   /// Create a Layout Text Object with the Text newText
   LayoutText* createLayoutText(string newText);
 
-  /// Set the width of the whole Timing Diagram
+  /// Set the width of the whole TimingDiagram Diagram
   void setWidth(int new_width);
 
   /// Add a Layout Object to the end of cLayoutList

@@ -28,10 +28,10 @@ using namespace std;
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Timing.h"
+#include "TimingDiagram.h"
 
 int main (int ARGC, char **ARGV) {
-  Timing tim;
+  TimingDiagram tim;
 
   tim.setWidth(10000);
 

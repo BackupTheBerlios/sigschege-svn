@@ -33,7 +33,7 @@ using namespace std;
 #include <string>
 
 //! Singal Call
-class TimSignal : public LayoutObject {
+class TimSignal : public LayoutObject, protected EventList {
 public:
   //! The standard constructor
   TimSignal();
@@ -44,34 +44,6 @@ public:
   //! The standard destructor
   ~TimSignal();
 
-  //! Create a new Event
-  /*!
-   * This function creates a new Event.
-   * \return A pointer to the new event.
-   * \sa deleteEvent 
-   */
-  Handle<Event> createEvent();
-
-  //! Create a new Event
-  /*!
-   * This function creates a new Event.
-   * \param refEvent A Handle to the referenced event. If it is a 0 pointer the delay is the absolute time.
-   * \param eventDelay The delay to the reference event, or the absolute time if there is no reference event.
-   * \param eventNewState The new state created by the event.
-   * \return A pointer to the new event.
-   * \sa deleteEvent 
-   */
-  Handle<Event> createEvent(const string &eventNewState, double eventDelay, const Handle<Event> *refEvent = 0);
-  
-
-  //! Delete an Events
-  /*! 
-   * This function will destroy the given event 
-   * \param obsoleteEvent A pointer to the Event.
-   * \return False if Event did not exist in that list.
-   */
-  bool   deleteEvent(Handle<Event> obsoleteEvent);
-
   //! Set the xoffset for the signal
   void setSigOffset(int sigOffset);
 
@@ -81,8 +53,10 @@ public:
   //! Paint the Signal
   void paint(void);
 
+  LayoutObject::setCompound;
+  EventList::createEvent;
+  EventList::deleteEvent;
 private:
-  EventList cEventList;
   string    cText;
   int       cFontType;
   int       cFontSize;

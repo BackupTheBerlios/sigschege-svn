@@ -86,41 +86,10 @@ void TimSignal::paint(void) {
   text->setText(cText);
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(cOrigin+EVPosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
+  text->setOrigin(LayoutObject::cOrigin+EVPosInt(cPadding,(LayoutObject::cSize.ypos()+text->getHeight())/2));
   
-  cEventList.setCompound(getCompound()->compound(),cOrigin+EVPosInt(cPadding+cSigOffset,cPadding),cSize-EVPosInt(cSigOffset+2*cPadding,2*cPadding),0,222.0);
-  cEventList.paint();
+  EventList::setCompound(getCompound()->compound(),LayoutObject::cOrigin+EVPosInt(cPadding+cSigOffset,cPadding),LayoutObject::cSize-EVPosInt(cSigOffset+2*cPadding,2*cPadding),0,222.0);
+  EventList::paint();
 
 }
 
-
-/*!
- * This function creates a new Event.
- * \return A pointer to the new event.
- * \sa deleteEvent 
- */
-Handle<Event> TimSignal::createEvent() {
-  return cEventList.createEvent();
-}
-
-/*!
- * This function creates a new Event.
- * \param refEvent A Handle to the referenced event. If it is a 0 pointer the delay is the absolute time.
- * \param eventDelay The delay to the reference event, or the absolute time if there is no reference event.
- * \param eventNewState The new state created by the event.
- * \return A pointer to the new event.
- * \sa deleteEvent 
- */
-Handle<Event> TimSignal::createEvent(const string &eventNewState, double eventDelay, const Handle<Event> *refEvent) {
-  return cEventList.createEvent(eventNewState, eventDelay, refEvent);
-}
-  
-
-/*! 
- * This function will destroy the given event 
- * \param obsoleteEvent A pointer to the Event.
- * \return False if Event did not exist in that list.
- */
-bool TimSignal::deleteEvent(Handle<Event> obsoleteEvent) {
-  return cEventList.deleteEvent(obsoleteEvent);
-}

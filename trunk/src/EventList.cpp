@@ -26,13 +26,14 @@
 using namespace std;
 
 #include <EasyVecPolyline.h>
-#include <EasyVecPolyline.h>
+#include <EasyVecText.h>
 #include "EventList.h"
 #include "Handle.t"
 #include<algorithm>
 #include<iostream>
 
 EventList::EventList() : events(), initialState(new Event) {
+  namedEvents = false;
 }
 
 EventList::~EventList() {
@@ -56,7 +57,7 @@ Handle<Event> EventList::createEvent() {
   return new_handle;
 }
 
-Handle<Event> EventList::createEvent(const string &eventNewState, double eventDelay, const Handle<Event> *refEvent_p) {
+Handle<Event> EventList::createEvent(const State &eventNewState, double eventDelay, const Handle<Event> *refEvent_p) {
   Handle<Event> new_event = createEvent();
   if (refEvent_p!=0) {
     new_event->setReference(*refEvent_p);
@@ -198,25 +199,28 @@ void EventList::paint(void) {
   EasyVecPolyline *sigline1 = 0;
   EasyVecPolyline *sigline_tmp = 0;
 
-  string currentState = initialState->getNewState();
-  int xCoord,xMax = cOrigin.xpos()+cSize.xpos();
+  State currentState = initialState->getNewState();
+  int xMax = cOrigin.xpos()+cSize.xpos();
   vector< Handle<Event> >::iterator eventsIter;
-  string newState;
+  State newState;
   double eventStart, eventEnd;
   int where = 0;
-  bool sigline0IsTop, sigline1IsTop;
   double compoundTimeDiff = compoundTimeEnd-compoundTimeStart;
   int startX, endX;
-  int y0start, y0end, y1start, y1end;
   bool partialStart;
 
   int y0 = cOrigin.ypos()+cSize.ypos();
   int y1 = cOrigin.ypos();    
-    
+  int y0start, y0end, y1start, y1end; // variations of y0/y1 in case an event crosses start/end
+
+  y0end = y0;
+  y1end = y1;  
+  
+  double oldEndX = cOrigin.xpos();
+  
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
 
     bool swapSiglines = false;
-    Event *curEv = eventsIter->Object(); // unclean, but we don't manipulate events here...
     newState = eventsIter->Object()->getNewState();
     eventStart = eventsIter->Object()->getTime(0);
     eventEnd = eventsIter->Object()->getTime(100);
@@ -252,7 +256,7 @@ void EventList::paint(void) {
         y1end=y1;
       }
 
-      if ((currentState==string("1") && newState==string("X")) || (currentState==string("X") && newState==string("1"))) {
+      if ((currentState.isDrawState("1") && newState.isDrawState("X")) || (currentState.isDrawState("X") && newState.isDrawState("1"))) {
         // 1->X and X->1 need a top2top line
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
@@ -262,14 +266,14 @@ void EventList::paint(void) {
         }
         sigline1->add_point(EVPosInt(startX, y1));
         sigline1->add_point(EVPosInt(endX, y1));
-        if (newState==string("X")) {
+        if (newState.isDrawState("X")) {
           // 1->X, make sure top2bottom works on the right sigline
           sigline_tmp = sigline1;
           sigline1 = sigline0;
           sigline0 = sigline_tmp;
         }
       }
-      if ((currentState!=string("0") && newState!=string("1"))) {
+      if ((!currentState.isDrawState("0") && !newState.isDrawState("1"))) {
         // 1->0, 1->X, X->X, X->0 need a top2bottom line
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
@@ -281,7 +285,7 @@ void EventList::paint(void) {
         sigline1->add_point(EVPosInt(endX, y0end));
         swapSiglines = true;
       }
-      if ((currentState==string("0") && newState==string("X")) || (currentState==string("X") && newState==string("0"))) {
+      if ((currentState.isDrawState("0") && newState.isDrawState("X")) || (currentState.isDrawState("X") && newState.isDrawState("0"))) {
         // 0->X and X->0 need a bottom2bottom line
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
@@ -291,14 +295,14 @@ void EventList::paint(void) {
         }
         sigline0->add_point(EVPosInt(startX, y0));
         sigline0->add_point(EVPosInt(endX, y0));
-        if (newState==string("X")) {
+        if (newState.isDrawState("X")) {
           // 0->X, make sure bottom2top works on the right sigline
           sigline_tmp = sigline1;
           sigline1 = sigline0;
           sigline0 = sigline_tmp;
         }
       }
-      if (currentState!=string("1") && newState!=string("0")) {
+      if (!currentState.isDrawState("1") && !newState.isDrawState("0")) {
         // 0->1, 0->X, X->X and X->1 need a bottom2top line
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
@@ -316,27 +320,22 @@ void EventList::paint(void) {
         sigline1 = sigline0;
         sigline0 = sigline_tmp;
       }
-      if (currentState==string("X") && (newState==string("1") || newState==string("0"))) {
-        if (newState==string("0")) sigline1 = 0;
+      if (currentState.isDrawState("X") && (newState.isDrawState("1") || newState.isDrawState("0"))) {
+        if (newState.isDrawState("0")) sigline1 = 0;
         else sigline0 = 0;
-      }      
-      where = 1;
-    }
-
-    if (where == 0) { // before compound start
-      if (eventEnd<compoundTimeStart) {
-        // event before compound: just get its new state
-        currentState = newState;
-      } else if (eventStart<compoundTimeStart) {
-        // event overlaps start of compound
-        if ((currentState==string("1") && newState==string("X")) || (currentState==string("X") && newState==string("1"))) {
-          sigline0 = evListCompound->polyline();
-          sigline0->add_point(EVPosInt(cOrigin.xpos(), cSize.ypos()+cOrigin.ypos()));
-          sigline0->add_point(EVPosInt(endX, cSize.ypos()+cOrigin.ypos()));
-          sigline0IsTop = true;
-        }
-        where = 1;
       }
+      if (namedEvents && (where==1 || eventEnd>compoundTimeEnd)) {
+        EasyVecText* label = evListCompound->text();
+        label->setOrigin(EVPosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/5));
+        label->setText(currentState.state());
+        label->setJustification(EasyVecText::center);
+        label->setSize(10);
+      }
+      oldEndX = endX;
+      where = 1;
+    } else if (where == 0) {
+      // event before compound: just get its new state
+      currentState = newState;
     }
     currentState = newState;
   }

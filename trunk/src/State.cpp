@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -21,48 +21,20 @@
 //
 // #############################################################################
 //
-// $Id: TimLabel.h 58 2004-11-10 21:12:15Z suupkopp $
-
-#ifndef _H_TIMSIGNAL
-#define _H_TIMSIGNAL
+// $Id$
 
 using namespace std;
 
-#include "LayoutObject.h"
-#include "EventList.h"
-#include <string>
+#include <State.h>
 
-//! Signal Call
-class TimSignal : public LayoutObject, protected EventList {
-public:
-  //! The standard constructor
-  TimSignal();
+State::drawState State::getDrawState(void) {
+  if (mState=="0") return Zero;
+  else if (mState=="1") return One;
+  else return X;
+}
 
-  //! Create a Signal with Text
-  TimSignal(string signalLabel);
-
-  //! The standard destructor
-  ~TimSignal();
-
-  //! Set the xoffset for the signal
-  void setSigOffset(int sigOffset);
-
-  //! Set a new Text
-  void setText(string newText);
-
-  //! Paint the Signal
-  void paint(void);
-
-  LayoutObject::setCompound;
-  EventList::createEvent;
-  EventList::deleteEvent;
-  EventList::debugEvents;
-  EventList::setNamedEvents;
-private:
-  string    cText;
-  int       cFontType;
-  int       cFontSize;
-  int       cSigOffset;
-};
-
-#endif
+bool State::isDrawState(string state) {
+  string myState=mState;
+  if (myState!="1" && myState!="0") myState="X";
+  return myState==state;
+}

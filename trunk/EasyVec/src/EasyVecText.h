@@ -47,9 +47,9 @@ public:
   /// Place the edges of the bounding box in upper_left/lower_right.
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
   /// Return the width of the text.
-  int getWidth(void) { return text_width; }
+  int getWidth(void) { return textWidth; }
   /// Return the height of the text.
-  int getHeight(void) { return text_height; }
+  int getHeight(void) { return textHeight; }
   vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(EasyVecView* view);
   virtual void saveElm(ofstream &fig_file);
@@ -63,6 +63,7 @@ public:
   bool setOrigin(EVPosInt new_origin);
   /// Set the justification of the text relative to its origin.
   bool setJustification(int newJustification);
+  EVPosInt drawOrCalc(EasyVecView* view, bool noUpdate=false);
   /// Calculates the maximum point size so that the text fits into the given box
   int sizeForBox(int height, int width, bool allowIncrease = false);
   static bool initFreetype(void); // will be called by EasyVecFigure class
@@ -84,14 +85,14 @@ public:
   };
 
 private:
-  EVPosInt elm_origin;
-  string elm_text;
-  int elm_font, elm_size;
+  EVPosInt elmOrigin;
+  string elmText;
+  int elmFont, elmSize;
   justification elmJustification;
   static FT_Library  freetype_lib;
   static bool freetype_already_initialized;
   FT_Face face;
-  int text_height, text_width; // cache information to reduce cpu effort
+  int textHeight, textWidth; // cache information to reduce cpu effort
   
   bool initEasyVecText();
   void updateDimensions(); // must be called by all methods which change text size!
@@ -100,6 +101,7 @@ private:
   static bool fix_fig2dev_quirk;
   static string gs_fontpath;
 };
+
 
 inline bool EasyVecText::setJustification(int newJustification) {
   if (newJustification>0 && newJustification<3) {

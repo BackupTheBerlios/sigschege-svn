@@ -72,7 +72,7 @@ class EventList {
    * \return A pointer to the new event.
    * \sa deleteEvent 
    */
-  Handle<Event> createEvent(const string &eventNewState, double eventDelay, const Handle<Event> *refEvent = 0);
+  Handle<Event> createEvent(const State &eventNewState, double eventDelay, const Handle<Event> *refEvent = 0);
   
 
   //! Delete an Events
@@ -101,7 +101,7 @@ class EventList {
   /*!
    * The initial state is the value used before the first actual event.
    */
-  void setInitialState(string newInitialState) {
+  void setInitialState(State newInitialState) {
     initialState->setNewState(newInitialState);
   }
 
@@ -120,6 +120,10 @@ class EventList {
   //! Set the Size
   void setSize(int width, int height);
 
+  //!
+  void setNamedEvents(bool named) {
+    namedEvents = named;
+  };
 
   //! Set the compound to which the signal is drawn.
   void setCompound(EasyVecCompound *newCompound, int xOffset, int yOffset, int width, int height,
@@ -141,6 +145,7 @@ private:
   int compoundWidth, compoundHeight;
   double compoundTimeStart, compoundTimeEnd;
   EVPosInt cOrigin, cSize;
+  bool namedEvents;
 };
 
 #endif /* _H_EVENTLIST */

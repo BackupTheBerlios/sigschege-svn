@@ -63,12 +63,22 @@ void layout (void) {
   Time1->setPadding(200);
   Time1->setSigOffset(1500);
   
-  Handle<Event> ev1 = Signal1->createEvent("X", -50.0);
+  Handle<Event> ev1 = Signal1->createEvent(State("X"), -50.0);
   for (int i=0; i<8; i++) {
-    ev1 = Signal1->createEvent("X", i*31-1.0);
+    string nstate;
+    if (i==0) nstate="0x12";
+    else if (i==1) nstate="0xa7";
+    else if (i==2) nstate="0x33";
+    else if (i==3) nstate="0x65";
+    else if (i==4) nstate="0x20";
+    else if (i==5) nstate="0xf0";
+    else if (i==6) nstate="0x0f";
+    else if (i==7) nstate="0xbc";
+    ev1 = Signal1->createEvent(State(nstate), i*31-1.0);
     ev1->setSlope(7.0);
+    
   }
-
+  Signal1->setNamedEvents(true);
   
   Handle<TimLabel> Label3 = List1->createLabel();
   Label3->setText("List in a List !!!");
@@ -90,12 +100,12 @@ void layout (void) {
   List1->addLast(Label4.Object());
   List1->addLast(Label5.Object());
 
-  Handle<Event> s0ev_1 = Signal0->createEvent("1", -200);
-  Handle<Event> s0ev0 = Signal0->createEvent("0", -5);
-  Handle<Event> s0ev1 = Signal0->createEvent("X", 80);
+  Handle<Event> s0ev_1 = Signal0->createEvent(State("1"), -200);
+  Handle<Event> s0ev0 = Signal0->createEvent(State("0"), -5);
+  Handle<Event> s0ev1 = Signal0->createEvent(State("X"), 80);
   Handle<Event> s0ev2 = Signal0->createEvent();
   Handle<Event> s0ev3 = Signal0->createEvent();
-  Handle<Event> s0ev4 = Signal0->createEvent("1", 50, &s0ev3);
+  Handle<Event> s0ev4 = Signal0->createEvent(State("1"), 50, &s0ev3);
   s0ev2->setReference(s0ev1);
   s0ev3->setReference(s0ev2);
   s0ev3->setReference(s0ev1);
@@ -104,10 +114,10 @@ void layout (void) {
   s0ev2->setSlope(10.0);
   s0ev3->setDelay(75.0);
   s0ev3->setSlope(10.0);
-  s0ev2->setNewState("0");
-  s0ev3->setNewState("1");
+  s0ev2->setNewState(State("0"));
+  s0ev3->setNewState(State("1"));
   s0ev4->setSlope(10.0);
-  s0ev4->setNewState("0");
+  s0ev4->setNewState(State("0"));
 
   s0ev_1->setSlope(20.0);
   s0ev0->setSlope(10.0);
@@ -133,7 +143,7 @@ void event(void) {
   EventList mainList;
   bool never_true = false;
   bool always_true = true;
-  Handle<Event> ev1 = mainList.createEvent("1", 80);
+  Handle<Event> ev1 = mainList.createEvent(State("1"), 80);
   ev1->setSlope(20.0);
   Handle<Event> ev2 = mainList.createEvent();
   Handle<Event> ev3 = mainList.createEvent();
@@ -148,10 +158,10 @@ void event(void) {
   never_true = ev2->setReference(ev2);
   never_true = never_true || ev1->setReference(ev3);
 
-  ev2->setNewState("0");
-  ev3->setNewState("1");
+  ev2->setNewState(State("0"));
+  ev3->setNewState(State("1"));
   
-  Handle<Event> ev4 = mainList.createEvent("1", 50, &ev3);
+  Handle<Event> ev4 = mainList.createEvent(State("1"), 50, &ev3);
   ev4->setSlope(10.0);
 
   if (always_true && (!never_true)) {

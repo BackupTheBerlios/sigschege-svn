@@ -47,7 +47,7 @@ public:
   //! Paint this Layout Object
   virtual void paint(void);
 
-  //! Register an layout object which references this layout object.
+  //! Register a layout object which references this layout object.
   /*!
    * Insert an layout object into the referrers list.
    * \return False if the layout object already  existed, true otherwise.
@@ -56,7 +56,7 @@ public:
    */
   bool registerReferrer(Handle<LayoutObject> newReferrer);
 
-  //! Unregister an layout object which references this layout object.  
+  //! Unregister a layout object which references this layout object.  
   /*!
    * Remove an layout object from the referrers list. This is used if either the referring layout object is
    * deleted another layout object.
@@ -69,7 +69,7 @@ public:
   //! Get the pointer of the reference layout object.
   /*!
    * This function returns the pointer of the reference layout object or NULL if it has no reference layout object
-   * \return A pointer the the reference layout object
+   * \return A pointer to the reference layout object
    * \sa registerReferrer
    */
   Handle<LayoutObject> getReference();

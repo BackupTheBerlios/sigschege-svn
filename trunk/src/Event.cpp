@@ -29,7 +29,7 @@ using namespace std;
 #include <stdio.h>
 
 
-Event::Event(const string &setNewState, double setEventDelay, const Handle<Event> *setReference_p,
+Event::Event(const State &setNewState, double setEventDelay, const Handle<Event> *setReference_p,
              double setSlopeTime) {
   eventDelay = setEventDelay;
   newState = setNewState;

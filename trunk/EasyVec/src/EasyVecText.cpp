@@ -90,7 +90,9 @@ void EasyVecText::updateDimensions() {
   draw(NULL); 
 }
 
-void EasyVecText::draw(EasyVecView* view) {
+
+
+EVPosInt EasyVecText::drawOrCalc(EasyVecView* view, bool noUpdate) {
   string::iterator text_iter;
   char cur_char;
   FT_UInt glyph_index, old_glyph_i;
@@ -110,20 +112,20 @@ void EasyVecText::draw(EasyVecView* view) {
   }
   
   ft_fail = FT_Set_Char_Size(face,    /* handle to face object */
-                             elm_size*64,   /* char_width in 1/64th of points  */
-                             elm_size*64,   /* char_height in 1/64th of points */
+                             elmSize*64,   /* char_width in 1/64th of points  */
+                             elmSize*64,   /* char_height in 1/64th of points */
                              resolution,     /* horizontal device resolution    */
                              resolution);    /* vertical device resolution      */
   if (ft_fail!=0) cerr << "Setting face size failed" << endl;
 
-  if (view==0) text_width = text_height = 0;
+  if (view==0 && !noUpdate) textWidth = textHeight = 0;
 
   old_glyph_i = 0;
-  char_origin = elm_origin/figure->scale();
+  char_origin = elmOrigin/figure->scale();
   
-  for ( text_iter = elm_text.begin(); text_iter != elm_text.end(); ++text_iter ) {
+  for ( text_iter = elmText.begin(); text_iter != elmText.end(); ++text_iter ) {
     cur_char = *text_iter;
-    glyph_index = FT_Get_Char_Index(face, cur_char );
+    glyph_index = FT_Get_Char_Index(face, cur_char);
     ft_fail = FT_Load_Glyph( face, glyph_index, FT_LOAD_NO_HINTING );
     if (view) ft_fail |= FT_Render_Glyph( face->glyph, FT_RENDER_MODE_MONO );
     if (ft_fail!=0) cerr << "Glyph loading failed for char " << *text_iter << glyph_index<< endl;
@@ -139,19 +141,24 @@ void EasyVecText::draw(EasyVecView* view) {
       view->draw_char(char_origin-EVPosInt(0, glyph->bitmap_top), cbitmap.rows, cbitmap.width, cbitmap.pitch, cbitmap.buffer, elm_pen_color);
       char_origin = char_origin+EVPosInt(glyph->metrics.horiAdvance/64, 0);
     } else {
-      text_width += glyph->metrics.horiAdvance/64; // TODO: add kerning
-      if (glyph->metrics.height/64>text_height) text_height = glyph->metrics.height/64;
+      textWidth += glyph->metrics.horiAdvance/64; // TODO: add kerning
+      if (glyph->metrics.height/64>textHeight) textHeight = glyph->metrics.height/64;
     }
     old_glyph_i = glyph_index;
   }
 }
 
 
+void EasyVecText::draw(EasyVecView* view) {
+  drawOrCalc(view);
+}
+
+
 bool EasyVecText::initEasyVecText() {
   bool success;
-  elm_font = 0;
-  elm_size = 18;
-  elm_origin = EVPosInt(300, 300);
+  elmFont = 0;
+  elmSize = 18;
+  elmOrigin = EVPosInt(300, 300);
   elmJustification = left;
   success = setFont(0);  
   // updateDimensions(); ... is already done in setFont!
@@ -171,12 +178,12 @@ EasyVecText::EasyVecText(EasyVecCompound* parent_compound, EasyVecFigure* figure
 
 
 void EasyVecText::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
-  upper_left  = elm_origin - EVPosInt(0, text_height); 
-  lower_right = elm_origin + EVPosInt(text_width, 0);
+  upper_left  = elmOrigin - EVPosInt(0, textHeight); 
+  lower_right = elmOrigin + EVPosInt(textWidth, 0);
 }
 
 bool EasyVecText::setText(const string &new_text) {
-  elm_text = new_text;
+  elmText = new_text;
   updateDimensions();
   return true;
 }
@@ -184,8 +191,8 @@ bool EasyVecText::setText(const string &new_text) {
 bool EasyVecText::setFont(int new_font) {
   int ft_fail;
   if (new_font>=0 && new_font<34) {
-    elm_font = new_font;
-    string font = gs_fontpath + string(easyvec_font_files[elm_font]);
+    elmFont = new_font;
+    string font = gs_fontpath + string(easyvec_font_files[elmFont]);
     ft_fail = FT_New_Face(freetype_lib, font.c_str(), 0, &face );
     if (ft_fail!=0) cerr << "Face creation failed" << endl;
     updateDimensions();
@@ -195,13 +202,13 @@ bool EasyVecText::setFont(int new_font) {
 
 
 bool EasyVecText::setSize(int new_size) {
-  elm_size = new_size;
+  elmSize = new_size;
   updateDimensions();
   return true;
 }
 
 bool EasyVecText::setOrigin(EVPosInt new_origin) {
-  elm_origin = new_origin;
+  elmOrigin = new_origin;
   return true;
 }
 
@@ -214,7 +221,7 @@ void EasyVecText::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
   fig_file << "4 " << elmJustification << " " << elm_pen_color << " " << elm_depth
-           << " 0 " << elm_font << " " << elm_size << " 0 4 " << text_height << " " << text_width
-           << " " << elm_origin.xpos() << " " << elm_origin.ypos() << " "<< elm_text
+           << " 0 " << elmFont << " " << elmSize << " 0 4 " << textHeight << " " << textWidth
+           << " " << elmOrigin.xpos() << " " << elmOrigin.ypos() << " "<< elmText
            << "\\001" << endl;
 }

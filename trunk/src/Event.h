@@ -29,6 +29,7 @@
 using namespace std;
 
 #include "Handle.t"
+#include "State.h"
 #include <vector>
 #include <string>
 
@@ -51,7 +52,7 @@ public:
    * \param setReference A pointer to the reference event handle. If not given, event is absolute.
    * \param setSlopeTime The time for the transition from the old to the new state.
    */
-  Event(const string &setNewState = "0", double setEventDelay = 0.0,
+  Event(const State &setNewState = State("0"), double setEventDelay = 0.0,
         const Handle<Event> *setReference = 0, double setSlopeTime = 0.0);
 
   
@@ -182,8 +183,8 @@ public:
    * \return The old new state is returned.
    * \sa getNewState
    */
-  string setNewState(string newNewState) {
-    string tmp = newState;
+  State setNewState(State newNewState) {
+    State tmp = newState;
     newState = newNewState;
     return tmp;
   }
@@ -193,7 +194,7 @@ public:
    * This returns the new state of the event. 
    * \sa setNewState
    */
-  string &getNewState(void) {
+  State getNewState(void) {
     return newState;
   }
 
@@ -216,7 +217,7 @@ private:
   int refLevel;
   double eventTime;
   double slopeTime;
-  string newState;
+  State newState;
   int refCount;
   Handle<Event> reference;
   vector< Handle<Event> > referrers;

@@ -10,7 +10,26 @@ AM_CONFIG_HEADER([src/config.h])
 
 # Checks for programs.
 AC_PROG_LIBTOOL
+AC_PROG_INSTALL
 AC_PROG_CXX
+
+AC_CHECK_PROG(WX_CONFIG,wx-config,yes)
+if test "$WX_CONFIG" == ""; then
+ echo "wx-config not found";
+ exit;
+fi
+
+AC_CHECK_PROG(FREETYPE_CONFIG,freetype-config,yes)
+if test "$FREETYPE_CONFIG" == ""; then
+ echo "freetype-config not found";
+ exit;
+fi
+
+AC_CHECK_PROG(DOXYGEN,doxygen,yes)
+if test "$DOXYGEN" == ""; then
+ echo "doxygen not found";
+ exit;
+fi
 
 # Checks for libraries.
 

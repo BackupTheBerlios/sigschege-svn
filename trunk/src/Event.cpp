@@ -62,7 +62,19 @@ Event* Event::getReference() {
   return reference;
 }
 
-void Event::setReference(Event* new_reference) {
+
+bool Event::setReference(Event* new_reference) {
+  Event* referenceWalk = new_reference;
+  // make sure that no circle of events is created which would lead to an infinite loop
+  if (referenceWalk!=0) {
+    do {
+      if (referenceWalk==this) {
+        return false;
+      }
+      referenceWalk = referenceWalk->reference;
+    } while (referenceWalk);
+  }
+  
   if (reference!=0) { // unregister from an old reference, if one existed
     reference->unregisterReferrer(this);
   }
@@ -71,11 +83,13 @@ void Event::setReference(Event* new_reference) {
     reference->registerReferrer(this); 
   }
   updateTime();
+  return true;
 }
 
 void Event::delReference() {
   setReference(NULL);
 }
+
 
 void Event::setDelay(const double delay) {
   if(EventDelay != delay){
@@ -84,9 +98,11 @@ void Event::setDelay(const double delay) {
   updateTime();
 }
 
+
 const double Event::getDelay() {
   return(EventDelay);
 }
+
 
 void  Event::updateTime() {
   double oldTime;

@@ -114,11 +114,13 @@ public:
 
   //! Set the reference event.
   /*!
-   * The reference event to which the delay is relative to.
+   * The reference event to which the delay is relative to. This command will fail if
+   * a loop of Events would be created.
    * \param new_reference The pointer to the new reference event
+   * \return True if successful.
    * \sa hasreference getreference delreference
    */
-  void setReference(Event* new_reference);
+  bool setReference(Event* new_reference);
 
   //! Delete the reference of this event
   /*!

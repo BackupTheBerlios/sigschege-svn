@@ -73,15 +73,26 @@ void layout (void) {
 
 void event(void) {
   EventList mainList;
+  bool never_true = false;
+  bool always_true = true;
   Event* ev1 = mainList.createEvent();
   Event* ev2 = mainList.createEvent();
   Event* ev3 = mainList.createEvent();
   ev1->setDelay(100);
   ev2->setDelay(50);
-  ev2->setReference(ev1);
-  ev3->setReference(ev2);
+  always_true = always_true && ev2->setReference(ev1);
+  always_true = always_true && ev3->setReference(ev2);
   ev3->setDelay(25);
-  ev3->setReference(ev1);
+  always_true = always_true && ev3->setReference(ev1);
+
+  never_true = ev2->setReference(ev2);
+  never_true = never_true || ev1->setReference(ev3);
+
+  if (always_true && (!never_true)) {
+    cout << "Fine! Loop breaking worked" << endl; 
+  } else {
+    cout << "Fine! Loop breaking worked" << endl; 
+  }
   
   cout << "Time of event1: " << ev1->getTime() << endl; 
   cout << "Time of event2: " << ev2->getTime() << endl;

@@ -64,6 +64,9 @@ public:
   //! Export the Timing Diagram to an encapsulated postscript (EPS)
   void exportEPS(string file);
 
+  //! Export the Timing Diagram to any picture format (supported by fig2dev)
+  void exportAny(string file, string format);
+
   //! Create a empty Timing Diagram Label Object
   Handle<TimLabel> createLabel();
 

@@ -63,6 +63,16 @@ void TimingDiagram::exportEPS(string file) {
 }
 
 /*!
+ * Export the Timingdiagram to any format
+ * \param file Picture file name.
+ * \param format Format of the file, must be supported by fig2dev.
+ */
+void TimingDiagram::exportAny(string file, string format) {
+  paint();
+  cEasyVec.exportFig2dev(format, file);
+}
+
+/*!
  * Add a LayoutObject to the end of the list
  * \param newLayoutObject Handel to the Layoutobject that should be added
  */

@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: TimingMain.cpp 67 2004-12-05 23:05:10Z suupkopp $
+// $Id$
 
 #include "PyTimingDiagram.h"
 #include <stdio.h>
@@ -50,14 +50,22 @@ static void TimSignal_dealloc(TimSignalObject *self) {
   self->ob_type->tp_free((PyObject *)self);
 }
 
-static PyObject * TimSignal_addEvent(TimSignalObject *self) {
-  self->signal->createEvent(State("1"), 20.0);
-  printf("add event\n");
+static PyObject * TimSignal_addEvent(TimSignalObject *self, PyObject *args, PyObject *kwds) {
+  char *state = "1";
+  double time = 0.0;
+  static char *kwlist[] = {"time", "state", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "ds", kwlist, &time, &state))
+    return NULL;
+  string state_s = state;
+
+  self->signal->createEvent(State(state_s), time);
+  Py_INCREF(Py_None);
   return (Py_None);
 }
   
 static PyMethodDef TimSignal_methods[] = {
-  {"addEvent", (PyCFunction)TimSignal_addEvent, METH_NOARGS,
+  {"addEvent", (PyCFunction)TimSignal_addEvent, METH_VARARGS|METH_KEYWORDS,
    "Add an event to a signal."
   },
   {NULL}  /* Sentinel */
@@ -125,6 +133,8 @@ static PyObject* TimingDiagram_new(PyTypeObject *type, PyObject *args, PyObject 
 static int TimingDiagram_init(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
   cout << "Whoa! TimingDiagram INIT called!" << endl;
   self->tim = new TimingDiagram;
+  self->tim->setWidth(10000);
+  self->tim->setSliceSpace(50);
   return (0);
 }
 
@@ -136,9 +146,26 @@ static void TimingDiagram_dealloc(TimingDiagramObject *self) {
 static PyObject * TimingDiagram_exportFig(TimingDiagramObject *self) {
   self->tim->exportFig("demo.fig");
   printf("export fix\n");
+  Py_INCREF(Py_None);
   return (Py_None);
 }
-  
+
+static PyObject *TimingDiagram_exportPic(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
+  char *filename = "demo.png";
+  char *format = "png";
+  static char *kwlist[] = {"filename", "format", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "ss", kwlist, &filename, &format))
+    return NULL;
+  string format_s = format;
+
+  self->tim->exportAny( filename, format_s);
+  printf("export fix\n");
+
+  Py_INCREF(Py_None);
+  return (Py_None);
+}
+
 static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
 
   char *label = "none";
@@ -181,7 +208,11 @@ static PyMethodDef TimingDiagram_methods[] = {
   },
   {
     "exportFig", (PyCFunction)TimingDiagram_exportFig, METH_VARARGS,
-    "Export the Timing Diagram as Fig Format."
+    "Export the Timing Diagram as Fig format."
+  },
+  {
+    "exportPic", (PyCFunction)TimingDiagram_exportPic, METH_VARARGS|METH_KEYWORDS,
+    "Export the Timing Diagram as any picture format."
   },
   {NULL}  /* Sentinel */
 };

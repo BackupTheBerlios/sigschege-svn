@@ -1,0 +1,21 @@
+# hey emacs, it's -*- python -*-
+# $Id: $
+# first example timing diagram creation script for sigschege
+
+import TimingDiagram
+md = TimingDiagram.TimingDiagram()
+mclk=md.createSignal("clk")
+mdi=md.createSignal("dat_in")
+mdo=md.createSignal("dat_out")
+mdi.addEvent(float(10), "1")
+
+mdo.addEvent(20, "1")
+mdo.addEvent(60, "0")
+
+for i in range(5,220,20):
+   mclk.addEvent(i, "1")
+   mclk.addEvent(state="0", time=i+10)
+
+print mclk
+md.exportFig()
+md.exportPic("Simple.png", "png")

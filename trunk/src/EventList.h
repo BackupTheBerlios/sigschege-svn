@@ -50,7 +50,7 @@ class EventList {
    * \param evTime The point in time from which the first event is returned. 
    * \return Return a pointer to the event, NULL if no event occured after evTime.
    */
-  Event* getEventAfter(double evTime); 
+  Handle<Event> getEventAfter(double evTime); 
 
   //! Create a new Event
   /*!
@@ -58,7 +58,7 @@ class EventList {
    * \return A pointer to the new event.
    * \sa deleteEvent 
    */
-  Event* createEvent();
+  Handle<Event> createEvent();
   
   //! Delete an Events
   /*! 
@@ -66,7 +66,7 @@ class EventList {
    * \param obsoleteEvent A pointer to the Event.
    * \return False if Event did not exist in that list.
    */
-  bool   deleteEvent(Event* obsoleteEvent);
+  bool   deleteEvent(Handle<Event> obsoleteEvent);
 
   //! Delete all Events in the list.
   void clear(void);
@@ -74,8 +74,8 @@ class EventList {
   //! Sort the list of events by time;
   void sort();  
   struct evTimeCmp {
-    bool operator()(Event* x, Event* y) {
-      return x->getTime()<y->getTime();
+    bool operator()(Handle<Event> x, Handle<Event> y) {
+      return x.Object()->getTime()<y.Object()->getTime();
     }
   };
 
@@ -83,7 +83,7 @@ class EventList {
   void debugEvents(void);
   
 private:
-  vector<Event*> events;
+  vector< Handle<Event> > events;
   
 };
 

@@ -1,6 +1,6 @@
 
 
-* Event class: prevent user from generating recursive references.
-  (event1 references event2 which references event1)
-  => assigned to Ulf, plan how to do this already in mind 
+* Handle class: remove Object() function usage.
+  Object() still necessary for pointer comparison?
+  => assigned to Ulf
 

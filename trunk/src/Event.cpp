@@ -29,7 +29,6 @@ using namespace std;
 #include <stdio.h>
 
 Event::Event() {
-  reference = 0;
   EventDelay = 0;
   EventTime  = 0;
 }
@@ -37,50 +36,60 @@ Event::Event() {
 Event::~Event(){
 }
 
-bool Event::registerReferrer(Event* newReferrer) {
-  vector<Event*>::iterator referrersIter;
+void Event::incrementRefcount() {
+  refCount++; 
+}
+
+void Event::decrementRefcount() {
+  refCount--;
+}
+
+bool Event::registerReferrer(Handle<Event> newReferrer) {
+  vector< Handle<Event> >::iterator referrersIter;
     for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
-      if (*referrersIter==newReferrer) return false;
+      if (referrersIter->Object()==newReferrer.Object()) return false;
     }
     referrers.push_back(newReferrer);
+    refCount++;
     return true;
 }
 
-bool Event::unregisterReferrer(Event* obsoleteReferrer) {
-  vector<Event*>::iterator referrersIter;
+bool Event::unregisterReferrer(Handle<Event> obsoleteReferrer) {
+  vector< Handle<Event> >::iterator referrersIter;
     for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
-      if (*referrersIter==obsoleteReferrer) {
+      if (referrersIter->Object()==obsoleteReferrer.Object()) {
         referrers.erase(referrersIter);
         return true;
       }
     }
+    refCount--;
     return false;
 }
 
 
-Event* Event::getReference() {
+Handle<Event> Event::getReference() {
   return reference;
 }
 
 
-bool Event::setReference(Event* new_reference) {
-  Event* referenceWalk = new_reference;
+bool Event::setReference(Handle<Event> new_reference) {
+  Event* referenceWalk = new_reference.Object();
   // make sure that no circle of events is created which would lead to an infinite loop
   if (referenceWalk!=0) {
     do {
       if (referenceWalk==this) {
         return false;
       }
-      referenceWalk = referenceWalk->reference;
+      referenceWalk = referenceWalk->reference.Object();
     } while (referenceWalk);
   }
   
-  if (reference!=0) { // unregister from an old reference, if one existed
-    reference->unregisterReferrer(this);
+  if (reference.Object()!=0) { // unregister from an old reference, if one existed
+    reference.Object()->unregisterReferrer(this);
   }
   reference = new_reference;
-  if (reference!=0) { // make sure the event this refers to knows, unless it's a NULL pointer
-    reference->registerReferrer(this); 
+  if (reference.Object()!=0) { // make sure the event this refers to knows, unless it's a NULL pointer
+    reference.Object()->registerReferrer(this); 
   }
   updateTime();
   return true;
@@ -107,11 +116,11 @@ const double Event::getDelay() {
 void  Event::updateTime() {
   double oldTime;
   oldTime = EventTime;
-  vector<Event*>::iterator referrersIter;
+  vector< Handle<Event> >::iterator referrersIter;
 
   // Calculate the new absolute Time of the Event
-  if (reference!=0) {
-    EventTime = reference->getTime()+EventDelay;
+  if (reference.Object()!=0) {
+    EventTime = reference.Object()->getTime()+EventDelay;
   } else {
     EventTime = EventDelay;
   }
@@ -119,7 +128,7 @@ void  Event::updateTime() {
   // update all referrers if the absolute Time has changed
   if(oldTime != EventTime) {
     for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
-      (*referrersIter)->updateTime();
+      referrersIter->Object()->updateTime();
     }
   }
 }

@@ -37,26 +37,26 @@ EventList::~EventList() {
 }
 
 void EventList::clear(void) {
-    Event* last_elm;
+    Handle<Event> last_elm;
   while (events.size()>0) {
     last_elm = events.back();
-    delete last_elm; // delete the Event the pointer points to
+    //delete last_elm; // delete the Event the pointer points to
     events.pop_back(); // remove the pointer from the list
   }
-
 }
 
 
-Event* EventList::createEvent() {
+Handle<Event> EventList::createEvent() {
   Event* new_event = new Event;
-  events.push_back(new_event);
-  return new_event;
+  Handle<Event> new_handle(new_event);
+  events.push_back(new_handle);
+  return new_handle;
 }
 
-bool EventList::deleteEvent(Event* obsoleteEvent) {
-  vector<Event*>::iterator eventsIter;
+bool EventList::deleteEvent(Handle<Event> obsoleteEvent) {
+  vector< Handle<Event> >::iterator eventsIter;
     for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
-      if (*eventsIter==obsoleteEvent) {
+      if ( eventsIter->Object()==obsoleteEvent.Object()) {
         events.erase(eventsIter);
         return true;
       }
@@ -68,24 +68,25 @@ void EventList::sort() {
   ::sort(events.begin(), events.end(), EventList::evTimeCmp());
 }
 
-Event* EventList::getEventAfter(double evTime) {
-  vector<Event*>::iterator eventsIter;
+Handle<Event> EventList::getEventAfter(double evTime) {
+  vector< Handle<Event> >::iterator eventsIter;
   sort(); // makes life easier... 
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
-    if ((*eventsIter)->getTime()>=evTime) {
+    if (eventsIter->Object()->getTime()>=evTime) {
       return *eventsIter;
     }
   }
-  return NULL;
+  
+  return Handle<Event>(0);
 }
 
 void EventList::debugEvents(void) {
-  vector<Event*>::iterator eventsIter;
+  vector< Handle<Event> >::iterator eventsIter;
   cout << "===== EVENT LIST START" << endl;
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
-    cout << "Event:  " << *eventsIter << endl;
-    cout << " Delay: " << (*eventsIter)->getDelay() << endl;
-    cout << " Time:  " << (*eventsIter)->getTime() << endl;
+    cout << "Event:  " << eventsIter->Object() << endl;
+    cout << " Delay: " << eventsIter->Object()->getDelay() << endl;
+    cout << " Time:  " << eventsIter->Object()->getTime() << endl;
   }
   cout << "===== EVENT LIST STOP" << endl;
 }

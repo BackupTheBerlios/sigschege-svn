@@ -28,7 +28,7 @@
 
 using namespace std;
 
-#include "Object.h"
+#include "Handle.t"
 #include <vector>
 
 //! An Event Class stores the delay, the time and the dependencies to other events
@@ -92,7 +92,7 @@ public:
    * \param newReferrer pointer to the event that should be added to the referrers list
    * \sa 
    */
-  bool registerReferrer(Event* newReferrer);
+  bool registerReferrer(Handle<Event> newReferrer);
 
   //! Unregister an event which references this event.  
   /*!
@@ -102,7 +102,7 @@ public:
    * \param newReferrer pointer to the event that should be added to the referrers list
    * \sa unregisterReferrer
    */
-  bool unregisterReferrer(Event* newReferrer);
+  bool unregisterReferrer(Handle<Event> newReferrer);
 
   //! Get the pointer of the reference event.
   /*!
@@ -110,7 +110,7 @@ public:
    * \return A pointer the the reference event
    * \sa registerReferrer
    */
-  Event* getReference();
+  Handle<Event> getReference();
 
   //! Set the reference event.
   /*!
@@ -120,7 +120,7 @@ public:
    * \return True if successful.
    * \sa hasreference getreference delreference
    */
-  bool setReference(Event* new_reference);
+  bool setReference(Handle<Event> new_reference);
 
   //! Delete the reference of this event
   /*!
@@ -129,12 +129,19 @@ public:
    */
   void delReference();
 
-  
+  //! Increment the reference count - only for use by handle class!
+  void incrementRefcount();
+  //! Decrement the reference count - only for use by handle class!
+  void decrementRefcount();
+  //! Return the current reference count 
+  int objRefCount() { return refCount; }
+
 private:
   double EventDelay;
   double EventTime;
-  Event* reference;
-  vector<Event*> referrers;
+  int refCount;
+  Handle<Event> reference;
+  vector< Handle<Event> > referrers;
 };
 
 #endif /* _H_EVENT */

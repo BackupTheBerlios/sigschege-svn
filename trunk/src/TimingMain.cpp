@@ -75,14 +75,14 @@ void event(void) {
   EventList mainList;
   bool never_true = false;
   bool always_true = true;
-  Event* ev1 = mainList.createEvent();
-  Event* ev2 = mainList.createEvent();
-  Event* ev3 = mainList.createEvent();
-  ev1->setDelay(100);
-  ev2->setDelay(50);
+  Handle<Event> ev1 = mainList.createEvent();
+  Handle<Event> ev2 = mainList.createEvent();
+  Handle<Event> ev3 = mainList.createEvent();
+  ev1->setDelay(100.0);
+  ev2->setDelay(50.0);
   always_true = always_true && ev2->setReference(ev1);
   always_true = always_true && ev3->setReference(ev2);
-  ev3->setDelay(25);
+  ev3->setDelay(25.0);
   always_true = always_true && ev3->setReference(ev1);
 
   never_true = ev2->setReference(ev2);

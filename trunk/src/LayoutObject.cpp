@@ -28,7 +28,8 @@ using namespace std;
 #include "LayoutObject.h"
 #include <iostream>
 
-LayoutObject::LayoutObject() {
+LayoutObject::LayoutObject(): reference(), referrers(), evListCompound() {
+  refCount = 0;
   cDrawBorder = false;
   cPadding    = 50;
   cOrigin.set(0,0);

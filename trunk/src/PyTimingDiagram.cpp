@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -57,7 +57,7 @@ static PyObject * TimSignal_addEvent(TimSignalObject *self) {
 }
   
 static PyMethodDef TimSignal_methods[] = {
-  {"addevent", (PyCFunction)TimSignal_addEvent, METH_NOARGS,
+  {"addEvent", (PyCFunction)TimSignal_addEvent, METH_NOARGS,
    "Add an event to a signal."
   },
   {NULL}  /* Sentinel */
@@ -123,7 +123,8 @@ static PyObject* TimingDiagram_new(PyTypeObject *type, PyObject *args, PyObject 
 }
 
 static int TimingDiagram_init(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
-  self->tim = new TimingDiagram();
+  cout << "Whoa! TimingDiagram INIT called!" << endl;
+  self->tim = new TimingDiagram;
   return (0);
 }
 
@@ -143,25 +144,39 @@ static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject
   char *label = "none";
   static char *kwlist[] = {"label", NULL};
 
-  //if (!PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist, &label))
-  //  return NULL;
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist, &label))
+    return NULL;
   string tmps;
   tmps = label;
- 
+
+  // create new C++ signal object with TimingDiagram class 
   Handle<TimSignal> newSignal;
   newSignal = self->tim->createSignal(tmps);
+  self->tim->addLast(newSignal.Object());
+  // create a Python signal object to return to user 
   PyObject *newPSignalObj;
   TimSignalObject *newPSignal;
   newPSignalObj = TimSignal_new(&TimSignalType, 0, 0);
   newPSignal = (TimSignalObject *)newPSignalObj;
   TimSignal_init(newPSignal, 0, 0);
+  // attach C++ signal to Python signal
   newPSignal->signal = newSignal;
-  printf("created signal\n");
   return (newPSignalObj);
 }
   
+static int TimingDiagram_print(TimSignalObject *obj, FILE *fp, int flags)
+{
+  
+  if (flags & Py_PRINT_RAW) {
+  }
+  else {
+  }
+  fprintf(fp, "<TimingDiagram Object>");
+  return 0;
+}
+
 static PyMethodDef TimingDiagram_methods[] = {
-  {"createSignal", (PyCFunction)TimingDiagram_createSignal, METH_VARARGS,
+  {"createSignal", (PyCFunction)TimingDiagram_createSignal, METH_VARARGS|METH_KEYWORDS,
    "Create a Signal in the Timing Diagram."
   },
   {
@@ -178,7 +193,7 @@ static PyTypeObject TimingDiagramType = {
   sizeof(TimingDiagramObject),   /*tp_basicsize*/
   0,                         /*tp_itemsize*/
   (destructor)TimingDiagram_dealloc,                         /*tp_dealloc*/
-  0,                         /*tp_print*/
+  (printfunc)TimingDiagram_print,                         /*tp_print*/
   0,                         /*tp_getattr*/
   0,                         /*tp_setattr*/
   0,                         /*tp_compare*/

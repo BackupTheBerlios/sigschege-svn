@@ -30,7 +30,7 @@ using namespace std;
 /*!
  * Construct a Timing Diagram List
  */
-TimList::TimList():LayoutObject() {
+TimList::TimList():LayoutObject(), cLayoutList() {
   cSliceHeight = 500;
   cSliceWidth  = 500;
   cSliceSpace  = 0;

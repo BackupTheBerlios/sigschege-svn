@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id:  $
+// $Id$
 
 #ifndef _T_HANDLE
 #define _T_HANDLE
@@ -70,7 +70,19 @@ template<class T> class Handle {
       myObject->incrementRefcount();
     }
   }
-    
+
+  Handle<T>& operator=(const Handle<T> &from) {
+    if(this == &from) return *this;
+    if (myObject != 0) {
+      myObject->decrementRefcount();
+    }
+    myObject = from.myObject;
+    if (myObject != 0) {
+      myObject->incrementRefcount();
+    }
+    return *this;
+  }
+  
   //! The destructor.
   /*!
    * It decrements the object's reference counter. If that is zero, the object will be deleted,

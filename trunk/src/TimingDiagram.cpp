@@ -28,7 +28,7 @@ using namespace std;
 #include "TimingDiagram.h"
 #include <stdio.h>
 
-TimingDiagram::TimingDiagram() {
+TimingDiagram::TimingDiagram() : cTimList(), cEasyVec() {
   cTimList.setCompound(cEasyVec.compound());
   cTimList.setPadding(0);
   cDefaultHeight = 1000;

@@ -134,9 +134,11 @@ void EventList::paint(void) {
 
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
    
-    xCoord = compoundXOffset +  static_cast<int>(static_cast<double>(compoundWidth) * (eventsIter->Object()->getTime()-compoundTimeStart) /(compoundTimeEnd-compoundTimeStart));
+    xCoord = compoundXOffset +  static_cast<int>(static_cast<double>(compoundWidth) * (eventsIter->Object()->getTime(0)-compoundTimeStart) /(compoundTimeEnd-compoundTimeStart));
     sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? compoundYOffset : compoundHeight+compoundYOffset));
     currentState = eventsIter->Object()->getNewState();
+    if (eventsIter->Object()->getSlope()!=0.0) // get time for end of slope, if we have a slope!
+      xCoord = compoundXOffset +  static_cast<int>(static_cast<double>(compoundWidth) * (eventsIter->Object()->getTime(100)-compoundTimeStart) /(compoundTimeEnd-compoundTimeStart));
     sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? compoundYOffset : compoundHeight+compoundYOffset));
   }
   

@@ -28,6 +28,7 @@
 #define _EASYVECELMBOX_H _EASYVECELMBOX_H 
 
 #include "EVPosInt.h"
+#include "EasyVecLine.h"
 #include "EasyVecElm.h"
 #include "EasyVecCompound.h"
 #include "EasyVecView.h"
@@ -36,7 +37,7 @@
 using namespace std;
 
 /// An EasyVec box element - corresponds to fig element polyline:box and polyline:arcbox
-class EasyVecBox : public EasyVecElm {
+class EasyVecBox : public EasyVecElm, public EasyVecLine  {
 public:
   /// general constructor with no extra arguments
   EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)

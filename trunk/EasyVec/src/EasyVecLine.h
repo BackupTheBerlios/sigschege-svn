@@ -50,6 +50,7 @@ public:
   };
 
   friend class EasyVecPolyline;
+  friend class EasyVecBox;
   
 private:
   int elmLineStyle;

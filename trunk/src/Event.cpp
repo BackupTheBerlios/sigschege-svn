@@ -33,8 +33,10 @@ Event::Event(const string &setNewState, double setEventDelay, const Handle<Event
              double setSlopeTime) {
   eventDelay = setEventDelay;
   newState = setNewState;
+  refLevel = 50;
   if (setReference_p!=0) reference = *setReference_p;
   slopeTime = setSlopeTime;
+  updateTime();
 }
 
 
@@ -112,9 +114,33 @@ void Event::setDelay(const double delay) {
   updateTime();
 }
 
-
 const double Event::getDelay() {
   return(eventDelay);
+}
+
+
+void Event::setSlope(const double slope) {
+  if(slopeTime != slope){
+    slopeTime = slope;
+  }
+  updateTime();
+}
+
+
+const double Event::getSlope() {
+  return(slopeTime);
+}
+
+void Event::setRefLevel(const int rlevel) {
+  if(refLevel != rlevel){
+    refLevel = rlevel;
+  }
+  updateTime();
+}
+
+
+const int Event::getRefLevel() {
+  return(refLevel);
 }
 
 
@@ -131,13 +157,13 @@ void  Event::updateTime() {
   }
 
   // update all referrers if the absolute Time has changed
-  if(oldTime != eventTime) {
+  if (oldTime != eventTime) {
     for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
       referrersIter->Object()->updateTime();
     }
   }
 }
 
-const double Event::getTime() {
-  return(eventTime);
+const double Event::getTime(int level_percent) {
+  return(eventTime+slopeTime/100.0*level_percent);
 }

@@ -25,6 +25,7 @@
 
 #include "EVPosInt.h"
 #include "EasyVecFigure.h"
+#include "EasyVecBox.h"
 #include "EasyVecPolyline.h"
 #include "EasyVecText.h"
 #include <iostream>
@@ -49,9 +50,11 @@ void test_a(void) {
 
   pic2 = pic1;
 
-  vector<EasyVecElm*> texts = pic2.flatList();
+  framebox2->styleValue(10.0);
+  framebox2->lineStyle(EasyVecLine::dash_double_dotted);
 
-  // get the text in the picture in order to change it
+  // get the text in picture 2 in order to change it
+  vector<EasyVecElm*> texts = pic2.flatList();
   vector<EasyVecElm*>::iterator fiter = texts.begin(); 
   while (fiter!=texts.end()) {
     if (typeid(**fiter) != typeid(EasyVecText)) {

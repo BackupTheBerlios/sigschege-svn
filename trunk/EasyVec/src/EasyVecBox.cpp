@@ -33,6 +33,7 @@ using namespace std;
 EasyVecBox::EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound,
                              EVPosInt upper_left, EVPosInt lower_right)
   : EasyVecElm(parent_compound, figure_compound),
+    EasyVecLine(),
     elm_upper_left(upper_left),
     elm_lower_right(lower_right) {};
 
@@ -62,8 +63,8 @@ void EasyVecBox::draw(EasyVecView* view) {
 void EasyVecBox::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
-  fig_file << "2 1 0 1 " << elm_pen_color << " " << elm_fill_color << " " << elm_depth
-           << " 0 -1 0.0 0 0 0 0 0 " << 5 << endl;
+  fig_file << "2 1 " << elmLineStyle << " 1 " << elm_pen_color << " " << elm_fill_color << " " << elm_depth
+           << " 0 -1 " << elmStyleValue << " 0 0 0 0 0 " << 5 << endl;
   fig_file << " ";
   
   fig_file << elm_upper_left.xpos()  << " " << elm_upper_left.ypos()  << " "

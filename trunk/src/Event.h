@@ -74,14 +74,52 @@ public:
    */
   const double getDelay();
 
+  //! Set a new Slope value
+  /*!
+   * Set a new Slope for this Event. If the delay differ from the old one the updateTime function of this event and his child events will be called.
+   * \param slope New Slope for this event
+   * \sa getSlope getTime updateTime
+   */
+  void setSlope(const double slope);
+  
+  //! Return the event slope.
+  /*!
+   * This function will return the event slope.
+   * \return Return the Slope of this Event
+   * \sa setSlope getTime updateTime
+   */
+  const double getSlope();
+
+  //! Set a new reference level.
+  /*!
+   * Set a new reference level for this Event. If the reference level differs from the old one
+   the updateTime function of this event and his child events will be called. The reference level
+   defines, which level of the referenced event's slope triggers this event.
+   * \param rlevel New reference level for this event
+   * \sa getRefLevel getTime updateTime
+   */
+  void setRefLevel(const int rlevel);
+  
+  //! Return the reference level.
+  /*!
+   * This function will return the reference.
+   * \return Return the reference level of this Event
+   * \sa setRefLevel getTime updateTime
+   */
+  const int getRefLevel();
+
+
+  
   //! Return the absolute event time
   /*!
    * This function return the absolute event time, which will calculated of the absolute time of the parent and the event delay.
    * If no parent is set, the parent absolute time will assumed as zero.
+   * \param levelPercent Which level of the slope has been reached. 0 is start, 50 the middle and
+   100 the end of event. It defaults to 50.
    * \return Return the absolute event time.
    * \sa setDelay getDelay updateTime
    */
-  const double getTime();
+  const double getTime(int levelPercent = 50);
 
   //! update the absolute event time
   /*!
@@ -167,6 +205,7 @@ public:
   
 private:
   double eventDelay;
+  int refLevel;
   double eventTime;
   double slopeTime;
   string newState;

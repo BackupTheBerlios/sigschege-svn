@@ -22,13 +22,14 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 
 #ifndef _EASYVECELMCOMPOUND_H
 #define _EASYVECELMCOMPOUND_H _EASYVECELMCOMPOUND_H 
 
 class EasyVecElmPolyline;
+class EasyVecElmBox;
 class EasyVecElmText;
 
 #include <vector>
@@ -44,6 +45,7 @@ public:
     : EasyVecElm(parent_compound, master_compound) {};
 
   EasyVecElmPolyline* polyline();
+  EasyVecElmBox* box(EVPosInt &upper_left, EVPosInt &lower_right);
   EasyVecElmText* text();
   EasyVecElmCompound* compound();
   virtual void get_limits(EVPosInt &upper_left, EVPosInt &lower_right);

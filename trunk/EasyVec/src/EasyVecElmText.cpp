@@ -173,7 +173,7 @@ EasyVecElmText::EasyVecElmText(EasyVecElmCompound* parent_compound, EasyVec* mas
 
 
 void EasyVecElmText::get_limits(EVPosInt &upper_left, EVPosInt &lower_right) {
-  upper_left  = elm_origin - EVPosInt(0, text_height); 
+  upper_left  = elm_origin - EVPosInt(0, text_height/master->scale()); 
   lower_right = elm_origin + EVPosInt(text_width, 0);
 }
 

@@ -32,6 +32,7 @@
 #include "GUIExample.h"
 #include "EasyVec.h"
 #include "EasyVecElm.h"
+#include "EasyVecElmBox.h"
 #include "EasyVecElmPolyline.h"
 #include "EasyVecElmText.h"
 #include "EasyVecVwx.h"
@@ -135,6 +136,16 @@ bool MyApp::OnInit()
   EasyVecElmText *ntext;
   ntext = ev_pic->text();
   ntext->set_text("This is an EasyVec Demo");
+
+  EVPosInt ul, lr;
+  //ntext->get_limits(ul, lr); TODO
+  //cout << ul << ":" << lr << endl;
+
+  ul = EVPosInt(600, 600); 
+  lr = EVPosInt(1000, 2000); 
+  EasyVecElmBox *nbox;
+
+  nbox = ev_pic->box(ul, lr);
   
   EasyVecVwx *canvas = new EasyVecVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
 

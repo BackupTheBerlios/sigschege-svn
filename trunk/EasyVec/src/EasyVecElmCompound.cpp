@@ -22,10 +22,11 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #include "EasyVecElmCompound.h"
 #include "EasyVecElmPolyline.h"
+#include "EasyVecElmBox.h"
 #include "EasyVecElmText.h"
 #include <fstream>
 #include <iostream>
@@ -39,6 +40,12 @@ EasyVecElmPolyline* EasyVecElmCompound::polyline() {
   EasyVecElmPolyline* new_polyline = new EasyVecElmPolyline(static_cast<EasyVecElmCompound*>(this), master);
   members.push_back(new_polyline);
   return new_polyline;
+}
+
+EasyVecElmBox* EasyVecElmCompound::box(EVPosInt &upper_left, EVPosInt &lower_right) {
+  EasyVecElmBox* new_box = new EasyVecElmBox(static_cast<EasyVecElmCompound*>(this), master, upper_left, lower_right);
+  members.push_back(new_box);
+  return new_box;
 }
 
 EasyVecElmText* EasyVecElmCompound::text() {

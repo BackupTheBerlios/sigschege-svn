@@ -21,7 +21,7 @@
 #
 # #############################################################################
 #
-# $Id: $
+# $Id$
 
 
 CXX = $(shell wx-config --cxx) $(shell freetype-config --cflags) -Wall -g 
@@ -31,7 +31,7 @@ LDFLAGS = $(shell freetype-config --libs)
 PROGRAM = Example
 GUI=GUIExample
 
-OBJECTS = EVPosInt.o EasyVecElmPolyline.o EasyVecElmText.o EasyVecElmCompound.o  EasyVec.o EasyVecElm.o
+OBJECTS = EVPosInt.o EasyVecElmPolyline.o EasyVecElmBox.o EasyVecElmText.o EasyVecElmCompound.o EasyVec.o EasyVecElm.o
 OBJECTS_GUI = $(OBJECTS) GUIExample.o EasyVecVwx.o EasyVecView.o
 
 .SUFFIXES:	.o .cpp .h 
@@ -47,19 +47,28 @@ $(PROGRAM):	$(OBJECTS) $(PROGRAM).o
 $(GUI):	$(OBJECTS_GUI)
 	$(CXX) -o $(GUI) $(OBJECTS_GUI) `wx-config --libs`  $(LDFLAGS)
 
-.depend:
+.PHONY: depend 
+depend:
 	makedepend -f- *.cpp *.h >.depend 2>/dev/null
 
+
+.PHONY: tags
 tags: TAGS
 
 TAGS:
 	etags -l c++ *.cpp *.h
 
+.PHONY: clean distclean
 clean: 
 	rm -f *.o $(PROGRAM) $(GUI) example.fig demogui_result.fig
 
 distclean: clean
 	rm -f .depend
+
+.PHONY: doc
+
+doc:
+	doxygen doxygen_easyvec.cfg
 
 sinclude .depend
 

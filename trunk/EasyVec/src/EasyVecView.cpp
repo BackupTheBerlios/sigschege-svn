@@ -26,7 +26,7 @@
 #include "EasyVecView.h"
 #include "EasyVecFigure.h"
 
-EasyVecView::EasyVecView(EasyVec *picture) {
+EasyVecView::EasyVecView(EasyVecFigure *picture) {
   picture->register_view(this);
   mypicture = picture;
 };

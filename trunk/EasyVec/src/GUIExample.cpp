@@ -110,7 +110,7 @@ bool MyApp::OnInit()
 //   b3->bottom.SameAs     (panel, wxBottom, 5);
 //   mtext->SetConstraints(b3);
 
-  EasyVecFigure *ev_pic = new EasyVec();
+  EasyVecFigure *ev_pic = new EasyVecFigure();
   EasyVecPolyline *nline;
   nline = ev_pic->polyline();
   nline->add_point(1500, 1500);

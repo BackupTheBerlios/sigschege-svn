@@ -36,13 +36,13 @@ using namespace std;
  * This class provied some basic function that are needed to build a tree of objects.
  * Each object can have no or one parent object and can have none or many child objects.
  */
-class CObject {
+class Object {
 public:
   //! The standard constructor
-  CObject();
+  Object();
 
   //! The standard destructor
-  virtual ~CObject();
+  virtual ~Object();
   
   //! Check if the object has no childs
   /*!
@@ -58,7 +58,7 @@ public:
    * \param newChild pointer to Object that should be added to the child list
    * \sa hasChilds popChild insertChild moveChild getChild getChildCount
    */
-  virtual void pushChild(CObject* newChild);
+  virtual void pushChild(Object* newChild);
 
   //! Remove the last child from the child list
   /*!
@@ -66,7 +66,7 @@ public:
    * \return A pointer to the remove child.
    * \sa hasChilds pushChild insertChild moveChild getChild getChildCount
    */
-  virtual CObject* popChild();
+  virtual Object* popChild();
 
   //! Insert a object into the child list
   /*!
@@ -75,7 +75,7 @@ public:
    * \param index position where to add the object in the child list
    * \sa hasChilds pushChild popChild moveChild getChild getChildCount
    */
-  virtual void insertChild(CObject* newChild, size_t index);
+  virtual void insertChild(Object* newChild, size_t index);
 
   //! interchange two child objects
   /*!
@@ -93,7 +93,7 @@ public:
    * \return pointer to the child object at position index
    * \sa hasChilds pushChild popChild insertChild moveChild getChildCount
    */
-  virtual CObject* getChild(size_t index);
+  virtual Object* getChild(size_t index);
 
   //! Return the number of child in the child list
   /*!
@@ -116,7 +116,7 @@ public:
    * \return A Pointer the the parent object
    * \sa hasParent setParent delParent
    */
-  virtual CObject* getParent();
+  virtual Object* getParent();
 
   //! Set the parent object
   /*!
@@ -124,7 +124,7 @@ public:
    * \param parent The pointer to the parent object
    * \sa hasParent getParent delParent
    */
-  virtual void setParent(CObject* parent);
+  virtual void setParent(Object* parent);
 
   //! Delete the parent of this object
   /*!
@@ -135,8 +135,8 @@ public:
 
 private:
   bool b_hasParent;
-  CObject *Parent;
-  vector <CObject*> vec_ChildList;
+  Object *Parent;
+  vector <Object*> vec_ChildList;
 
 };
 

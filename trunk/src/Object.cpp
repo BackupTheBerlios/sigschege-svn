@@ -26,66 +26,70 @@
 
 using namespace std;
 
-#include "object.h"
+#include "Object.h"
 #include <stdio.h>
 
 
-CObject::CObject(){
+Object::Object(){
   b_hasParent  = false;
   Parent     = NULL;
 }
 
-CObject::~CObject(){
+Object::~Object(){
 }
 
-bool CObject::hasChilds() {
+bool Object::hasChilds() {
   return(vec_ChildList.empty());
 }
 
-void CObject::pushChild(CObject* newChild) {
+void Object::pushChild(Object* newChild) {
   vec_ChildList.push_back(newChild);
   newChild->setParent(this);
 }
 
-CObject* CObject::popChild() {
-  CObject *temp = vec_ChildList.back();
+Object* Object::popChild() {
+  Object *temp = vec_ChildList.back();
   vec_ChildList.pop_back();
   return(temp);
 }
 
-void CObject::insertChild(CObject* newChild, size_t index) {
+void Object::insertChild(Object* newChild, size_t index) {
   vec_ChildList.insert(vec_ChildList.begin()+index, newChild);
 }
 
-void CObject::moveChild(size_t index1, size_t index2){
-  CObject* temp;
+void Object::moveChild(size_t index1, size_t index2){
+  Object* temp;
   temp = vec_ChildList.at(index1);
   vec_ChildList.at(index1) = vec_ChildList.at(index2);
   vec_ChildList.at(index2) = temp;
 }
 
-CObject* CObject::getChild(size_t index) {
+Object* Object::getChild(size_t index) {
   return(vec_ChildList.at(index));
 }
 
-const size_t CObject::getChildCount() {
+const size_t Object::getChildCount() {
   return(vec_ChildList.size());
 }
-bool CObject::hasParent(){
+
+bool Object::hasParent(){
   return(b_hasParent);
 }
-CObject* CObject::getParent() {
+
+Object* Object::getParent() {
   if(b_hasParent){
     return(Parent);
   } else {
     return (NULL);
   }
 }
-void CObject::setParent(CObject* parent) {
+
+void Object::setParent(Object* parent) {
   Parent    = parent;
   b_hasParent = true;
 }
-void CObject::delParent() {
+
+void Object::delParent() {
   Parent    = NULL;
   b_hasParent = false;
 }

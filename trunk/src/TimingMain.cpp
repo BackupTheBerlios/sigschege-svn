@@ -26,23 +26,14 @@
 
 using namespace std;
 
-#include "layoutlist.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-CLayoutList::CLayoutList() {
+#include "Timing.h"
 
-}
+int main (int ARGC, char **ARGV) {
+  Timing tim;
 
-CLayoutList::~CLayoutList() {
-}
 
-CLayout* CLayoutList::getLayout(size_t index) {
-  return((CLayout*) getObject(index));
-}
-
-size_t CLayoutList::createLayout() {
-  return(createObject(new CLayout()));
-}
-
-bool CLayoutList::deleteLayout(size_t index) {
-  return(deleteObject(index));
+  return(0);
 }

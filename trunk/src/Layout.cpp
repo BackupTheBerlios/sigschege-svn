@@ -26,17 +26,39 @@
 
 using namespace std;
 
+#include "Layout.h"
 #include <stdio.h>
-#include <stdlib.h>
 
-#include "layout.h"
+Layout::Layout():Object(){
+}
 
-int main (int ARGC, char **ARGV) {
-  CLayout myLayout;
+Layout::~Layout(){
+}
 
-  if (myLayout.getClassID() == BASIC) {
-    printf ("It's a basic Layout Class\n");
-  }
-  
-  return(0);
+void Layout::pushChild(Layout* newChild) {
+  Object::pushChild((Object*) newChild);
+}
+
+void Layout::insertChild(Layout* newChild, size_t index) {
+  Object::insertChild((Object*) newChild,index);
+}
+
+Layout* Layout::getChild(size_t index) {
+  return((Layout*) Object::getChild(index));
+}
+
+Layout* Layout::getParent() {
+  return((Layout*) Object::getParent());
+}
+
+void Layout::setParent(Layout* parent) {
+  Object::setParent((Object*) parent);
+}
+
+void Layout::delParent() {
+  Object::delParent();
+}
+
+LayoutID Layout::getID() {
+  return(BASIC);
 }

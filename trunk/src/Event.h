@@ -29,7 +29,7 @@
 
 using namespace std;
 
-#include "object.h"
+#include "Object.h"
 #include <vector>
 
 //! A Event Class store the delay, the time and the dependencies to other events
@@ -39,17 +39,17 @@ using namespace std;
  * Every Event can have several child events, but only one or no parent event.
  * If an event has no parent, then delay and the absolute time are equal.
  */
-class CEvent: public CObject { 
+class Event: public Object { 
 public:
   
   //! The standard constructor
   /*!
    * This constructor will create an event without a parent and with a delay and absolute time of zero.
    */
-  CEvent();
+  Event();
   
   //! The standard destructor
-  ~CEvent();
+  ~Event();
   
   //! Set a new Delay value
   /*!
@@ -92,7 +92,7 @@ public:
    * \param newChild pointer to Event that should be added to the child list
    * \sa hasChilds popChild insertChild moveChild getChild getChildCount
    */
-  void pushChild(CEvent* newChild);
+  void pushChild(Event* newChild);
 
   //! Insert a event into the child list
   /*!
@@ -101,7 +101,7 @@ public:
    * \param index position where to add the event in the child list
    * \sa hasChilds pushChild popChild moveChild getChild getChildCount
    */
-  void insertChild(CEvent* newChild, size_t index);
+  void insertChild(Event* newChild, size_t index);
 
   //! Return a pointer of the child event at position index
   /*!
@@ -110,7 +110,7 @@ public:
    * \return pointer to the child event at position index
    * \sa hasChilds pushChild popChild insertChild moveChild getChildCount
    */
-  CEvent* getChild(size_t index);
+  Event* getChild(size_t index);
 
   //! Get the pointer of the parent event
   /*!
@@ -118,7 +118,7 @@ public:
    * \return A Pointer the the parent event
    * \sa hasParent setParent delParent
    */
-  CEvent* getParent();
+  Event* getParent();
 
   //! Set the parent event
   /*!
@@ -126,7 +126,7 @@ public:
    * \param parent The pointer to the parent event
    * \sa hasParent getParent delParent
    */
-  void setParent(CEvent* parent);
+  void setParent(Event* parent);
 
   //! Delete the parent of this event
   /*!

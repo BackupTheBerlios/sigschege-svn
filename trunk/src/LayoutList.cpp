@@ -26,39 +26,23 @@
 
 using namespace std;
 
-#include "layout.h"
-#include <stdio.h>
+#include "LayoutList.h"
 
-CLayout::CLayout():CObject(){
+LayoutList::LayoutList() {
+
 }
 
-CLayout::~CLayout(){
+LayoutList::~LayoutList() {
 }
 
-void CLayout::pushChild(CLayout* newChild) {
-  CObject::pushChild((CObject*) newChild);
+Layout* LayoutList::getLayout(size_t index) {
+  return((Layout*) getObject(index));
 }
 
-void CLayout::insertChild(CLayout* newChild, size_t index) {
-  CObject::insertChild((CObject*) newChild,index);
+size_t LayoutList::createLayout() {
+  return(createObject(new Layout()));
 }
 
-CLayout* CLayout::getChild(size_t index) {
-  return((CLayout*) CObject::getChild(index));
-}
-
-CLayout* CLayout::getParent() {
-  return((CLayout*) CObject::getParent());
-}
-
-void CLayout::setParent(CLayout* parent) {
-  CObject::setParent((CObject*) parent);
-}
-
-void CLayout::delParent() {
-  CObject::delParent();
-}
-
-LayoutID CLayout::getID() {
-  return(BASIC);
+bool LayoutList::deleteLayout(size_t index) {
+  return(deleteObject(index));
 }

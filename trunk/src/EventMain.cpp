@@ -29,12 +29,12 @@ using namespace std;
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "event.h"
-#include "eventlist.h"
+#include "Event.h"
+#include "EventList.h"
 
 int main (int ARGC, char **ARGV) {
-  CEventList List;
-  CEvent *test1,*test2;
+  EventList List;
+  Event *test1,*test2;
 
   printf("List is empty %d\n", List.isEmpty());
 

@@ -30,27 +30,27 @@
 using namespace std;
 
 #include <vector>
-#include "event.h"
-#include "objectlist.h"
+#include "Event.h"
+#include "ObjectList.h"
 
 //! EventList class for handling events
 /*!
  * This class provide function to create, access and delete events.
  */
-class CEventList : private CObjectList {
+class EventList : private ObjectList {
  public:
   //! This constructor will create a empty EventList
-  CEventList();
+  EventList();
 
   //! This destructor will destroy the EventList ann all stored events.
-  ~CEventList();
+  ~EventList();
 
   //! Return a Pointer to the Event at position index
   /*!
    * This function will return a Pointer to the event stored at position index
    * \return Return a pointer to the event at position index
    */
-  CEvent* getEvent(size_t index);
+  Event* getEvent(size_t index);
 
   //! Create a new Event
   /*!
@@ -74,7 +74,7 @@ class CEventList : private CObjectList {
    * \return Ture if no event is stored in the eventlist
    * \sa createEvent deleteEvent
    */
-  CObjectList::isEmpty;
+  ObjectList::isEmpty;
 };
 
 #endif

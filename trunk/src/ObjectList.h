@@ -30,23 +30,23 @@
 using namespace std;
 
 #include <vector>
-#include "object.h"
+#include "Object.h"
 
 //! Simple Class to handle object
 /*!
  * This class provide basic functions to handle object.
  */
-class CObjectList {
+class ObjectList {
  public:
   
   //! Create a empty object list
-  CObjectList();
+  ObjectList();
 
   //! Delete the object list
   /*!
    * Delete all object in the list and the object list
    */
-  virtual ~CObjectList();
+  virtual ~ObjectList();
 
   //! Return a pointer the the object at position index
   /*!
@@ -55,7 +55,7 @@ class CObjectList {
    * \return Pointer of the object at position index
    * \sa createObject deleteObject isEmpty
    */
-  virtual CObject* getObject(size_t index);
+  virtual Object* getObject(size_t index);
 
   //! Create a new Object
   /*!
@@ -64,7 +64,7 @@ class CObjectList {
    * \return position of the new object
    * \sa getObject deleteObject isEmpty
    */
-  virtual size_t createObject(CObject* newObject);
+  virtual size_t createObject(Object* newObject);
   
   //! Delete the object at position index
   /*!
@@ -83,7 +83,7 @@ class CObjectList {
   virtual bool isEmpty();
   
  private:
-  vector <CObject*> vec_ObjectList;
+  vector <Object*> vec_ObjectList;
 };
 
 #endif

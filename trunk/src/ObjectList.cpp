@@ -26,12 +26,33 @@
 
 using namespace std;
 
-#include "timing.h"
+#include "ObjectList.h"
 
-CTiming::CTiming() {
-  TopLayout = myLayoutList.createLayout();
+ObjectList::ObjectList() {
+
 }
 
-CTiming::~CTiming() {
+ObjectList::~ObjectList() {
+  for(size_t walk=0;walk<vec_ObjectList.size();walk++){
+    delete vec_ObjectList.at(walk);
+  }
 }
 
+Object* ObjectList::getObject(size_t index) {
+  return(vec_ObjectList.at(index));
+}
+
+size_t ObjectList::createObject(Object* newObject) {
+  vec_ObjectList.push_back(newObject);
+  return(vec_ObjectList.size()-1);
+}
+
+bool ObjectList::deleteObject(size_t index) {
+  delete vec_ObjectList.at(index);
+  vec_ObjectList.erase(vec_ObjectList.begin()+index);
+  return(true);
+}
+
+bool ObjectList::isEmpty() {
+  return(vec_ObjectList.empty());
+}

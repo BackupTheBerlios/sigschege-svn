@@ -30,27 +30,27 @@
 using namespace std;
 
 #include <vector>
-#include "layout.h"
-#include "objectlist.h"
+#include "Layout.h"
+#include "ObjectList.h"
 
 //! LayoutList class for handling Layout Objects
 /*!
  * This class provide function to create, access and delete layout objects.
  */
-class CLayoutList : private CObjectList {
+class LayoutList : private ObjectList {
 public:
   //! This constructor will create a empty LayoutList
-  CLayoutList();
+  LayoutList();
 
   //! This destructor will destroy the LayoutList ann all stored layout objects.
-  ~CLayoutList();
+  ~LayoutList();
 
   //! Return a Pointer to the Layout Object at position index
   /*!
    * This function will return a Pointer to the layout object stored at position index.
    * \return Return a pointer to the layout object at position index.
    */
-  CLayout* getLayout(size_t index);
+  Layout* getLayout(size_t index);
 
   //! Create a new Layout Object
   /*!
@@ -74,7 +74,7 @@ public:
    * \return Ture if no event is stored in the layoutlist
    * \sa createLayout deleteLayout
    */
-  CObjectList::isEmpty;
+  ObjectList::isEmpty;
 
 };
 

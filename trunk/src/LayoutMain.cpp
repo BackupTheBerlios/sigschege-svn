@@ -24,32 +24,19 @@
 //
 // $Id: $
 
-#ifndef _H_TIMING
-#define _H_TIMING
-
 using namespace std;
 
-#include "layout.h"
-#include "layoutlist.h"
-#include "event.h"
-#include "eventlist.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-//! The Timing Class is the toplevel class that contains the layout and the objects of a timing diagram.
-/*!
- * This class represents a timing diagram comprised layout objects,timing diagram objects like signal or floating objects.
- * Also all used event will be administered by this class.
- */
-class CTiming {
-public:
-  //! The standard constructor
-  CTiming();
+#include "Layout.h"
 
-  //! The standard destructor
-  ~CTiming();
+int main (int ARGC, char **ARGV) {
+  Layout myLayout;
 
-private:
-  size_t TopLayout;
-  CLayoutList myLayoutList;
-  CEventList  myEventList;
-};
-#endif // _H_TIMING
+  if (myLayout.getClassID() == BASIC) {
+    printf ("It's a basic Layout Class\n");
+  }
+  
+  return(0);
+}

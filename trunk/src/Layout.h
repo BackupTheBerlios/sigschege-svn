@@ -29,7 +29,7 @@
 
 using namespace std;
 
-#include "object.h"
+#include "Object.h"
 
 enum LayoutID {BASIC};
 
@@ -37,16 +37,16 @@ enum LayoutID {BASIC};
 /*!
  * Tthe Layout Class
  */
-class CLayout : public CObject {
+class Layout : public Object {
 public:
   //! The standard constructor
   /*!
    * This constructor will create an layout object without a parent.
    */
-  CLayout();
+  Layout();
   
   //! The standard destructor
-  ~CLayout();
+  ~Layout();
 
   //! Return the ID of this layout object
   /*!
@@ -61,7 +61,7 @@ public:
    * \param newChild pointer to Layout Object that should be added to the child list
    * \sa hasChilds popChild insertChild moveChild getChild getChildCount
    */
-  void pushChild(CLayout* newChild);
+  void pushChild(Layout* newChild);
 
   //! Insert a layout object into the child list
   /*!
@@ -70,7 +70,7 @@ public:
    * \param index position where to add the layout object in the child list
    * \sa hasChilds pushChild popChild moveChild getChild getChildCount
    */
-  void insertChild(CLayout* newChild, size_t index);
+  void insertChild(Layout* newChild, size_t index);
 
   //! Return a pointer of the child layout object at position index
   /*!
@@ -79,7 +79,7 @@ public:
    * \return pointer to the child layout object at position index
    * \sa hasChilds pushChild popChild insertChild moveChild getChildCount
    */
-  CLayout* getChild(size_t index);
+  Layout* getChild(size_t index);
 
   //! Get the pointer of the parent layout object
   /*!
@@ -87,7 +87,7 @@ public:
    * \return A Pointer the the parent layout object
    * \sa hasParent setParent delParent
    */
-  CLayout* getParent();
+  Layout* getParent();
 
   //! Set the parent layout object
   /*!
@@ -95,7 +95,7 @@ public:
    * \param parent The pointer to the parent layout object
    * \sa hasParent getParent delParent
    */
-  void setParent(CLayout* parent);
+  void setParent(Layout* parent);
 
   //! Delete the parent of this layout object
   /*!

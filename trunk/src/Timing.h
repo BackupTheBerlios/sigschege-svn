@@ -24,25 +24,32 @@
 //
 // $Id: $
 
+#ifndef _H_TIMING
+#define _H_TIMING
+
 using namespace std;
 
-#include "eventlist.h"
+#include "Layout.h"
+#include "LayoutList.h"
+#include "Event.h"
+#include "EventList.h"
 
-CEventList::CEventList() {
+//! The Timing Class is the toplevel class that contains the layout and the objects of a timing diagram.
+/*!
+ * This class represents a timing diagram comprised layout objects,timing diagram objects like signal or floating objects.
+ * Also all used event will be administered by this class.
+ */
+class Timing {
+public:
+  //! The standard constructor
+  Timing();
 
-}
+  //! The standard destructor
+  ~Timing();
 
-CEventList::~CEventList() {
-}
-
-CEvent* CEventList::getEvent(size_t index) {
-  return((CEvent*) getObject(index));
-}
-
-size_t CEventList::createEvent() {
-  return(createObject(new CEvent()));
-}
-
-bool CEventList::deleteEvent(size_t index) {
-  return(deleteObject(index));
-}
+private:
+  size_t TopLayout;
+  LayoutList myLayoutList;
+  EventList  myEventList;
+};
+#endif // _H_TIMING

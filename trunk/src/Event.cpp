@@ -26,55 +26,55 @@
 
 using namespace std;
 
-#include "event.h"
+#include "Event.h"
 #include <stdio.h>
 
-CEvent::CEvent():CObject(){
+Event::Event():Object(){
   EventDelay = 0;
   EventTime  = 0;
 }
 
-CEvent::~CEvent(){
+Event::~Event(){
 }
 
-void CEvent::pushChild(CEvent* newChild) {
-  CObject::pushChild((CObject*) newChild);
+void Event::pushChild(Event* newChild) {
+  Object::pushChild((Object*) newChild);
 }
 
-void CEvent::insertChild(CEvent* newChild, size_t index) {
-  CObject::insertChild((CObject*) newChild,index);
+void Event::insertChild(Event* newChild, size_t index) {
+  Object::insertChild((Object*) newChild,index);
 }
 
-CEvent* CEvent::getChild(size_t index) {
-  return((CEvent*) CObject::getChild(index));
+Event* Event::getChild(size_t index) {
+  return((Event*) Object::getChild(index));
 }
 
-CEvent* CEvent::getParent() {
-  return((CEvent*) CObject::getParent());
+Event* Event::getParent() {
+  return((Event*) Object::getParent());
 }
 
-void CEvent::setParent(CEvent* parent) {
-  CObject::setParent((CObject*) parent);
+void Event::setParent(Event* parent) {
+  Object::setParent((Object*) parent);
   updateTime();
 }
 
-void CEvent::delParent() {
-  CObject::delParent();
+void Event::delParent() {
+  Object::delParent();
   updateTime();
 }
 
-void CEvent::setDelay(const float delay) {
+void Event::setDelay(const float delay) {
   if(EventDelay != delay){
     EventDelay = delay;
     updateTime();
   }
 }
 
-const float CEvent::getDelay() {
+const float Event::getDelay() {
   return(EventDelay);
 }
 
-void  CEvent::updateTime() {
+void  Event::updateTime() {
   float oldTime;
   oldTime = EventTime;
 
@@ -93,6 +93,6 @@ void  CEvent::updateTime() {
   }
 }
 
-const float CEvent::getTime() {
+const float Event::getTime() {
   return(EventTime);
 }

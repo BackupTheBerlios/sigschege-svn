@@ -26,14 +26,23 @@
 
 using namespace std;
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "EventList.h"
 
-#include "timing.h"
+EventList::EventList() {
 
-int main (int ARGC, char **ARGV) {
-  CTiming tim;
+}
 
+EventList::~EventList() {
+}
 
-  return(0);
+Event* EventList::getEvent(size_t index) {
+  return((Event*) getObject(index));
+}
+
+size_t EventList::createEvent() {
+  return(createObject(new Event()));
+}
+
+bool EventList::deleteEvent(size_t index) {
+  return(deleteObject(index));
 }

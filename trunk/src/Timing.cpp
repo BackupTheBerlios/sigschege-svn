@@ -26,33 +26,12 @@
 
 using namespace std;
 
-#include "objectlist.h"
+#include "Timing.h"
 
-CObjectList::CObjectList() {
-
+Timing::Timing() {
+  TopLayout = myLayoutList.createLayout();
 }
 
-CObjectList::~CObjectList() {
-  for(size_t walk=0;walk<vec_ObjectList.size();walk++){
-    delete vec_ObjectList.at(walk);
-  }
+Timing::~Timing() {
 }
 
-CObject* CObjectList::getObject(size_t index) {
-  return(vec_ObjectList.at(index));
-}
-
-size_t CObjectList::createObject(CObject* newObject) {
-  vec_ObjectList.push_back(newObject);
-  return(vec_ObjectList.size()-1);
-}
-
-bool CObjectList::deleteObject(size_t index) {
-  delete vec_ObjectList.at(index);
-  vec_ObjectList.erase(vec_ObjectList.begin()+index);
-  return(true);
-}
-
-bool CObjectList::isEmpty() {
-  return(vec_ObjectList.empty());
-}

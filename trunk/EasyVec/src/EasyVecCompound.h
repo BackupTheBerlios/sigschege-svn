@@ -81,6 +81,10 @@ public:
   void clear(void);
   EasyVecCompound& operator=(EasyVecCompound& source);
 
+  /// find a figure element near the given position.
+  virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                             list<EasyVecElmHit> &hits);
+
 protected:
   vector<EasyVecElm*> members;
 };

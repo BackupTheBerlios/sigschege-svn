@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of EasyVec - Vector Figure Creation Library.
 // 
@@ -30,11 +30,20 @@
 class EasyVecCompound;
 
 #include <vector>
+#include <list>
 #include "EVPosInt.h"
 #include "EasyVecView.h"
 
 using namespace std;
 
+class EasyVecElm;
+
+/// structure for element queries by position
+struct EasyVecElmHit {
+  EasyVecElm *elmP; // pointer to the element
+  int distance;     // distance of the element to the given position
+  int idx;          // index: which part of the element was clicked meaning depends on type of element) 
+};
 
 /// An EasyVec Element - abstract base class for all EasyVec elements (compound, polyline, text,...)
 class EasyVecElm {
@@ -73,6 +82,10 @@ public:
   int depth(void);
   /// Set the depth (layer) of this object.
   bool depth(int new_depth);
+
+  /// find a figure element near the given position.
+  virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                             list<EasyVecElmHit> &hits) = 0;
 
 protected:
   EasyVecCompound *parent; // needed to inform the owner about change events

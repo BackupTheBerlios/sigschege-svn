@@ -75,6 +75,11 @@ void EasyVecBox::saveElm(ofstream &fig_file) {
   fig_file << endl;
 }
 
+void EasyVecBox::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                                    list<EasyVecElmHit> &hits) {
+  
+}
+
 
 void EasyVecBox::debugPrint(ostream &dest, bool verbose, int depth) {
   dest << string(depth, ' ') << "Box " << endl;

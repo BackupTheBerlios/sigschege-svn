@@ -105,6 +105,11 @@ void EasyVecPolyline::saveElm(ofstream &fig_file) {
   fig_file << endl;
 }
 
+void EasyVecPolyline::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                                    list<EasyVecElmHit> &hits) {
+  
+}
+
 void EasyVecPolyline::debugPrint(ostream &dest, bool verbose, int depth) {
   dest << string(depth, ' ') << "Polyline " << points.size() << " points." << endl;
   if (verbose) {

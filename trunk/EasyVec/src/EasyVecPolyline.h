@@ -52,6 +52,9 @@ public:
   /// Print some (or some more) information about this figure element.
   virtual void debugPrint(ostream &dest, bool verbose, int depth);
 
+  /// find a figure element near the given position.
+  virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                             list<EasyVecElmHit> &hits);
 
 private:
   vector<EVPosInt> points;

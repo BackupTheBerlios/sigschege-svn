@@ -94,6 +94,10 @@ public:
     right
   };
 
+  /// find a figure element near the given position.
+  virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                             list<EasyVecElmHit> &hits);
+
 private:
   EVPosInt elmOrigin;
   string elmText;

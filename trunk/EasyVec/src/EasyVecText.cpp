@@ -240,6 +240,12 @@ void EasyVecText::saveElm(ofstream &fig_file) {
            << "\\001" << endl;
 }
 
+void EasyVecText::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                                    list<EasyVecElmHit> &hits) {
+  
+}
+
+
 void EasyVecText::debugPrint(ostream &dest, bool verbose, int depth) {
   dest << string(depth, ' ') << "Text " << endl;
   if (verbose) {

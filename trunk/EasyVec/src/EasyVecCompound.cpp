@@ -179,6 +179,17 @@ void EasyVecCompound::save_content(ofstream &fig_file) {
   }  
 }
 
+void EasyVecCompound::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                                    list<EasyVecElmHit> &hits) {
+  vector<EasyVecElm*>::iterator membersIt;
+  for ( membersIt = members.begin(); membersIt != members.end(); ++membersIt ) {
+    if (hierarchical || (typeid(**membersIt) != typeid(EasyVecCompound)))
+      (*membersIt)->getElmNearPos(pos, fuzzyFact, hierarchical, withCompounds, hits);
+  }
+ 
+}
+
+
 void EasyVecCompound::debugPrint(ostream &dest, bool verbose, int depth) {
   dest << string(depth, ' ') << "Compound with " << members.size() << " elements." << endl;
   if (verbose) {

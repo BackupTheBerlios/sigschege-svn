@@ -62,6 +62,11 @@ public:
   virtual void draw(EasyVecView* view);
   /// save element into a fig file
   virtual void saveElm(ofstream &fig_file);
+
+  /// find a figure element near the given position.
+  virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                             list<EasyVecElmHit> &hits);
+
   /// Print some (or some more) information about this figure element.
   virtual void debugPrint(ostream &dest, bool verbose, int depth);
 

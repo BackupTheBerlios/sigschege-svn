@@ -49,7 +49,7 @@ public:
 
   //! Register a layout object which references this layout object.
   /*!
-   * Insert an layout object into the referrers list.
+   * Insert a layout object into the referrers list.
    * \return False if the layout object already  existed, true otherwise.
    * \param newReferrer pointer to the layout object that should be added to the referrers list
    * \sa 
@@ -91,9 +91,9 @@ public:
    */
   void delReference();
 
-  //! Increment the reference count - only for use by handle class!
+  //! Increment the reference count - only for use by Handle class!
   void incrementRefcount();
-  //! Decrement the reference count - only for use by handle class!
+  //! Decrement the reference count - only for use by Handle class!
   void decrementRefcount();
   //! Return the current reference count 
   int objRefCount() { return refCount; }
@@ -112,7 +112,7 @@ public:
   //! Set the width
   void setWidth(int width);
 
-  //! Set the width
+  //! Set the height
   void setHeight(int height);
 
   //! Get the Size of this Layout Object
@@ -125,7 +125,7 @@ public:
   void setOrigin(EVPosInt newOrigin);
 
   //! Set the Origin of this Layout Object
-  void setOrigin(int x,int y);
+  void setOrigin(int x, int y);
 
   //! Get the Origin of this Layout Object
   EVPosInt getOrigin();
@@ -134,10 +134,12 @@ public:
   void enableBorder(bool enable);
 
   void setPadding(int newPadding);
+
 protected:
   int      cPadding;
   EVPosInt cOrigin;
   EVPosInt cSize;
+
 private:
   int refCount;
   bool cDrawBorder;

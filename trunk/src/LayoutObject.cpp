@@ -123,7 +123,7 @@ void LayoutObject::setHeight(int height) {
 }
 
 /*!
- * Get hte height of this Layout Object
+ * Get the height of this Layout Object
  * This is importent for all containter objects like lists
  * For this containter objects the height of all sub objects
  * should be accumulated.

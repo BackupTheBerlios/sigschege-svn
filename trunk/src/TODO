@@ -5,9 +5,6 @@ $Id: $
   Object() still necessary for pointer comparison?
   => assigned to Ulf
 
-* Implement EasyVecElmCompound in EventList class
-  => assigned to Ulf
-
 * Implement state functionality in Event class
   => assigned to Ulf
 

@@ -56,10 +56,10 @@ Handle<Event> EventList::createEvent() {
   return new_handle;
 }
 
-Handle<Event> EventList::createEvent(Handle<Event> &refEvent, double eventDelay, string eventNewState) {
+Handle<Event> EventList::createEvent(const string &eventNewState, double eventDelay, const Handle<Event> *refEvent_p) {
   Handle<Event> new_event = createEvent();
-  if (refEvent.Object()!=0) {
-    new_event->setReference(refEvent);
+  if (refEvent_p!=0) {
+    new_event->setReference(*refEvent_p);
   }
   new_event->setDelay(eventDelay);
   new_event->setNewState(eventNewState);
@@ -100,6 +100,7 @@ void EventList::debugEvents(void) {
     cout << "Event:  " << eventsIter->Object() << endl;
     cout << " Delay: " << eventsIter->Object()->getDelay() << endl;
     cout << " Time:  " << eventsIter->Object()->getTime() << endl;
+    cout << " New State:  " << eventsIter->Object()->getNewState() << endl;
   }
   cout << "===== EVENT LIST STOP" << endl;
 }

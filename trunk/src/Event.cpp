@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -28,11 +28,15 @@ using namespace std;
 #include "Event.h"
 #include <stdio.h>
 
-Event::Event() {
-  EventDelay = 0;
-  EventTime  = 0;
-  newState = "0";
+
+Event::Event(const string &setNewState, double setEventDelay, const Handle<Event> *setReference_p,
+             double setSlopeTime) {
+  eventDelay = setEventDelay;
+  newState = setNewState;
+  if (setReference_p!=0) reference = *setReference_p;
+  slopeTime = setSlopeTime;
 }
+
 
 Event::~Event(){
 }
@@ -102,32 +106,32 @@ void Event::delReference() {
 
 
 void Event::setDelay(const double delay) {
-  if(EventDelay != delay){
-    EventDelay = delay;
+  if(eventDelay != delay){
+    eventDelay = delay;
   }
   updateTime();
 }
 
 
 const double Event::getDelay() {
-  return(EventDelay);
+  return(eventDelay);
 }
 
 
 void  Event::updateTime() {
   double oldTime;
-  oldTime = EventTime;
+  oldTime = eventTime;
   vector< Handle<Event> >::iterator referrersIter;
 
   // Calculate the new absolute Time of the Event
   if (reference.Object()!=0) {
-    EventTime = reference.Object()->getTime()+EventDelay;
+    eventTime = reference.Object()->getTime()+eventDelay;
   } else {
-    EventTime = EventDelay;
+    eventTime = eventDelay;
   }
 
   // update all referrers if the absolute Time has changed
-  if(oldTime != EventTime) {
+  if(oldTime != eventTime) {
     for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
       referrersIter->Object()->updateTime();
     }
@@ -135,5 +139,5 @@ void  Event::updateTime() {
 }
 
 const double Event::getTime() {
-  return(EventTime);
+  return(eventTime);
 }

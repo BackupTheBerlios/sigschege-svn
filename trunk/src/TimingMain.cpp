@@ -75,10 +75,9 @@ void event(void) {
   EventList mainList;
   bool never_true = false;
   bool always_true = true;
-  Handle<Event> ev1 = mainList.createEvent();
+  Handle<Event> ev1 = mainList.createEvent("1", 100);
   Handle<Event> ev2 = mainList.createEvent();
   Handle<Event> ev3 = mainList.createEvent();
-  ev1->setDelay(100.0);
   ev2->setDelay(50.0);
   always_true = always_true && ev2->setReference(ev1);
   always_true = always_true && ev3->setReference(ev2);
@@ -88,10 +87,11 @@ void event(void) {
   never_true = ev2->setReference(ev2);
   never_true = never_true || ev1->setReference(ev3);
 
-  ev1->setNewState("1");
   ev2->setNewState("0");
   ev3->setNewState("1");
   
+  Handle<Event> ev4 = mainList.createEvent("1", 50, &ev3);
+
   if (always_true && (!never_true)) {
     cout << "Fine! Loop breaking worked" << endl; 
   } else {
@@ -101,6 +101,7 @@ void event(void) {
   cout << "Time of event1: " << ev1->getTime() << endl; 
   cout << "Time of event2: " << ev2->getTime() << endl;
   cout << "Time of event3: " << ev3->getTime() << endl;
+  cout << "Time of event4: " << ev4->getTime() << endl;
   cout << "First event after 105: " << (mainList.getEventAfter(105))->getTime() << endl << endl;
   
   mainList.debugEvents();

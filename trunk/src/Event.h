@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -35,18 +35,25 @@ using namespace std;
 //! An Event Class stores the delay, the time and the dependencies to other events
 /*!
  * An Event Class consists of two time values (delay and absolute time).
- * The delay time is the realative time to a parent event whereas the absolute time is the time measured against null.
- * Every Event can have several child events, but only one or no parent event.
- * If an event has no parent, then delay and the absolute time are equal.
+ * The delay time is the relative time to a parent event whereas the absolute time is the time measured against null.
+ * Every Event can have several referring events, but only one or no reference event.
+ * If an event has no reference event, the delay and the absolute time are equal.
  */
 class Event { 
 public:
   
-  //! The standard constructor
+
+  //! A general constructor
   /*!
-   * This constructor will create an event without a parent and with a delay and absolute time of zero.
+   * This constructor will create an event with all properties defined.
+   * \param setNewState A string defining the new state. Default: "0".
+   * \param setEventDelay The event delay (absolute or to its reference event). Default: 0.
+   * \param setReference A pointer to the reference event handle. If not given, event is absolute.
+   * \param setSlopeTime The time for the transition from the old to the new state.
    */
-  Event();
+  Event(const string &setNewState = "0", double setEventDelay = 0.0,
+        const Handle<Event> *setReference = 0, double setSlopeTime = 0.0);
+
   
   //! The standard destructor
   ~Event();
@@ -159,8 +166,9 @@ public:
   friend class Handle<Event>;
   
 private:
-  double EventDelay;
-  double EventTime;
+  double eventDelay;
+  double eventTime;
+  double slopeTime;
   string newState;
   int refCount;
   Handle<Event> reference;

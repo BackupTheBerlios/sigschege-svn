@@ -71,7 +71,7 @@ class EventList {
    * \return A pointer to the new event.
    * \sa deleteEvent 
    */
-  Handle<Event> createEvent(Handle<Event> &refEvent, double eventDelay, string eventNewState);
+  Handle<Event> createEvent(const string &eventNewState, double eventDelay, const Handle<Event> *refEvent = 0);
   
 
   //! Delete an Events

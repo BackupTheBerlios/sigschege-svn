@@ -1,6 +1,5 @@
 // -*- c++ -*-
-/// \file 
- 
+// \file  
 // Copyright 2004 by Ulf Klaperski
 //
 // This file is part of EasyVec - Vector Figure Creation Library.

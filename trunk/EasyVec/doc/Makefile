@@ -2,11 +2,15 @@
 all: docu
 
 docu:
-	(cd ../src; doxygen ../doc/doxygen_easyvec.cfg;)
+	doxygen doxygen_easyvec.cfg
 
 clean:
-	rm -r html latex
+	rm -rf html latex
+
+maintainer-clean:
+	rm -rf html latex
 
 install:
 
 uninstall:
+

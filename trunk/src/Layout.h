@@ -1,6 +1,5 @@
 // -*- c++ -*-
-/// \file 
- 
+// \file 
 // Copyright 2004 by Ingo Hinrichs
 //
 // This file is part of Sigschege - Signal Schedule Generator
@@ -31,6 +30,8 @@ using namespace std;
 
 #include "Object.h"
 #include <EVPosInt.h>
+#include <EasyVec.h>
+#include <EasyVecElmPolyline.h>
 
 enum LayoutID {BASIC};
 
@@ -80,7 +81,7 @@ public:
   const EVPosInt &getBR();
 
   /// paint the layout object
-  void paint();
+  void paint(EasyVec& cEasyVec);
 
 private:
   EVPosInt cUL;

@@ -1,6 +1,5 @@
 // -*- c++ -*-
-/// \file 
- 
+// \file  
 // Copyright 2004 by Ingo Hinrichs
 //
 // This file is part of Sigschege - Signal Schedule Generator
@@ -30,14 +29,14 @@ using namespace std;
 
 Timing::Timing() {
   TopLayout = myLayoutList.createLayout();
-  myLayoutList.getLayout(TopLayout)->setBox(0,0,100,10);
+  myLayoutList.getLayout(TopLayout)->setBox(0,0,1000,1000);
 }
 
 Timing::~Timing() {
 }
 
 void Timing::paint() {
-  myLayoutList.getLayout(TopLayout)->paint();
+  myLayoutList.getLayout(TopLayout)->paint(myEasyVec);
 }
 
 void Timing::save(string filename) {

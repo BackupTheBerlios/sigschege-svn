@@ -1,6 +1,5 @@
 // -*- c++ -*-
-/// \file 
- 
+// \file  
 // Copyright 2004 by Ingo Hinrichs
 //
 // This file is part of Sigschege - Signal Schedule Generator
@@ -28,6 +27,7 @@ using namespace std;
 
 #include "Layout.h"
 #include <stdio.h>
+#include <EasyVecElmPolyline.h>
 
 /*!
  * This constructor will create an layout object without a parent.
@@ -143,6 +143,13 @@ const EVPosInt &Layout::getBR() {
 /*!
  * Paint this layout object
  */
-void Layout::paint() {
+void Layout::paint(EasyVec& cEasyVec) {
   printf("Boundary Box: (%i,%i)(%i,%i)\n",cUL.xpos(), cUL.ypos(),cBR.xpos(), cBR.ypos());
+  // cEasyVec.box(cUL,cBR);
+  EasyVecElmPolyline *line1 = cEasyVec.polyline();
+  line1->add_point(cUL.xpos(),cUL.ypos());
+  line1->add_point(cBR.xpos(),cUL.ypos());
+  line1->add_point(cBR.xpos(),cBR.ypos());
+  line1->add_point(cUL.xpos(),cBR.ypos());
+  line1->add_point(cUL.xpos(),cUL.ypos());
 }

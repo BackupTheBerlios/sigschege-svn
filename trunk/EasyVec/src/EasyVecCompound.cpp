@@ -28,9 +28,16 @@
 #include <typeinfo>
 #include "EasyVecCompound.h"
 #include "EasyVecPolyline.h"
+#include "EasyVecArc.h"
 #include "EasyVecBox.h"
 #include "EasyVecText.h"
 
+EasyVecArc* EasyVecCompound::arc(EVPosInt p1, EVPosInt p2, EVPosInt p3) {
+  EasyVecArc* new_arc = new EasyVecArc(static_cast<EasyVecCompound*>(this), figure, p1, p2, p3);
+  members.push_back(new_arc);
+  return new_arc;
+  
+}
 
 EasyVecPolyline* EasyVecCompound::polyline() {
   EasyVecPolyline* new_polyline = new EasyVecPolyline(static_cast<EasyVecCompound*>(this), figure);

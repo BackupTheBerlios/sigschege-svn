@@ -24,8 +24,8 @@
 // $Id$
 
 
-#ifndef _EASYVECELMBOX_H
-#define _EASYVECELMBOX_H _EASYVECELMBOX_H 
+#ifndef _EASYVECBOX_H
+#define _EASYVECBOX_H _EASYVECBOX_H 
 
 #include "EVPosInt.h"
 #include "EasyVecLine.h"
@@ -75,5 +75,5 @@ private:
   EVPosInt elm_upper_left, elm_lower_right;
 };
 
-#endif /* _EASYVECELMBOX_H */
+#endif /* _EASYVECBOX_H */
 

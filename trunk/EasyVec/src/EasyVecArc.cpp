@@ -30,8 +30,10 @@
 
 using namespace std;
 
-EasyVecArc::EasyVecArc(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
+EasyVecArc::EasyVecArc(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound, EVPosInt p1, EVPosInt p2, EVPosInt p3)
   : EasyVecElm(parent_compound, figure_compound), EasyVecLine(), EasyVecArrow() {
+  isPieWedge = false;
+  setPoints(p1, p2, p3);
 };
 
 
@@ -50,6 +52,38 @@ void EasyVecArc::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
 //   }
 }
 
+void EasyVecArc::computeArc(void) {
+  EVPosInt p1, p2, p3, ptmp;
+  double y0, x0, x1, y1, x2, y2, x3, y3;
+  double phi1, phi2;
+  p1 = elmPoint1;
+  p2 = elmPoint2;
+  p3 = elmPoint3;
+  if ((p1.xpos()-p2.xpos())==0) {
+    ptmp = p1;
+    p1 = p3;
+    p3 = ptmp;
+  } else if ((p3.xpos()-p1.xpos())==0) {
+    ptmp = p1;
+    p1 = p2;
+    p2 = ptmp;
+  }
+
+  x1 = p1.xpos(); y1 = p1.ypos();
+  x2 = p2.xpos(); y2 = p2.ypos();
+  x3 = p3.xpos(); y3 = p3.ypos();
+
+  y0 = 0.5 * ((x3-x1)*(x2*x2-x1*x1+y2*y2-y1*y1)-(x2-x1)*(x3*x3-x1*x1+y3*y3-y1*y1)) / ((y1-y3)*(x2-x1)-(x3-x1)*(y1-y2));
+  x0 = (0.5 * (x3*x3-x1*x1+y3*y3-y1*y1) + y0*(y1-y3)) / (x3-x1);
+  xCenter = x0;
+  yCenter = y0;
+  radius = (x1-x0)*(x1-x0)+(y1-y0)*(y1-y0);
+  phi1 = asin((y1-y0)/radius);
+  phi2 = asin((y2-y0)/radius);
+  clockwise = (phi2>phi1);
+  cout << "X Center: " << x0 << " Y Center: " << y0 << " clockwise:" << clockwise << endl;
+}
+
 void EasyVecArc::setPoint(int num, EVPosInt newPosition) {
   switch (num) {
   case 0:
@@ -64,6 +98,7 @@ void EasyVecArc::setPoint(int num, EVPosInt newPosition) {
   default:
     throw string("Illegal value for point in arc");
   }
+  computeArc();
   parent->handleChange(this);
 }
 
@@ -71,6 +106,7 @@ void EasyVecArc::setPoints(EVPosInt newPoint1, EVPosInt newPoint2, EVPosInt newP
   elmPoint1 = newPoint1;
   elmPoint2 = newPoint2;
   elmPoint3 = newPoint3;
+  computeArc();
   parent->handleChange(this);
 }
 
@@ -99,10 +135,10 @@ void EasyVecArc::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
   
   fig_file << "5 " << (isPieWedge? "2 " : "1 ") << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
-           << " 0 -1 " << elmStyleValue << " 0 0 0 " << (forwardArrow()? 1 : 0) << " "
-           << (backwardArrow()? 1 : 0);
-  fig_file << " " << elmPoint1.xpos() << " " << elmPoint1.ypos() << elmPoint2.xpos() << " "
-           << elmPoint2.ypos() << elmPoint3.xpos() << " " << elmPoint3.ypos() << endl;
+           << " -1 -1 " << elmStyleValue << " 0 0 " << (forwardArrow()? 1 : 0) << " "
+           << (backwardArrow()? 1 : 0) << " " << xCenter << " " << yCenter;
+  fig_file << " " << elmPoint1.xpos() << " " << elmPoint1.ypos() << " " << elmPoint2.xpos() << " "
+           << elmPoint2.ypos() << " " << elmPoint3.xpos() << " " << elmPoint3.ypos() << endl;
 
   if (forwardArrow()) {
     fig_file << forwardArrowString() << endl;

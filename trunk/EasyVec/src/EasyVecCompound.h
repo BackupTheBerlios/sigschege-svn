@@ -24,11 +24,12 @@
 // $Id$
 
 
-#ifndef _EASYVECELMCOMPOUND_H
-#define _EASYVECELMCOMPOUND_H _EASYVECELMCOMPOUND_H 
+#ifndef _EASYVECCOMPOUND_H
+#define _EASYVECCOMPOUND_H _EASYVECCOMPOUND_H 
 
 class EasyVecPolyline;
 class EasyVecBox;
+class EasyVecArc;
 class EasyVecText;
 
 #include <vector>
@@ -59,6 +60,8 @@ public:
   
   /// Create a polyline (class EasyVecPolyline), points must be added later
   EasyVecPolyline* polyline();
+  /// Create an arc (class EasyVecArc)
+  EasyVecArc* arc(EVPosInt p1, EVPosInt p2, EVPosInt p3);
   /// Create a box (class EasyVecBox)
   EasyVecBox* box(EVPosInt upper_left, EVPosInt lower_right);
   /// Create a text element (class EasyVecText)
@@ -89,5 +92,5 @@ protected:
   vector<EasyVecElm*> members;
 };
 
-#endif /* _EASYVECELMCOMPOUND_H */
+#endif /* _EASYVECCOMPOUND_H */
 

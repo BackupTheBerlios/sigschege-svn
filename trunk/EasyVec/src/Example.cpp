@@ -218,10 +218,12 @@ int main(void) {
   // EasyVecPolyline *line4 =  mypic.polyline();
   // line4->addPoint(text_lr);
   // line4->addPoint(text_lr-EVPosInt(0, 500));
+  EasyVecArc *arc1 = mypic.arc(EVPosInt(1000, 500), EVPosInt(0, 450), EVPosInt(2000, 400));
 
   cout << "Lower Right is " << text_lr << endl;
   mypic.save("example_text.fig");
 
+  
 
   mypic.exportFig2dev("eps", "example_text.eps");
   

@@ -41,7 +41,7 @@ using namespace std;
 class EasyVecArc : public EasyVecElm, public EasyVecLine, public EasyVecArrow {
 public:
   /// general constructor with no extra arguments
-  EasyVecArc(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound);
+  EasyVecArc(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound, EVPosInt p1, EVPosInt p2, EVPosInt p3);
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
 
   /// Set point number num to the given position.
@@ -62,6 +62,11 @@ public:
 private:
   EVPosInt elmPoint1, elmPoint2, elmPoint3;
   bool isPieWedge;
+  double xCenter, yCenter, radius;
+  bool clockwise;
+
+  void computeArc(void);
+  
 };
 
 #endif /* _EASYVECARC_H */

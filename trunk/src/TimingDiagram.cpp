@@ -43,15 +43,15 @@ TimingDiagram::~TimingDiagram() {
 /*!
  * This Function will return a pointer to a Text Layout Object without a text
  */
-Label* TimingDiagram::createLabel() {
-  return(new Label());
+TimLabel* TimingDiagram::createTimLabel() {
+  return(new TimLabel());
 }
 
 /*!
  * This Function will return a pointer to a Text Layout Object with the text newText
  */
-Label* TimingDiagram::createLabel(string newText) {
-  return(new Label(newText));
+TimLabel* TimingDiagram::createTimLabel(string newText) {
+  return(new TimLabel(newText));
 }
 
 

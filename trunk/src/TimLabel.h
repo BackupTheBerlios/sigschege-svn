@@ -35,16 +35,16 @@ using namespace std;
 /*!
  * This Text Layout Class can be used as header or footer
  */
-class Label : public Layout {
+class TimLabel : public Layout {
 public:
   /// The standard constructor
-  Label();
+  TimLabel();
   
   /// Create a Text object with newText
-  Label(string newText);
+  TimLabel(string newText);
 
   /// The standard destructor
-  ~Label();
+  ~TimLabel();
   
   /// Return the ID of this layout object
   LayoutID getID();

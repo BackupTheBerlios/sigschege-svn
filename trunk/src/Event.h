@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #ifndef _H_EVENT
 #define _H_EVENT
@@ -31,14 +31,14 @@ using namespace std;
 #include "Object.h"
 #include <vector>
 
-//! A Event Class store the delay, the time and the dependencies to other events
+//! An Event Class stores the delay, the time and the dependencies to other events
 /*!
- * A Event Class consists of two time values (delay and absolute time).
- * The delay time is the realative time to a parent event whereas the aboslute time is the time measured against null.
+ * An Event Class consists of two time values (delay and absolute time).
+ * The delay time is the realative time to a parent event whereas the absolute time is the time measured against null.
  * Every Event can have several child events, but only one or no parent event.
  * If an event has no parent, then delay and the absolute time are equal.
  */
-class Event: public Object { 
+class Event { 
 public:
   
   //! The standard constructor
@@ -56,7 +56,7 @@ public:
    * \param delay New Delay for this event
    * \sa getDelay getTime updateTime
    */
-  void setDelay(const float delay);
+  void setDelay(const double delay);
   
   //! Return the event delay.
   /*!
@@ -64,7 +64,7 @@ public:
    * \return Return the Delay of this Event
    * \sa setDelay getTime updateTime
    */
-  const float getDelay();
+  const double getDelay();
 
   //! Return the absolute event time
   /*!
@@ -73,7 +73,7 @@ public:
    * \return Return the absolute event time.
    * \sa setDelay getDelay updateTime
    */
-  const float getTime();
+  const double getTime();
 
   //! update the absolute event time
   /*!
@@ -91,16 +91,15 @@ public:
    * \param newChild pointer to Event that should be added to the child list
    * \sa hasChilds popChild insertChild moveChild getChild getChildCount
    */
-  void pushChild(Event* newChild);
+  // BUGBUG void pushChild(Event* newChild);
 
-  //! Insert a event into the child list
+  //! Register an event which references this event.  
   /*!
-   * Insert a event into the child list at define position
-   * \param newChild pointer to the event that should be added to the child list
-   * \param index position where to add the event in the child list
-   * \sa hasChilds pushChild popChild moveChild getChild getChildCount
+   * Insert an event into the referrers list.
+   * \param newReferrer pointer to the event that should be added to the referrers list
+   * \sa 
    */
-  void insertChild(Event* newChild, size_t index);
+  void registerReferrer(Event* newReferrer);
 
   //! Return a pointer of the child event at position index
   /*!
@@ -109,35 +108,37 @@ public:
    * \return pointer to the child event at position index
    * \sa hasChilds pushChild popChild insertChild moveChild getChildCount
    */
-  Event* getChild(size_t index);
+  // BUGBUG Event* getChild(size_t index);
 
-  //! Get the pointer of the parent event
+  //! Get the pointer of the reference event
   /*!
-   * This function returns the pointer of the parent function or NULL if it has no parent event
-   * \return A Pointer the the parent event
-   * \sa hasParent setParent delParent
+   * This function returns the pointer of the reference event or NULL if it has no reference event
+   * \return A pointer the the reference event
+   * \sa hasreference setreference delreference
    */
-  Event* getParent();
+  Event* getReference();
 
-  //! Set the parent event
+  //! Set the reference event
   /*!
-   * The the parent event of the event to parent.
-   * \param parent The pointer to the parent event
-   * \sa hasParent getParent delParent
+   * The reference event to which the delay is relative to.
+   * \param new_reference The pointer to the new reference event
+   * \sa hasreference getreference delreference
    */
-  void setParent(Event* parent);
+  void setReference(Event* new_reference);
 
-  //! Delete the parent of this event
+  //! Delete the reference of this event
   /*!
-   * Delete the parent event. The parent event will NOT be destroyed due this function
-   * \sa hasParent getParent setParent
+   * Delete the reference event. The parent event will NOT be destroyed by this function.
+   * \sa hasreference getreference setreference
    */
-  void delParent();
+  void delReference();
 
   
 private:
-  float EventDelay;
-  float EventTime;
+  double EventDelay;
+  double EventTime;
+  Event* reference;
+  vector<Event*> referrers;
 };
 
 #endif

@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 using namespace std;
 
@@ -39,9 +39,9 @@ Event* EventList::getEvent(size_t index) {
 }
 
 size_t EventList::createEvent() {
-  return(createObject(new Event()));
+  //return(createObject(new Event()));
 }
 
 bool EventList::deleteEvent(size_t index) {
-  return(deleteObject(index));
+  //return(deleteObject(index));
 }

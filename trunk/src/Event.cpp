@@ -21,14 +21,15 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 using namespace std;
 
 #include "Event.h"
 #include <stdio.h>
 
-Event::Event():Object(){
+Event::Event() {
+  reference = 0;
   EventDelay = 0;
   EventTime  = 0;
 }
@@ -36,62 +37,61 @@ Event::Event():Object(){
 Event::~Event(){
 }
 
-void Event::pushChild(Event* newChild) {
-  Object::pushChild((Object*) newChild);
+// void Event::pushChild(Event* newChild) {
+//   Object::pushChild((Object*) newChild);
+// }
+
+// void Event::insertChild(Event* newChild, size_t index) {
+//   Object::insertChild((Object*) newChild,index);
+// }
+
+// Event* Event::getChild(size_t index) {
+//   return((Event*) Object::getChild(index));
+// }
+
+Event* Event::getReference() {
+  return reference;
 }
 
-void Event::insertChild(Event* newChild, size_t index) {
-  Object::insertChild((Object*) newChild,index);
-}
-
-Event* Event::getChild(size_t index) {
-  return((Event*) Object::getChild(index));
-}
-
-Event* Event::getParent() {
-  return((Event*) Object::getParent());
-}
-
-void Event::setParent(Event* parent) {
-  Object::setParent((Object*) parent);
+void Event::setReference(Event* new_reference) {
+  reference = new_reference;
   updateTime();
 }
 
-void Event::delParent() {
-  Object::delParent();
-  updateTime();
+void Event::delReference() {
+  setReference(NULL);
 }
 
-void Event::setDelay(const float delay) {
+void Event::setDelay(const double delay) {
   if(EventDelay != delay){
     EventDelay = delay;
-    updateTime();
   }
 }
 
-const float Event::getDelay() {
+const double Event::getDelay() {
   return(EventDelay);
 }
 
 void  Event::updateTime() {
-  float oldTime;
+  double oldTime;
   oldTime = EventTime;
+  vector<Event*>::iterator referrersIter;
 
   // Calculate the new absolute Time of the Event
-  if(hasParent()){
-    EventTime = getParent()->getTime()+EventDelay;
+  if (reference!=0) {
+    EventTime = reference->getTime()+EventDelay;
   } else {
     EventTime = EventDelay;
   }
 
-  // update all childs is the absolute Time has changed
-  if(oldTime != EventTime){
-    for(size_t walk=0; walk < getChildCount(); walk++){
-      getChild(walk)->updateTime();
-    }
+  // update all referrers if the absolute Time has changed
+  if(oldTime != EventTime) {
+    for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
+      (*referrersIter)->updateTime();
+    }   
   }
 }
 
-const float Event::getTime() {
+const double Event::getTime() {
   return(EventTime);
 }

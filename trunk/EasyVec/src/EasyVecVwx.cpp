@@ -22,7 +22,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #include <wx/colour.h>
 #include <iostream>
@@ -54,6 +54,32 @@ void EasyVecVwx::draw_line(EVPosInt from, EVPosInt to, int color) {
   dc.DrawLine(from.xpos(), from.ypos(), to.xpos(), to.ypos());
   Refresh();
 }
+
+void EasyVecVwx::draw_char(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
+  int x,y, bit_no, bit_val;
+  char bb;
+  wxPaintDC dc(this);
+  wxColour wxMyColour(easyvec_std_colors[color][0], easyvec_std_colors[color][1], easyvec_std_colors[color][2]);
+  wxPen wxMyPen(wxMyColour, 1, 1);
+  dc.SetPen(wxMyPen);
+
+  for (y=0; y<rows; ++y) {
+    for (x=0; x<width; ++x) {
+      bit_no = 7-(x % 8);
+      bit_val = 1<<bit_no;
+      bb=buffer[y*pitch+x/8];
+      //cout << bit_no << ":" << bit_val << "-";
+      if ((bb & bit_val) == bit_val) {
+        dc.DrawPoint(x+origin.xpos(), y+origin.ypos());
+        //cout << ">" << x+origin.xpos() << ":" << y+origin.ypos() << endl;
+      } else {
+        //cout << " ";
+      }
+    }
+  }
+
+}
+
 
 void EasyVecVwx::clear(void) {
   cout << "Clear" << endl;

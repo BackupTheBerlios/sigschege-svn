@@ -22,7 +22,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 
 #ifndef _EASYVECVWX_H
@@ -36,6 +36,7 @@ public:
   EasyVecVwx(EasyVec *picture, wxFrame *frame, int x=-1, int y=-1, int width=-1, int height=-1,
              long style=wxTE_MULTILINE);
   virtual void draw_line(EVPosInt from, EVPosInt to, int color);
+  virtual void draw_char(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color);
   virtual void clear(void);
   
    void OnPaint(wxPaintEvent& event);

@@ -22,7 +22,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 
 #ifndef _EASYVECELMTEXT_H
@@ -58,13 +58,14 @@ private:
   string elm_text;
   int elm_font, elm_size;
   static FT_Library  freetype_lib;
-  static bool EasyVecElmText::freetype_already_initialized;
+  static bool freetype_already_initialized;
   FT_Face face;
   int text_height, text_width; // cache information to reduce cpu effort
 
   bool init_EasyVecElmText();
   void update_dimensions(); // must be called by all methods which change text size!
 
+  const static bool fix_fig2dev_quirk = true;
 };
 
 

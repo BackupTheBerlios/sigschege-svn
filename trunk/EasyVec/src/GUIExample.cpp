@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #include "wx/wx.h"
 
@@ -33,6 +33,7 @@
 #include "EasyVec.h"
 #include "EasyVecElm.h"
 #include "EasyVecElmPolyline.h"
+#include "EasyVecElmText.h"
 #include "EasyVecVwx.h"
 
 #include <cstdio>
@@ -131,6 +132,9 @@ bool MyApp::OnInit()
   nline->add_point(360, 3060);
   nline->add_point(1560, 1860);
 
+  EasyVecElmText *ntext;
+  ntext = ev_pic->text();
+  ntext->set_text("This is an EasyVec Demo");
   
   EasyVecVwx *canvas = new EasyVecVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
 

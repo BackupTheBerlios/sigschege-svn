@@ -31,12 +31,12 @@ using namespace std;
 #include "TimingDiagram.h"
 
 void layout (void) {
-  TimingDiagram tim;
+  TimingDiagram tim(0.0, 222.0);
 
   Handle<TimLabel>  Label1  = tim.createLabel();
   Handle<TimSignal> Signal0 = tim.createSignal("O");
   Handle<TimSignal> Signal1 = tim.createSignal("O");
-  Handle<TimTime> Time1 = tim.createTime(0.0, 222.0, false, 50.0, 0.0, 10);
+  Handle<TimTime> Time1 = tim.createTime(false, 50.0, 0.0, 10);
 
   Handle<TimList> List1 = tim.createList();
 

@@ -42,11 +42,14 @@ TimSignal::TimSignal(double defaultSlope):LayoutObject(), EventList(defaultSlope
  * Construct a Timing Diagram Signal Object with a Text Label
  * \param signalLabel Signal Label
  */
-TimSignal::TimSignal(string signalLabel, double defaultSlope):LayoutObject(), EventList(defaultSlope) {
+TimSignal::TimSignal(string signalLabel, double newStartTime, double newEndTime, double defaultSlope)
+  : LayoutObject(), EventList(defaultSlope) {
   cText      = signalLabel;
   cFontType  = 14;
   cFontSize  = 20;
   cSigOffset = 0;
+  startTime = newStartTime;
+  endTime = newEndTime;
 }
 
 TimSignal::~TimSignal() {

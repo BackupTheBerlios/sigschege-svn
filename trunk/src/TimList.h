@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: TimLabel.h 58 2004-11-10 21:12:15Z suupkopp $
+// $Id$
 
 
 #ifndef _H_TIMLIST
@@ -56,7 +56,7 @@ public:
   Handle<TimLabel> createLabel();
 
   //! Create a empty Timing Diagram Signal Object
-  Handle<TimSignal> createSignal(string label, double defaultSlope=0.0);
+  Handle<TimSignal> createSignal(string label, double newStartTime, double newEndTime, double defaultSlope=0.0);
 
   //! Create a time scale
   Handle<TimTime> createTime(double newStartTime, double newEndTime, bool autoCalc,

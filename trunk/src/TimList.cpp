@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: TimLabel.cpp 59 2004-11-14 21:32:23Z suupkopp $
+// $Id$
 
 using namespace std;
 
@@ -89,8 +89,8 @@ Handle <TimLabel> TimList::createLabel() {
 /*!
  * This Function will return a Handle to a Timing Diagram Signal Object
  */
-Handle <TimSignal> TimList::createSignal(string label, double defaultSlope) {
-  Handle<TimSignal> newTimSignal = new TimSignal(label, defaultSlope);
+Handle <TimSignal> TimList::createSignal(string label, double newStartTime, double newEndTime, double defaultSlope) {
+  Handle<TimSignal> newTimSignal = new TimSignal(label, newStartTime, newEndTime, defaultSlope);
   newTimSignal->setCompound(getCompound()->compound());
   return newTimSignal;
 }

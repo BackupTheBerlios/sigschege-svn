@@ -28,13 +28,15 @@ using namespace std;
 #include "TimingDiagram.h"
 #include <stdio.h>
 
-TimingDiagram::TimingDiagram() : cTimList(), cEasyVec() {
+TimingDiagram::TimingDiagram(double newStartTime, double newEndTime) : cTimList(), cEasyVec() {
   cTimList.setCompound(cEasyVec.compound());
   cTimList.setPadding(0);
   cDefaultHeight = 1000;
   cDefaultPadding = 200;
   cDefaultBorder = true;
   cDefaultSigOffset = 1500;
+  startTime = newStartTime;
+  endTime = newEndTime;
 }
 
 TimingDiagram::~TimingDiagram() {
@@ -95,7 +97,7 @@ Handle <TimLabel> TimingDiagram::createLabel() {
  * This Function will return a Handle to a Timing Diagram Signal Object
  */
 Handle <TimSignal> TimingDiagram::createSignal(string label, double defaultSlope) {
-  Handle <TimSignal> newSignal = cTimList.createSignal(label, defaultSlope);
+  Handle <TimSignal> newSignal = cTimList.createSignal(label, startTime, endTime, defaultSlope);
   newSignal->setHeight(cDefaultHeight);
   newSignal->enableBorder(cDefaultBorder);
   newSignal->setPadding(cDefaultPadding);
@@ -116,9 +118,8 @@ Handle <TimList> TimingDiagram::createList() {
 /*!
  * This Function will return a Handle to a time scale object
  */
-Handle<TimTime> TimingDiagram::createTime(double newStartTime, double newEndTime, bool autoCalc,
-                                    double newLabelDistance, double newFirstLabel, double newTickDistance) {
-  Handle<TimTime> newTimTime = new TimTime(newStartTime, newEndTime, autoCalc, newLabelDistance,
+Handle<TimTime> TimingDiagram::createTime(bool autoCalc, double newLabelDistance, double newFirstLabel, double newTickDistance) {
+  Handle<TimTime> newTimTime = new TimTime(startTime, endTime, autoCalc, newLabelDistance,
                                            newFirstLabel, newTickDistance);
   newTimTime->setCompound(cEasyVec.compound());
   newTimTime->setHeight(cDefaultHeight);

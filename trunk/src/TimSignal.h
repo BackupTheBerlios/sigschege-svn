@@ -39,7 +39,7 @@ public:
   TimSignal(double defaultSlope=0.0);
 
   //! Create a Signal with Text
-  TimSignal(string signalLabel, double defaultSlope=0.0);
+  TimSignal(string signalLabel, double newStartTime, double newEndTime, double defaultSlope=0.0);
 
   //! The standard destructor
   ~TimSignal();
@@ -67,6 +67,7 @@ private:
   int       cFontType;
   int       cFontSize;
   int       cSigOffset;
+  double    startTime, endTime;
 };
 
 #endif

@@ -131,7 +131,15 @@ static PyObject* TimingDiagram_new(PyTypeObject *type, PyObject *args, PyObject 
 }
 
 static int TimingDiagram_init(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
-  self->tim = new TimingDiagram;
+
+  double startTime = 0.0;
+  double endTime = 100.0;
+  static char *kwlist[] = {"startTime", "endTime", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|dd", kwlist, &startTime, &endTime))
+    return 1;
+
+  self->tim = new TimingDiagram(startTime, endTime);
   self->tim->setWidth(10000);
   self->tim->setSliceSpace(50);
   return (0);
@@ -204,7 +212,7 @@ static PyObject * TimingDiagram_createTimescale(TimingDiagramObject *self, PyObj
 
   // create new C++ signal object with TimingDiagram class 
   Handle<TimTime> newTimescale;
-  newTimescale = self->tim->createTime(0.0, 222.0, false, 50.0, 0.0, 10.0);
+  newTimescale = self->tim->createTime(false, 50.0, 0.0, 10.0);
   self->tim->addLast(newTimescale.Object());
   // TODO: No Python representation yet! 
   // create a Python signal object to return to user 

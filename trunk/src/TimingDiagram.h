@@ -47,7 +47,7 @@ using namespace std;
 class TimingDiagram {
 public:
   //! The standard constructor
-  TimingDiagram();
+  TimingDiagram(double newStartTime=0.0, double newEndTime=100.0);
 
   //! The standard destructor
   ~TimingDiagram();
@@ -77,8 +77,7 @@ public:
   Handle<TimList> createList();
 
   //! Create a time scale
-  Handle<TimTime> createTime(double newStartTime, double newEndTime, bool autoCalc,
-                             double newLabelDistance, double newFirstLabel, double newTickDistance);
+  Handle<TimTime> createTime(bool autoCalc, double newLabelDistance, double newFirstLabel, double newTickDistance);
   //! Set the Width of the Timing Diagram
   void setWidth(int width);
 
@@ -97,9 +96,11 @@ private:
   TimList       cTimList;
   EasyVecFigure cEasyVec;
   // defaults for signals/labels/time scale
-  int cDefaultHeight;
-  int cDefaultPadding;
+  int  cDefaultHeight;
+  int  cDefaultPadding;
   bool cDefaultBorder;
-  int cDefaultSigOffset;
+  int  cDefaultSigOffset;
+  double startTime, endTime;
+
 };
 #endif // _H_TIMING

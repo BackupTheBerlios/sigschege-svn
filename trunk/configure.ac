@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(Sigschage, 0.0, suupkopp@mail.berlios.de)
+AC_INIT(Sigschage, 0.0, suupkopp@user.berlios.de)
 AC_CONFIG_SRCDIR([src/EventList.cpp])
 AM_INIT_AUTOMAKE
 

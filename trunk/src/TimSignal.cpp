@@ -42,7 +42,7 @@ TimSignal::TimSignal(double defaultSlope):LayoutObject(), EventList(defaultSlope
  * Construct a Timing Diagram Signal Object with a Text Label
  * \param signalLabel Signal Label
  */
-TimSignal::TimSignal(string signalLabel):LayoutObject() {
+TimSignal::TimSignal(string signalLabel, double defaultSlope):LayoutObject(), EventList(defaultSlope) {
   cText      = signalLabel;
   cFontType  = 14;
   cFontSize  = 20;

@@ -68,7 +68,7 @@ public:
   Handle<TimLabel> createLabel();
 
   //! Create a empty Timing Diagram Signal Object
-  Handle<TimSignal> createSignal(double defaultSlope=0.0);
+  Handle<TimSignal> createSignal(string label, double defaultSlope=0.0);
 
   //! Create a empty Timing Diagram List Object
   Handle<TimList> createList();

@@ -25,7 +25,6 @@
 
 #include <Python.h>
 #include <stdio.h>
-#include "PyTimSignal.h"
 #include "PyTimingDiagram.h"
 
 extern "C" {
@@ -101,12 +100,17 @@ extern "C" {
 
 int main (int ARGC, char **ARGV) {
   int ret;
-
+  PyObject *TimingDiagram_Module;
   Py_Initialize();
   initspam();
   initsig();
   initTimingDiagram();
-  initTimSignal();
+  TimingDiagram_Module = PyImport_ImportModule("TimingDiagram");
+  if (TimingDiagram_Module==0) {
+    cerr << "Could not import TD" << endl;
+  } else {
+    PyImport_AddModule("TimingDiagram");
+  }
   ret = Py_Main(ARGC, ARGV);
   
   Py_Finalize();

@@ -84,8 +84,8 @@ Handle <TimLabel> TimingDiagram::createLabel() {
 /*!
  * This Function will return a Handle to a Timing Diagram Signal Object
  */
-Handle <TimSignal> TimingDiagram::createSignal(double defaultSlope) {
-  Handle <TimSignal> newSignal = cTimList.createSignal(defaultSlope);
+Handle <TimSignal> TimingDiagram::createSignal(string label, double defaultSlope) {
+  Handle <TimSignal> newSignal = cTimList.createSignal(label, defaultSlope);
   newSignal->setHeight(cDefaultHeight);
   newSignal->enableBorder(cDefaultBorder);
   newSignal->setPadding(cDefaultPadding);
@@ -94,7 +94,7 @@ Handle <TimSignal> TimingDiagram::createSignal(double defaultSlope) {
 }
 
 /*!
- * This Function will return a Handle a Timing Diagram Signal Object
+ * This Function will return a Handle a Timing Diagram List Object
  */
 Handle <TimList> TimingDiagram::createList() {
   Handle <TimList> newList = cTimList.createList();

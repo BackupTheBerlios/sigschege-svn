@@ -39,7 +39,7 @@ public:
   TimSignal(double defaultSlope=0.0);
 
   //! Create a Signal with Text
-  TimSignal(string signalLabel);
+  TimSignal(string signalLabel, double defaultSlope=0.0);
 
   //! The standard destructor
   ~TimSignal();
@@ -47,10 +47,13 @@ public:
   //! Set the xoffset for the signal
   void setSigOffset(int sigOffset);
 
-  //! Set a new Text
+  //! Set a new Text.
   void setText(string newText);
 
-  //! Paint the Signal
+  //! Get the Text.
+  string getText(void) { return cText; };
+  
+  //! Paint the Signal.
   void paint(void);
 
   LayoutObject::setCompound;

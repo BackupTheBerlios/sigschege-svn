@@ -34,8 +34,8 @@ void layout (void) {
   TimingDiagram tim;
 
   Handle<TimLabel>  Label1  = tim.createLabel();
-  Handle<TimSignal> Signal0 = tim.createSignal();
-  Handle<TimSignal> Signal1 = tim.createSignal();
+  Handle<TimSignal> Signal0 = tim.createSignal("O");
+  Handle<TimSignal> Signal1 = tim.createSignal("O");
   Handle<TimTime> Time1 = tim.createTime(0.0, 222.0, false, 50.0, 0.0, 10);
 
   Handle<TimList> List1 = tim.createList();
@@ -75,7 +75,7 @@ void layout (void) {
   Label4->setHeight(1000);
   Label4->enableBorder(true);
 
-  Handle<TimSignal> Signal2 = tim.createSignal(5);
+  Handle<TimSignal> Signal2 = tim.createSignal("O", 5);
   Handle<Event> s2[4];
   s2[0] = Signal2->createEvent(State("1"), 50);
   s2[1] = Signal2->createEvent(State("0"), 100);

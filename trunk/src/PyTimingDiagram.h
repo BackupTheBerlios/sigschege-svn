@@ -31,12 +31,18 @@ using namespace std;
 #include <Python.h>
 #include "TimingDiagram.h"
 
-extern "C" {
 
-  typedef struct {
-    PyObject_HEAD
-    TimingDiagram *tim;
-  } TimingDiagramObject;
+typedef struct {
+  PyObject_HEAD
+  TimingDiagram *tim;
+} TimingDiagramObject;
+
+typedef struct {
+  PyObject_HEAD
+  Handle<TimSignal> signal;
+} TimSignalObject;
+
+extern "C" {
 
   PyMODINIT_FUNC initTimingDiagram(void);
 

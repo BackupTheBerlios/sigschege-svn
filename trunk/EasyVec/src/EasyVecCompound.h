@@ -77,9 +77,6 @@ public:
   void clear(void);
   EasyVecCompound& operator=(EasyVecCompound& source);
 
-  /// Return the type of an element - values are from enum EasyVecElm::Type
-  virtual EasyVecElm::Type type(void) { return Compound; };
-
 protected:
   vector<EasyVecElm*> members;
 };

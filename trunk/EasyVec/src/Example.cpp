@@ -29,6 +29,7 @@
 #include "EasyVecText.h"
 #include <iostream>
 #include <vector>
+#include <typeinfo>
 
 using namespace std;
 
@@ -50,9 +51,10 @@ void test_a(void) {
 
   vector<EasyVecElm*> texts = pic2.flatList();
 
+  // get the text in the picture in order to change it
   vector<EasyVecElm*>::iterator fiter = texts.begin(); 
   while (fiter!=texts.end()) {
-    if ((*fiter)->type() != EasyVecElm::Text) {
+    if (typeid(**fiter) != typeid(EasyVecText)) {
       fiter = texts.erase(fiter);
     } else fiter++;
   }
@@ -63,9 +65,26 @@ void test_a(void) {
     cout << "OK, 1 text found..." << endl;
     text = dynamic_cast<EasyVecText*>(texts[0]);
     text->setText("A new text for figure 2");
-  }
+  } else cout << "Error, expected 1 text!" << endl;
 
-  
+  int i;
+  EasyVecPolyline *cplines[10];
+  for (i=0; i<10; i++) {
+    cplines[i] = pic2.polyline();
+    cplines[i]->lineStyle(EasyVecLine::dashed);
+    cplines[i]->add_point(5700-150*i, 400); cplines[i]->add_point(5700-150*i, 5600);
+
+  }
+  cplines[1]->styleValue(5.0);
+  cplines[2]->styleValue(6.0);
+  cplines[3]->styleValue(7.0);
+  cplines[4]->styleValue(8.0);
+  cplines[5]->lineStyle(EasyVecLine::dotted);
+  cplines[6]->lineStyle(EasyVecLine::solid);
+  cplines[7]->lineStyle(EasyVecLine::dash_dotted);
+  cplines[8]->lineStyle(EasyVecLine::dash_double_dotted);
+  cplines[9]->lineStyle(EasyVecLine::dash_triple_dotted);
+
   pic1.export_fig2dev("eps", "test_a_pic1_a.eps");
   pic2.export_fig2dev("eps", "test_a_pic2_a.eps");
   

@@ -28,6 +28,7 @@
 #define _EASYVECELMPOLYLINE_H _EASYVECELMPOLYLINE_H 
 
 #include "EVPosInt.h"
+#include "EasyVecLine.h"
 #include "EasyVecElm.h"
 #include "EasyVecCompound.h"
 #include "EasyVecView.h"
@@ -36,11 +37,10 @@
 using namespace std;
 
 /// An EasyVecFigure polyline element - corresponds to fig element polyline (not box)
-class EasyVecPolyline : public EasyVecElm {
+class EasyVecPolyline : public EasyVecElm, public EasyVecLine {
 public:
   /// general constructor with no extra arguments
-  EasyVecPolyline(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
-    : EasyVecElm(parent_compound, figure_compound) {};
+  EasyVecPolyline(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound);
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
   void add_point(EVPosInt new_point);
   void add_point(int x, int y) { this->add_point(EVPosInt(x, y)); };
@@ -56,8 +56,7 @@ public:
   bool backward_arrow(bool new_state);
   /// Return the current state of the backward arrow
   bool backward_arrow(void);
-  /// Return the type of an element - values are from enum EasyVecElm::Type
-  virtual EasyVecElm::Type type(void) { return Polyline; };
+
 
 private:
   vector<EVPosInt> points;

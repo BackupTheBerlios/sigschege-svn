@@ -46,17 +46,6 @@ public:
   // destructor
   virtual ~EasyVecElm();
 
-  enum Type {
-    ColorPseudo,
-    Ellipse,
-    Polyline,
-    Box,
-    Spline,
-    Text,
-    Arc,
-    Compound
-  };
-
   /// Return the bounding box in upper_left/lower_right
   /*!
    * The bounding box of an object is a rectangle defined by the points upper_left and
@@ -68,8 +57,6 @@ public:
   virtual void draw(EasyVecView* view) = 0;
   /// Save this element into the given output file stream.
   virtual void saveElm(ofstream &fig_file) = 0;
-  /// Return the type of an element - values are from enum EasyVecElm::Type
-  virtual EasyVecElm::Type type(void) = 0;
 
   int pen_color(void);
   bool pen_color(int new_color);

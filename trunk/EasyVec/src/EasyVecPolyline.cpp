@@ -30,6 +30,12 @@
 
 using namespace std;
 
+EasyVecPolyline::EasyVecPolyline(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
+  : EasyVecElm(parent_compound, figure_compound), EasyVecLine() {
+  elm_forward_arrow = elm_backward_arrow = false;
+};
+
+
 bool EasyVecPolyline::forward_arrow(bool new_state) {
   bool oldval = elm_forward_arrow;
   elm_forward_arrow = new_state;
@@ -100,8 +106,8 @@ void EasyVecPolyline::saveElm(ofstream &fig_file) {
   string fwd_arr_line = "1 1 1.00 60.00 120.00";  
   string bwd_arr_line = "1 1 1.00 60.00 120.00";
   
-  fig_file << "2 1 0 1 " << elm_pen_color << " " << elm_fill_color << " " << elm_depth
-           << " 0 -1 0.0 0 0 0 " << (elm_forward_arrow? 1 : 0) << " "
+  fig_file << "2 1 " << elmLineStyle << " 1 " << elm_pen_color << " " << elm_fill_color << " " << elm_depth
+           << " 0 -1 " << elmStyleValue << " 0 0 0 " << (elm_forward_arrow? 1 : 0) << " "
            << (elm_backward_arrow? 1 : 0) << " " << points.size() << endl;
   if (elm_forward_arrow) {
     fig_file << fwd_arr_line << endl;

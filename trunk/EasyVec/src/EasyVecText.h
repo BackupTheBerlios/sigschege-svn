@@ -72,8 +72,6 @@ public:
   };
   static bool fig2dev_fontfix(void) { return fix_fig2dev_quirk; }
   
-  /// Return the type of an element - values are from enum EasyVecElm::Type
-  virtual EasyVecElm::Type type(void) { return Text; };
 private:
   EVPosInt elm_origin;
   string elm_text;

@@ -29,7 +29,7 @@
 #include "EasyVecText.h"
 #include <fstream>
 #include <iostream>
-
+#include <typeinfo>
 
 
 EasyVecPolyline* EasyVecCompound::polyline() {
@@ -120,24 +120,19 @@ void EasyVecCompound::copy_members(EasyVecCompound& source) {
   for (source_members_iter = source.members.begin();
        source_members_iter != source.members.end();
        ++source_members_iter ) {
-    switch ((*source_members_iter)->type()) {
-    case Text:
+    if (typeid(**source_members_iter) == typeid(EasyVecText)) {
       new_text = text();
       *new_text = *(static_cast<EasyVecText*>(*source_members_iter));
-      break;
-    case Box:
+    } else if (typeid(**source_members_iter) == typeid(EasyVecBox)) {
       new_box = box(EVPosInt(0,0),EVPosInt(0,0));
       *new_box = *(static_cast<EasyVecBox*>(*source_members_iter));
-      break;
-    case Polyline:
+    } else if (typeid(**source_members_iter) == typeid(EasyVecPolyline)) {
       new_polyline = polyline();
       *new_polyline = *(static_cast<EasyVecPolyline*>(*source_members_iter));
-      break;
-    case Compound:
+    } else if (typeid(**source_members_iter) == typeid(EasyVecCompound)) {
       new_compound = compound();
       *new_compound = *(static_cast<EasyVecCompound*>(*source_members_iter));
-      break;
-    default:
+    } else {
       cerr << "Error: Unknown type" << endl;
     }
   }

@@ -97,8 +97,8 @@ void EasyVecElmCompound::clear(void) {
   EasyVecElm* last_elm;
   while (members.size()>0) {
     last_elm = members.back();
-    delete last_elm;
-    members.pop_back();
+    delete last_elm; // delete the object the pointer points to
+    members.pop_back(); // remove the pointer from the list
   }
 }
 

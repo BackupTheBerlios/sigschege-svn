@@ -75,11 +75,19 @@ void event(void) {
   EventList mainList;
   Event* ev1 = mainList.createEvent();
   Event* ev2 = mainList.createEvent();
+  Event* ev3 = mainList.createEvent();
   ev1->setDelay(100);
   ev2->setDelay(50);
   ev2->setReference(ev1);
+  ev3->setReference(ev2);
+  ev3->setDelay(25);
+  ev3->setReference(ev1);
+  
   cout << "Time of event1: " << ev1->getTime() << endl; 
   cout << "Time of event2: " << ev2->getTime() << endl;
+  cout << "Time of event3: " << ev3->getTime() << endl;
+  cout << "First event after 105: " << (mainList.getEventAfter(105))->getTime() << endl << endl;
+  mainList.debugEvents();
   return;
 }
 

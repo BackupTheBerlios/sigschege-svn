@@ -43,12 +43,14 @@ class EventList {
   //! This destructor will destroy the EventList and all stored events.
   ~EventList();
 
-  //! Return a Pointer to the Event at position index
+  //! Return a Pointer to the the first Event at or after a point in time.
   /*!
-   * This function will return a Pointer to the event stored at position index
-   * \return Return a pointer to the event at position index
+   * This function will return a Pointer to the first event that happens at or after
+   * the given time.
+   * \param evTime The point in time from which the first event is returned. 
+   * \return Return a pointer to the event, NULL if no event occured after evTime.
    */
-  //Event* getEvent(size_t index); BUGBUG
+  Event* getEventAfter(double evTime); 
 
   //! Create a new Event
   /*!
@@ -58,7 +60,7 @@ class EventList {
    */
   Event* createEvent();
   
-  //! Delete an Event
+  //! Delete an Events
   /*! 
    * This function will destroy the given event 
    * \param obsoleteEvent A pointer to the Event.
@@ -66,15 +68,20 @@ class EventList {
    */
   bool   deleteEvent(Event* obsoleteEvent);
 
-  //! Sort the list of events by time;
-  void sort();
+  //! Delete all Events in the list.
+  void clear(void);
   
-struct evTimeCmp {
-  bool operator()(Event* x, Event* y) {
-    return x->getTime()<y->getTime();
-  }
-};
+  //! Sort the list of events by time;
+  void sort();  
+  struct evTimeCmp {
+    bool operator()(Event* x, Event* y) {
+      return x->getTime()<y->getTime();
+    }
+  };
 
+  //! A function for debugging the event list - not for general use! 
+  void debugEvents(void);
+  
 private:
   vector<Event*> events;
   

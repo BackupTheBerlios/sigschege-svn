@@ -40,7 +40,7 @@ EasyVec::EasyVec() : EasyVecElmCompound() {
   members_flat_valid = false;
   file_dpi = 1200;
   set_screen_dpi(80);
-  master = this;
+  figure = this;
 }
 
 bool EasyVec::set_screen_dpi(int new_screen_dpi) {

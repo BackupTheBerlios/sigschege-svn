@@ -36,25 +36,25 @@ EasyVecElmCompound::EasyVecElmCompound() {
 }
 
 EasyVecElmPolyline* EasyVecElmCompound::polyline() {
-  EasyVecElmPolyline* new_polyline = new EasyVecElmPolyline(static_cast<EasyVecElmCompound*>(this), master);
+  EasyVecElmPolyline* new_polyline = new EasyVecElmPolyline(static_cast<EasyVecElmCompound*>(this), figure);
   members.push_back(new_polyline);
   return new_polyline;
 }
 
 EasyVecElmBox* EasyVecElmCompound::box(EVPosInt upper_left, EVPosInt lower_right) {
-  EasyVecElmBox* new_box = new EasyVecElmBox(static_cast<EasyVecElmCompound*>(this), master, upper_left, lower_right);
+  EasyVecElmBox* new_box = new EasyVecElmBox(static_cast<EasyVecElmCompound*>(this), figure, upper_left, lower_right);
   members.push_back(new_box);
   return new_box;
 }
 
 EasyVecElmText* EasyVecElmCompound::text() {
-  EasyVecElmText* new_text = new EasyVecElmText(static_cast<EasyVecElmCompound*>(this), master);
+  EasyVecElmText* new_text = new EasyVecElmText(static_cast<EasyVecElmCompound*>(this), figure);
   members.push_back(new_text);
   return new_text;
 }
 
 EasyVecElmCompound* EasyVecElmCompound::compound() {
-  EasyVecElmCompound* new_compound = new EasyVecElmCompound(static_cast<EasyVecElmCompound*>(this), master);
+  EasyVecElmCompound* new_compound = new EasyVecElmCompound(static_cast<EasyVecElmCompound*>(this), figure);
   members.push_back(new_compound);
   return new_compound;
 }

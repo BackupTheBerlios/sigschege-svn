@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 
 #ifndef _EASYVECELMBOX_H
@@ -39,10 +39,10 @@ using namespace std;
 class EasyVecElmBox : public EasyVecElm {
 public:
   /// general constructor with no extra arguments
-  EasyVecElmBox(EasyVecElmCompound* parent_compound, EasyVec* master_compound)
-    : EasyVecElm(parent_compound, master_compound) {};
+  EasyVecElmBox(EasyVecElmCompound* parent_compound, EasyVec* figure_compound)
+    : EasyVecElm(parent_compound, figure_compound) {};
   /// general constructor accepting corner points
-  EasyVecElmBox(EasyVecElmCompound* parent_compound, EasyVec* master_compound, EVPosInt upper_left, EVPosInt lower_right);
+  EasyVecElmBox(EasyVecElmCompound* parent_compound, EasyVec* figure_compound, EVPosInt upper_left, EVPosInt lower_right);
 
   /// Return the limits of this element
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {

@@ -100,9 +100,9 @@ void EasyVecElmText::draw(EasyVecView* view) {
   EVPosInt char_origin;
 
   if (view) {
-    resolution = master->get_screen_dpi();    
+    resolution = figure->get_screen_dpi();    
   } else {
-    resolution = master->get_file_dpi();
+    resolution = figure->get_file_dpi();
     if (fix_fig2dev_quirk) {
       resolution *= 9;
       resolution /= 10;
@@ -119,7 +119,7 @@ void EasyVecElmText::draw(EasyVecView* view) {
   if (view==0) text_width = text_height = 0;
 
   old_glyph_i = 0;
-  char_origin = elm_origin/master->scale();
+  char_origin = elm_origin/figure->scale();
   
   for ( text_iter = elm_text.begin(); text_iter != elm_text.end(); ++text_iter ) {
     cur_char = *text_iter;
@@ -162,8 +162,8 @@ EasyVecElmText::EasyVecElmText() {
   initEasyVecElmText();
 }
 
-EasyVecElmText::EasyVecElmText(EasyVecElmCompound* parent_compound, EasyVec* master_compound)
-  : EasyVecElm(parent_compound, master_compound)
+EasyVecElmText::EasyVecElmText(EasyVecElmCompound* parent_compound, EasyVec* figure_compound)
+  : EasyVecElm(parent_compound, figure_compound)
 {
   initEasyVecElmText();
 };

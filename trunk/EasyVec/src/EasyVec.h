@@ -33,7 +33,6 @@
 #include "EasyVecElmCompound.h"
        
 /// A vector figure class in Fig format
-
 /*!
  * This class implements a complete vector figure in Fig format.
  *

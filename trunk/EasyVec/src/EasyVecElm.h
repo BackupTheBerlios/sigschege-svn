@@ -46,18 +46,26 @@ enum EasyVecElmType {
 };
 
 
+/// An EasyVec Element - abstract base class for all EasyVec elements (compound, polyline, text,...)
 class EasyVecElm {
 public:
   // constructor
   EasyVecElm(void);
-  EasyVecElm(EasyVecElmCompound* parent_compound, EasyVec *master_compound);
+  EasyVecElm(EasyVecElmCompound* parent_compound, EasyVec *figure_compound);
   // do we need a copy constructor?
   // destructor
   virtual ~EasyVecElm();
-  
+
+  /// Return the bounding box in upper_left/lower_right
+  /*!
+   * The bounding box of an object is a rectangle defined by the points upper_left and
+   * lower_right that is covered by the content of the object.
+   */
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right)=0;
   virtual vector<EasyVecElm*> flatList() = 0;
+  /// Draw this object in the given view.
   virtual void draw(EasyVecView* view) = 0;
+  /// Save this element into the given output file stream.
   virtual void saveElm(ofstream &fig_file) = 0;
 
   int pen_color(void);
@@ -69,7 +77,7 @@ public:
   
 protected:
   EasyVecElmCompound *parent; // needed to inform the owner about change events
-  EasyVec *master; // needed to access global picture states
+  EasyVec *figure; // needed to access global picture states
   int elm_pen_color;
   int elm_fill_color;
   int elm_depth;

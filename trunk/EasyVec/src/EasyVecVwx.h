@@ -30,6 +30,7 @@
 #include "wx/wx.h"
 #include "EasyVecView.h"
 
+/// An EasyVec View class for the wxWidgets toolkit.
 class EasyVecVwx : public wxWindow, public EasyVecView {
 public:
   EasyVecVwx(EasyVec *picture, wxFrame *frame, int x=-1, int y=-1, int width=-1, int height=-1,

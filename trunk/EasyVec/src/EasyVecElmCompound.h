@@ -51,9 +51,9 @@ class EasyVecElmCompound : public EasyVecElm {
 public:
   /// Standard constructor - is it useful at all???
   EasyVecElmCompound();
-  /// General constructor which accepts the parent compound and the master compound (figure)
-  EasyVecElmCompound(EasyVecElmCompound* parent_compound, EasyVec* master_compound)
-    : EasyVecElm(parent_compound, master_compound) {};
+  /// General constructor which accepts the parent compound and the figure compound (figure)
+  EasyVecElmCompound(EasyVecElmCompound* parent_compound, EasyVec* figure_compound)
+    : EasyVecElm(parent_compound, figure_compound) {};
 
   /// Create a polyline (class EasyVecElmPolyline), points must be added later
   EasyVecElmPolyline* polyline();

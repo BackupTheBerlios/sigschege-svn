@@ -39,10 +39,11 @@ extern "C" {
 
 using namespace std;
 
+/// An EasyVec text - corresponds to fig element text
 class EasyVecElmText : public EasyVecElm {
 public:
   EasyVecElmText();
-  EasyVecElmText(EasyVecElmCompound* parent_compound, EasyVec* master_compound);
+  EasyVecElmText(EasyVecElmCompound* parent_compound, EasyVec* figure_compound);
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
   vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(EasyVecView* view);

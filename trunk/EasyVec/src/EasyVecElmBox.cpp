@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #include "EasyVecElmBox.h"
 #include "EasyVec.h"
@@ -30,9 +30,9 @@
 
 using namespace std;
 
-EasyVecElmBox::EasyVecElmBox(EasyVecElmCompound* parent_compound, EasyVec* master_compound,
+EasyVecElmBox::EasyVecElmBox(EasyVecElmCompound* parent_compound, EasyVec* figure_compound,
                              EVPosInt upper_left, EVPosInt lower_right)
-  : EasyVecElm(parent_compound, master_compound),
+  : EasyVecElm(parent_compound, figure_compound),
     elm_upper_left(upper_left),
     elm_lower_right(lower_right) {};
 
@@ -42,7 +42,7 @@ void EasyVecElmBox::draw(EasyVecView* view) {
   int xscale;
   EasyVec *testptr;
   testptr->scale();
-  xscale = master->scale();
+  xscale = figure->scale();
   EVPosInt ul, lr;
   EVPosInt ur, ll;
 

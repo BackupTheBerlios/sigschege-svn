@@ -32,6 +32,11 @@
 
 class EasyVec;
 
+/// An abstract class for creating views for the EasyVec class.
+/*!
+ * View classes for the EasyVec class must (well, should) be derived from this
+ * class and must implement the purely virtual member functions.
+ */
 class EasyVecView {
 public:
   EasyVecView(EasyVec *picture);

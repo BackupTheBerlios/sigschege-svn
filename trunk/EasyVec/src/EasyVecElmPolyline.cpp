@@ -64,7 +64,7 @@ void EasyVecElmPolyline::draw(EasyVecView* view) {
   int xscale;
   EasyVec *testptr;
   testptr->scale();
-  xscale = master->scale();
+  xscale = figure->scale();
   vector<EVPosInt>::iterator points_iter1, points_iter2;
   points_iter1 = points.begin();
   if (points_iter1==points.end()) return;

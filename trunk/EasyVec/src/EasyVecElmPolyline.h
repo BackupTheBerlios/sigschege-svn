@@ -38,8 +38,8 @@ using namespace std;
 class EasyVecElmPolyline : public EasyVecElm {
 public:
   EasyVecElmPolyline();
-  EasyVecElmPolyline(EasyVecElmCompound* parent_compound, EasyVec* master_compound)
-    : EasyVecElm(parent_compound, master_compound) {};
+  EasyVecElmPolyline(EasyVecElmCompound* parent_compound, EasyVec* figure_compound)
+    : EasyVecElm(parent_compound, figure_compound) {};
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
   void add_point(EVPosInt new_point);
   void add_point(int x, int y) { this->add_point(EVPosInt(x, y)); };

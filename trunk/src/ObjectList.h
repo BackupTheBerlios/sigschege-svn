@@ -32,56 +32,33 @@ using namespace std;
 #include <vector>
 #include "Object.h"
 
-//! Simple Class to handle object
+/// Simple Class to handle object
 /*!
  * This class provide basic functions to handle object.
  */
 class ObjectList {
  public:
   
-  //! Create a empty object list
+  /// Create a empty object list
   ObjectList();
 
-  //! Delete the object list
-  /*!
-   * Delete all object in the list and the object list
-   */
+  /// Delete the object list
   virtual ~ObjectList();
 
-  //! Return a pointer the the object at position index
-  /*!
-   * Return the pointer of the object at position index.
-   * \param index Position of the object
-   * \return Pointer of the object at position index
-   * \sa createObject deleteObject isEmpty
-   */
+  /// Return a pointer the the object at position index
   virtual Object* getObject(size_t index);
 
-  //! Create a new Object
-  /*!
-   * Create a new object at the end of the list and return it's position 
-   * \param newObject pointer to the new object
-   * \return position of the new object
-   * \sa getObject deleteObject isEmpty
-   */
+  /// Create a new Object
   virtual size_t createObject(Object* newObject);
   
-  //! Delete the object at position index
-  /*!
-   * Delete the object at position index from the list and destroy the object
-   * \param index Position of the object to destroy
-   * \sa getObject createObject isEmpty
-   */
+  /// Delete the object at position index
   virtual bool deleteObject(size_t index);
 
-  //! Check if the object list is empty
-  /*!
-   * Check if the object list is empty and return the result.
-   * \return true = List is empty, false = list is not empty
-   * \sa getObject createObject deleteObject
-   */
+  /// Check if the object list is empty
   virtual bool isEmpty();
-  
+
+  /// Retrun the Size of the object list
+  virtual const size_t size();
  private:
   vector <Object*> vec_ObjectList;
 };

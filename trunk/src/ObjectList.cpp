@@ -32,27 +32,60 @@ ObjectList::ObjectList() {
 
 }
 
+/*!
+ * Delete all object in the list and the object list
+ */
 ObjectList::~ObjectList() {
   for(size_t walk=0;walk<vec_ObjectList.size();walk++){
     delete vec_ObjectList.at(walk);
   }
 }
 
+/*!
+ * Return the pointer of the object at position index.
+ * \param index Position of the object
+ * \return Pointer of the object at position index
+ * \sa createObject deleteObject isEmpty
+ */
 Object* ObjectList::getObject(size_t index) {
   return(vec_ObjectList.at(index));
 }
 
+/*!
+ * Create a new object at the end of the list and return it's position 
+ * \param newObject pointer to the new object
+ * \return position of the new object
+ * \sa getObject deleteObject isEmpty
+ */
 size_t ObjectList::createObject(Object* newObject) {
   vec_ObjectList.push_back(newObject);
   return(vec_ObjectList.size()-1);
 }
 
+/*!
+ * Delete the object at position index from the list and destroy the object
+ * \param index Position of the object to destroy
+ * \sa getObject createObject isEmpty
+ */
 bool ObjectList::deleteObject(size_t index) {
   delete vec_ObjectList.at(index);
   vec_ObjectList.erase(vec_ObjectList.begin()+index);
   return(true);
 }
 
+/*!
+ * Check if the object list is empty and return the result.
+ * \return true = List is empty, false = list is not empty
+ * \sa getObject createObject deleteObject
+ */
 bool ObjectList::isEmpty() {
   return(vec_ObjectList.empty());
+}
+
+/*!
+ * \return the size of the object list
+ * \sa isEmpty
+ */
+const size_t ObjectList::size() {
+  return(vec_ObjectList.size());
 }

@@ -41,11 +41,14 @@ using namespace std;
  */
 class Timing {
 public:
-  //! The standard constructor
+  /// The standard constructor
   Timing();
 
-  //! The standard destructor
+  /// The standard destructor
   ~Timing();
+  
+  /// Paint Timing
+  void paint();
 
 private:
   size_t TopLayout;

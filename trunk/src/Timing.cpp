@@ -30,8 +30,12 @@ using namespace std;
 
 Timing::Timing() {
   TopLayout = myLayoutList.createLayout();
+  myLayoutList.getLayout(TopLayout)->setBox(0,0,100,10);
 }
 
 Timing::~Timing() {
 }
 
+void Timing::paint() {
+  myLayoutList.getLayout(TopLayout)->paint();
+}

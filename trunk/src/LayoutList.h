@@ -76,6 +76,7 @@ public:
    */
   ObjectList::isEmpty;
 
+  ObjectList::size;
 };
 
 #endif

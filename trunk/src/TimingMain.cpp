@@ -34,6 +34,7 @@ using namespace std;
 int main (int ARGC, char **ARGV) {
   Timing tim;
 
+  tim.paint();
 
   return(0);
 }

@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #ifndef _H_EVENTLIST
 #define _H_EVENTLIST
@@ -30,18 +30,17 @@ using namespace std;
 
 #include <vector>
 #include "Event.h"
-#include "ObjectList.h"
 
 //! EventList class for handling events
 /*!
  * This class provide function to create, access and delete events.
  */
-class EventList : private ObjectList {
+class EventList {
  public:
   //! This constructor will create a empty EventList
   EventList();
 
-  //! This destructor will destroy the EventList ann all stored events.
+  //! This destructor will destroy the EventList and all stored events.
   ~EventList();
 
   //! Return a Pointer to the Event at position index
@@ -49,31 +48,37 @@ class EventList : private ObjectList {
    * This function will return a Pointer to the event stored at position index
    * \return Return a pointer to the event at position index
    */
-  Event* getEvent(size_t index);
+  //Event* getEvent(size_t index); BUGBUG
 
   //! Create a new Event
   /*!
    * This function creates a new Event.
-   * \return the position of the event that was created.
-   * \sa deleteEvent isEmpty
+   * \return A pointer to the new event.
+   * \sa deleteEvent 
    */
-  size_t createEvent();
+  Event* createEvent();
   
-  //! Delete a Event
+  //! Delete an Event
   /*! 
-   * This function will destroy the event at position index and delete it.
-   * \param index Position of the event to delete
-   * \return true in any case (for now)
+   * This function will destroy the given event 
+   * \param obsoleteEvent A pointer to the Event.
+   * \return False if Event did not exist in that list.
    */
-  bool   deleteEvent(size_t index);
+  bool   deleteEvent(Event* obsoleteEvent);
 
-  //! true if the EventList is empty
-  /*!
-   * This function will check is the EventList is empty. If so, true will be returned and false otherwise.
-   * \return Ture if no event is stored in the eventlist
-   * \sa createEvent deleteEvent
-   */
-  ObjectList::isEmpty;
+  //! Sort the list of events by time;
+  void sort();
+  
+struct evTimeCmp {
+  bool operator()(Event* x, Event* y) {
+    return x->getTime()<y->getTime();
+  }
 };
 
-#endif
+private:
+  vector<Event*> events;
+  
+};
+
+#endif /* _H_EVENTLIST */
+

@@ -26,6 +26,7 @@
 using namespace std;
 
 #include "EventList.h"
+#include<algorithm>
 
 EventList::EventList() {
 
@@ -34,14 +35,24 @@ EventList::EventList() {
 EventList::~EventList() {
 }
 
-Event* EventList::getEvent(size_t index) {
-  return((Event*) getObject(index));
+Event* EventList::createEvent() {
+  Event* new_event = new Event;
+  events.push_back(new_event);
+  return new_event;
 }
 
-size_t EventList::createEvent() {
-  //return(createObject(new Event()));
+bool EventList::deleteEvent(Event* obsoleteEvent) {
+  vector<Event*>::iterator eventsIter;
+    for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
+      if (*eventsIter==obsoleteEvent) {
+        events.erase(eventsIter);
+        return true;
+      }
+    }
+    return false;
 }
 
-bool EventList::deleteEvent(size_t index) {
-  //return(deleteObject(index));
+void EventList::sort() {
+  ::sort(events.begin(), events.end(), EventList::evTimeCmp());
 }
+

@@ -30,7 +30,7 @@ using namespace std;
 
 #include "TimingDiagram.h"
 
-int main (int ARGC, char **ARGV) {
+void layout (void) {
   TimingDiagram tim;
 
   tim.setWidth(10000);
@@ -68,5 +68,27 @@ int main (int ARGC, char **ARGV) {
   
   tim.save("test.fig");
 
+  return;
+}
+
+void event(void) {
+  EventList mainList;
+  Event* ev1 = mainList.createEvent();
+  Event* ev2 = mainList.createEvent();
+  ev1->setDelay(100);
+  ev2->setDelay(50);
+  ev2->setReference(ev1);
+  cout << "Time of event1: " << ev1->getTime() << endl; 
+  cout << "Time of event2: " << ev2->getTime() << endl;
+  return;
+}
+
+
+int main (int ARGC, char **ARGV) {
+  if (ARGC>1) {
+    if (ARGV[1][0]=='l') layout();
+    else if (ARGV[1][0]=='e') event();
+  }
+  else layout();
   return(0);
 }

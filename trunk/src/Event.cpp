@@ -37,24 +37,39 @@ Event::Event() {
 Event::~Event(){
 }
 
-// void Event::pushChild(Event* newChild) {
-//   Object::pushChild((Object*) newChild);
-// }
+bool Event::registerReferrer(Event* newReferrer) {
+  vector<Event*>::iterator referrersIter;
+    for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
+      if (*referrersIter==newReferrer) return false;
+    }
+    referrers.push_back(newReferrer);
+    return true;
+}
 
-// void Event::insertChild(Event* newChild, size_t index) {
-//   Object::insertChild((Object*) newChild,index);
-// }
+bool Event::unregisterReferrer(Event* obsoleteReferrer) {
+  vector<Event*>::iterator referrersIter;
+    for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
+      if (*referrersIter==obsoleteReferrer) {
+        referrers.erase(referrersIter);
+        return true;
+      }
+    }
+    return false;
+}
 
-// Event* Event::getChild(size_t index) {
-//   return((Event*) Object::getChild(index));
-// }
 
 Event* Event::getReference() {
   return reference;
 }
 
 void Event::setReference(Event* new_reference) {
+  if (reference!=0) { // unregister from an old reference, if one existed
+    reference->unregisterReferrer(this);
+  }
   reference = new_reference;
+  if (reference!=0) { // make sure the event this refers to knows, unless it's a NULL pointer
+    reference->registerReferrer(this); 
+  }
   updateTime();
 }
 
@@ -66,6 +81,7 @@ void Event::setDelay(const double delay) {
   if(EventDelay != delay){
     EventDelay = delay;
   }
+  updateTime();
 }
 
 const double Event::getDelay() {
@@ -88,7 +104,7 @@ void  Event::updateTime() {
   if(oldTime != EventTime) {
     for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
       (*referrersIter)->updateTime();
-    }   
+    }
   }
 }
 

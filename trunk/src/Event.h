@@ -85,40 +85,34 @@ public:
   void  updateTime();
 
 
-  //! Add a new child event
-  /*!
-   * Adds a new child event to the end of the child list
-   * \param newChild pointer to Event that should be added to the child list
-   * \sa hasChilds popChild insertChild moveChild getChild getChildCount
-   */
-  // BUGBUG void pushChild(Event* newChild);
-
   //! Register an event which references this event.  
   /*!
    * Insert an event into the referrers list.
+   * \return False if the event already  existed, true otherwise.
    * \param newReferrer pointer to the event that should be added to the referrers list
    * \sa 
    */
-  void registerReferrer(Event* newReferrer);
+  bool registerReferrer(Event* newReferrer);
 
-  //! Return a pointer of the child event at position index
+  //! Unregister an event which references this event.  
   /*!
-   * This function will return a pointer to the child event at position index
-   * \param index position of the child obejct
-   * \return pointer to the child event at position index
-   * \sa hasChilds pushChild popChild insertChild moveChild getChildCount
+   * Remove an event from the referrers list. This is used if either the referring event is
+   * deleted, converted to an absolute event or refers to another event.
+   * \return False if the event did not exist, true otherwise.
+   * \param newReferrer pointer to the event that should be added to the referrers list
+   * \sa unregisterReferrer
    */
-  // BUGBUG Event* getChild(size_t index);
+  bool unregisterReferrer(Event* newReferrer);
 
-  //! Get the pointer of the reference event
+  //! Get the pointer of the reference event.
   /*!
    * This function returns the pointer of the reference event or NULL if it has no reference event
    * \return A pointer the the reference event
-   * \sa hasreference setreference delreference
+   * \sa registerReferrer
    */
   Event* getReference();
 
-  //! Set the reference event
+  //! Set the reference event.
   /*!
    * The reference event to which the delay is relative to.
    * \param new_reference The pointer to the new reference event
@@ -141,4 +135,4 @@ private:
   vector<Event*> referrers;
 };
 
-#endif
+#endif /* _H_EVENT */

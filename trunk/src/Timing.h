@@ -33,6 +33,8 @@ using namespace std;
 #include "LayoutList.h"
 #include "Event.h"
 #include "EventList.h"
+#include <string>
+#include <EasyVec.h>
 
 //! The Timing Class is the toplevel class that contains the layout and the objects of a timing diagram.
 /*!
@@ -50,8 +52,11 @@ public:
   /// Paint Timing
   void paint();
 
+  ///Save the Timing Diagram
+  void save(string filename);
 private:
-  size_t TopLayout;
+  EasyVec    myEasyVec;
+  size_t     TopLayout;
   LayoutList myLayoutList;
   EventList  myEventList;
 };

@@ -36,5 +36,7 @@ int main (int ARGC, char **ARGV) {
 
   tim.paint();
 
+  tim.save("test.fig");
+
   return(0);
 }

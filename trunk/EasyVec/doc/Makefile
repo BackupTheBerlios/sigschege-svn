@@ -6,3 +6,7 @@ docu:
 
 clean:
 	rm -r html latex
+
+install:
+
+uninstall:

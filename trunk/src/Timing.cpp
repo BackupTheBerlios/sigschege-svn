@@ -39,3 +39,7 @@ Timing::~Timing() {
 void Timing::paint() {
   myLayoutList.getLayout(TopLayout)->paint();
 }
+
+void Timing::save(string filename) {
+  myEasyVec.save(filename);
+}

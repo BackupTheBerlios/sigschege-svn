@@ -195,6 +195,33 @@ void EventList::setCompound(EasyVecCompound *newCompound, EVPosInt newOrigin, EV
   compoundTimeEnd = timeEnd;
 }
 
+int EventList::vertPosFromState(State::drawStateType state, State::drawStateType newState, double percentageNew) {
+  int pos = cOrigin.ypos();
+  int height = cSize.ypos();
+  if (state==State::Zero) {
+    pos += height;
+    if (newState==State::One) {
+      pos -= static_cast<int>(percentageNew*height);
+    } else if (newState==State::Z) {
+      pos -= static_cast<int>(0.5*percentageNew*height);
+    }
+  } else if  (state==State::One) {
+    if (newState==State::Zero) {
+      pos += static_cast<int>(percentageNew*height);
+    } else if (newState==State::Z) {
+      pos += static_cast<int>(0.5*percentageNew*height);
+    }
+  } else {
+    pos += static_cast<int>(0.5*height);
+    if (newState==State::Zero) {
+      pos += static_cast<int>(0.5*percentageNew*height);
+    } else if (newState==State::One) {
+      pos += static_cast<int>(0.5*percentageNew*height);
+    }
+  }
+  return pos;
+}
+
 void EventList::paint(void) {
   if (evListCompound==0) return;
   sort(); // makes life easier... 
@@ -207,19 +234,31 @@ void EventList::paint(void) {
   vector< Handle<Event> >::iterator eventsIter;
   State newState;
   double eventStart, eventEnd;
-  int where = 0;
+  enum { before_visible, in_visible, after_visible } where;
   double compoundTimeDiff = compoundTimeEnd-compoundTimeStart;
   int startX, endX;
   bool partialStart;
 
-  int y0 = cOrigin.ypos()+cSize.ypos();
-  int y1 = cOrigin.ypos();    
+  int y0 = vertPosFromState(State::Zero);
+  int y1 = vertPosFromState(State::One);    
   int y0start, y0end, y1start, y1end; // variations of y0/y1 in case an event crosses start/end
 
+  where = before_visible;
   y0end = y0;
   y1end = y1;  
   
   double oldEndX = cOrigin.xpos();
+
+  if (events.size()==0) {
+    if (currentState==State::Zero || currentState==State::X || currentState==State::Named) {
+      sigline0 = evListCompound->polyline();
+      sigline0->addPoint(EVPosInt(cOrigin.xpos(), vertPosFromState(State::Zero)));
+    }
+    if (currentState==State::One || currentState==State::X || currentState==State::Named) {
+      sigline1 = evListCompound->polyline();
+      sigline1->addPoint(EVPosInt(cOrigin.xpos(), vertPosFromState(State::One)));
+    }
+  }
   
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
 
@@ -233,14 +272,14 @@ void EventList::paint(void) {
     endX = cOrigin.xpos()+static_cast<int>(static_cast<double>(cSize.xpos())
                                            * (eventEnd-compoundTimeStart)/(compoundTimeDiff));
     
-    if (where==1 || (where==0 && eventEnd>compoundTimeStart)) {
+    if (where==in_visible || (where==before_visible && eventEnd>compoundTimeStart)) {
       // we are in the visible area (2nd condition means we just entered)
 
       if (eventStart<compoundTimeStart) {
         // event crosses start of visible area
         startX = cOrigin.xpos();
-        y1start = static_cast<int>(cOrigin.ypos()+cSize.ypos()*(1.0-(eventEnd-compoundTimeStart)/(eventEnd-eventStart)));
-        y0start = static_cast<int>(cOrigin.ypos()+cSize.ypos()*(eventEnd-compoundTimeStart)/(eventEnd-eventStart));
+        y1start = static_cast<int>(vertPosFromState(State::One, State::Zero, (compoundTimeStart-eventStart)/(eventEnd-eventStart)));
+        y0start = static_cast<int>(vertPosFromState(State::Zero, State::One, (compoundTimeStart-eventStart)/(eventEnd-eventStart)));
         partialStart = true;
       } else {
         y0start=y0;
@@ -253,7 +292,7 @@ void EventList::paint(void) {
         endX = cOrigin.xpos()+cSize.xpos();
         y1end = static_cast<int>(cOrigin.ypos()+cSize.ypos()*(1.0-(compoundTimeEnd-eventStart)/(eventEnd-eventStart)));
         y0end = static_cast<int>(cOrigin.ypos()+cSize.ypos()*(compoundTimeEnd-eventStart)/(eventEnd-eventStart));
-        where = 2;
+        where = after_visible;
       } else {
         y0end=y0;
         y1end=y1;
@@ -263,7 +302,7 @@ void EventList::paint(void) {
         // 1->X and X->1 need a top2top line
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
-          if (where==0) {
+          if (where==before_visible) {
             sigline1->addPoint(EVPosInt(cOrigin.xpos(), y1));
           }
         }
@@ -280,7 +319,7 @@ void EventList::paint(void) {
         // 1->0, 1->X, X->X, X->0 need a top2bottom line
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
-          if (where==0 && !partialStart) {
+          if (where==before_visible && !partialStart) {
             sigline1->addPoint(EVPosInt(cOrigin.xpos(), y1start));
           }
         }
@@ -292,7 +331,7 @@ void EventList::paint(void) {
         // 0->X and X->0 need a bottom2bottom line
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
-          if (where==0) {
+          if (where==before_visible) {
             sigline0->addPoint(EVPosInt(cOrigin.xpos(), y0));
           }
         }
@@ -309,7 +348,7 @@ void EventList::paint(void) {
         // 0->1, 0->X, X->X and X->1 need a bottom2top line
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
-          if (where==0 && !partialStart) {
+          if (where==before_visible && !partialStart) {
             sigline0->addPoint(EVPosInt(cOrigin.xpos(), y0start));
           }
         }
@@ -327,16 +366,19 @@ void EventList::paint(void) {
         if (newState.isDrawState("0")) sigline1 = 0;
         else sigline0 = 0;
       }
-      if (namedEvents && (where==1 || eventEnd>compoundTimeEnd)) {
-        EasyVecText* label = evListCompound->text();
-        label->setOrigin(EVPosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/5));
-        label->setText(currentState.state());
-        label->setJustification(EasyVecText::center);
-        label->setSize(10);
+      if (namedEvents && (where==in_visible || eventEnd>compoundTimeEnd)) {
+        string stateText = currentState.getStateName();
+        if (stateText!="") {
+          EasyVecText* label = evListCompound->text();
+          label->setOrigin(EVPosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/5));
+          label->setText(stateText);
+          label->setJustification(EasyVecText::center);
+          label->setSize(10);
+        }
       }
       oldEndX = endX;
-      where = 1;
-    } else if (where == 0) {
+      where = in_visible;
+    } else if (where == before_visible) {
       // event before compound: just get its new state
       currentState = newState;
     }

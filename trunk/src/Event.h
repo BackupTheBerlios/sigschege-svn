@@ -52,7 +52,7 @@ public:
    * \param setReference A pointer to the reference event handle. If not given, event is absolute.
    * \param setSlopeTime The time for the transition from the old to the new state.
    */
-  Event(const State &setNewState = State("0"), double setEventDelay = 0.0,
+  Event(const State &setNewState = State(State::Zero), double setEventDelay = 0.0,
         const Handle<Event> *setReference = 0, double setSlopeTime = 0.0);
 
   

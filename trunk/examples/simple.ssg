@@ -2,7 +2,6 @@
 # $Id: $
 # first example timing diagram creation script for sigschege
 
-import TimingDiagram
 md = TimingDiagram.TimingDiagram()
 mclk=md.createSignal("clk")
 mdi=md.createSignal("dat_in")

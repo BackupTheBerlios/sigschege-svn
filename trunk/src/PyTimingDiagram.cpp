@@ -33,14 +33,12 @@ using namespace std;
 
 static PyObject* TimSignal_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
   TimSignalObject *self;
-  cout << "Whoa! SIGNAL NEW called!" << endl;
   self = (TimSignalObject *)type->tp_alloc(type, 0);
 
   return (PyObject *) self;
 }
 
 static int TimSignal_init(TimSignalObject *self, PyObject *args, PyObject *kwds) {
-  cout << "Whoa! SIGNAL INIT called!" << endl;
   //self->signal = new TimSignal();
   return (0);
 }
@@ -131,7 +129,6 @@ static PyObject* TimingDiagram_new(PyTypeObject *type, PyObject *args, PyObject 
 }
 
 static int TimingDiagram_init(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
-  cout << "Whoa! TimingDiagram INIT called!" << endl;
   self->tim = new TimingDiagram;
   self->tim->setWidth(10000);
   self->tim->setSliceSpace(50);

@@ -153,7 +153,11 @@ private:
   double compoundTimeStart, compoundTimeEnd;
   EVPosInt cOrigin, cSize;
   bool namedEvents;
-  double cDefaultSlope; 
+  double cDefaultSlope;
+
+  // internal helper function: calculate the position from the state (0, 1, Z)
+  int vertPosFromState(State::drawStateType state, State::drawStateType newState=State::Illegal, double percentageNew=0.0);
+
 };
 
 #endif /* _H_EVENTLIST */

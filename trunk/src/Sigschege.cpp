@@ -21,11 +21,13 @@
 //
 // #############################################################################
 //
-// $Id: TimingMain.cpp 67 2004-12-05 23:05:10Z suupkopp $
+// $Id$
 
 #include <Python.h>
 #include <stdio.h>
 #include "PyTimingDiagram.h"
+
+static PyObject *td_module;
 
 extern "C" {
 
@@ -105,12 +107,17 @@ int main (int ARGC, char **ARGV) {
   initspam();
   initsig();
   initTimingDiagram();
-  TimingDiagram_Module = PyImport_ImportModule("TimingDiagram");
-  if (TimingDiagram_Module==0) {
-    cerr << "Could not import TD" << endl;
-  } else {
-    PyImport_AddModule("TimingDiagram");
-  }
+  // TODO: why does importing from C++ not work???
+//   TimingDiagram_Module = PyImport_ImportModule("TimingDiagram");
+//   if (TimingDiagram_Module==0) {
+//     PyErr_Print();
+//   } else {
+//     //td_module = PyImport_AddModule("TimingDiagram");
+//     td_module = PyModule_GetDict(TimingDiagram_Module);
+//     initTimingDiagram();
+//     Py_INCREF(td_module);
+//   }
+  PyRun_SimpleString("import TimingDiagram");
   ret = Py_Main(ARGC, ARGV);
   
   Py_Finalize();

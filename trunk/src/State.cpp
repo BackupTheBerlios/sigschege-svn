@@ -27,14 +27,49 @@ using namespace std;
 
 #include <State.h>
 
-State::drawState State::getDrawState(void) {
-  if (mState=="0") return Zero;
-  else if (mState=="1") return One;
-  else return X;
+State::drawStateType State::string2state(const string stateString) {
+  if (stateString=="0") {
+    return Zero;
+  } else if (stateString=="1") {
+    return One;
+  } else if (stateString=="Z") {
+    return Z;
+  } else if (stateString=="Named") {
+    return Named;
+  } else {
+    return Illegal;
+  }
 }
 
-bool State::isDrawState(string state) {
-  string myState=mState;
-  if (myState!="1" && myState!="0") myState="X";
-  return myState==state;
+/*!
+  Rules: If one string is given, it can be one of the simple state names (0,1,X,Z) or
+  a bus value. If two strings are given, the first one must be a state name as a string
+  ("Named" for the Named state, actually every unknown string is mapped to Named now)
+  and the second contains the name.
+ */
+bool State::setStateByString(string stateString1, string stateString2) {
+  drawStateType newDrawState = string2state(stateString1);
+  string newStateName;
+  
+  if (stateString2=="") {
+    if (newDrawState==Illegal) {
+      newDrawState = Named;
+      newStateName = stateString1;
+    } else {
+      newStateName = "";
+    }
+  } else {
+    if (newDrawState==Illegal) {
+      newDrawState = Named;
+    }
+    newStateName = stateString2;
+  }
+  drawState = newDrawState;
+  stateName = newStateName;
+  return true;
 }
+
+bool State::isDrawState(string drawStateString) {
+  return string2state(drawStateString)==drawState;
+}
+

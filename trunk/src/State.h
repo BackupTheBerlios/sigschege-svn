@@ -40,39 +40,67 @@ class State {
  public:
 
   //! The possible states which can be drawn: top line, bottom line and both lines.
-  enum drawState {
+  enum drawStateType {
     Zero,
     One,
-    X
+    X,
+    Z,
+    Named,
+    Illegal
   };
 
   //! General and standard constructor.
-  State(string newState="0") {
-    mState=newState;
+  State(drawStateType newDrawState=Zero, string newStateName="") {
+    drawState = newDrawState;
+    stateName = newStateName;
   };
 
-  //! Set the state, or, if no argument is given, return the state.
-  string state(const string newState="") {
-    if (newState!="") {
-      mState=newState;
-    }
-    return mState;
+  //! General constructor from string
+  State(string stateString1, string stateString2="") {
+    setStateByString(stateString1, stateString2);
   };
+
+  
+  //! Set the new state
+  void setState(const drawStateType newDrawState=Zero, const string newStateName="") {
+    drawState = newDrawState;
+    stateName = newStateName;
+  };
+
+  bool setStateByString(string stateString1, string stateString2);
 
   //! Return the state to be drawn, will be Zero, One or X.
-  drawState getDrawState(void);
+  drawStateType getDrawState(void);
 
+  string getStateName(void) {
+    return stateName;
+  }
+  
   //! Check if drawState is the draw state from this object.
-  bool isDrawState(string drawState);
-    
+  bool isDrawState(string drawStateString);
+
+  bool operator==(const State::drawStateType state); 
+  
  private:
-  string mState;
+  string stateName;
+  drawStateType  drawState;
+
+  drawStateType string2state(const string stateString);
+  
+
 };
 
 inline ostream &operator<<(ostream& ostr, State outState) {
-  ostr << outState.state();
+  //  ostr << outState.getstate();
   return ostr;
 }
 
+inline State::drawStateType State::getDrawState(void) {
+  return drawState;
+}
+
+inline bool State::operator==(const State::drawStateType state) {
+  return state==drawState;
+}
 
 #endif /* _H_EVENTLIST */

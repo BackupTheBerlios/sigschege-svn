@@ -105,7 +105,9 @@ bool EasyVec::export_fig2dev(string language, string filename) {
   string tmpfigfile = filename + "_tmp.fig";
   string fig2dev_cmd = "fig2dev ";
   save(tmpfigfile);
-  fig2dev_cmd += "-L " + language + " -F " + tmpfigfile + " " + filename;
+  fig2dev_cmd += "-L " + language + (EasyVecElmText::fig2dev_fontfix()? " ": " -F ") + tmpfigfile + " " + filename;
+
+  cout << "Running: " << fig2dev_cmd << endl;
   
   int ret_stat = system(fig2dev_cmd.c_str());
 

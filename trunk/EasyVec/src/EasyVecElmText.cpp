@@ -174,7 +174,6 @@ void EasyVecElmText::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right)
   lower_right = elm_origin + EVPosInt(text_width, 0);
 }
 
-
 bool EasyVecElmText::setText(const string &new_text) {
   elm_text = new_text;
   updateDimensions();

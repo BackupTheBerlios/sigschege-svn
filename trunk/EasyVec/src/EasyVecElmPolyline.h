@@ -35,9 +35,10 @@
 
 using namespace std;
 
+/// An EasyVec polyline element - corresponds to fig element polyline (not box)
 class EasyVecElmPolyline : public EasyVecElm {
 public:
-  EasyVecElmPolyline();
+  /// general constructor with no extra arguments
   EasyVecElmPolyline(EasyVecElmCompound* parent_compound, EasyVec* figure_compound)
     : EasyVecElm(parent_compound, figure_compound) {};
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
@@ -47,9 +48,20 @@ public:
   vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(EasyVecView* view);
   virtual void saveElm(ofstream &fig_file);
+  /// Set the state of the forward arrow to new_state and return the old value.
+  bool forward_arrow(bool new_state);
+  /// Return the current state of the forward arrow
+  bool forward_arrow(void);
+  /// Set the state of the backward arrow to new_state and return the old value.
+  bool backward_arrow(bool new_state);
+  /// Return the current state of the backward arrow
+  bool backward_arrow(void);
+  /// Return the type of an element - values are from enum EasyVecElm::Type
+  virtual EasyVecElm::Type type(void) { return Polyline; };
 
 private:
   vector<EVPosInt> points;
+  bool elm_forward_arrow, elm_backward_arrow;
 };
 
 #endif /* _EASYVECELMPOLYLINE_H */

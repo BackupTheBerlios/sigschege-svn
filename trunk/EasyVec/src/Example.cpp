@@ -31,7 +31,54 @@
 #include <vector>
 
 using namespace std;
+
+void test_a(void) {
+  EasyVec pic1, pic2;
+
+  EasyVecElmBox *framebox1 = pic1.box(EVPosInt(120, 120), EVPosInt(6000-120, 6000-120));
+  EasyVecElmBox *framebox2 = pic1.box(EVPosInt(240, 240), EVPosInt(6000-240, 6000-240));
+
+  //EasyVecElmText *ctxt = pic1.text(EVPosInt(0, 0), "A centered Text");
+  EasyVecElmText *ctxt = pic1.text();
+  ctxt->setText("A centered Text");
+  ctxt->setSize(16);
+  int width = ctxt->getWidth();
+  ctxt->setOrigin(EVPosInt(3000-width/2, 2000));
+
+
+  pic2 = pic1;
+
+  vector<EasyVecElm*> texts = pic2.flatList();
+
+  vector<EasyVecElm*>::iterator fiter = texts.begin(); 
+  while (fiter!=texts.end()) {
+    if ((*fiter)->type() != EasyVecElm::Text) {
+      fiter = texts.erase(fiter);
+    } else fiter++;
+  }
+
+  EasyVecElm *text_g;
+  EasyVecElmText *text;
+  if (texts.size()==1) {
+    cout << "OK, 1 text found..." << endl;
+    text = dynamic_cast<EasyVecElmText*>(texts[0]);
+    text->setText("A new text for figure 2");
+  }
+
+  
+  pic1.export_fig2dev("eps", "test_a_pic1_a.eps");
+  pic2.export_fig2dev("eps", "test_a_pic2_a.eps");
+  
+}
+
+
+
 int main(void) {
+
+  EasyVecElmText::fig2dev_fontfix(true);
+  
+  test_a();
+
   EVPosInt Schortens, Dortmund;
   EVPosInt Prag(8700, 8000);
 
@@ -72,6 +119,7 @@ int main(void) {
   line3->add_point(Schortens);
   line3->add_point(Dortmund);
   line3->pen_color(4);
+  line3->forward_arrow(true);
 
   mypic.save("example.fig");
   

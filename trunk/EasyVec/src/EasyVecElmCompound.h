@@ -49,12 +49,14 @@ using namespace std;
  */
 class EasyVecElmCompound : public EasyVecElm {
 public:
-  /// Standard constructor - is it useful at all???
-  EasyVecElmCompound();
-  /// General constructor which accepts the parent compound and the figure compound (figure)
+  /// Standard constructor - needed by derived EasyVec class
+  EasyVecElmCompound() {};
+  /// General constructor which accepts the parent compound and the figure compound
   EasyVecElmCompound(EasyVecElmCompound* parent_compound, EasyVec* figure_compound)
     : EasyVecElm(parent_compound, figure_compound) {};
 
+  //virtual EasyVecElmCompound& operator=(const EasyVecElmCompound& right);
+  
   /// Create a polyline (class EasyVecElmPolyline), points must be added later
   EasyVecElmPolyline* polyline();
   /// Create a box (class EasyVecElmBox)
@@ -71,6 +73,9 @@ public:
   virtual void handle_change(EasyVecElm*);
   virtual void saveElm(ofstream &fig_file);
   void save_content(ofstream &fig_file);
+
+  /// Return the type of an element - values are from enum EasyVecElm::Type
+  virtual EasyVecElm::Type type(void) { return Compound; };
 
 protected:
   vector<EasyVecElm*> members;

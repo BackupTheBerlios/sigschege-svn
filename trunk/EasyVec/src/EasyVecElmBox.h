@@ -62,6 +62,9 @@ public:
   /// save element into a fig file
   virtual void saveElm(ofstream &fig_file);
 
+  /// Return the type of an element - values are from enum EasyVecElm::Type
+  virtual EasyVecElm::Type type(void) { return Box; };
+
 private:
   EVPosInt elm_upper_left, elm_lower_right;
 };

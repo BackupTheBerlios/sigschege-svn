@@ -44,7 +44,12 @@ class EasyVecElmText : public EasyVecElm {
 public:
   EasyVecElmText();
   EasyVecElmText(EasyVecElmCompound* parent_compound, EasyVec* figure_compound);
+  /// Place the edges of the bounding box in upper_left/lower_right.
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
+  /// Return the width of the text.
+  int getWidth(void) { return text_width; }
+  /// Return the height of the text.
+  int getHeight(void) { return text_height; }
   vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(EasyVecView* view);
   virtual void saveElm(ofstream &fig_file);
@@ -62,9 +67,13 @@ public:
    * This fixes a bug concerning font sizes for transfig/fig2dev for versions before 3.2.5. Instead
    * of the default dpi size of 1200 a dpi value of 1080 was used just for text.
    */
-  void fig2dev_fontfix(bool needed) {
+  static void fig2dev_fontfix(bool needed) {
     fix_fig2dev_quirk = needed;
-  };  
+  };
+  static bool fig2dev_fontfix(void) { return fix_fig2dev_quirk; }
+  
+  /// Return the type of an element - values are from enum EasyVecElm::Type
+  virtual EasyVecElm::Type type(void) { return Text; };
 
 private:
   EVPosInt elm_origin;

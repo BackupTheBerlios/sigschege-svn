@@ -35,16 +35,6 @@ class EasyVecElmCompound;
 
 using namespace std;
 
-enum EasyVecElmType {
-  ColorPseudo,
-  Ellipse,
-  Polyline,
-  Spline,
-  Text,
-  Arc,
-  Compound
-};
-
 
 /// An EasyVec Element - abstract base class for all EasyVec elements (compound, polyline, text,...)
 class EasyVecElm {
@@ -55,6 +45,17 @@ public:
   // do we need a copy constructor?
   // destructor
   virtual ~EasyVecElm();
+
+  enum Type {
+    ColorPseudo,
+    Ellipse,
+    Polyline,
+    Box,
+    Spline,
+    Text,
+    Arc,
+    Compound
+  };
 
   /// Return the bounding box in upper_left/lower_right
   /*!
@@ -67,6 +68,8 @@ public:
   virtual void draw(EasyVecView* view) = 0;
   /// Save this element into the given output file stream.
   virtual void saveElm(ofstream &fig_file) = 0;
+  /// Return the type of an element - values are from enum EasyVecElm::Type
+  virtual EasyVecElm::Type type(void) = 0;
 
   int pen_color(void);
   bool pen_color(int new_color);
@@ -74,7 +77,7 @@ public:
   bool fill_color(int new_color);
   int depth(void);
   bool depth(int new_depth);
-  
+
 protected:
   EasyVecElmCompound *parent; // needed to inform the owner about change events
   EasyVec *figure; // needed to access global picture states

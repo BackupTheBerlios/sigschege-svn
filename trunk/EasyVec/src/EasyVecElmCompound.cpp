@@ -31,9 +31,6 @@
 #include <iostream>
 
 
-EasyVecElmCompound::EasyVecElmCompound() {
-  
-}
 
 EasyVecElmPolyline* EasyVecElmCompound::polyline() {
   EasyVecElmPolyline* new_polyline = new EasyVecElmPolyline(static_cast<EasyVecElmCompound*>(this), figure);

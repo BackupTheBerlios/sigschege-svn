@@ -62,8 +62,8 @@ private:
   FT_Face face;
   int text_height, text_width; // cache information to reduce cpu effort
 
-  bool init_EasyVecElmText();
-  void update_dimensions(); // must be called by all methods which change text size!
+  bool initEasyVecElmText();
+  void updateDimensions(); // must be called by all methods which change text size!
 
   const static bool fix_fig2dev_quirk = true;
 };

@@ -1,2 +1,2 @@
-bin_PROGRAMS = timing_main
-timing_main_SOURCES = config.h event.h eventlist.cpp layout.cpp layoutlist.h object.cpp objectlist.cpp timing.cpp timing_main.cpp event.cpp  eventlist.h layout.h layoutlist.cpp object.h objectlist.h timing.h
+bin_PROGRAMS = TimingMain
+TimingMain_SOURCES = config.h Event.h EventList.cpp Layout.cpp LayoutList.h Object.cpp ObjectList.cpp Timing.cpp TimingMain.cpp Event.cpp EventList.h Layout.h LayoutList.cpp Object.h ObjectList.h Timing.h

@@ -30,7 +30,7 @@
 using namespace std;
 
 #include "Object.h"
-#include "../EasyVec/src/EVPosInt.h"
+#include <EVPosInt.h>
 
 enum LayoutID {BASIC};
 

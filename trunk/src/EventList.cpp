@@ -29,8 +29,8 @@ using namespace std;
 #include <EasyVecText.h>
 #include "EventList.h"
 #include "Handle.t"
-#include<algorithm>
-#include<iostream>
+#include <algorithm>
+#include <iostream>
 
 EventList::EventList(double defaultSlope)
   : events(), initialState(new Event), cDefaultSlope(defaultSlope)

@@ -101,9 +101,9 @@ EVPosInt EasyVecText::drawOrCalc(EasyVecView* view, bool noUpdate) {
   newWidth = newHeight = 0;
   
   if (view) {
-    resolution = figure->get_screen_dpi();    
+    resolution = figure->getScreenDpi();    
   } else {
-    resolution = figure->get_file_dpi();
+    resolution = figure->getFileDPi();
     if (fix_fig2dev_quirk) {
       resolution *= 9;
       resolution /= 10;
@@ -137,7 +137,7 @@ EVPosInt EasyVecText::drawOrCalc(EasyVecView* view, bool noUpdate) {
     if (view) {
       FT_Bitmap cbitmap;
       cbitmap = glyph->bitmap;
-      view->draw_char(char_origin-EVPosInt(0, glyph->bitmap_top), cbitmap.rows, cbitmap.width, cbitmap.pitch,
+      view->drawChar(char_origin-EVPosInt(0, glyph->bitmap_top), cbitmap.rows, cbitmap.width, cbitmap.pitch,
                       cbitmap.buffer, elmPenColor);
       char_origin = char_origin+EVPosInt(glyph->metrics.horiAdvance/64+kerning.x, 0);
     }

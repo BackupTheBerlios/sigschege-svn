@@ -44,7 +44,7 @@ public:
     void OnQuit(wxCommandEvent& event);
 
     void add_pline_point(wxCommandEvent& event);
-    void toggle_screen_dpi(wxCommandEvent& event);
+    void toggleScreenDpi(wxCommandEvent& event);
     void save(wxCommandEvent& event);
     void TestNotebookSizers(wxCommandEvent& event);
     void About(wxCommandEvent& event);

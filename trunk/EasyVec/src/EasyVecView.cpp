@@ -27,11 +27,11 @@
 #include "EasyVecFigure.h"
 
 EasyVecView::EasyVecView(EasyVecFigure *picture) {
-  picture->register_view(this);
+  picture->registerView(this);
   mypicture = picture;
 };
 
 
 EasyVecView::~EasyVecView() {
-  mypicture->unregister_view(this);
+  mypicture->unregisterView(this);
 };

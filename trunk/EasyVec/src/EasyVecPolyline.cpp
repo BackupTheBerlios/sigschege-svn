@@ -53,7 +53,7 @@ void EasyVecPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right
 void EasyVecPolyline::addPoint(EVPosInt new_point) {
   points.push_back(new_point);
 //  cout << "Adding point " << new_point.xpos() << ":" << new_point.ypos() << endl;
-  parent->handle_change(this);
+  parent->handleChange(this);
 }
 
 void EasyVecPolyline::addPoints(vector<EVPosInt> new_points) {
@@ -65,8 +65,6 @@ void EasyVecPolyline::addPoints(vector<EVPosInt> new_points) {
 
 void EasyVecPolyline::draw(EasyVecView* view) {
   int xscale;
-  EasyVecFigure *testptr;
-  testptr->scale();
   xscale = figure->scale();
   vector<EVPosInt>::iterator points_iter1, points_iter2;
   points_iter1 = points.begin();
@@ -74,7 +72,7 @@ void EasyVecPolyline::draw(EasyVecView* view) {
   points_iter2 = points_iter1;
   points_iter2++;
   while (points_iter2 != points.end()) {
-    view->draw_line((*points_iter1)/xscale, (*points_iter2)/xscale, elmPenColor);
+    view->drawLine((*points_iter1)/xscale, (*points_iter2)/xscale, elmPenColor);
     points_iter1 = points_iter2;
     ++points_iter2;
   }

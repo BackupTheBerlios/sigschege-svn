@@ -41,8 +41,8 @@ class EasyVecView {
 public:
   EasyVecView(EasyVecFigure *picture);
   virtual ~EasyVecView();
-  virtual void draw_line(EVPosInt from, EVPosInt to, int color) = 0;
-  virtual void draw_char(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
+  virtual void drawLine(EVPosInt from, EVPosInt to, int color) = 0;
+  virtual void drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
   virtual void clear(void) = 0;
 
 protected:

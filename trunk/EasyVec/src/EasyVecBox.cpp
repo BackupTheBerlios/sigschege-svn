@@ -53,10 +53,10 @@ void EasyVecBox::draw(EasyVecView* view) {
   ur = EVPosInt(lr.xpos(), ul.ypos());
   ll = EVPosInt(ul.xpos(), lr.ypos());
   
-  view->draw_line(ul, ur, elmPenColor);
-  view->draw_line(ur, lr, elmPenColor);
-  view->draw_line(lr, ll, elmPenColor);
-  view->draw_line(ll, ul, elmPenColor);
+  view->drawLine(ul, ur, elmPenColor);
+  view->drawLine(ur, lr, elmPenColor);
+  view->drawLine(lr, ll, elmPenColor);
+  view->drawLine(ll, ul, elmPenColor);
 
 }
 

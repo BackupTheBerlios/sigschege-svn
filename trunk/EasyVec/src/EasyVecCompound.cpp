@@ -145,8 +145,8 @@ EasyVecCompound& EasyVecCompound::operator=(EasyVecCompound& source) {
 }
 
 
-void EasyVecCompound::handle_change(EasyVecElm* changed_element) {
-  if (parent != 0) parent->handle_change(changed_element);
+void EasyVecCompound::handleChange(EasyVecElm* changed_element) {
+  if (parent != 0) parent->handleChange(changed_element);
 }
 
 

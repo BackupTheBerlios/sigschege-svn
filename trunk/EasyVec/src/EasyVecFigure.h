@@ -47,25 +47,25 @@ class EasyVecFigure : public EasyVecCompound {
 public:
   // constructor
   EasyVecFigure();
-  void draw_view(EasyVecView* view);
+  void drawView(EasyVecView* view);
   // do we need a copy constructor?
-  virtual void handle_change(EasyVecElm*);
+  virtual void handleChange(EasyVecElm*);
   /// Register a view showing this figure
-  void register_view(EasyVecView* view) { views.push_back(view); }
+  void registerView(EasyVecView* view) { views.push_back(view); }
   /// 
-  void unregister_view(EasyVecView* view);
-  bool set_screen_dpi(int new_screen_dpi);
+  void unregisterView(EasyVecView* view);
+  bool setScreenDpi(int newScreenDpi);
   /// Set the screen resolution in dpi
-  int get_screen_dpi(void) { return screen_dpi; };
+  int getScreenDpi(void) { return screen_dpi; };
   /// Set the file resolution - should not be used (see file_dpi variable)
-  int get_file_dpi(void) { return file_dpi; };
+  int getFileDPi(void) { return file_dpi; };
   /// Return the scaling factor file_dpi/screen_dpi
   int scale(void) { return scale_fact; }
-  void build_views(void);
+  void buildViews(void);
   /// Save the figure in the fig file 'filename'.
   bool save(string filename);
   /// Directly export into a foreign format.
-  bool export_fig2dev(string language, string filename);
+  bool exportFig2dev(string language, string filename);
   EasyVecFigure& operator=(EasyVecFigure& source);
 
 private:
@@ -86,6 +86,14 @@ private:
   /// Resolutions for screen and file and the scaling factor between both
   int screen_dpi;
   int scale_fact;
+
+  void sortMembersByDepth(void);
+  struct membersDepthCmp {
+    bool operator()(EasyVecElm *x, EasyVecElm *y) {
+      return x->depth()>y->depth();
+    }
+  };
+  
 };
 
 #endif /* _EASYVEC_H */

@@ -30,7 +30,7 @@ EasyVecElm::EasyVecElm(void) {
   parent = 0;
   elmPenColor = 0;
   elmFillColor = 0;
-  elm_depth = 0;
+  elm_depth = 50;
 };
 
 

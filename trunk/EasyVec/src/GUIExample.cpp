@@ -116,7 +116,8 @@ bool MyApp::OnInit()
   nline->addPoint(1500, 1500);
   nline->addPoint(300, 1500);
   nline->addPoint(3300, 1500);
-
+  nline->addPoint(1720, 60);
+  nline->depth(66);
   mainline = nline;
   mainpic = ev_pic;
   
@@ -134,7 +135,9 @@ bool MyApp::OnInit()
   EasyVecText *ntext;
   ntext = ev_pic->text();
   ntext->setText("This is an EasyVec Demo");
-
+  ntext->pen_color(2);
+  ntext->setOrigin(EVPosInt(300, 1000));
+  ntext->depth(55);
   EVPosInt ul, lr;
   //ntext->getBoundingBox(ul, lr); TODO
   //cout << ul << ":" << lr << endl;
@@ -173,7 +176,7 @@ MyFrame::MyFrame(wxFrame *frame, const wxChar *title, int x, int y, int w, int h
 BEGIN_EVENT_TABLE(MyFrame, wxFrame)
   EVT_MENU(LAYOUT_QUIT, MyFrame::OnQuit)
   EVT_MENU(LAYOUT_ADD_PLINE_POINT, MyFrame::add_pline_point)
-  EVT_MENU(LAYOUT_TOGGLE_SCREENDPI, MyFrame::toggle_screen_dpi)
+  EVT_MENU(LAYOUT_TOGGLE_SCREENDPI, MyFrame::toggleScreenDpi)
   EVT_MENU(LAYOUT_SAVE, MyFrame::save)
 END_EVENT_TABLE()
 
@@ -182,9 +185,9 @@ void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event) )
   Close(TRUE);
 }
 
-void MyFrame::toggle_screen_dpi(wxCommandEvent& event) {
-  if (mainpic->get_screen_dpi()==80) mainpic->set_screen_dpi(160);
-  else  mainpic->set_screen_dpi(80);
+void MyFrame::toggleScreenDpi(wxCommandEvent& event) {
+  if (mainpic->getScreenDpi()==80) mainpic->setScreenDpi(160);
+  else  mainpic->setScreenDpi(80);
 }
 
 void MyFrame::save(wxCommandEvent& event) {

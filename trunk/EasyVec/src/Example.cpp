@@ -99,8 +99,8 @@ void test_a(void) {
   cplines[9]->lineStyle(EasyVecLine::dash_triple_dotted);
 
   pic2.save("test_a_pic2_a.fig");
-  pic1.export_fig2dev("eps", "test_a_pic1_a.eps");
-  pic2.export_fig2dev("eps", "test_a_pic2_a.eps");
+  pic1.exportFig2dev("eps", "test_a_pic1_a.eps");
+  pic2.exportFig2dev("eps", "test_a_pic2_a.eps");
   
 }
 
@@ -223,6 +223,6 @@ int main(void) {
   mypic.save("example_text.fig");
 
 
-  mypic.export_fig2dev("eps", "example_text.eps");
+  mypic.exportFig2dev("eps", "example_text.eps");
   
 }

@@ -44,7 +44,7 @@ EasyVecVwx::EasyVecVwx(EasyVecFigure *picture, wxFrame *frame, int x, int y, int
 }
 
 
-void EasyVecVwx::draw_line(EVPosInt from, EVPosInt to, int color) {
+void EasyVecVwx::drawLine(EVPosInt from, EVPosInt to, int color) {
   cout << "DrawLine: " << from << ":" << to << endl;
   wxPaintDC dc(this);
   wxColour wxMyColour(easyvec_std_colors[color][0], easyvec_std_colors[color][1], easyvec_std_colors[color][2]);
@@ -54,7 +54,7 @@ void EasyVecVwx::draw_line(EVPosInt from, EVPosInt to, int color) {
   Refresh();
 }
 
-void EasyVecVwx::draw_char(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
+void EasyVecVwx::drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
   int x,y, bit_no, bit_val;
   char bb;
   wxPaintDC dc(this);
@@ -94,5 +94,5 @@ void EasyVecVwx::OnPaint(wxPaintEvent& WXUNUSED(event) )
   dc.SetPen(*wxWHITE_PEN);
   dc.SetBrush(*wxWHITE_BRUSH);
   //dc.DrawRectangle()
-  mypicture->draw_view(this);
+  mypicture->drawView(this);
 }

@@ -28,6 +28,7 @@
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
+#include <algorithm>
 
 
 
@@ -39,41 +40,43 @@ EasyVecFigure::EasyVecFigure() : EasyVecCompound() {
   auto_update = false;
   members_flat_valid = false;
   file_dpi = 1200;
-  set_screen_dpi(80);
+  setScreenDpi(80);
   figure = this;
 }
 
-bool EasyVecFigure::set_screen_dpi(int new_screen_dpi) {
-  if (new_screen_dpi>0) {
-    screen_dpi = new_screen_dpi;
+bool EasyVecFigure::setScreenDpi(int newScreenDpi) {
+  if (newScreenDpi>0) {
+    screen_dpi = newScreenDpi;
     scale_fact = file_dpi/screen_dpi;
-    handle_change(0);
+    handleChange(0);
     return true;
   } else return false;
 }
 
-void EasyVecFigure::build_views(void) {
+void EasyVecFigure::buildViews(void) {
   for (vector<EasyVecView*>::iterator views_iter = views.begin();
        views_iter != views.end(); views_iter++) {
     (*views_iter)->clear();
-    draw_view(*views_iter);
+    drawView(*views_iter);
   }
 }
 
-void EasyVecFigure::draw_view(EasyVecView* view) {
+void EasyVecFigure::drawView(EasyVecView* view) {
   members_flat = flatList();
+  sortMembersByDepth();
+  cout << "========================================";
   members_flat_valid = true;
   vector<EasyVecElm*>::iterator members_iter;
-  for ( members_iter = members.begin(); members_iter != members.end(); ++members_iter ) {
+  for ( members_iter = members_flat.begin(); members_iter != members_flat.end(); ++members_iter ) {
     (*members_iter)->draw(view);
   }
 }
 
-void EasyVecFigure::handle_change(EasyVecElm* changed_element) {
-  build_views();
+void EasyVecFigure::handleChange(EasyVecElm* changed_element) {
+  buildViews();
 }
 
-void EasyVecFigure::unregister_view(EasyVecView* view) {
+void EasyVecFigure::unregisterView(EasyVecView* view) {
   vector<EasyVecView*>::iterator views_iter = views.begin();
   while (views_iter != views.end()) {
     if (*views_iter == view) {
@@ -89,7 +92,7 @@ EasyVecFigure& EasyVecFigure::operator=(EasyVecFigure& source) {
   file_dpi = source.file_dpi;
   screen_dpi = source.screen_dpi;
   members_flat_valid = false;
-  build_views();
+  buildViews();
   return *this;
 }
 
@@ -109,7 +112,7 @@ bool EasyVecFigure::save(string filename) {
   return true;
 }
 
-bool EasyVecFigure::export_fig2dev(string language, string filename) {
+bool EasyVecFigure::exportFig2dev(string language, string filename) {
   string tmpfigfile = filename + "_tmp.fig";
   string fig2dev_cmd = "fig2dev ";
   save(tmpfigfile);
@@ -124,4 +127,8 @@ bool EasyVecFigure::export_fig2dev(string language, string filename) {
   system(fig2dev_cmd.c_str());
 
   return ret_stat==0;
+}
+
+void EasyVecFigure::sortMembersByDepth(void) {
+  ::sort(members_flat.begin(), members_flat.end(), membersDepthCmp());
 }

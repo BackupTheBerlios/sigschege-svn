@@ -70,7 +70,7 @@ public:
   /// return all elements of this compound as a flat list
   virtual vector<EasyVecElm*> flatList();
   virtual void draw(EasyVecView* view) {};
-  virtual void handle_change(EasyVecElm*);
+  virtual void handleChange(EasyVecElm*);
   virtual void saveElm(ofstream &fig_file);
   void save_content(ofstream &fig_file);
   void copy_members(EasyVecCompound& source);

@@ -11,5 +11,5 @@ $Id: $
 * Implement state functionality in Event class
   => assigned to Ulf
 
-* EventList: How should the initial state be set? pseudo-event?
-
+* Event class: constructor with arguments, 
+  absolutify function (remove reference but keep absolute time)

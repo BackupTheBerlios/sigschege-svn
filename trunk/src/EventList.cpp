@@ -25,12 +25,14 @@
 
 using namespace std;
 
+#include <EasyVecElmPolyline.h>
+#include <EasyVecElmPolyline.h>
 #include "EventList.h"
 #include "Handle.t"
 #include<algorithm>
 #include<iostream>
 
-EventList::EventList() : events() {
+EventList::EventList() : events(), initialState(new Event) {
 }
 
 EventList::~EventList() {
@@ -88,7 +90,6 @@ Handle<Event> EventList::getEventAfter(double evTime) {
       return *eventsIter;
     }
   }
-  
   return Handle<Event>(0);
 }
 
@@ -102,3 +103,34 @@ void EventList::debugEvents(void) {
   }
   cout << "===== EVENT LIST STOP" << endl;
 }
+
+void EventList::setCompound(EasyVecElmCompound *newCompound, int xOffset, int yOffset,
+                            int width, int height, double timeStart, double timeEnd) {
+  evListCompound = newCompound;
+  compoundXOffset = xOffset;
+  compoundYOffset = yOffset;
+  compoundWidth = width;
+  compoundHeight = height;
+  compoundTimeStart = timeStart;
+  compoundTimeEnd = timeEnd;
+}
+
+void EventList::paint(void) {
+  if (evListCompound==0) return;
+  EasyVecElmPolyline *sigline = evListCompound->polyline();
+  string currentState = initialState->getNewState();
+  int xCoord;
+  vector< Handle<Event> >::iterator eventsIter;
+
+  sigline->add_point(EVPosInt(compoundXOffset, (currentState==string("1")) ? 0 : compoundHeight));
+  for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
+    xCoord = compoundXOffset +
+      static_cast<int>(static_cast<double>(compoundWidth) * (eventsIter->Object()->getTime()-compoundTimeStart)
+                       /(compoundTimeEnd-compoundTimeStart));
+    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? 0 : compoundHeight));
+    currentState = eventsIter->Object()->getNewState();
+    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? 0 : compoundHeight));
+  }
+  sigline->add_point(EVPosInt(compoundXOffset+compoundWidth, (currentState==string("1")) ? 0 : compoundHeight));
+}
+

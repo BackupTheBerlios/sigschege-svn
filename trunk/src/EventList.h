@@ -73,6 +73,7 @@ class EventList {
    */
   Handle<Event> createEvent(Handle<Event> &refEvent, double eventDelay, string eventNewState);
   
+
   //! Delete an Events
   /*! 
    * This function will destroy the given event 
@@ -95,19 +96,40 @@ class EventList {
   //! A function for debugging the event list - not for general use! 
   void debugEvents(void);
 
+  //! Set the initial state of the EventList.
+  /*!
+   * The initial state is the value used before the first actual event.
+   */
+  void setInitialState(string newInitialState) {
+    initialState->setNewState(newInitialState);
+  }
+
+  
   //! Set the compound to which the signal is drawn.
   /*!
    * 
    * \param newCompound  A pointer to the new compound.
    * \param xOffset The horizontal offset of the compound in the figure. 
    * \param yOffset The vertical offset of the compound in the figure. 
-   * \param 
+   * \param width  The width of the signal compound in figure units
+   * \param height  The height of the signal compound in figure units
+   * \param timeStart The start time of the signal 
+   * \param timeEnd   The end time of the signal 
    */
-  void setCompound(EasyVecElmCompound *newCompound, int xOffset, int yOffset); //TODO
+  void setCompound(EasyVecElmCompound *newCompound, int xOffset, int yOffset, int width, int height,
+                   double timeStart, double timeEnd);
+
+  //! Paint the signal into the compound
+  void paint(void);
   
 private:
   vector< Handle<Event> > events;
+  // pseudo event to define initial state - no reference event, no time/delay (time is "-infinity")
+  Handle<Event> initialState; 
   EasyVecElmCompound *evListCompound;
+  int compoundXOffset, compoundYOffset;
+  int compoundWidth, compoundHeight;
+  double compoundTimeStart, compoundTimeEnd;
 };
 
 #endif /* _H_EVENTLIST */

@@ -88,6 +88,10 @@ void event(void) {
   never_true = ev2->setReference(ev2);
   never_true = never_true || ev1->setReference(ev3);
 
+  ev1->setNewState("1");
+  ev2->setNewState("0");
+  ev3->setNewState("1");
+  
   if (always_true && (!never_true)) {
     cout << "Fine! Loop breaking worked" << endl; 
   } else {
@@ -98,7 +102,17 @@ void event(void) {
   cout << "Time of event2: " << ev2->getTime() << endl;
   cout << "Time of event3: " << ev3->getTime() << endl;
   cout << "First event after 105: " << (mainList.getEventAfter(105))->getTime() << endl << endl;
+  
   mainList.debugEvents();
+
+  EasyVec myDiag;
+
+  EasyVecElmCompound *sig1cmp =  myDiag.compound();
+
+  mainList.setCompound(sig1cmp, 1000, 1000, 5000, 1000, 0.0, 222.0);
+  mainList.paint();
+  myDiag.export_fig2dev("eps", "example_signal.eps");
+  
   return;
 }
 

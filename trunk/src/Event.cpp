@@ -31,6 +31,7 @@ using namespace std;
 Event::Event() {
   EventDelay = 0;
   EventTime  = 0;
+  newState = "0";
 }
 
 Event::~Event(){

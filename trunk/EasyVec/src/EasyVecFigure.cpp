@@ -71,7 +71,6 @@ void EasyVecFigure::drawView(EasyVecView* view) {
   if (!noViewUpdate) {
     members_flat = flatList();
     sortMembersByDepth();
-    cout << "========================================" << endl;
     members_flat_valid = true;
     vector<EasyVecElm*>::iterator members_iter;
     for ( members_iter = members_flat.begin(); members_iter != members_flat.end(); ++members_iter ) {

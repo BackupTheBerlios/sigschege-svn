@@ -274,15 +274,18 @@ void MyFrame::toggleArrows(wxCommandEvent& event) {
     for (int i=900; i<8000; i+=499) {
       aline = mainpic->polyline();
       aline->addPoint(i, 200);
-      aline->addPoint(4000, 3000);
-      aline->addPoint(8500-i, 5000);
+      aline->addPoint(4000, 2000);
+      aline->addPoint(8500-i, 3000);
       aline->lineStyle(EasyVecLine::solid);
       aline->styleValue(8.0);
+      aline->lineThickness(1+(i&3));
       if ((i&1)==1) aline->forwardArrow(true);
       if ((i&1)==1) aline->penColor(3);
       if ((i&2)==2) aline->backwardArrow(true);
-      aline->backwardArrowType(i&3);
-      aline->forwardArrowType((i+1)&3);
+      aline->backwardArrowType(3);
+      aline->forwardArrowType(EasyVecArrow::closed_indented_butt);
+      aline->forwardArrowSize(1.0, 100.0, 250.0);
+      aline->forwardArrowSize(1.0, 50.0, 250.0);
       alines.push_back(aline);
     }
   } else {

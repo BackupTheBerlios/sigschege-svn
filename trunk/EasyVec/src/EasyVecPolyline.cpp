@@ -64,24 +64,23 @@ void EasyVecPolyline::addPoints(vector<EVPosInt> new_points) {
 }
 
 void EasyVecPolyline::draw(EasyVecView* view) {
-  int xscale = figure->scale();
-  double styleLength = elmStyleValue*15/xscale;
+  double styleLength = elmStyleValue*15;
   vector<EVPosInt>::iterator points_iter1, points_iter2;
   EVPosInt oldPoint;
   points_iter1 = points.begin();
   if (points_iter1==points.end()) return;
   points_iter2 = points_iter1;
   points_iter2++;
-  if (elmArrow[0] && points_iter2 != points.end()) 
-    view->drawArrow((*points_iter1)/xscale, (*points_iter2)/xscale, elmPenColor, elmArrowType[0], elmArrowStyle[0]);
+  if (backwardArrow() && points_iter2 != points.end()) 
+    view->drawArrow((*points_iter1), (*points_iter2), elmPenColor, elmArrows[1]);
   while (points_iter2 != points.end()) {
-    view->drawLine((*points_iter1)/xscale, (*points_iter2)/xscale, elmPenColor, elmLineStyle, styleLength);
+    view->drawLine((*points_iter1), (*points_iter2), elmThickness, elmPenColor, elmLineStyle, styleLength);
     oldPoint = *points_iter1;
     points_iter1 = points_iter2;
     ++points_iter2;
   }
-  if (elmArrow[1] && points.size()>1) 
-    view->drawArrow((*points_iter1)/xscale, oldPoint/xscale, elmPenColor, elmArrowType[0], elmArrowStyle[0]);
+  if (forwardArrow() && points.size()>1) 
+    view->drawArrow((*points_iter1), oldPoint, elmPenColor, elmArrows[0]);
 }
 
 

@@ -37,20 +37,31 @@ class EasyVecFigure;
 /// An abstract class for creating views for the EasyVecFigure class.
 /*!
  * View classes for the EasyVecFigure class must (well, should) be derived from this
- * class and must implement the purely virtual member functions.
+ * class and must implement the purely virtual member functions. An existing view class
+ * exists for the wx Widgets library (EasyVecVwx). For creating a new view class this can
+ * also be used as an example.
  */
 class EasyVecView {
 public:
+  /// The constructor (register this view in the figure).
   EasyVecView(EasyVecFigure *picture);
+  /// The destructor (unregister this view from the figure).
   virtual ~EasyVecView();
-  /// Draw a single line to the view. Used by Polyline, Box and others. 
-  virtual void drawLine(EVPosInt from, EVPosInt to, int color, int lineStyle, double styleLength) = 0;
+  /// Draw a single line to the view. Used by Polyline, Box and others.
+  /*! 
+   * \param from Startpoint of the line.
+   * \param to   Endpoint of the line.
+   * \param color Pen color of the line.
+   * \param lineStyle The line style (solid, dashed, dotted, dash-dotted).
+   * \param styleLength The length of the dashes or spaces between dashes or dots.
+   */
+  virtual void drawLine(EVPosInt from, EVPosInt to, int width, int color, int lineStyle, double styleLength) = 0;
   /// Draw the character given in buffer to the view.
   virtual void drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
   // Draw an arrow head (of a line).  
-  virtual void drawArrow(const EVPosInt &tip, double angle, int color, int arrType, int arrStyle) = 0;
+  virtual void drawArrow(const EVPosInt &tip, double angle, int color, EasyVecArrow::arrowInfo *arrow) = 0;
   // Draw an arrow head (of a line). This is just a convenience function which calculates the angle from the line.  
-  void drawArrow(const EVPosInt &tip, const EVPosInt &from, int color, int arrType, int arrStyle);
+  void drawArrow(const EVPosInt &tip, const EVPosInt &from, int color, EasyVecArrow::arrowInfo *arrow);
   /// Force a redraw of the complete figure area.
   virtual void refreshAll(void) = 0;
   /// Clear the figure area.

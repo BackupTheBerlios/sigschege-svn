@@ -42,9 +42,12 @@ public:
   /// Function to set both coordinates. returns reference to result.
   EVPosInt &set(int x, int y) { cx=x; cy=y; return *this; };
   /// Subtraction operator.
-  EVPosInt operator-(const EVPosInt &destination) {
-    return EVPosInt(cx-destination.cx,cy-destination.cy);
-  };
+  EVPosInt &operator-(const EVPosInt &destination) const;
+  /// Division assignment operator.
+  EVPosInt &operator/=(double divisor);
+  /// Division operator.
+  EVPosInt &operator/(double divisor) const;
+  
   /// Return the x coordinate.
   int xpos(void) const { return cx; };
   /// Return the y coordinate.
@@ -79,15 +82,17 @@ inline EVPosInt operator/(const EVPosInt &z, int n) {
   return EVPosInt(z.xpos()/n, z.ypos()/n);
 }
 
-// Add two EVPosInt.
+/// Add two EVPosInt.
 inline EVPosInt operator+(const EVPosInt &a, const EVPosInt &b) {
   return EVPosInt(a.xpos()+b.xpos(), a.ypos()+b.ypos());
 }
 
+/// Return the minimum coordinates (independently) of both EVPosInts.
 inline EVPosInt min_coords(const EVPosInt &a, const EVPosInt &b) {
   return EVPosInt(a.xpos()<b.xpos()?a.xpos():b.xpos(), a.ypos()<b.ypos()?a.ypos():b.ypos());
 }
 
+/// Return the maximum coordinates (independently) of both EVPosInts.
 inline EVPosInt max_coords(const EVPosInt &a, const EVPosInt &b) {
   return EVPosInt(a.xpos()>b.xpos()?a.xpos():b.xpos(), a.ypos()>b.ypos()?a.ypos():b.ypos());
 }

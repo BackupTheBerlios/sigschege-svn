@@ -31,9 +31,9 @@ EasyVecView::EasyVecView(EasyVecFigure *picture) {
   mypicture = picture;
 };
 
-void EasyVecView::drawArrow(const EVPosInt &tip, const EVPosInt &from, int color, int arrType, int arrStyle) {
+void EasyVecView::drawArrow(const EVPosInt &tip, const EVPosInt &from, int color, EasyVecArrow::arrowInfo *arrow) {
   double angle = tip.angle(from);
-  drawArrow(tip, angle, color, arrType, arrStyle);
+  drawArrow(tip, angle, color, arrow);
 }
 
 

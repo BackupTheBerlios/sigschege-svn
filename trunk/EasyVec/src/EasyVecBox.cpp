@@ -40,23 +40,22 @@ EasyVecBox::EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_c
 
 
 void EasyVecBox::draw(EasyVecView* view) {
-  int xscale = figure->scale();
 
   EVPosInt ul, lr;
   EVPosInt ur, ll;
 
-  ul = elm_upper_left/xscale;
-  lr = elm_lower_right/xscale;
+  ul = elm_upper_left;
+  lr = elm_lower_right;
 
   ur = EVPosInt(lr.xpos(), ul.ypos());
   ll = EVPosInt(ul.xpos(), lr.ypos());
 
-  double styleLength = elmStyleValue*15/xscale;
+  double styleLength = elmStyleValue*15;
 
-  view->drawLine(ul, ur, elmPenColor, elmLineStyle, styleLength);
-  view->drawLine(ur, lr, elmPenColor, elmLineStyle, styleLength);
-  view->drawLine(lr, ll, elmPenColor, elmLineStyle, styleLength);
-  view->drawLine(ll, ul, elmPenColor, elmLineStyle, styleLength);
+  view->drawLine(ul, ur, elmThickness, elmPenColor, elmLineStyle, styleLength);
+  view->drawLine(ur, lr, elmThickness, elmPenColor, elmLineStyle, styleLength);
+  view->drawLine(lr, ll, elmThickness, elmPenColor, elmLineStyle, styleLength);
+  view->drawLine(ll, ul, elmThickness, elmPenColor, elmLineStyle, styleLength);
 
 }
 

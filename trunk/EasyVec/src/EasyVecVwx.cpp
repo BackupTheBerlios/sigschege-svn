@@ -44,14 +44,19 @@ EasyVecVwx::EasyVecVwx(EasyVecFigure *picture, wxFrame *frame, int x, int y, int
 }
 
 
-void EasyVecVwx::drawLine(EVPosInt from, EVPosInt to, int color, int lineStyle, double styleLength) {
+void EasyVecVwx::drawLine(EVPosInt from, EVPosInt to, int width, int color, int lineStyle, double styleLength) {
   wxColour wxMyColour(easyvec_std_colors[color][0], easyvec_std_colors[color][1], easyvec_std_colors[color][2]);
-  wxPen wxMyPen(wxMyColour, 1, 1);
+  wxPen wxMyPen(wxMyColour, width, 1);
   wxWindowDC *paintPtr;
+  int xscale = mypicture->scale();
   if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
   else paintPtr = new wxClientDC;
   
   paintPtr->SetPen(wxMyPen);
+
+  from /= xscale;
+  to   /= xscale;
+  styleLength /= xscale;
   
   if (lineStyle==EasyVecLine::solid) {
     paintPtr->DrawLine(from.xpos(), from.ypos(), to.xpos(), to.ypos());
@@ -128,8 +133,11 @@ void EasyVecVwx::drawChar(EVPosInt origin, int rows, int width, int pitch, unsig
 }
 
 
-void EasyVecVwx::drawArrow(const EVPosInt &tip, double angle, int color, int arrType, int arrStyle) {
+void EasyVecVwx::drawArrow(const EVPosInt &tip, double angle, int color, EasyVecArrow::arrowInfo *arrow) {
   wxWindowDC *paintPtr;
+  int xscale = mypicture->scale();
+  EVPosInt tipVres = tip/xscale;
+
   if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
   else paintPtr = new wxClientDC;
 
@@ -137,10 +145,17 @@ void EasyVecVwx::drawArrow(const EVPosInt &tip, double angle, int color, int arr
   wxPen wxMyPen(wxMyColour, 1, 1);
   paintPtr->SetPen(wxMyPen);
 
-  for (int i=-1; i<2; i+=2) {
-    double rAngle=angle+2.681*i;
-    EVPosInt from(static_cast<int>(tip.xpos()+10*cos(rAngle)), static_cast<int>(tip.ypos()+10*sin(rAngle)));
-    paintPtr->DrawLine(from.xpos(), from.ypos(), tip.xpos(), tip.ypos());
+  EVPosInt pL, pR, pM;
+  EasyVecArrow::calcPoints(*arrow, tip, angle, pL, pR, pM);
+  pL /= xscale;
+  pR /= xscale;
+  pM /= xscale;
+  
+  paintPtr->DrawLine(pL.xpos(), pL.ypos(), tipVres.xpos(), tipVres.ypos());
+  paintPtr->DrawLine(pR.xpos(), pR.ypos(), tipVres.xpos(), tipVres.ypos());
+  if (arrow->Type==EasyVecArrow::closed_indented_butt || arrow->Type==EasyVecArrow::closed_pointed_butt) {
+    paintPtr->DrawLine(pR.xpos(), pR.ypos(), pM.xpos(), pM.ypos());
+    paintPtr->DrawLine(pL.xpos(), pL.ypos(), pM.xpos(), pM.ypos());
   }
   
   if (onPaintPaintDCp==0) delete paintPtr;
@@ -164,7 +179,6 @@ void EasyVecVwx::refreshAll(void) {
 void EasyVecVwx::OnPaint(wxPaintEvent& WXUNUSED(event) )
 {
   //SetBackgroundColour(*wxWHITE);
-  cout << "onpaint: " << this << endl;
   wxPaintDC dc(this);
   onPaintPaintDCp = &dc;
   dc.SetPen(*wxWHITE_PEN);

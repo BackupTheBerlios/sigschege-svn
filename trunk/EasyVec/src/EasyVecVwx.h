@@ -35,9 +35,9 @@ class EasyVecVwx : public wxWindow, public EasyVecView {
 public:
   EasyVecVwx(EasyVecFigure *picture, wxFrame *frame, int x=-1, int y=-1, int width=-1, int height=-1,
              long style=wxTE_MULTILINE);
-  virtual void drawLine(EVPosInt from, EVPosInt to, int color, int lineStyle, double StyleLength);
+  virtual void drawLine(EVPosInt from, EVPosInt to, int width, int color, int lineStyle, double styleLength);
   virtual void drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color);
-  virtual void drawArrow(const EVPosInt &tip, double angle, int color, int arrType, int arrStyle);
+  virtual void drawArrow(const EVPosInt &tip, double angle, int color, EasyVecArrow::arrowInfo *arrow);
   virtual void refreshAll(void);
   virtual void clear(void);
   

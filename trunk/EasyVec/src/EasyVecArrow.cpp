@@ -28,58 +28,83 @@
 #include <sstream>
 
 EasyVecArrow::EasyVecArrow() {
-  elmArrow[0] = elmArrow[1] = false;
-  elmArrowType[0] = elmArrowType[1] = 0;
-  elmArrowStyle[0] = elmArrowStyle[1] = 0;
+  elmArrows[0] = elmArrows[1] = 0;
 }
 
-bool EasyVecArrow::forwardArrow(bool new_state) {
-  bool oldval = elmArrow[0];
-  elmArrow[0] = new_state;
-  return oldval;
+EasyVecArrow::~EasyVecArrow() {
+  if (elmArrows[0]!=0) delete elmArrows[0];
+  if (elmArrows[1]!=0) delete elmArrows[1];
 }
 
-bool EasyVecArrow::backwardArrow(bool new_state) {
-  bool oldval = elmArrow[1];
-  elmArrow[1] = new_state;
-  return oldval;
+
+void EasyVecArrow::forwardArrow(bool newState) {
+  bool oldState = (elmArrows[0]!=0);
+  if (oldState==newState) return;
+  if (newState) {
+    elmArrows[0] = new arrowInfo;
+    elmArrows[0]->Type  = 0;
+    elmArrows[0]->Style = 0;
+    elmArrows[0]->Thickness = 1.0;
+    elmArrows[0]->Width  = 60.0;
+    elmArrows[0]->Height = 120.0;
+  } else {
+    delete elmArrows[0];
+    elmArrows[0] = 0;
+  }
+}
+
+void EasyVecArrow::backwardArrow(bool newState) {
+  bool oldState = (elmArrows[1]!=0);
+  if (oldState==newState) return;
+  if (newState) {
+    elmArrows[1] = new arrowInfo;
+    elmArrows[1]->Type  = 0;
+    elmArrows[1]->Style = 0;
+    elmArrows[1]->Thickness = 1.0;
+    elmArrows[1]->Width  = 60.0;
+    elmArrows[1]->Height = 120.0;
+  } else {
+    delete elmArrows[1];
+    elmArrows[1] = 0;
+  }
 }
 
 bool EasyVecArrow::forwardArrow(void) {
-  return elmArrow[0];
+  return elmArrows[0]!=0;
 }
 
 bool EasyVecArrow::backwardArrow(void) {
-  return elmArrow[1];
+  return elmArrows[1]!=0;
 }
 
 bool EasyVecArrow::forwardArrowType(int newArrowType) {
-  if ((newArrowType<0) or (newArrowType>3)) return false;
-  elmArrowType[0] = newArrowType;
+  if ((newArrowType<0) or (newArrowType>3) or !forwardArrow()) return false;
+  elmArrows[0]->Type = newArrowType;
   return true;
 }
 
 bool EasyVecArrow::backwardArrowType(int newArrowType) {
-  if ((newArrowType<0) or (newArrowType>3)) return false;
-  elmArrowType[1] = newArrowType;
+  if ((newArrowType<0) or (newArrowType>3) or !backwardArrow()) return false;
+  elmArrows[1]->Type = newArrowType;
   return true;
 }
 
 bool EasyVecArrow::forwardArrowStyle(int newArrowStyle) {
-  if ((newArrowStyle<0) or (newArrowStyle>1)) return false;
-  elmArrowStyle[0] = newArrowStyle;
+  if ((newArrowStyle<0) or (newArrowStyle>1) or !forwardArrow()) return false;
+  elmArrows[0]->Style = newArrowStyle;
   return true;
 }
 
 bool EasyVecArrow::backwardArrowStyle(int newArrowStyle) {
-  if ((newArrowStyle<0) or (newArrowStyle>1)) return false;
-  elmArrowStyle[1] = newArrowStyle;
+  if ((newArrowStyle<0) or (newArrowStyle>1) or !backwardArrow()) return false;
+  elmArrows[1]->Style = newArrowStyle;
   return true;
 }
 
 string EasyVecArrow::arrowString(int arrowIndex) {
   ostringstream conv;
-  conv << elmArrowType[arrowIndex] << " " << elmArrowStyle[arrowIndex] << " 1.00 60.00 120.00";
+  conv << elmArrows[arrowIndex]->Type << " " << elmArrows[arrowIndex]->Style << " " << elmArrows[arrowIndex]->Thickness
+       << " " << elmArrows[arrowIndex]->Width << " " <<  elmArrows[arrowIndex]->Height;
   return conv.str();
 }
 
@@ -89,4 +114,33 @@ string EasyVecArrow::forwardArrowString(void) {
 
 string EasyVecArrow::backwardArrowString(void) {
   return arrowString(1);
+}
+
+bool EasyVecArrow::forwardArrowSize(double newThickness, double newWidth, double newHeight) {
+  if (!forwardArrow()) return false;
+  elmArrows[0]->Thickness = fabs(newThickness);
+  elmArrows[0]->Width  = fabs(newWidth);
+  elmArrows[0]->Height = fabs(newHeight);
+  return true;
+}
+
+bool EasyVecArrow::backwardArrowSize(double newThickness, double newWidth, double newHeight) {
+  if (!backwardArrow()) return false;
+  elmArrows[1]->Thickness = fabs(newThickness);
+  elmArrows[1]->Width  = fabs(newWidth);
+  elmArrows[1]->Height = fabs(newHeight);  
+  return true;
+}
+
+void EasyVecArrow::calcPoints(arrowInfo &arrow, const EVPosInt &tip, double tipAngle,
+                                     EVPosInt &pLeft, EVPosInt &pRight, EVPosInt &pMid) {
+  double arrAngle = atan(arrow.Width/arrow.Height);
+  tipAngle += M_PI;
+  double length = sqrt(arrow.Width*arrow.Width+arrow.Height*arrow.Height);
+  pLeft  = tip+EVPosInt(static_cast<int>(length*cos(tipAngle+arrAngle)), static_cast<int>(length*sin(tipAngle+arrAngle)));
+  pRight = tip+EVPosInt(static_cast<int>(length*cos(tipAngle-arrAngle)), static_cast<int>(length*sin(tipAngle-arrAngle)));
+  if (arrow.Type==closed_indented_butt || arrow.Type==closed_pointed_butt) {
+    length *= (arrow.Type==closed_indented_butt) ? 0.666 : 1.333; 
+    pMid = tip + EVPosInt(static_cast<int>(length*cos(tipAngle)), static_cast<int>(length*sin(tipAngle)));
+  }
 }

@@ -25,6 +25,27 @@
 #include "EVPosInt.h"
 #include <cmath>
 
+EVPosInt &EVPosInt::operator-(const EVPosInt &destination) const {
+    EVPosInt *rv = new EVPosInt;
+    *rv = *this;
+    rv->cx -= destination.cx;
+    rv->cy -= destination.cy;
+    return *rv;
+  };
+
+EVPosInt &EVPosInt::operator/=(double divisor) {
+  cx = static_cast<int>(cx / divisor);
+  cy = static_cast<int>(cy / divisor);
+  return *this;
+};
+
+EVPosInt &EVPosInt::operator/(double divisor) const {
+  EVPosInt *rv = new EVPosInt;
+  *rv /= divisor;
+  return *rv;
+};
+
+
 std::ostream& operator<<(std::ostream& ostr, const EVPosInt Place) {
   ostr << "x=" << Place.xpos() << ",y=" << Place.ypos();
   return ostr;

@@ -24,47 +24,18 @@
 // $Id$
 
 
-#ifndef _EASYVECELMARROW_H
-#define _EASYVECELMARROW_H _EASYVECELMARROW_H 
+#ifndef _EASYVECARROW_H
+#define _EASYVECARROW_H _EASYVECARROW_H 
 
 #include <string>
+#include "EVPosInt.h"
 
 using namespace std;
 
 /// An EasyVecFigure arrow base class  - used for polyarrow and box
 class EasyVecArrow {
 public:
-  EasyVecArrow();
-  /// Set the state of the forward arrow to new_state and return the old value.
-  bool forwardArrow(bool new_state);
-  /// Return the current state of the forward arrow.
-  bool forwardArrow(void);
-  /// Set the state of the backward arrow to new_state and return the old value.
-  bool backwardArrow(bool new_state);
-  /// Return the current state of the backward arrow.
-  bool backwardArrow(void);
 
-  /// Set the forward arrow type, value must be one of the values in arrowTypeType.
-  bool forwardArrowType(int newArrowType);
-  /// Return the forward arrow type.
-  int forwardArrowType(void) { return elmArrowType[0]; }
-  /// Set the backward arrow type, value must be one of the values in arrowTypeType.
-  bool backwardArrowType(int newArrowType);
-  /// Return the backward arrow type.
-  int backwardArrowType(void) { return elmArrowType[1]; }
-  
-  /// Set the forward arrow style, value must be one of the values in arrowStyleType.
-  bool forwardArrowStyle(int newForwardArrowStyle);
-  /// Return the forward arrow style.
-  int forwardArrowStyle(void) { return elmArrowStyle[0]; }
-  /// Set the backward arrow style, value must be one of the values in arrowStyleType.
-  bool backwardArrowStyle(int newBackwardArrowStyle);
-  /// Return the backward arrow style.
-  int backwardArrowStyle(void) { return elmArrowStyle[1]; }
-
-  string forwardArrowString(void);
-  string backwardArrowString(void);
-  
   enum arrowTypeType {
     stick_type,
     closed_triangle,
@@ -75,19 +46,122 @@ public:
     hollow,
     filled
   };
+
+  struct arrowInfo {
+    int Type;
+    int Style;
+    double Thickness;
+    double Width;
+    double Height;
+  };
+
+  EasyVecArrow();
+  ~EasyVecArrow();
+  /// Set the state of the forward arrow to new_state.
+  void forwardArrow(bool new_state);
+  /// Return the current state of the forward arrow.
+  bool forwardArrow(void);
+  /// Set the state of the backward arrow to new_state.
+  void backwardArrow(bool new_state);
+  /// Return the current state of the backward arrow.
+  bool backwardArrow(void);
+
+  /// Set the forward arrow type, value must be one of the values in arrowTypeType.
+  bool forwardArrowType(int newArrowType);
+  /// Return the forward arrow type.
+  int forwardArrowType(void);
+  /// Set the backward arrow type, value must be one of the values in arrowTypeType.
+  bool backwardArrowType(int newArrowType);
+  /// Return the backward arrow type.
+  int backwardArrowType(void);
+  
+  /// Set the forward arrow style, value must be one of the values in arrowStyleType.
+  bool forwardArrowStyle(int newForwardArrowStyle);
+  /// Return the forward arrow style.
+  int forwardArrowStyle(void);
+  /// Set the backward arrow style, value must be one of the values in arrowStyleType.
+  bool backwardArrowStyle(int newBackwardArrowStyle);
+  /// Return the backward arrow style.
+  int backwardArrowStyle(void);
+
+  /// Set the size of the forward arrow.
+  bool forwardArrowSize(double newThickness, double newWidth, double newHeight);
+  /// Return the thickness of the forward arrow. 
+  double forwardArrowThickness(void);
+  /// Return the width of the forward arrow. 
+  double forwardArrowWidth(void);
+  /// Return the height of the forward arrow. 
+  double forwardArrowHeight(void);
+
+  /// Set the size of the backward arrow.
+  bool backwardArrowSize(double newThickness, double newWidth, double newHeight);
+  /// Return the thickness of the backward arrow. 
+  double backwardArrowThickness(void);
+  /// Return the width of the backward arrow. 
+  double backwardArrowWidth(void);
+  /// Return the height of the backward arrow. 
+  double backwardArrowHeight(void);
+
+  /// Return the string to be inserted into fig file for a forward arrow.
+  string forwardArrowString(void);
+  /// Return the string to be inserted into fig file for a backward arrow.
+  string backwardArrowString(void);
+
+  static void calcPoints(arrowInfo &arrow, const EVPosInt &tip, double tipAngle, 
+                         EVPosInt &pLeft, EVPosInt &pRight, EVPosInt &pMid);
   
   friend class EasyVecPolyline;
-
+  
 private:
   // array with length 2 - 0 is forward arrow, 1 is backward arrow
   // this makes internal code simpler (common functions which are just passed the index)
-  bool elmArrow[2];
-  int elmArrowType[2];
-  int elmArrowStyle[2];  
+  // TODO (CPUOPT): Cache angle
+  arrowInfo *elmArrows[2];
 
+  
   string arrowString(int arrowIndex);
 
 };
 
+inline int EasyVecArrow::forwardArrowType(void) {
+  return forwardArrow() ? elmArrows[0]->Type : -1;
+}
 
-#endif /* _EASYVECELMARROW_H */
+inline int EasyVecArrow::backwardArrowType(void) {
+  return backwardArrow() ? elmArrows[1]->Type : -1;
+}
+
+inline int EasyVecArrow::forwardArrowStyle(void) {
+  return forwardArrow() ? elmArrows[0]->Style : -1;
+}
+
+inline int EasyVecArrow::backwardArrowStyle(void) {
+  return backwardArrow() ? elmArrows[1]->Style : -1;
+}
+
+inline double EasyVecArrow::forwardArrowThickness(void) {
+  return forwardArrow() ? elmArrows[0]->Thickness : -1.0;
+}
+
+inline double EasyVecArrow::backwardArrowThickness(void) {
+  return backwardArrow() ? elmArrows[1]->Thickness : -1.0;
+}
+
+inline double EasyVecArrow::forwardArrowWidth(void) {
+  return forwardArrow() ? elmArrows[0]->Width : -1.0;
+}
+
+inline double EasyVecArrow::backwardArrowWidth(void) {
+  return backwardArrow() ? elmArrows[1]->Width : -1.0;
+}
+
+inline double EasyVecArrow::forwardArrowHeight(void) {
+  return forwardArrow() ? elmArrows[0]->Height : -1.0;
+}
+
+inline double EasyVecArrow::backwardArrowHeight(void) {
+  return backwardArrow() ? elmArrows[1]->Height : -1.0;
+}
+
+
+#endif /* _EASYVECARROW_H */

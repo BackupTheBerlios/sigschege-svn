@@ -30,7 +30,7 @@ using namespace std;
 #include <EasyVecText.h>
 
 /*!
- * This constructor will create an layout object without a parent.
+ * This constructor will create an Timing Diagram Label Object
  */
 TimLabel::TimLabel():LayoutObject(){
   cFontType = 14;
@@ -38,7 +38,7 @@ TimLabel::TimLabel():LayoutObject(){
 }
 
 /*!
- * This constructor will create an layout object without a parent.
+ * This constructor will create an Timing Diagram Label Object
  * newText will be set as Text
  */
 TimLabel::TimLabel(string newText):LayoutObject(){
@@ -65,10 +65,19 @@ void TimLabel::setText(string newText) {
  */
 void TimLabel::paint(void) {
   EasyVecText *text;
+  int height,width;
+
+  // check if a compound is available
+  if(getCompound()==0) return;
+
   // first we have to clear out compound
   getCompound()->clear();
 
+  height = (getBottomPos()-getUpperPos())-2*cPadding;
+  width  = (getRightPos()-getLeftPos())-2*cPadding;
+
   // and then we can draw out new stuff
+  // Draw the border
   LayoutObject::paint();
 
   // Draw the Text
@@ -76,7 +85,7 @@ void TimLabel::paint(void) {
   text->setText(cText);
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(EVPosInt(getLeftPos(),getBottomPos()));
+  text->setOrigin(EVPosInt(getLeftPos()+cPadding,getBottomPos()-cPadding-((height-text->getHeight())/2)));
 }
 
 /// Set the Font Type

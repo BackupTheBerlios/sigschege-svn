@@ -30,6 +30,7 @@ using namespace std;
 
 #include "LayoutObject.h"
 #include "TimLabel.h"
+#include "TimSignal.h"
 #include "Handle.t"
 #include <string>
 #include <EasyVecFigure.h>
@@ -58,9 +59,12 @@ public:
   //! Export the Timing Diagram to a xfig file
   void exportFig(string file);
 
-  //! Create a empty Layout Text Object
-  Handle<TimLabel> createTimLabel();
+  //! Create a empty Timing Diagram Label Object
+  Handle<TimLabel> createLabel();
 
+  //! Create a empty Timing Diagram Signal Object
+  Handle<TimSignal> createSignal();
+  
 private:
   vector< Handle<LayoutObject> > cLayoutList;
   EasyVecFigure    cEasyVec;

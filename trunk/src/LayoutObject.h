@@ -120,9 +120,16 @@ public:
   int getLeftPos();
   int getBottomPos();
   int getRightPos();
+  
+  //! Enable/Disable drawing of the Border
+  void enableBorder(bool enable);
 
+  void setPadding(int newPadding);
+protected:
+  int cPadding;
 private:
   int refCount;
+  bool cDrawBorder;
   Handle<LayoutObject> reference;
   vector< Handle<LayoutObject> > referrers;
   EasyVecCompound *evListCompound;

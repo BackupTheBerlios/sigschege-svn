@@ -33,20 +33,35 @@ using namespace std;
 void layout (void) {
   TimingDiagram tim;
 
-  Handle<TimLabel> Label1 = tim.createTimLabel();
-  Handle<TimLabel> Label2 = tim.createTimLabel();
+  Handle<TimLabel> Label1 = tim.createLabel();
+  Handle<TimLabel> Label2 = tim.createLabel();
   
+  Handle<TimSignal> Signal1 = tim.createSignal();
+
   Label1->setULPos(0,0);
-  Label1->setBRPos(1000,1000);
+  Label1->setBRPos(1000,10000);
   Label1->setText("Hello World!");
   Label1->setFontType(2);
   Label1->setFontSize(10);
+  Label1->enableBorder(true);
   
   Label2->setULPos(1100,0);
-  Label2->setBRPos(2100,1000);
+  Label2->setBRPos(2100,10000);
+  Label2->enableBorder(true);
+
+  Signal1->setULPos(2200,0);
+  Signal1->setBRPos(3200,10000);
+  Signal1->setText("First Signal");
+  Signal1->setSigOffset(3000);
+  Signal1->enableBorder(true);
+  Signal1->setPadding(200);
+
+  Handle<Event> ev1 = Signal1->createEvent("1", 100);
+
 
   tim.addLast(Label1.Object());
   tim.addLast(Label2.Object());
+  tim.addLast(Signal1.Object());
 
 
   tim.exportFig("test.fig");

@@ -23,8 +23,8 @@
 //
 // $Id$
 
-#ifndef _H_LAYOUT_Text
-#define _H_LAYOUT_Text
+#ifndef _H_TIMLABEL
+#define _H_TIMLABEL
 
 using namespace std;
 
@@ -58,6 +58,7 @@ public:
   /// paint the layout object
   void paint(void);
 
+  
 private:
   string cText;
   int cFontType;

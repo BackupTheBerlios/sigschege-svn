@@ -29,6 +29,8 @@ using namespace std;
 #include <iostream>
 
 LayoutObject::LayoutObject() {
+  cDrawBorder = false;
+  cPadding    = 50;
 }
   
 LayoutObject::~LayoutObject() {
@@ -54,7 +56,9 @@ void LayoutObject::paint(void) {
   getCompound()->clear();
 
   // and then we can draw out new stuff
-  getCompound()->box(cULPos, cBRPos);
+  if(cDrawBorder){
+    getCompound()->box(cULPos, cBRPos);
+  }
 }
 
 /*!
@@ -113,6 +117,19 @@ int LayoutObject::getBottomPos() {
 int LayoutObject::getRightPos() {
   return cBRPos.xpos();
 }
+
+/*!
+ * Enable/Disable the Border
+ * \param enable true: Draw the Border; false: Don't draw the Border
+ */
+void LayoutObject::enableBorder(bool enable) {
+  cDrawBorder = enable;
+}
+
+void LayoutObject::setPadding(int newPadding) {
+  cPadding = newPadding;
+}
+
 
 bool LayoutObject::registerReferrer(Handle<LayoutObject> newReferrer) {
   vector< Handle<LayoutObject> >::iterator referrersIter;

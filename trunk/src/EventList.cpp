@@ -118,20 +118,29 @@ void EventList::setCompound(EasyVecCompound *newCompound, int xOffset, int yOffs
 
 void EventList::paint(void) {
   if (evListCompound==0) return;
+  sort(); // makes life easier... 
   EasyVecPolyline *sigline = evListCompound->polyline();
   string currentState = initialState->getNewState();
   int xCoord;
   vector< Handle<Event> >::iterator eventsIter;
 
-  sigline->add_point(EVPosInt(compoundXOffset, (currentState==string("1")) ? 0 : compoundHeight));
+
+  // we want to draw lines without arrows
+  sigline->forward_arrow(false);
+  sigline->backward_arrow(false);
+
+  // Set the first point of the signal
+  sigline->add_point(EVPosInt(compoundXOffset, (currentState==string("1")) ? compoundYOffset : compoundHeight+compoundYOffset));
+
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
-    xCoord = compoundXOffset +
-      static_cast<int>(static_cast<double>(compoundWidth) * (eventsIter->Object()->getTime()-compoundTimeStart)
-                       /(compoundTimeEnd-compoundTimeStart));
-    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? 0 : compoundHeight));
+   
+    xCoord = compoundXOffset +  static_cast<int>(static_cast<double>(compoundWidth) * (eventsIter->Object()->getTime()-compoundTimeStart) /(compoundTimeEnd-compoundTimeStart));
+    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? compoundYOffset : compoundHeight+compoundYOffset));
     currentState = eventsIter->Object()->getNewState();
-    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? 0 : compoundHeight));
+    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? compoundYOffset : compoundHeight+compoundYOffset));
   }
-  sigline->add_point(EVPosInt(compoundXOffset+compoundWidth, (currentState==string("1")) ? 0 : compoundHeight));
+  
+  // Add the last point of the signal
+  sigline->add_point(EVPosInt(compoundXOffset+compoundWidth, (currentState==string("1")) ? compoundYOffset : compoundHeight+compoundYOffset));
 }
 

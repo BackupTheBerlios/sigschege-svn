@@ -61,9 +61,18 @@ void TimingDiagram::addLast(Handle<LayoutObject> newLayoutObject) {
 /*!
  * This Function will return a pointer to a Text Layout Object without a text
  */
-Handle <TimLabel> TimingDiagram::createTimLabel() {
+Handle <TimLabel> TimingDiagram::createLabel() {
   Handle<TimLabel> newTimLabel = new TimLabel;
   newTimLabel->setCompound(cEasyVec.compound());
   return newTimLabel;
 }
 
+
+/*!
+ * This Function will return a pointer to a Timing Diagram Signal Object
+ */
+Handle <TimSignal> TimingDiagram::createSignal() {
+  Handle<TimSignal> newTimSignal = new TimSignal;
+  newTimSignal->setCompound(cEasyVec.compound());
+  return newTimSignal;
+}

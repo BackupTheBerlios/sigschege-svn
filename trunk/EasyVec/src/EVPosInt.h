@@ -22,7 +22,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 
 #ifndef _COORDINATE_H
@@ -62,7 +62,10 @@ public:
     cx = cx>other.cx?cx:other.cx;
     cy = cy>other.cy?cy:other.cy;
   }
- 
+  /// Set the x coordinate
+  void setx(const int x) { cx = x; }
+  /// Set the y coordinate
+  void sety(const int y) { cy = y; }
 private:
   int cx, cy;
 };

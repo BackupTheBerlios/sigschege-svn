@@ -179,7 +179,7 @@ void event(void) {
 
   mainList.setCompound(sig1cmp, 1000, 1000, 5000, 1000, 0.0, 300.0);
   mainList.paint();
-  myDiag.export_fig2dev("eps", "example_signal.eps");
+  myDiag.exportFig2dev("eps", "example_signal.eps");
   
   return;
 }

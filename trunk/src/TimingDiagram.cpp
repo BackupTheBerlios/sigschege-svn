@@ -59,7 +59,7 @@ void TimingDiagram::exportFig(string file) {
  */
 void TimingDiagram::exportEPS(string file) {
   paint();
-  cEasyVec.export_fig2dev("eps", file);
+  cEasyVec.exportFig2dev("eps", file);
 }
 
 /*!

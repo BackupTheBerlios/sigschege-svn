@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 using namespace std;
 
@@ -33,8 +33,31 @@ using namespace std;
 int main (int ARGC, char **ARGV) {
   Timing tim;
 
-  tim.paint();
+  tim.setWidth(10000);
 
+  LayoutText *hello  = tim.createLayoutText("Hello");
+  LayoutText *world  = tim.createLayoutText("World!");
+  LayoutText *Slice1 = tim.createLayoutText();
+  LayoutText *Slice2 = tim.createLayoutText();
+
+  hello->setFontType(11);
+  hello->setFontSize(10);
+  hello->drawBoundaryBox(true);
+
+  world->setFontType(10);
+  world->setFontSize(20);
+
+  Slice1->setBoundaryHeight(200);
+  Slice1->drawBoundaryBox(true);
+
+  Slice2->setText("Slice2");
+
+  tim.addLast(hello);
+  tim.addLast(world);
+  tim.addLast(Slice1);
+  tim.addLast(Slice2);
+  tim.addLast(Slice2);
+  
   tim.save("test.fig");
 
   return(0);

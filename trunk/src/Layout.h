@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #ifndef _H_LAYOUT
 #define _H_LAYOUT
@@ -68,24 +68,28 @@ public:
   /// Delete the parent of this layout object
   void delParent();
 
-  /// Set the boundary box of the layout object
-  void setBox(const EVPosInt &newUL, const EVPosInt &newBR);
+  /// Set the Width for this Layout Object
+  void setBoundaryWidth(int newWidth);
 
-  /// Set the boundary box of the layout object 
-  void setBox(int l, int u, int r, int b);
+  /// Set the Height for this Layout Object
+  void setBoundaryHeight(int newHeight);
 
-  /// return the Upper Left Point
-  EVPosInt &getUL();
+  /// Get the Width for this Layout Object
+  int getBoundaryWidth();
 
-  /// return the Bottom Right Point
-  EVPosInt &getBR();
+  /// Get the Height for this Layout Object
+  virtual int getBoundaryHeight();
 
   /// paint the layout object
-  virtual void paint(EasyVec& cEasyVec);
+  virtual unsigned int paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned int yOffset);
+
+  /// Enable/Disable Boundray Box drawing
+  void drawBoundaryBox(bool draw_box);
 
 private:
-  EVPosInt cUL;
-  EVPosInt cBR;
+  int cBoundaryWidth;
+  int cBoundaryHeight;
+  bool cDrawBoundaryBox;
 };
  
 #endif // _H_LAYOUT

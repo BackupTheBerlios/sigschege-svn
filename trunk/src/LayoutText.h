@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #ifndef _H_LAYOUT_Text
 #define _H_LAYOUT_Text
@@ -40,17 +40,31 @@ public:
   /// The standard constructor
   LayoutText();
   
+  /// Create a Text object with newText
+  LayoutText(string newText);
+
   /// The standard destructor
   ~LayoutText();
   
   /// Return the ID of this layout object
   LayoutID getID();
 
+  /// Set a new Text
+  void setText(string newText);
+
+  /// Set the Font Type
+  void setFontType(int new_font);
+
+  /// Set the Font Size
+  void setFontSize(int new_size);
+
   /// paint the layout object
-  void paint(EasyVec& cEasyVec);
+  unsigned int paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned int yOffset);
 
 private:
   string cText;
+  int cFontType;
+  int cFontSize;
 };
 
 #endif // _H_LAYOUT_TEXT

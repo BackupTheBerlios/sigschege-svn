@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 using namespace std;
 
@@ -33,6 +33,7 @@ using namespace std;
  * This constructor will create an layout object without a parent.
  */
 Layout::Layout():Object(){
+  cDrawBoundaryBox=false;
 }
 
 Layout::~Layout(){
@@ -102,54 +103,56 @@ LayoutID Layout::getID() {
 }
 
 /*!
- * Set the boundary box of the layout object
- * \param newUL upper left corner of the boundary box
- * \param newBR bottom right corner of the boundary box
- */
-void Layout::setBox(const EVPosInt &newUL, const EVPosInt &newBR) {
-  
-}
-
-/*! 
- * Set the boundary box of the layout object
- * \param l left boundary
- * \param u upper boundary
- * \param r right boundary
- * \param b bottom boundary
- */
-void Layout::setBox(int l, int u, int r, int b) {
-  cUL.sety(l);
-  cUL.setx(u);
-  cBR.sety(r);
-  cBR.setx(b);
-}
-
-/*! 
- * Return the Upper Left corner of the layout object
- * \return The Upper Left Point
- */
-EVPosInt &Layout::getUL() {
-  return(cUL);
-}
-
-/*!
- * Retrun the Bottom Right corner of the layout object
- * \return The Bottom Right Point
- */
-EVPosInt &Layout::getBR() {
-  return(cBR);
-}
-
-/*!
  * Paint this layout object
  */
-void Layout::paint(EasyVec& cEasyVec) {
-  printf("Boundary Box: (%i,%i)(%i,%i)\n",cUL.xpos(), cUL.ypos(),cBR.xpos(), cBR.ypos());
-  cEasyVec.box(cUL,cBR);
-  //EasyVecElmPolyline *line1 = cEasyVec.polyline();
-  //line1->add_point(cUL.xpos(),cUL.ypos());
-  //line1->add_point(cBR.xpos(),cUL.ypos());
-  //line1->add_point(cBR.xpos(),cBR.ypos());
-  //line1->add_point(cUL.xpos(),cBR.ypos());
-  //line1->add_point(cUL.xpos(),cUL.ypos());
+unsigned int Layout::paint(EasyVec& cEasyVec,unsigned int xOffset, unsigned int yOffset) {
+  if(cDrawBoundaryBox) {
+    cEasyVec.box(EVPosInt(xOffset, yOffset),EVPosInt(getBoundaryWidth()+xOffset,getBoundaryHeight()+yOffset));
+  }
+  return (0);
+}
+
+/*!
+ * Set the boundary width for this Layout Object
+ * \param newWidth new boundary width 
+ * \sa setBoundaryHeight getBoundaryWidth getBoundaryHeight
+ */
+void Layout::setBoundaryWidth(int newWidth) {
+  cBoundaryWidth = newWidth;
+}
+
+/*!
+ * Set the boundary height for this Layout Object
+ * \param newHeight new boundary height 
+ * \sa setBoundaryWidth getBoundaryWidth getBoundaryHeight
+ */
+void Layout::setBoundaryHeight(int newHeight) {
+  cBoundaryHeight = newHeight;
+}
+
+/*!
+ * Get the boundary width for this Layout Object
+ * \return the boundary width for this Layout Object
+ * \sa setBoundaryWidth setBoundaryHeight getBoundaryHeight
+ */
+int Layout::getBoundaryWidth() {
+  return(cBoundaryWidth);
+}
+
+/*!
+ * Get the boundary height for this Layout Object
+ * \return the boundary height for this Layout Object
+ * \sa setBoundaryWidth setBoundaryHeight getBoundaryWidth
+ */
+int Layout::getBoundaryHeight() {
+  return(cBoundaryHeight);
+}
+
+/*!
+ * Set to true paint() will draw a boundary box
+ * \param draw_box set to true to draw a boundary box at paint event
+ * \sa paint
+ */
+void Layout::drawBoundaryBox(bool draw_box) {
+  cDrawBoundaryBox = draw_box;
 }

@@ -21,24 +21,63 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 using namespace std;
 
 #include "Timing.h"
+#include <stdio.h>
 
 Timing::Timing() {
-  TopLayout = myLayoutList.createLayout(new LayoutText());
-  myLayoutList.getLayout(TopLayout)->setBox(0,0,1000,1000);
+  cWidth  = 0;
 }
 
 Timing::~Timing() {
 }
 
+/// Create a empyt Layout Text Object
+/*!
+ * This Function will return a pointer to a Text Layout Object without a text
+ */
+LayoutText* Timing::createLayoutText() {
+  return(new LayoutText());
+}
+
+/*!
+ * This Function will return a pointer to a Text Layout Object with the text newText
+ */
+LayoutText* Timing::createLayoutText(string newText) {
+  return(new LayoutText(newText));
+}
+
+
+/// Set the width of the whole Timing Diagram
+void Timing::setWidth(int new_width) {
+  cWidth = new_width;
+}
+
+
+/*!
+ * add the newLayout at the end of the Layout Object List
+ */
+void Timing::addLast(Layout *newLayout) {
+  cLayoutList.createLayout(newLayout);
+}
+
+/*!
+ * paint Every Layput Object in the Layout List
+ */
 void Timing::paint() {
-  myLayoutList.getLayout(TopLayout)->paint(myEasyVec);
+  unsigned int yOffset = 0;
+  unsigned int xOffset = 100;
+  for(size_t walk=0;walk<cLayoutList.size();walk++){
+    cLayoutList.getLayout(walk)->setBoundaryWidth(cWidth);
+    yOffset += (cLayoutList.getLayout(walk)->paint(cEasyVec,xOffset, yOffset));
+  }
+  cEasyVec.box(EVPosInt(0,0),EVPosInt(cWidth,yOffset));
 }
 
 void Timing::save(string filename) {
-  myEasyVec.save(filename);
+  paint();
+  cEasyVec.save(filename);
 }

@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 using namespace std;
 
@@ -33,8 +33,20 @@ using namespace std;
  * This constructor will create an layout object without a parent.
  */
 LayoutText::LayoutText():Layout(){
-  cText = "Hello World";
+  cFontType = 14;
+  cFontSize = 20;
 }
+
+/*!
+ * This constructor will create an layout object without a parent.
+ * newText will be set as Text
+ */
+LayoutText::LayoutText(string newText):Layout(){
+  cText = newText;
+  cFontType = 14;
+  cFontSize = 20;
+}
+
 
 LayoutText::~LayoutText(){
 }
@@ -48,19 +60,52 @@ LayoutID LayoutText::getID() {
 }
 
 /*!
+ * Set a new Text
+ * \param newText the new text
+ */
+void LayoutText::setText(string newText) {
+  cText = newText;
+}
+
+/*!
  * Paint this text layout object
  */
-void LayoutText::paint(EasyVec& cEasyVec) {
+unsigned int LayoutText::paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned int yOffset) {
+  int text_width  = 0;
+  int text_height = 0;
+  int width;
+  int height;
+
+  if(!cText.empty()){
+    EasyVecElmText *txt = cEasyVec.text();
+    // set font and text
+    txt->setFont(cFontType);
+    txt->setSize(cFontSize);
+    txt->setText(cText.c_str());
+
+    // calculate and set the origin
+    text_width  = txt->getWidth();
+    text_height = txt->getHeight();
+    txt->setOrigin(EVPosInt(xOffset, text_height+yOffset));
+  }
   
-  cEasyVec.box(getUL(),getBR());
+  height = getBoundaryHeight()<text_height?text_height:getBoundaryHeight();
+  width  = getBoundaryWidth()<text_width?text_width:getBoundaryWidth();
 
+  setBoundaryHeight(height);
+  setBoundaryWidth(width-xOffset);
 
-  EasyVecElmText *txt2 = cEasyVec.text();
+  Layout::paint(cEasyVec,xOffset,yOffset);
 
-  txt2->setOrigin(EVPosInt(getUL().xpos(), getBR().ypos()));
-  txt2->setSize(22);
-  txt2->setFont(15);
-  txt2->setText(cText.c_str());
-  txt2->getBoundingBox(getUL(), getBR());
+  return(height);
+}
 
+/// Set the Font Type
+void LayoutText::setFontType(int new_font) {
+  cFontType = new_font;
+}
+
+/// Set the Font Size
+void LayoutText::setFontSize(int new_size) {
+  cFontSize = new_size;
 }

@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 using namespace std;
 
@@ -36,7 +36,18 @@ ObjectList::ObjectList() {
  */
 ObjectList::~ObjectList() {
   for(size_t walk=0;walk<vec_ObjectList.size();walk++){
-    delete vec_ObjectList.at(walk);
+    // delete only valid pointer
+    if(vec_ObjectList.at(walk) != NULL){
+      Object *save_p = vec_ObjectList.at(walk);
+      delete vec_ObjectList.at(walk);
+      
+      // set all pointer to NULL
+      for(size_t walk2=0;walk2<vec_ObjectList.size();walk2++){
+	if(vec_ObjectList.at(walk2) == save_p){
+	  vec_ObjectList.at(walk2) = NULL;
+	}
+      }
+    }
   }
 }
 

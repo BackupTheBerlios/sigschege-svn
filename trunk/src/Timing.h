@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #ifndef _H_TIMING
 #define _H_TIMING
@@ -48,16 +48,28 @@ public:
 
   /// The standard destructor
   ~Timing();
-  
-  /// Paint Timing
+
+  /// Create a empyt Layout Text Object
+  LayoutText* createLayoutText();
+
+  /// Create a Layout Text Object with the Text newText
+  LayoutText* createLayoutText(string newText);
+
+  /// Set the width of the whole Timing Diagram
+  void setWidth(int new_width);
+
+  /// Add a Layout Object to the end of cLayoutList
+  void addLast(Layout *newLayout);
+    
+  /// Paint Timing Diagram
   void paint();
 
   ///Save the Timing Diagram
   void save(string filename);
 private:
-  EasyVec    myEasyVec;
-  size_t     TopLayout;
-  LayoutList myLayoutList;
-  EventList  myEventList;
+  int        cWidth;
+  EasyVec    cEasyVec;
+  LayoutList cLayoutList;
+  EventList  cEventList;
 };
 #endif // _H_TIMING

@@ -66,10 +66,39 @@ public:
 
   ///Save the Timing Diagram
   void save(string filename);
+
+  /// set the top Border
+  void setBorderTop(int newBorder);
+
+  /// set the left Border
+  void setBorderLeft(int newBorder);
+
+  /// set the right Border
+  void setBorderRight(int newBorder);
+
+  /// set the botom Border
+  void setBorderBottom(int newBorder);
+
+  /// return the top Border
+  int getBorderTop();
+
+  /// return the left Border
+  int getBorderLeft();
+
+  /// return the right Border
+  int getBorderRight();
+
+  /// return the botom Border
+  int getBorderBottom();
+
 private:
   int        cWidth;
   EasyVec    cEasyVec;
   LayoutList cLayoutList;
   EventList  cEventList;
+  int        cBorderTop;
+  int        cBorderLeft;
+  int        cBorderRight;
+  int        cBorderBottom;
 };
 #endif // _H_TIMING

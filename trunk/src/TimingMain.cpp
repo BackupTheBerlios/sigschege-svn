@@ -34,6 +34,10 @@ int main (int ARGC, char **ARGV) {
   TimingDiagram tim;
 
   tim.setWidth(10000);
+  tim.setBorderTop(100);
+  tim.setBorderLeft(100);
+  tim.setBorderRight(100);
+  tim.setBorderBottom(100);
 
   LayoutText *hello  = tim.createLayoutText("Hello");
   LayoutText *world  = tim.createLayoutText("World!");
@@ -43,14 +47,18 @@ int main (int ARGC, char **ARGV) {
   hello->setFontType(11);
   hello->setFontSize(10);
   hello->drawBoundaryBox(true);
+  hello->setPadding(50);
 
   world->setFontType(10);
   world->setFontSize(20);
+  world->setPadding(50);
 
   Slice1->setBoundaryHeight(200);
   Slice1->drawBoundaryBox(true);
+  Slice1->setPadding(50);
 
   Slice2->setText("Slice2");
+  Slice2->setPadding(50);
 
   tim.addLast(hello);
   tim.addLast(world);

@@ -75,7 +75,7 @@ unsigned int LayoutText::paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned
   int text_height = 0;
   int width;
   int height;
-
+  
   if(!cText.empty()){
     EasyVecElmText *txt = cEasyVec.text();
     // set font and text
@@ -86,15 +86,16 @@ unsigned int LayoutText::paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned
     // calculate and set the origin
     text_width  = txt->getWidth();
     text_height = txt->getHeight();
-    txt->setOrigin(EVPosInt(xOffset, text_height+yOffset));
+    txt->setOrigin(EVPosInt(xOffset+getPadding(), text_height+yOffset+getPadding()));
   }
   
-  height = getBoundaryHeight()<text_height?text_height:getBoundaryHeight();
+  height = (getBoundaryHeight()<text_height?text_height:getBoundaryHeight())+2*getPadding();
   width  = getBoundaryWidth()<text_width?text_width:getBoundaryWidth();
 
   setBoundaryHeight(height);
   setBoundaryWidth(width-xOffset);
 
+  // draw the boundary box
   Layout::paint(cEasyVec,xOffset,yOffset);
 
   return(height);

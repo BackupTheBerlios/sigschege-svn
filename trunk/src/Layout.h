@@ -80,6 +80,12 @@ public:
   /// Get the Height for this Layout Object
   virtual int getBoundaryHeight();
 
+  /// set the padding
+  void setPadding(int newPadding);
+
+  /// get the padding
+  int getPadding();
+
   /// paint the layout object
   virtual unsigned int paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned int yOffset);
 
@@ -87,8 +93,9 @@ public:
   void drawBoundaryBox(bool draw_box);
 
 private:
-  int cBoundaryWidth;
-  int cBoundaryHeight;
+  int  cBoundaryWidth;
+  int  cBoundaryHeight;
+  int  cPadding;
   bool cDrawBoundaryBox;
 };
  

@@ -33,7 +33,10 @@ using namespace std;
  * This constructor will create an layout object without a parent.
  */
 Layout::Layout():Object(){
-  cDrawBoundaryBox=false;
+  cDrawBoundaryBox = false;
+  cPadding         = 0;
+  cBoundaryWidth   = 0;
+  cBoundaryHeight  = 0;
 }
 
 Layout::~Layout(){
@@ -155,4 +158,21 @@ int Layout::getBoundaryHeight() {
  */
 void Layout::drawBoundaryBox(bool draw_box) {
   cDrawBoundaryBox = draw_box;
+}
+
+/*!
+ * This function the the inner padding of this layout object
+ * The inner padding is the distance between the boundary box and the graphic objects (eg: text)
+ * \param newPadding the new padding value
+ */
+void Layout::setPadding(int newPadding) {
+  cPadding = newPadding;
+}
+
+/*!
+ * return the padding
+ * \return padding of this Layout object
+ */
+int Layout::getPadding() {
+  return(cPadding);
 }

@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -21,10 +21,9 @@
 //
 // #############################################################################
 //
-// $Id: TimingMain.cpp 67 2004-12-05 23:05:10Z suupkopp $
+// $Id$
 
 #include "PyTimSignal.h"
-#include "PyTimingDiagram.h"
 #include <stdio.h>
 
 using namespace std;
@@ -33,57 +32,44 @@ extern "C" {
   
   // add a new object type to python
 
-  static PyObject* TimingDiagram_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
-    TimingDiagramObject *self;
+  static PyObject* TimSignal_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    TimSignalObject *self;
     
-    self = (TimingDiagramObject *)type->tp_alloc(type, 0);
+    self = (TimSignalObject *)type->tp_alloc(type, 0);
 
     return (PyObject *) self;
   }
 
-  static int TimingDiagram_init(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
-    self->tim = new TimingDiagram();
+  static int TimSignal_init(TimSignalObject *self, PyObject *args, PyObject *kwds) {
+    self->signal = new TimSignal();
     return (0);
   }
 
-  static void TimingDiagram_dealloc(TimingDiagramObject *self) {
-    delete(self->tim);
+  static void TimSignal_dealloc(TimSignalObject *self) {
+    delete(self->signal);
     self->ob_type->tp_free((PyObject *)self);
   }
 
-  static PyObject * TimingDiagram_exportFig(TimingDiagramObject *self) {
-    self->tim->exportFig("demo.fig");
-    printf("export fix\n");
+  static PyObject * TimSignal_addEvent(TimSignalObject *self) {
+    self->signal->createEvent(State("1"), 20.0);
+    printf("add event\n");
     return (Py_None);
   }
   
-  static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self) {
-    //Handle<TimSignal> newSignal;
-    //newSignal = self->tim->createSignal();
-    PyObject *newSignal;
-    //newSignal = (PyObject*)PyObject_New(TimSignalObject, &TimSignalType);
-    printf("created signal\n");
-    return (newSignal);
-  }
-  
-  static PyMethodDef TimingDiagram_methods[] = {
-    {"createSignal", (PyCFunction)TimingDiagram_createSignal, METH_NOARGS,
-     "Create a Signal in the Timing Diagram."
-    },
-    {
-     "exportFig", (PyCFunction)TimingDiagram_exportFig, METH_VARARGS,
-     "Export the Timing Diagram as Fig Format."
+  static PyMethodDef TimSignal_methods[] = {
+    {"addevent", (PyCFunction)TimSignal_addEvent, METH_NOARGS,
+     "Add an event to a signal."
     },
     {NULL}  /* Sentinel */
   };
 
-  static PyTypeObject TimingDiagramType = {
+static  PyTypeObject TimSignalType = {
     PyObject_HEAD_INIT(NULL)
     0,                         /*ob_size*/
-    "TimingDiagram",               /*tp_name*/
-    sizeof(TimingDiagramObject),   /*tp_basicsize*/
+    "Signal",               /*tp_name*/
+    sizeof(TimSignalObject),   /*tp_basicsize*/
     0,                         /*tp_itemsize*/
-    (destructor)TimingDiagram_dealloc,                         /*tp_dealloc*/
+    (destructor)TimSignal_dealloc,                         /*tp_dealloc*/
     0,                         /*tp_print*/
     0,                         /*tp_getattr*/
     0,                         /*tp_setattr*/
@@ -106,7 +92,7 @@ extern "C" {
     0,                         /* tp_weaklistoffset */
     0,                         /* tp_iter */
     0,                         /* tp_iternext */
-    TimingDiagram_methods,                         /* tp_methods */
+    TimSignal_methods,                         /* tp_methods */
     0,                         /* tp_members */
     0,                         /* tp_getset */
     0,                         /* tp_base */
@@ -114,25 +100,24 @@ extern "C" {
     0,                         /* tp_descr_get */
     0,                         /* tp_descr_set */
     0,                         /* tp_dictoffset */
-    (initproc)TimingDiagram_init,      /* tp_init */
+    (initproc)TimSignal_init,      /* tp_init */
     0,                         /* tp_alloc */
-    TimingDiagram_new,                 /* tp_new */
+    TimSignal_new,                 /* tp_new */
   };
 
   PyMODINIT_FUNC
-  initTimingDiagram(void) 
+  initTimSignal(void) 
   {
     PyObject* m;
     
-    TimingDiagramType.tp_new = PyType_GenericNew;
-    if (PyType_Ready(&TimingDiagramType) < 0)
+    TimSignalType.tp_new = PyType_GenericNew;
+    if (PyType_Ready(&TimSignalType) < 0)
         return;
     
-    m = Py_InitModule3("TimingDiagram", TimingDiagram_methods,
-                       "TimingDiagram Base Class.");
-    
-    Py_INCREF(&TimingDiagramType);
-    PyModule_AddObject(m, "TimingDiagram", (PyObject *)&TimingDiagramType);
+    m = Py_InitModule3("TimSignal", TimSignal_methods,
+                       "Timin Diagram Signal.");
+    Py_INCREF(&TimSignalType);
+    PyModule_AddObject(m, "TimSignal", (PyObject *)&TimSignalType);
   }
 
 }

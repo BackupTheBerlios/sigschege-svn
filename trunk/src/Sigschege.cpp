@@ -25,6 +25,7 @@
 
 #include <Python.h>
 #include <stdio.h>
+#include "PyTimSignal.h"
 #include "PyTimingDiagram.h"
 
 extern "C" {
@@ -105,6 +106,7 @@ int main (int ARGC, char **ARGV) {
   initspam();
   initsig();
   initTimingDiagram();
+  initTimSignal();
   ret = Py_Main(ARGC, ARGV);
   
   Py_Finalize();

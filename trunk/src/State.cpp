@@ -34,6 +34,8 @@ State::drawStateType State::string2state(const string stateString) {
     return One;
   } else if (stateString=="Z") {
     return Z;
+  } else if (stateString=="X") {
+    return X;
   } else if (stateString=="Named") {
     return Named;
   } else {

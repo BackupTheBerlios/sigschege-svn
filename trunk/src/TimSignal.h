@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: TimLabel.h 58 2004-11-10 21:12:15Z suupkopp $
+// $Id$
 
 #ifndef _H_TIMSIGNAL
 #define _H_TIMSIGNAL
@@ -61,6 +61,7 @@ public:
   EventList::deleteEvent;
   EventList::debugEvents;
   EventList::setNamedEvents;
+  EventList::setDefaultSlope;
 private:
   string    cText;
   int       cFontType;

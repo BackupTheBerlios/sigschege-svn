@@ -49,15 +49,17 @@ static void TimSignal_dealloc(TimSignalObject *self) {
 }
 
 static PyObject * TimSignal_addEvent(TimSignalObject *self, PyObject *args, PyObject *kwds) {
-  char *state = "1";
+  char *state1 = "1";
+  char *state2 = "";
   double time = 0.0;
-  static char *kwlist[] = {"time", "state", NULL};
+  static char *kwlist[] = {"time", "state1", "state2", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "ds", kwlist, &time, &state))
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "ds|s", kwlist, &time, &state1, &state2))
     return NULL;
-  string state_s = state;
+  string state1_s = state1;
+  string state2_s = state2;
 
-  self->signal->createEvent(State(state_s), time);
+  self->signal->createEvent(State(state1_s, state2_s), time);
   Py_INCREF(Py_None);
   return (Py_None);
 }
@@ -166,9 +168,10 @@ static PyObject *TimingDiagram_exportPic(TimingDiagramObject *self, PyObject *ar
 static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
 
   char *label = "none";
-  static char *kwlist[] = {"label", NULL};
+  static char *kwlist[] = {"label", "defaultSlope", NULL};
+  static double defaultSlope = 0.0;
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist, &label))
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|d", kwlist, &label, &defaultSlope))
     return NULL;
   string tmps;
   tmps = label;
@@ -177,6 +180,7 @@ static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject
   Handle<TimSignal> newSignal;
   newSignal = self->tim->createSignal(tmps);
   self->tim->addLast(newSignal.Object());
+  newSignal->setDefaultSlope(defaultSlope);
   // create a Python signal object to return to user 
   PyObject *newPSignalObj;
   TimSignalObject *newPSignal;
@@ -187,7 +191,37 @@ static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject
   newPSignal->signal = newSignal;
   return (newPSignalObj);
 }
-  
+
+static PyObject * TimingDiagram_createTimescale(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
+
+  char *label = "none";
+  static char *kwlist[] = {"label", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|s", kwlist, &label))
+    return NULL;
+  string tmps;
+  tmps = label;
+
+  // create new C++ signal object with TimingDiagram class 
+  Handle<TimTime> newTimescale;
+  newTimescale = self->tim->createTime(0.0, 222.0, false, 50.0, 0.0, 10.0);
+  self->tim->addLast(newTimescale.Object());
+  // TODO: No Python representation yet! 
+  // create a Python signal object to return to user 
+//   PyObject *newPSignalObj;
+//   TimSignalObject *newPSignal;
+//   newPSignalObj = TimSignal_new(&TimSignalType, 0, 0);
+//   newPSignal = (TimSignalObject *)newPSignalObj;
+//   TimSignal_init(newPSignal, 0, 0);
+//   // attach C++ signal to Python signal
+//   newPSignal->signal = newSignal;
+//   return (newPSignalObj);
+
+  Py_INCREF(Py_None);
+  return(Py_None);
+}
+
+
 static int TimingDiagram_print(TimSignalObject *obj, FILE *fp, int flags)
 {
   
@@ -202,6 +236,9 @@ static int TimingDiagram_print(TimSignalObject *obj, FILE *fp, int flags)
 static PyMethodDef TimingDiagram_methods[] = {
   {"createSignal", (PyCFunction)TimingDiagram_createSignal, METH_VARARGS|METH_KEYWORDS,
    "Create a Signal in the Timing Diagram."
+  },
+  {"createTimescale", (PyCFunction)TimingDiagram_createTimescale, METH_VARARGS|METH_KEYWORDS,
+   "Create a Time Scale in the Timing Diagram."
   },
   {
     "exportFig", (PyCFunction)TimingDiagram_exportFig, METH_VARARGS,

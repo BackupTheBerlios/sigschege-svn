@@ -3,17 +3,26 @@
 # first example timing diagram creation script for sigschege
 
 md = TimingDiagram.TimingDiagram()
-mclk=md.createSignal("clk")
-mdi=md.createSignal("dat_in")
+mclk=md.createSignal(label="clk", defaultSlope=0.0)
+mdi=md.createSignal("dat_in", 2.0)
 mdo=md.createSignal("dat_out")
+mts=md.createTimescale();
+
 mdi.addEvent(float(10), "1")
+mdi.addEvent(30, "0")
+mdi.addEvent(50, "Z")
+mdi.addEvent(80, "0")
+mdi.addEvent(90, "Z")
+mdi.addEvent(100, "X")
+mdi.addEvent(110, "Z")
+mdi.addEvent(120, "1")
 
 mdo.addEvent(20, "1")
 mdo.addEvent(60, "0")
 
 for i in range(5,220,20):
    mclk.addEvent(i, "1")
-   mclk.addEvent(state="0", time=i+10)
+   mclk.addEvent(state1="0", time=i+10)
 
 print mclk
 md.exportFig()

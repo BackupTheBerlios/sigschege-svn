@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: TimLabel.cpp 59 2004-11-14 21:32:23Z suupkopp $
+// $Id$
 
 using namespace std;
 
@@ -88,7 +88,7 @@ void TimSignal::paint(void) {
   text->setSize(cFontSize);
   text->setOrigin(LayoutObject::cOrigin+EVPosInt(cPadding,(LayoutObject::cSize.ypos()+text->getHeight())/2));
   
-  EventList::setCompound(getCompound()->compound(),LayoutObject::cOrigin+EVPosInt(cPadding+cSigOffset,cPadding),LayoutObject::cSize-EVPosInt(cSigOffset+2*cPadding,2*cPadding),0,222.0);
+  EventList::setCompound(getCompound()->compound(),LayoutObject::cOrigin+EVPosInt(cPadding+cSigOffset,cPadding),LayoutObject::cSize-EVPosInt(cSigOffset+2*cPadding,2*cPadding), 0, 222.0);
   EventList::paint();
 
 }

@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id:$
+// $Id$
 
 #ifndef _H_LAYOUTOBJECT
 #define _H_LAYOUTOBJECT
@@ -40,7 +40,7 @@ public:
   //! The standard destructor
   virtual ~LayoutObject();
 
-  void setCompound(EasyVecCompound *newCompound);
+  virtual void setCompound(EasyVecCompound *newCompound);
 
   EasyVecCompound* getCompound();
 
@@ -98,42 +98,52 @@ public:
   //! Return the current reference count 
   int objRefCount() { return refCount; }
 
-  //! Set the Upper Left position
-  void setULPos(int u, int l);
-
-  //! Set the Upper Left position
-  void setULPos(EVPosInt newPos);
-
-  //! Set the Bottom Right position
-  void setBRPos(int b, int r);
-
-  //! Set the Bottom Right position
-  void setBRPos(EVPosInt newPos);
-
-  //! Return the Upper Left position
-  EVPosInt& getULPos();
-
-  //! Return the Bottom Right position
-  EVPosInt& getBRPos();
-
   int getUpperPos();
   int getLeftPos();
   int getBottomPos();
   int getRightPos();
   
+  //! Set the Size of this Layout Object
+  void setSize(EVPosInt newSize);
+
+  //! Set the Size of this Layout Object
+  void setSize(int width, int height);
+
+  //! Set the width
+  void setWidth(int width);
+
+  //! Set the width
+  void setHeight(int height);
+
+  //! Get the Size of this Layout Object
+  EVPosInt getSize();
+
+  //! Get the height of this Layout Object
+  virtual int getHeight();
+
+  //! Set the Origin of this Layout Object
+  void setOrigin(EVPosInt newOrigin);
+
+  //! Set the Origin of this Layout Object
+  void setOrigin(int x,int y);
+
+  //! Get the Origin of this Layout Object
+  EVPosInt getOrigin();
+
   //! Enable/Disable drawing of the Border
   void enableBorder(bool enable);
 
   void setPadding(int newPadding);
 protected:
-  int cPadding;
+  int      cPadding;
+  EVPosInt cOrigin;
+  EVPosInt cSize;
 private:
   int refCount;
   bool cDrawBorder;
   Handle<LayoutObject> reference;
   vector< Handle<LayoutObject> > referrers;
   EasyVecCompound *evListCompound;
-  EVPosInt cULPos, cBRPos;
 };
 
 #endif

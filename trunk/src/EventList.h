@@ -32,6 +32,7 @@ using namespace std;
 #include <string>
 #include "Event.h"
 #include <EasyVecFigure.h>
+#include <EVPosInt.h>
 
 //! EventList class for handling events
 /*!
@@ -104,19 +105,28 @@ class EventList {
     initialState->setNewState(newInitialState);
   }
 
-  
+  //! Set the compound
+  void setCompound(EasyVecCompound *newCompound);
+
+  //! Set the Origin
+  void setOrigin(EVPosInt newOrigin);
+
+  //! Set the Origin
+  void setOrigin(int xOffset, int yOffset);
+
+  //! Set the Size
+  void setSize(EVPosInt newSize);
+
+  //! Set the Size
+  void setSize(int width, int height);
+
+
   //! Set the compound to which the signal is drawn.
-  /*!
-   * 
-   * \param newCompound  A pointer to the new compound.
-   * \param xOffset The horizontal offset of the compound in the figure. 
-   * \param yOffset The vertical offset of the compound in the figure. 
-   * \param width  The width of the signal compound in figure units
-   * \param height  The height of the signal compound in figure units
-   * \param timeStart The start time of the signal 
-   * \param timeEnd   The end time of the signal 
-   */
   void setCompound(EasyVecCompound *newCompound, int xOffset, int yOffset, int width, int height,
+                   double timeStart, double timeEnd);
+
+  //! Set the compound to which the signal is drawn.
+  void setCompound(EasyVecCompound *newCompound, EVPosInt newOrigin, EVPosInt newSize,
                    double timeStart, double timeEnd);
 
   //! Paint the signal into the compound
@@ -130,6 +140,7 @@ private:
   int compoundXOffset, compoundYOffset;
   int compoundWidth, compoundHeight;
   double compoundTimeStart, compoundTimeEnd;
+  EVPosInt cOrigin, cSize;
 };
 
 #endif /* _H_EVENTLIST */

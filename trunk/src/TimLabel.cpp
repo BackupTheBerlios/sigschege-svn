@@ -65,16 +65,12 @@ void TimLabel::setText(string newText) {
  */
 void TimLabel::paint(void) {
   EasyVecText *text;
-  int height,width;
 
   // check if a compound is available
   if(getCompound()==0) return;
 
   // first we have to clear out compound
   getCompound()->clear();
-
-  height = (getBottomPos()-getUpperPos())-2*cPadding;
-  width  = (getRightPos()-getLeftPos())-2*cPadding;
 
   // and then we can draw out new stuff
   // Draw the border
@@ -85,7 +81,7 @@ void TimLabel::paint(void) {
   text->setText(cText);
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(EVPosInt(getLeftPos()+cPadding,getBottomPos()-cPadding-((height-text->getHeight())/2)));
+  text->setOrigin(cOrigin+EVPosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
 }
 
 /// Set the Font Type

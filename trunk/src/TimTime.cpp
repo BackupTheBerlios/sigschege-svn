@@ -64,7 +64,7 @@ void TimTime::calcTicks(void) {
  */
 void TimTime::paint(void) {
   EasyVecText *text;
-  int height, width, scaleWidth, xpos;
+  int scaleWidth, xpos;
   double tickTime;
 
   // check if a compound is available
@@ -73,9 +73,7 @@ void TimTime::paint(void) {
   // first we have to clear out compound
   getCompound()->clear();
 
-  height = (getBottomPos()-getUpperPos())-2*cPadding;
-  width  = (getRightPos()-getLeftPos())-2*cPadding;
-  scaleWidth = width-cSigOffset;;
+  scaleWidth = cSize.xpos()-cSigOffset-2*cPadding;
 
   // and then we can draw out new stuff
   // Draw the border
@@ -86,15 +84,15 @@ void TimTime::paint(void) {
   text->setText("Time");
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(EVPosInt(getLeftPos()+cPadding,getBottomPos()-cPadding-((height-text->getHeight())/2)));
+  text->setOrigin(cOrigin+EVPosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
 
   // draw the small ticks
   tickTime = firstLabel-tickDistance*floor((firstLabel-startTime)/tickDistance);
   while (tickTime<endTime) {
     xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime/(endTime-startTime)*scaleWidth);
     EasyVecPolyline *tick = getCompound()->polyline();
-    tick->add_point(xpos, getBottomPos()-cPadding-height/50);
-    tick->add_point(xpos, getBottomPos()-cPadding-height/10 );
+    tick->add_point(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
+    tick->add_point(xpos, getBottomPos()-cPadding-cSize.ypos()/10 );
     
     tickTime += tickDistance;
   }
@@ -106,8 +104,8 @@ void TimTime::paint(void) {
     ostringstream strConv;
     xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime*scaleWidth/endTime-startTime);
     EasyVecPolyline *tick = getCompound()->polyline();
-    tick->add_point(xpos, getBottomPos()-cPadding-height/50);
-    tick->add_point(xpos, getBottomPos()-cPadding-height/5 );
+    tick->add_point(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
+    tick->add_point(xpos, getBottomPos()-cPadding-cSize.ypos()/5 );
     // current time as text
     text = getCompound()->text();
     strConv << tickTime;
@@ -116,7 +114,7 @@ void TimTime::paint(void) {
     text->setFont(cFontType);
     text->setSize(cFontSize/2);
     text->setJustification(EasyVecText::center);
-    text->setOrigin(EVPosInt(xpos, getBottomPos()-cPadding-height*32/100));
+    text->setOrigin(EVPosInt(xpos, cOrigin.ypos()+cSize.ypos()-cPadding-cSize.ypos()*32/100));
     
     tickTime += labelDistance;
   }

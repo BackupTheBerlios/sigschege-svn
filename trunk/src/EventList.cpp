@@ -105,13 +105,87 @@ void EventList::debugEvents(void) {
   cout << "===== EVENT LIST STOP" << endl;
 }
 
+/*!
+ * Set the compound
+ * \param newCompound The new Compound
+ */
+void EventList::setCompound(EasyVecCompound *newCompound) {
+  evListCompound = newCompound;
+}
+
+/*!
+ * Set the Origin
+ * \param newOrigin The new Origin
+ */
+void EventList::setOrigin(EVPosInt newOrigin) {
+  cOrigin = newOrigin;
+}
+
+/*!
+ * Set the Origin
+ * \param xOffset The xOffset of the new Origin
+ * \param yOffset The yOffset of the new Origin
+ */
+void EventList::setOrigin(int xOffset, int yOffset) {
+  cOrigin.set(xOffset, yOffset);
+}
+
+//! Set the Size
+/*!
+ * Set the Size
+ * \param newSize The new Size
+ */
+void EventList::setSize(EVPosInt newSize) {
+  cSize = newSize;
+}
+
+//! Set the Size
+/*!
+ * Set the Size
+ * \param width The new width
+ * \param height The new height
+ */
+void EventList::setSize(int width, int height) {
+  cSize.set(width,height);
+}
+
+/*!
+ * Set the compound to which the signal is drawn.
+ * \param newCompound  A pointer to the new compound.
+ * \param xOffset The horizontal offset of the compound in the figure. 
+ * \param yOffset The vertical offset of the compound in the figure. 
+ * \param width  The width of the signal compound in figure units
+ * \param height  The height of the signal compound in figure units
+ * \param timeStart The start time of the signal 
+ * \param timeEnd   The end time of the signal 
+ */
 void EventList::setCompound(EasyVecCompound *newCompound, int xOffset, int yOffset,
                             int width, int height, double timeStart, double timeEnd) {
   evListCompound = newCompound;
-  compoundXOffset = xOffset;
-  compoundYOffset = yOffset;
-  compoundWidth = width;
-  compoundHeight = height;
+  cOrigin.set(xOffset,yOffset);
+
+  cSize.set(width,height);
+
+  compoundTimeStart = timeStart;
+  compoundTimeEnd = timeEnd;
+}
+
+/*!
+ * Set the compound to which the signal is drawn.
+ * \param newCompound  A pointer to the new compound.
+ * \param xOffset The horizontal offset of the compound in the figure. 
+ * \param yOffset The vertical offset of the compound in the figure. 
+ * \param width  The width of the signal compound in figure units
+ * \param height  The height of the signal compound in figure units
+ * \param timeStart The start time of the signal 
+ * \param timeEnd   The end time of the signal 
+ */
+void EventList::setCompound(EasyVecCompound *newCompound, EVPosInt newOrigin, EVPosInt newSize, double timeStart, double timeEnd) {
+  evListCompound = newCompound;
+  cOrigin = newOrigin;
+
+  cSize = newSize;
+
   compoundTimeStart = timeStart;
   compoundTimeEnd = timeEnd;
 }
@@ -121,28 +195,28 @@ void EventList::paint(void) {
   sort(); // makes life easier... 
   EasyVecPolyline *sigline = evListCompound->polyline();
   string currentState = initialState->getNewState();
-  int xCoord;
+  int xCoord,xMax = cOrigin.xpos()+cSize.xpos();
   vector< Handle<Event> >::iterator eventsIter;
-
 
   // we want to draw lines without arrows
   sigline->forward_arrow(false);
   sigline->backward_arrow(false);
 
   // Set the first point of the signal
-  sigline->add_point(EVPosInt(compoundXOffset, (currentState==string("1")) ? compoundYOffset : compoundHeight+compoundYOffset));
+  sigline->add_point(EVPosInt(cOrigin.xpos(), (currentState==string("1")) ? cOrigin.ypos() : cSize.ypos()+cOrigin.ypos()));
 
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
    
-    xCoord = compoundXOffset +  static_cast<int>(static_cast<double>(compoundWidth) * (eventsIter->Object()->getTime(0)-compoundTimeStart) /(compoundTimeEnd-compoundTimeStart));
-    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? compoundYOffset : compoundHeight+compoundYOffset));
+    xCoord = cOrigin.xpos() +  static_cast<int>(static_cast<double>(cSize.xpos()) * (eventsIter->Object()->getTime(0)-compoundTimeStart) /(compoundTimeEnd-compoundTimeStart));
+    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? cOrigin.ypos() : cSize.ypos()+cOrigin.ypos()));
     currentState = eventsIter->Object()->getNewState();
-    if (eventsIter->Object()->getSlope()!=0.0) // get time for end of slope, if we have a slope!
-      xCoord = compoundXOffset +  static_cast<int>(static_cast<double>(compoundWidth) * (eventsIter->Object()->getTime(100)-compoundTimeStart) /(compoundTimeEnd-compoundTimeStart));
-    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? compoundYOffset : compoundHeight+compoundYOffset));
+    if (eventsIter->Object()->getSlope()!=0.0) { // get time for end of slope, if we have a slope!
+      xCoord = cOrigin.xpos() +  static_cast<int>(static_cast<double>(cSize.xpos()) * (eventsIter->Object()->getTime(100)-compoundTimeStart) /(compoundTimeEnd-compoundTimeStart));
+    }
+    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? cOrigin.ypos() : cSize.ypos()+cOrigin.ypos()));
   }
-  
+
   // Add the last point of the signal
-  sigline->add_point(EVPosInt(compoundXOffset+compoundWidth, (currentState==string("1")) ? compoundYOffset : compoundHeight+compoundYOffset));
+  sigline->add_point(EVPosInt(xMax, (currentState==string("1")) ? cOrigin.ypos() : cSize.ypos()+cOrigin.ypos()));
 }
 

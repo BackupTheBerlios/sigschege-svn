@@ -29,16 +29,15 @@ using namespace std;
 #include <stdio.h>
 
 TimingDiagram::TimingDiagram() {
+  cTimList.setCompound(cEasyVec.compound());
+  cTimList.setPadding(0);
 }
 
 TimingDiagram::~TimingDiagram() {
 }
 
 void TimingDiagram::paint() {
-  vector< Handle<LayoutObject> >::iterator LayoutObjectIter;
-  for (LayoutObjectIter = cLayoutList.begin(); LayoutObjectIter != cLayoutList.end(); LayoutObjectIter++){
-    LayoutObjectIter->Object()->paint();
-  }
+  cTimList.paint();
 }
 
 /*!
@@ -64,26 +63,29 @@ void TimingDiagram::exportEPS(string file) {
  * \param newLayoutObject Handel to the Layoutobject that should be added
  */
 void TimingDiagram::addLast(Handle<LayoutObject> newLayoutObject) {
-  cLayoutList.push_back(newLayoutObject);
+  cTimList.addLast(newLayoutObject);
 }
 
 /*!
- * This Function will return a pointer to a Text Layout Object without a text
+ * This Function will return a Handle to a Text Layout Object without a text
  */
 Handle <TimLabel> TimingDiagram::createLabel() {
-  Handle<TimLabel> newTimLabel = new TimLabel;
-  newTimLabel->setCompound(cEasyVec.compound());
-  return newTimLabel;
+  return cTimList.createLabel();
 }
 
 
 /*!
- * This Function will return a pointer to a Timing Diagram Signal Object
+ * This Function will return a Handle to a Timing Diagram Signal Object
  */
 Handle <TimSignal> TimingDiagram::createSignal() {
-  Handle<TimSignal> newTimSignal = new TimSignal;
-  newTimSignal->setCompound(cEasyVec.compound());
-  return newTimSignal;
+  return cTimList.createSignal();
+}
+
+/*!
+ * This Function will return a Handle a Timing Diagram Signal Object
+ */
+Handle <TimList> TimingDiagram::createList() {
+  return cTimList.createList();
 }
 
 /*!
@@ -95,4 +97,12 @@ Handle<TimTime> TimingDiagram::createTime(double newStartTime, double newEndTime
                                            newFirstLabel, newTickDistance);
   newTimTime->setCompound(cEasyVec.compound());
   return newTimTime;  
+}
+
+void TimingDiagram::setWidth(int width) {
+  cTimList.setWidth(width);
+}
+
+void TimingDiagram::setSliceSpace(int space) {
+  cTimList.setSliceSpace(space);
 }

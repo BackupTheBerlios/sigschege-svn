@@ -29,6 +29,7 @@
 using namespace std;
 
 #include "LayoutObject.h"
+#include "TimList.h"
 #include "TimLabel.h"
 #include "TimSignal.h"
 #include "TimTime.h"
@@ -68,13 +69,20 @@ public:
 
   //! Create a empty Timing Diagram Signal Object
   Handle<TimSignal> createSignal();
-  
+
+  //! Create a empty Timing Diagram List Object
+  Handle<TimList> createList();
+
   //! Create a time scale
   Handle<TimTime> createTime(double newStartTime, double newEndTime, bool autoCalc,
                              double newLabelDistance, double newFirstLabel, double newTickDistance);
-
+  //! Set the Width of the Timing Diagram
+  void setWidth(int width);
+  
+  //! Set the space between two slices
+  void setSliceSpace(int space);
 private:
-  vector< Handle<LayoutObject> > cLayoutList;
-  EasyVecFigure    cEasyVec;
+  TimList       cTimList;
+  EasyVecFigure cEasyVec;
 };
 #endif // _H_TIMING

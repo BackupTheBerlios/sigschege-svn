@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id:$
+// $Id$
 
 using namespace std;
 
@@ -31,6 +31,7 @@ using namespace std;
 LayoutObject::LayoutObject() {
   cDrawBorder = false;
   cPadding    = 50;
+  cOrigin.set(0,0);
 }
   
 LayoutObject::~LayoutObject() {
@@ -57,65 +58,92 @@ void LayoutObject::paint(void) {
 
   // and then we can draw out new stuff
   if(cDrawBorder){
-    getCompound()->box(cULPos, cBRPos);
+    getCompound()->box(cOrigin, cOrigin+cSize);
   }
 }
 
-/*!
- * Set the Upper Left Position
- * \param u Upper part of the Upper Left Position
- * \param l Left part of the Upper Left Position
- */
-void LayoutObject::setULPos(int u, int l) {
-  cULPos.sety(u);
-  cULPos.setx(l);
-}
 
 /*!
- * Set the Upper Left position
- * \param newPos Set newPos as new Upper Left Position
+ * Set the Origin of this Layout Object
+ * \param newOrigin The new Origin for this Layout Object
  */
-void LayoutObject::setULPos(EVPosInt newPos) {
-  cULPos = newPos;
+void LayoutObject::setOrigin(EVPosInt newOrigin) {
+  cOrigin = newOrigin;
 }
 
 /*!
- * Set the Bottom Right Position
- * \param b Bottom part of the Bottom Right Position
- * \param r Right part of the Bottom Right Position
+ * Set the Origin of this Layout Object
+ * \param x The new horizontal Origin for this Layout Object
+ * \param y The new vertical Origin for this Layout Object
  */
-void LayoutObject::setBRPos(int b, int r) {
-  cBRPos.sety(b);
-  cBRPos.setx(r);
+void LayoutObject::setOrigin(int x, int y) {
+  cOrigin.set(x,y);
 }
 
 /*!
- * Set the Bottom Right position
- * \param newPos Set newPos as new Bottom Right Position
+ * Get the Origin of this Layout Object
+ * \return The current origin of this Laout Object
  */
-void LayoutObject::setBRPos(EVPosInt newPos) {
-  cBRPos = newPos;
+EVPosInt LayoutObject::getOrigin() {
+  return(cOrigin);
 }
 
-EVPosInt& LayoutObject::getULPos() {
-  return(cULPos);
+/*!
+ * Set the Size of this Layout Object
+ * \param newSize The new Size for this Layout Object
+ */
+void LayoutObject::setSize(EVPosInt newSize) {
+  cSize = newSize;
 }
 
-EVPosInt& LayoutObject::getBRPos() {
-  return(cBRPos);
+/*!
+ * Set the Size of this Layout Object
+ * \param width The new width for this Layout Object
+ * \param height The new height for this Layout Object
+ */
+void LayoutObject::setSize(int width, int height) {
+  cSize.set(width,height);
 }
+
+/*!
+ * Get the Size of this Layout Object
+ * \return The current Size of this Laout Object
+ */
+EVPosInt LayoutObject::getSize() {
+  return(cSize);
+}
+
+void LayoutObject::setWidth(int width) {
+  cSize.setx(width);
+}
+
+void LayoutObject::setHeight(int height) {
+  cSize.sety(height);
+}
+
+/*!
+ * Get hte height of this Layout Object
+ * This is importent for all containter objects like lists
+ * For this containter objects the height of all sub objects
+ * should be accumulated.
+ * \return The total height of this Layout Object
+ */
+int LayoutObject::getHeight() {
+  return(cSize.ypos());
+}
+
 
 int LayoutObject::getUpperPos() {
-  return cULPos.ypos();
+  return cOrigin.ypos();
 }
 int LayoutObject::getLeftPos() {
-  return cULPos.xpos();
+  return cOrigin.xpos();
 }
 int LayoutObject::getBottomPos() {
-  return cBRPos.ypos();
+  return cOrigin.ypos()+cSize.ypos();
 }
 int LayoutObject::getRightPos() {
-  return cBRPos.xpos();
+  return cOrigin.xpos()+cSize.xpos();
 }
 
 /*!

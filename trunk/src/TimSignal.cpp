@@ -71,16 +71,12 @@ void TimSignal::setSigOffset(int sigOffset) {
  */
 void TimSignal::paint(void) {
   EasyVecText *text;
-  int height,width;
 
   // check if a compound is available
   if(getCompound()==0) return;
 
   // first we have to clear out compound
   getCompound()->clear();
-
-  height = (getBottomPos()-getUpperPos())-2*cPadding;
-  width  = (getRightPos()-getLeftPos())-2*cPadding;
 
   // Draw the border
   LayoutObject::paint();
@@ -90,12 +86,13 @@ void TimSignal::paint(void) {
   text->setText(cText);
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(EVPosInt(getLeftPos()+cPadding,getBottomPos()-cPadding-((height-text->getHeight())/2)));
-
-  cEventList.setCompound(getCompound()->compound(),getLeftPos()+cSigOffset+cPadding,getUpperPos()+cPadding,width-cSigOffset-cPadding,height,0,222.0);
+  text->setOrigin(cOrigin+EVPosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
+  
+  cEventList.setCompound(getCompound()->compound(),cOrigin+EVPosInt(cPadding+cSigOffset,cPadding),cSize-EVPosInt(cSigOffset+2*cPadding,2*cPadding),0,222.0);
   cEventList.paint();
 
 }
+
 
 /*!
  * This function creates a new Event.

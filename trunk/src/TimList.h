@@ -31,6 +31,7 @@ using namespace std;
 
 #include "LayoutObject.h"
 #include "TimLabel.h"
+#include "TimTime.h"
 #include "TimSignal.h"
 #include "Handle.t"
 
@@ -48,6 +49,9 @@ public:
   //! Add a LayoutObject to the Objectlist
   void addLast(Handle<LayoutObject> newLayoutObject);
 
+  //! Get the Height of the whole List
+  int getHeight();
+
   //! Create a empty Timing Diagram Label Object
   Handle<TimLabel> createLabel();
 
@@ -61,8 +65,17 @@ public:
   //! Create a empty Timing Diagram Signal Object
   Handle<TimList> createList();
 
+  //! Set the height for each slice
+  void setSliceHeight(int nHeight);
+
+  //! Set the Slice Space
+  void setSliceSpace(int space);
+
 private:
   vector< Handle<LayoutObject> > cLayoutList;
+  int cSliceHeight;
+  int cSliceWidth;
+  int cSliceSpace;
 };
 
 #endif

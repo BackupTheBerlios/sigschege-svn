@@ -31,7 +31,9 @@ using namespace std;
  * Construct a Timing Diagram List
  */
 TimList::TimList():LayoutObject() {
-
+  cSliceHeight = 500;
+  cSliceWidth  = 500;
+  cSliceSpace  = 0;
 }
 
 TimList::~TimList() {
@@ -43,9 +45,28 @@ TimList::~TimList() {
  */
 void TimList::paint(void) {
   vector< Handle<LayoutObject> >::iterator LayoutObjectIter;
+  int current_pos = cPadding;
+
+  // check if a compound is available
+  if(getCompound()==0) return;
+
+  // first we have to clear out compound
+  getCompound()->clear();
+
+  // and then we can draw out new stuff
+  // Draw the border
+  cSize.sety(getHeight());
+  LayoutObject::paint();
+  
   for (LayoutObjectIter = cLayoutList.begin(); LayoutObjectIter != cLayoutList.end(); LayoutObjectIter++){
+    LayoutObjectIter->Object()->setCompound(getCompound()->compound());
+    LayoutObjectIter->Object()->setOrigin(cOrigin+EVPosInt(cPadding,current_pos));
+    LayoutObjectIter->Object()->setWidth(cSize.xpos()-2*cPadding);
     LayoutObjectIter->Object()->paint();
+    current_pos+=LayoutObjectIter->Object()->getHeight()+cSliceSpace;
   }
+
+
 }
 
 /*!
@@ -92,4 +113,34 @@ Handle <TimList> TimList::createList() {
   Handle<TimList> newTimList = new TimList;
   newTimList->setCompound(getCompound()->compound());
   return newTimList;
+}
+
+/*!
+ * Set the height for each slice
+ * \param nHeight slice height
+ */
+void TimList::setSliceHeight(int nHeight) {
+  cSliceHeight = nHeight;
+}
+
+
+/*!
+ * Set the space between two splices
+ * \param space Space between the slices
+ */
+void TimList::setSliceSpace(int space) {
+  cSliceSpace = space;
+}
+
+/*! 
+ * Get the Height of the whole List
+ * \return The height of the whole list
+ */
+int TimList::getHeight() {
+  vector< Handle<LayoutObject> >::iterator LayoutObjectIter;
+  int current_pos = 2*cPadding;
+  for (LayoutObjectIter = cLayoutList.begin(); LayoutObjectIter != cLayoutList.end(); LayoutObjectIter++){
+    current_pos+=LayoutObjectIter->Object()->getHeight()+cSliceSpace;
+  }
+  return(current_pos);
 }

@@ -33,40 +33,57 @@ using namespace std;
 void layout (void) {
   TimingDiagram tim;
 
-  Handle<TimLabel> Label1 = tim.createLabel();
+  Handle<TimLabel>  Label1  = tim.createLabel();
   Handle<TimSignal> Signal0 = tim.createSignal();
-  
   Handle<TimSignal> Signal1 = tim.createSignal();
   Handle<TimTime> Time1 = tim.createTime(0.0, 20.3, false, 1.0, 0.0, 0.2);
 
-  Label1->setULPos(0,0);
-  Label1->setBRPos(1000,10000);
+  Handle<TimList> List1 = tim.createList();
+
+  Label1->setHeight(1000);
   Label1->setText("Hello World! This is a demo timing diagram from Sigschege!");
   Label1->setFontType(2);
   Label1->setFontSize(16);
   Label1->enableBorder(true);
-  
-  Signal0->setULPos(1100,0);
-  Signal0->setBRPos(2100,10000);
+
+  Signal0->setHeight(1000);
   Signal0->setText("Input");
   Signal0->setSigOffset(1500);
   Signal0->enableBorder(true);
   Signal0->setPadding(200);
 
-  Signal1->setULPos(2200,0);
-  Signal1->setBRPos(3200,10000);
+  Signal1->setHeight(1000);
   Signal1->setText("Output");
   Signal1->setSigOffset(1500);
   Signal1->enableBorder(true);
   Signal1->setPadding(200);
 
-  Time1->setULPos(3300,0);
-  Time1->setBRPos(4300,10000);
+  Time1->setHeight(1000);
   Time1->enableBorder(true);
   Time1->setPadding(200);
   Time1->setSigOffset(1500);
   
   Handle<Event> ev1 = Signal1->createEvent("1", 100);
+
+  Handle<TimLabel> Label3 = List1->createLabel();
+  Label3->setText("List in a List !!!");
+  Label3->setHeight(1000);
+  Label3->enableBorder(true);
+
+  Handle<TimLabel> Label4 = List1->createLabel();
+  Label4->setText("One");
+  Label4->setHeight(1000);
+  Label4->enableBorder(true);
+
+  Handle<TimLabel> Label5 = List1->createLabel();
+  Label5->setText("Two");
+  Label5->setHeight(1000);
+  Label5->enableBorder(true);
+
+  List1->enableBorder(true);
+  List1->addLast(Label3.Object());
+  List1->addLast(Label4.Object());
+  List1->addLast(Label5.Object());
 
   Handle<Event> s0ev1 = Signal0->createEvent("1", 80);
   Handle<Event> s0ev2 = Signal0->createEvent();
@@ -83,14 +100,16 @@ void layout (void) {
   s0ev2->setNewState("0");
   s0ev3->setNewState("1");
   s0ev4->setSlope(10.0);
-
-
+  s0ev4->setNewState("0");
 
   tim.addLast(Label1.Object());
   tim.addLast(Signal0.Object());
+  tim.addLast(List1.Object());
   tim.addLast(Signal1.Object());
   tim.addLast(Time1.Object());
 
+  tim.setWidth(10000);
+  tim.setSliceSpace(50);
 
   tim.exportFig("test.fig");
   tim.exportEPS("test.eps");

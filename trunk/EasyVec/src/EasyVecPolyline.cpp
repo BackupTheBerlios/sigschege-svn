@@ -31,30 +31,10 @@
 using namespace std;
 
 EasyVecPolyline::EasyVecPolyline(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
-  : EasyVecElm(parent_compound, figure_compound), EasyVecLine() {
-  elmForwardArrow = elmBackwardArrow = false;
+  : EasyVecElm(parent_compound, figure_compound), EasyVecLine(), EasyVecArrow() {
 };
 
 
-bool EasyVecPolyline::forwardArrow(bool new_state) {
-  bool oldval = elmForwardArrow;
-  elmForwardArrow = new_state;
-  return oldval;
-}
-
-bool EasyVecPolyline::backwardArrow(bool new_state) {
-  bool oldval = elmBackwardArrow;
-  elmBackwardArrow = new_state;
-  return oldval;
-}
-
-bool EasyVecPolyline::forwardArrow(void) {
-  return elmForwardArrow;
-}
-
-bool EasyVecPolyline::backwardArrow(void) {
-  return elmBackwardArrow;
-}
 
 void EasyVecPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
   vector<EVPosInt>::iterator points_iter = points.begin();
@@ -103,17 +83,15 @@ void EasyVecPolyline::draw(EasyVecView* view) {
 void EasyVecPolyline::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
-  string fwd_arr_line = "1 1 1.00 60.00 120.00";  
-  string bwd_arr_line = "1 1 1.00 60.00 120.00";
   
   fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elm_depth
-           << " 0 -1 " << elmStyleValue << " 0 0 0 " << (elmForwardArrow? 1 : 0) << " "
-           << (elmBackwardArrow? 1 : 0) << " " << points.size() << endl;
-  if (elmForwardArrow) {
-    fig_file << fwd_arr_line << endl;
+           << " 0 -1 " << elmStyleValue << " 0 0 0 " << (forwardArrow()? 1 : 0) << " "
+           << (backwardArrow()? 1 : 0) << " " << points.size() << endl;
+  if (forwardArrow()) {
+    fig_file << forwardArrowString() << endl;
   }
-  if (elmBackwardArrow) {
-    fig_file << bwd_arr_line << endl;
+  if (backwardArrow()) {
+    fig_file << backwardArrowString() << endl;
   }
   
   fig_file << " ";

@@ -72,11 +72,21 @@ void test_a(void) {
 
   int i;
   EasyVecPolyline *cplines[10];
+  EasyVecPolyline *arlines[10];
   for (i=0; i<10; i++) {
     cplines[i] = pic2.polyline();
+    arlines[i] = pic1.polyline();
     cplines[i]->lineStyle(EasyVecLine::dashed);
     cplines[i]->addPoint(5700-150*i, 400); cplines[i]->addPoint(5700-150*i, 5600);
-
+    arlines[i]->addPoint(3700-150*i, 400); arlines[i]->addPoint(3700-150*i, 5600);
+    if (i<5) {
+      arlines[i]->forwardArrow(true);
+      arlines[i]->forwardArrowType(i%4);
+    } else {
+      arlines[i]->backwardArrow(true);
+      arlines[i]->backwardArrowType((i/2)%3+1);
+      arlines[i]->backwardArrowStyle(i%2);
+    }
   }
   cplines[1]->styleValue(5.0);
   cplines[2]->styleValue(6.0);
@@ -88,6 +98,7 @@ void test_a(void) {
   cplines[8]->lineStyle(EasyVecLine::dash_double_dotted);
   cplines[9]->lineStyle(EasyVecLine::dash_triple_dotted);
 
+  pic2.save("test_a_pic2_a.fig");
   pic1.export_fig2dev("eps", "test_a_pic1_a.eps");
   pic2.export_fig2dev("eps", "test_a_pic2_a.eps");
   
@@ -142,6 +153,7 @@ int main(void) {
   line3->addPoint(Dortmund);
   line3->pen_color(4);
   line3->forwardArrow(true);
+  line3->forwardArrowType(EasyVecArrow::closed_pointed_butt);
 
   mypic.save("example.fig");
   

@@ -29,6 +29,7 @@
 
 #include "EVPosInt.h"
 #include "EasyVecLine.h"
+#include "EasyVecArrow.h"
 #include "EasyVecElm.h"
 #include "EasyVecCompound.h"
 #include "EasyVecView.h"
@@ -37,7 +38,7 @@
 using namespace std;
 
 /// An EasyVecFigure polyline element - corresponds to fig element polyline (not box)
-class EasyVecPolyline : public EasyVecElm, public EasyVecLine {
+class EasyVecPolyline : public EasyVecElm, public EasyVecLine, public EasyVecArrow {
 public:
   /// general constructor with no extra arguments
   EasyVecPolyline(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound);
@@ -48,19 +49,10 @@ public:
   vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(EasyVecView* view);
   virtual void saveElm(ofstream &fig_file);
-  /// Set the state of the forward arrow to new_state and return the old value.
-  bool forwardArrow(bool new_state);
-  /// Return the current state of the forward arrow
-  bool forwardArrow(void);
-  /// Set the state of the backward arrow to new_state and return the old value.
-  bool backwardArrow(bool new_state);
-  /// Return the current state of the backward arrow
-  bool backwardArrow(void);
 
 
 private:
   vector<EVPosInt> points;
-  bool elmForwardArrow, elmBackwardArrow;
 };
 
 #endif /* _EASYVECELMPOLYLINE_H */

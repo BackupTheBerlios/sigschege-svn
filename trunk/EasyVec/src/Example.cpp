@@ -79,11 +79,22 @@ int main(void) {
   txt->setText("Moin");
   EVPosInt text_ul, text_lr;
   txt->setOrigin(EVPosInt(500, 3000));
-  //txt->setText("Use pipes rather than intermediate files");
+  txt->setSize(22);
+  txt->setText("Use intermediate files");
   txt->getBoundingBox(text_ul, text_lr);
 
-  EasyVecElmBox *textbox =  mypic.box(text_ul-EVPosInt(0, 0), text_lr+EVPosInt(0, 0));
-  
+  EasyVecElmBox *textbox =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
+
+
+  EasyVecElmText *txt2 = mypic.text();
+  txt2->setOrigin(EVPosInt(500, 5000));
+  txt2->setSize(22);
+  txt2->setFont(15);
+  txt2->setText("Use intermediate files");
+  txt2->getBoundingBox(text_ul, text_lr);
+
+  EasyVecElmBox *textbox2 =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
+
   // EasyVecElmPolyline *line4 =  mypic.polyline();
   // line4->add_point(text_lr);
   // line4->add_point(text_lr-EVPosInt(0, 500));

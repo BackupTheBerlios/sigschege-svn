@@ -36,6 +36,6 @@ make install
 Disable optimization:
 
 make distclean
-CXX=-g ./configure
+CXXFLAGS=-g ./configure
 make
 

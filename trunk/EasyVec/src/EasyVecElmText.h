@@ -49,6 +49,8 @@ public:
   virtual void saveElm(ofstream &fig_file);
   /// Set the text to be shown to new_text
   bool setText(const string &new_text);
+  /// Set the font for the text
+  bool setFont(int new_font);
   /// Set the size of the text in points.
   bool setSize(int new_size);
   /// Set the origin of the text in the figure.
@@ -71,12 +73,13 @@ private:
   static bool freetype_already_initialized;
   FT_Face face;
   int text_height, text_width; // cache information to reduce cpu effort
-
+  
   bool initEasyVecElmText();
   void updateDimensions(); // must be called by all methods which change text size!
 
   // must be true for transfig<3.2.5 
   static bool fix_fig2dev_quirk;
+  static string gs_fontpath;
 };
 
 

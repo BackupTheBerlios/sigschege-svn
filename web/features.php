@@ -9,8 +9,55 @@
 <body>
 <?php include_once("sitebar.php") ?>
 <div class="right">
- 
- tbd.
+
+<h1>Planed Features</h1>
+
+<ul>
+   <li class="feature_list">Timing Diagram:
+     <ul>
+       <li>Lists (Lists of Text Labels, Signals, Time Scales and other Lists)</li>
+       <li>Labels</li>
+       <li>Signals</li>
+       <li>Time Scales</li>
+       <li>Markers</li>
+       <li>Pointers</li>
+       <li>Comment Boxes</li>
+       <li>Line Styles support</li>
+       <li>Color support</li>
+     </ul>
+   </li>
+   <li class="feature_list">Timing:
+     <ul>
+       <li>Events</li>
+       <li>Event slope</li>
+       <li>Event uncertainty</li>
+       <li>Signal States</li>
+       <li>Generic Named Data</li>
+     </ul>
+   </li>
+   <li class="feature_list">Input:
+     <ul>   
+       <li>Python Interpreter Batch Mode</li>
+       <li>Python Interpreter Interactive Mode</li>
+       <li>Loading Timing Diagrams</li>
+     </ul>
+   </li>
+   <li class="feature_list">Output
+     <ul>   
+       <li>Eps Export</li>
+       <li>PNG Export</li>
+       <li>Transfig Support</li>
+       <li>Saving Timing Diagrams</li>
+     </ul>
+   </li>
+   <li class="feature_list">Future Features:
+     <ul>   
+       <li>GUI
+       <P>Planed for Version 2.0</P>
+       </li>
+     </ul>
+   </li>
+</ul>
 
 </div>
 </body>

@@ -58,3 +58,25 @@ h1 {
  font-size:14px;
  margin-left:200px;
 }
+
+.right  a:link {
+ color:#C0FFFF;
+ text-decoration:none;
+}
+
+.right  a:hover {
+ color:#FFFFFF;
+ background-color: #42C17B;
+ background-image:none;
+ text-decoration:none;
+}
+
+.right  a:visited {
+ color:#FFFFFF;
+ text-decoration:none;
+}
+
+
+.feature_list {
+ padding : 0 0 4mm;
+}

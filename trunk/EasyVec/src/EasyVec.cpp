@@ -23,19 +23,19 @@
 //
 // $Id$
 
-#include "EasyVec.h"
-#include "EasyVecElmText.h"
+#include "EasyVecFigure.h"
+#include "EasyVecText.h"
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
 
 
 
-EasyVec::EasyVec() : EasyVecElmCompound() {
+EasyVecFigure::EasyVecFigure() : EasyVecCompound() {
 
   // ugly hack, initFreetype must be called only once, we call it here, because
   // creation of a new figure won't happen too often...
-  EasyVecElmText::initFreetype(); 
+  EasyVecText::initFreetype(); 
   auto_update = false;
   members_flat_valid = false;
   file_dpi = 1200;
@@ -43,7 +43,7 @@ EasyVec::EasyVec() : EasyVecElmCompound() {
   figure = this;
 }
 
-bool EasyVec::set_screen_dpi(int new_screen_dpi) {
+bool EasyVecFigure::set_screen_dpi(int new_screen_dpi) {
   if (new_screen_dpi>0) {
     screen_dpi = new_screen_dpi;
     scale_fact = file_dpi/screen_dpi;
@@ -52,7 +52,7 @@ bool EasyVec::set_screen_dpi(int new_screen_dpi) {
   } else return false;
 }
 
-void EasyVec::build_views(void) {
+void EasyVecFigure::build_views(void) {
   for (vector<EasyVecView*>::iterator views_iter = views.begin();
        views_iter != views.end(); views_iter++) {
     (*views_iter)->clear();
@@ -60,7 +60,7 @@ void EasyVec::build_views(void) {
   }
 }
 
-void EasyVec::draw_view(EasyVecView* view) {
+void EasyVecFigure::draw_view(EasyVecView* view) {
   members_flat = flatList();
   members_flat_valid = true;
   vector<EasyVecElm*>::iterator members_iter;
@@ -69,11 +69,11 @@ void EasyVec::draw_view(EasyVecView* view) {
   }
 }
 
-void EasyVec::handle_change(EasyVecElm* changed_element) {
+void EasyVecFigure::handle_change(EasyVecElm* changed_element) {
   build_views();
 }
 
-void EasyVec::unregister_view(EasyVecView* view) {
+void EasyVecFigure::unregister_view(EasyVecView* view) {
   vector<EasyVecView*>::iterator views_iter = views.begin();
   while (views_iter != views.end()) {
     if (*views_iter == view) {
@@ -84,7 +84,7 @@ void EasyVec::unregister_view(EasyVecView* view) {
   }
 }
 
-EasyVec& EasyVec::operator=(EasyVec& source) {
+EasyVecFigure& EasyVecFigure::operator=(EasyVecFigure& source) {
   copy_members(source);
   file_dpi = source.file_dpi;
   screen_dpi = source.screen_dpi;
@@ -93,7 +93,7 @@ EasyVec& EasyVec::operator=(EasyVec& source) {
   return *this;
 }
 
-bool EasyVec::save(string filename) {
+bool EasyVecFigure::save(string filename) {
   ofstream fig_file;
   fig_file.open(filename.c_str(), ios::out);
   if (!fig_file) return false;
@@ -105,15 +105,15 @@ bool EasyVec::save(string filename) {
   fig_file << "Single" << endl;
   fig_file << -2 << endl;
   fig_file << file_dpi << " 2" << endl;
-  save_content(fig_file); // method from base class EasyVecElmCompound to save compound content
+  save_content(fig_file); // method from base class EasyVecCompound to save compound content
   return true;
 }
 
-bool EasyVec::export_fig2dev(string language, string filename) {
+bool EasyVecFigure::export_fig2dev(string language, string filename) {
   string tmpfigfile = filename + "_tmp.fig";
   string fig2dev_cmd = "fig2dev ";
   save(tmpfigfile);
-  fig2dev_cmd += "-L " + language + (EasyVecElmText::fig2dev_fontfix()? " ": " -F ") + tmpfigfile + " " + filename;
+  fig2dev_cmd += "-L " + language + (EasyVecText::fig2dev_fontfix()? " ": " -F ") + tmpfigfile + " " + filename;
 
   cout << "Running: " << fig2dev_cmd << endl;
   

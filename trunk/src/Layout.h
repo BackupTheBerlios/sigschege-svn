@@ -30,8 +30,8 @@ using namespace std;
 
 #include "Object.h"
 #include <EVPosInt.h>
-#include <EasyVec.h>
-#include <EasyVecElmPolyline.h>
+#include <EasyVecFigure.h>
+#include <EasyVecPolyline.h>
 
 enum LayoutID {BASIC,TEXT};
 
@@ -87,7 +87,7 @@ public:
   int getPadding();
 
   /// paint the layout object
-  virtual unsigned int paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned int yOffset);
+  virtual unsigned int paint(EasyVecFigure& cEasyVec, unsigned int xOffset, unsigned int yOffset);
 
   /// Enable/Disable Boundray Box drawing
   void drawBoundaryBox(bool draw_box);

@@ -29,17 +29,17 @@
 
 #include "EVPosInt.h"
 #include "EasyVecElm.h"
-#include "EasyVecElmCompound.h"
+#include "EasyVecCompound.h"
 #include "EasyVecView.h"
 #include <vector>
 
 using namespace std;
 
-/// An EasyVec polyline element - corresponds to fig element polyline (not box)
-class EasyVecElmPolyline : public EasyVecElm {
+/// An EasyVecFigure polyline element - corresponds to fig element polyline (not box)
+class EasyVecPolyline : public EasyVecElm {
 public:
   /// general constructor with no extra arguments
-  EasyVecElmPolyline(EasyVecElmCompound* parent_compound, EasyVec* figure_compound)
+  EasyVecPolyline(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
     : EasyVecElm(parent_compound, figure_compound) {};
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
   void add_point(EVPosInt new_point);

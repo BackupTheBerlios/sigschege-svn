@@ -27,7 +27,7 @@
 #ifndef _EASYVECELM_H
 #define _EASYVECELM_H _EASYVECELM_H
 
-class EasyVecElmCompound;
+class EasyVecCompound;
 
 #include <vector>
 #include "EVPosInt.h"
@@ -41,7 +41,7 @@ class EasyVecElm {
 public:
   // constructor
   EasyVecElm(void);
-  EasyVecElm(EasyVecElmCompound* parent_compound, EasyVec *figure_compound);
+  EasyVecElm(EasyVecCompound* parent_compound, EasyVecFigure *figure_compound);
   // do we need a copy constructor?
   // destructor
   virtual ~EasyVecElm();
@@ -79,8 +79,8 @@ public:
   bool depth(int new_depth);
 
 protected:
-  EasyVecElmCompound *parent; // needed to inform the owner about change events
-  EasyVec *figure; // needed to access global picture states
+  EasyVecCompound *parent; // needed to inform the owner about change events
+  EasyVecFigure *figure; // needed to access global picture states
   int elm_pen_color;
   int elm_fill_color;
   int elm_depth;

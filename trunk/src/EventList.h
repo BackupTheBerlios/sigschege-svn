@@ -31,7 +31,7 @@ using namespace std;
 #include <vector>
 #include <string>
 #include "Event.h"
-#include <EasyVec.h>
+#include <EasyVecFigure.h>
 
 //! EventList class for handling events
 /*!
@@ -116,7 +116,7 @@ class EventList {
    * \param timeStart The start time of the signal 
    * \param timeEnd   The end time of the signal 
    */
-  void setCompound(EasyVecElmCompound *newCompound, int xOffset, int yOffset, int width, int height,
+  void setCompound(EasyVecCompound *newCompound, int xOffset, int yOffset, int width, int height,
                    double timeStart, double timeEnd);
 
   //! Paint the signal into the compound
@@ -126,7 +126,7 @@ private:
   vector< Handle<Event> > events;
   // pseudo event to define initial state - no reference event, no time/delay (time is "-infinity")
   Handle<Event> initialState; 
-  EasyVecElmCompound *evListCompound;
+  EasyVecCompound *evListCompound;
   int compoundXOffset, compoundYOffset;
   int compoundWidth, compoundHeight;
   double compoundTimeStart, compoundTimeEnd;

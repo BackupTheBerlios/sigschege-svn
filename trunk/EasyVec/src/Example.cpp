@@ -24,22 +24,22 @@
 // $Id$
 
 #include "EVPosInt.h"
-#include "EasyVec.h"
-#include "EasyVecElmPolyline.h"
-#include "EasyVecElmText.h"
+#include "EasyVecFigure.h"
+#include "EasyVecPolyline.h"
+#include "EasyVecText.h"
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
 void test_a(void) {
-  EasyVec pic1, pic2;
+  EasyVecFigure pic1, pic2;
 
-  EasyVecElmBox *framebox1 = pic1.box(EVPosInt(120, 120), EVPosInt(6000-120, 6000-120));
-  EasyVecElmBox *framebox2 = pic1.box(EVPosInt(240, 240), EVPosInt(6000-240, 6000-240));
+  EasyVecBox *framebox1 = pic1.box(EVPosInt(120, 120), EVPosInt(6000-120, 6000-120));
+  EasyVecBox *framebox2 = pic1.box(EVPosInt(240, 240), EVPosInt(6000-240, 6000-240));
 
-  //EasyVecElmText *ctxt = pic1.text(EVPosInt(0, 0), "A centered Text");
-  EasyVecElmText *ctxt = pic1.text();
+  //EasyVecText *ctxt = pic1.text(EVPosInt(0, 0), "A centered Text");
+  EasyVecText *ctxt = pic1.text();
   ctxt->setText("A centered Text");
   ctxt->setSize(16);
   int width = ctxt->getWidth();
@@ -58,10 +58,10 @@ void test_a(void) {
   }
 
   EasyVecElm *text_g;
-  EasyVecElmText *text;
+  EasyVecText *text;
   if (texts.size()==1) {
     cout << "OK, 1 text found..." << endl;
-    text = dynamic_cast<EasyVecElmText*>(texts[0]);
+    text = dynamic_cast<EasyVecText*>(texts[0]);
     text->setText("A new text for figure 2");
   }
 
@@ -75,7 +75,7 @@ void test_a(void) {
 
 int main(void) {
 
-  EasyVecElmText::fig2dev_fontfix(true);
+  EasyVecText::fig2dev_fontfix(true);
   
   test_a();
 
@@ -97,23 +97,23 @@ int main(void) {
 
   ////////////////////////////////////////////////////////////////////////////////
 
-  EasyVec mypic;
+  EasyVecFigure mypic;
 
-  EasyVecElmPolyline *line1 =  mypic.polyline();
+  EasyVecPolyline *line1 =  mypic.polyline();
   
   line1->add_point(Schortens);
   line1->add_point(1000, 500);
   line1->add_point(500, 1000);
   line1->add_point(1000, 1000);
   
-  EasyVecElmCompound *cmp1 =  mypic.compound();
-  EasyVecElmCompound *cmp1a =  cmp1->compound();
+  EasyVecCompound *cmp1 =  mypic.compound();
+  EasyVecCompound *cmp1a =  cmp1->compound();
   
-  EasyVecElmPolyline *line2 =  cmp1a->polyline();
+  EasyVecPolyline *line2 =  cmp1a->polyline();
   
   line2->add_points(points1);
-  EasyVecElmCompound *cmp2 =  mypic.compound();
-  EasyVecElmPolyline *line3 =  cmp2->polyline();
+  EasyVecCompound *cmp2 =  mypic.compound();
+  EasyVecPolyline *line3 =  cmp2->polyline();
   line3->add_point(Schortens+Prag);
   line3->add_point(Prag);
   line3->add_point(Schortens);
@@ -123,7 +123,7 @@ int main(void) {
 
   mypic.save("example.fig");
   
-  EasyVecElmText *txt = mypic.text();
+  EasyVecText *txt = mypic.text();
   txt->setText("Moin");
   EVPosInt text_ul, text_lr;
   txt->setOrigin(EVPosInt(500, 3000));
@@ -131,19 +131,19 @@ int main(void) {
   txt->setText("Use intermediate files");
   txt->getBoundingBox(text_ul, text_lr);
 
-  EasyVecElmBox *textbox =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
+  EasyVecBox *textbox =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
 
 
-  EasyVecElmText *txt2 = mypic.text();
+  EasyVecText *txt2 = mypic.text();
   txt2->setOrigin(EVPosInt(500, 5000));
   txt2->setSize(22);
   txt2->setFont(15);
   txt2->setText("Use intermediate files");
   txt2->getBoundingBox(text_ul, text_lr);
 
-  EasyVecElmBox *textbox2 =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
+  EasyVecBox *textbox2 =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
 
-  // EasyVecElmPolyline *line4 =  mypic.polyline();
+  // EasyVecPolyline *line4 =  mypic.polyline();
   // line4->add_point(text_lr);
   // line4->add_point(text_lr-EVPosInt(0, 500));
 

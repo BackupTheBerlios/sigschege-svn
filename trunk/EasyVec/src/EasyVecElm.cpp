@@ -24,7 +24,7 @@
 // $Id$
 
 #include "EasyVecElm.h"
-#include "EasyVecElmCompound.h"
+#include "EasyVecCompound.h"
 
 EasyVecElm::EasyVecElm(void) {
   parent = 0;
@@ -34,7 +34,7 @@ EasyVecElm::EasyVecElm(void) {
 };
 
 
-EasyVecElm::EasyVecElm(EasyVecElmCompound *parent_compound, EasyVec *figure_compound) {
+EasyVecElm::EasyVecElm(EasyVecCompound *parent_compound, EasyVecFigure *figure_compound) {
   parent = parent_compound;
   figure = figure_compound;
   elm_pen_color = parent->pen_color();

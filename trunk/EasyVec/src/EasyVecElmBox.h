@@ -29,20 +29,20 @@
 
 #include "EVPosInt.h"
 #include "EasyVecElm.h"
-#include "EasyVecElmCompound.h"
+#include "EasyVecCompound.h"
 #include "EasyVecView.h"
 #include <vector>
 
 using namespace std;
 
 /// An EasyVec box element - corresponds to fig element polyline:box and polyline:arcbox
-class EasyVecElmBox : public EasyVecElm {
+class EasyVecBox : public EasyVecElm {
 public:
   /// general constructor with no extra arguments
-  EasyVecElmBox(EasyVecElmCompound* parent_compound, EasyVec* figure_compound)
+  EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
     : EasyVecElm(parent_compound, figure_compound) {};
   /// general constructor accepting corner points
-  EasyVecElmBox(EasyVecElmCompound* parent_compound, EasyVec* figure_compound, EVPosInt upper_left, EVPosInt lower_right);
+  EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound, EVPosInt upper_left, EVPosInt lower_right);
 
   /// Return the limits of this element
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {

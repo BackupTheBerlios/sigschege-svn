@@ -106,9 +106,9 @@ void event(void) {
   
   mainList.debugEvents();
 
-  EasyVec myDiag;
+  EasyVecFigure myDiag;
 
-  EasyVecElmCompound *sig1cmp =  myDiag.compound();
+  EasyVecCompound *sig1cmp =  myDiag.compound();
 
   mainList.setCompound(sig1cmp, 1000, 1000, 5000, 1000, 0.0, 222.0);
   mainList.paint();

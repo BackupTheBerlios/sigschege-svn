@@ -23,14 +23,14 @@
 //
 // $Id$
 
-#include "EasyVecElmBox.h"
-#include "EasyVec.h"
+#include "EasyVecBox.h"
+#include "EasyVecFigure.h"
 #include <fstream>
 #include <iostream>
 
 using namespace std;
 
-EasyVecElmBox::EasyVecElmBox(EasyVecElmCompound* parent_compound, EasyVec* figure_compound,
+EasyVecBox::EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound,
                              EVPosInt upper_left, EVPosInt lower_right)
   : EasyVecElm(parent_compound, figure_compound),
     elm_upper_left(upper_left),
@@ -38,9 +38,9 @@ EasyVecElmBox::EasyVecElmBox(EasyVecElmCompound* parent_compound, EasyVec* figur
 
 
 
-void EasyVecElmBox::draw(EasyVecView* view) {
+void EasyVecBox::draw(EasyVecView* view) {
   int xscale;
-  EasyVec *testptr;
+  EasyVecFigure *testptr;
   testptr->scale();
   xscale = figure->scale();
   EVPosInt ul, lr;
@@ -59,7 +59,7 @@ void EasyVecElmBox::draw(EasyVecView* view) {
 
 }
 
-void EasyVecElmBox::saveElm(ofstream &fig_file) {
+void EasyVecBox::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
   fig_file << "2 1 0 1 " << elm_pen_color << " " << elm_fill_color << " " << elm_depth

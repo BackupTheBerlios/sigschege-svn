@@ -59,7 +59,7 @@ public:
   void setFontSize(int new_size);
 
   /// paint the layout object
-  unsigned int paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned int yOffset);
+  unsigned int paint(EasyVecFigure& cEasyVec, unsigned int xOffset, unsigned int yOffset);
 
 private:
   string cText;

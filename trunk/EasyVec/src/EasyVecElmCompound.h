@@ -27,9 +27,9 @@
 #ifndef _EASYVECELMCOMPOUND_H
 #define _EASYVECELMCOMPOUND_H _EASYVECELMCOMPOUND_H 
 
-class EasyVecElmPolyline;
-class EasyVecElmBox;
-class EasyVecElmText;
+class EasyVecPolyline;
+class EasyVecBox;
+class EasyVecText;
 
 #include <vector>
 #include "EVPosInt.h"
@@ -42,29 +42,29 @@ using namespace std;
  * This class implements a compound, which can contain graphical objects, including
  * other compounds. This allows hierarchical structuring of figures.
  *
- * Note that this class is also used as a base class for EasyVec, which implements a
+ * Note that this class is also used as a base class for EasyVecFigure, which implements a
  * complete figure. The reason for this is that the functionality is very similar,
  * actually the figure itself is like an invisible compound as it can contain several
  * graphical objects.
  */
-class EasyVecElmCompound : public EasyVecElm {
+class EasyVecCompound : public EasyVecElm {
 public:
-  /// Standard constructor - needed by derived EasyVec class
-  EasyVecElmCompound() {};
+  /// Standard constructor - needed by derived EasyVecFigure class
+  EasyVecCompound() {};
   /// General constructor which accepts the parent compound and the figure compound
-  EasyVecElmCompound(EasyVecElmCompound* parent_compound, EasyVec* figure_compound)
+  EasyVecCompound(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
     : EasyVecElm(parent_compound, figure_compound) {};
 
-  ~EasyVecElmCompound() { clear(); };
+  ~EasyVecCompound() { clear(); };
   
-  /// Create a polyline (class EasyVecElmPolyline), points must be added later
-  EasyVecElmPolyline* polyline();
-  /// Create a box (class EasyVecElmBox)
-  EasyVecElmBox* box(EVPosInt upper_left, EVPosInt lower_right);
-  /// Create a text element (class EasyVecElmText)
-  EasyVecElmText* text();
-  /// Create a compound (class EasyVecElmCompound)
-  EasyVecElmCompound* compound();
+  /// Create a polyline (class EasyVecPolyline), points must be added later
+  EasyVecPolyline* polyline();
+  /// Create a box (class EasyVecBox)
+  EasyVecBox* box(EVPosInt upper_left, EVPosInt lower_right);
+  /// Create a text element (class EasyVecText)
+  EasyVecText* text();
+  /// Create a compound (class EasyVecCompound)
+  EasyVecCompound* compound();
   /// Determine the region that is covered by this compound
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
   /// return all elements of this compound as a flat list
@@ -73,9 +73,9 @@ public:
   virtual void handle_change(EasyVecElm*);
   virtual void saveElm(ofstream &fig_file);
   void save_content(ofstream &fig_file);
-  void copy_members(EasyVecElmCompound& source);
+  void copy_members(EasyVecCompound& source);
   void clear(void);
-  EasyVecElmCompound& operator=(EasyVecElmCompound& source);
+  EasyVecCompound& operator=(EasyVecCompound& source);
 
   /// Return the type of an element - values are from enum EasyVecElm::Type
   virtual EasyVecElm::Type type(void) { return Compound; };

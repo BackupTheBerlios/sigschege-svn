@@ -29,10 +29,10 @@
 #include "wx/notebook.h"
 
 #include "GUIExample.h"
-#include "EasyVec.h"
+#include "EasyVecFigure.h"
 #include "EasyVecElm.h"
-#include "EasyVecElmPolyline.h"
-#include "EasyVecElmText.h"
+#include "EasyVecPolyline.h"
+#include "EasyVecText.h"
 #include "EasyVecVwx.h"
 
 #include <cstdio>
@@ -44,8 +44,8 @@ wxMenuBar *menu_bar = (wxMenuBar *) NULL;
 
 IMPLEMENT_APP(MyApp);
 
-EasyVecElmPolyline* mainline;
-EasyVec *mainpic;
+EasyVecPolyline* mainline;
+EasyVecFigure *mainpic;
 
 MyApp::MyApp()
 {
@@ -110,8 +110,8 @@ bool MyApp::OnInit()
 //   b3->bottom.SameAs     (panel, wxBottom, 5);
 //   mtext->SetConstraints(b3);
 
-  EasyVec *ev_pic = new EasyVec();
-  EasyVecElmPolyline *nline;
+  EasyVecFigure *ev_pic = new EasyVec();
+  EasyVecPolyline *nline;
   nline = ev_pic->polyline();
   nline->add_point(1500, 1500);
   nline->add_point(300, 1500);
@@ -131,7 +131,7 @@ bool MyApp::OnInit()
   nline->add_point(360, 3060);
   nline->add_point(1560, 1860);
 
-  EasyVecElmText *ntext;
+  EasyVecText *ntext;
   ntext = ev_pic->text();
   ntext->setText("This is an EasyVec Demo");
 

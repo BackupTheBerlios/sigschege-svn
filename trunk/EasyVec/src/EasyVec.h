@@ -30,23 +30,23 @@
 #include <vector>
 #include <string>
 #include "EasyVecElm.h"
-#include "EasyVecElmCompound.h"
+#include "EasyVecCompound.h"
        
 /// A vector figure class in Fig format
 /*!
  * This class implements a complete vector figure in Fig format.
  *
- * It is derived from EasyVecElmCompound since it shares a lot of code with
+ * It is derived from EasyVecCompound since it shares a lot of code with
  * that class. Basically the figure is like an "invisible" compound.
  *
  * To create a figure, instantiate an object of this class.
  * Functions for creating objects (box, polyline, text,...) are inherited from
- * the EasyVecElmCompound class and explained there.
+ * the EasyVecCompound class and explained there.
  */
-class EasyVec : public EasyVecElmCompound {
+class EasyVecFigure : public EasyVecCompound {
 public:
   // constructor
-  EasyVec();
+  EasyVecFigure();
   void draw_view(EasyVecView* view);
   // do we need a copy constructor?
   virtual void handle_change(EasyVecElm*);
@@ -66,7 +66,7 @@ public:
   bool save(string filename);
   /// Directly export into a foreign format.
   bool export_fig2dev(string language, string filename);
-  EasyVec& operator=(EasyVec& source);
+  EasyVecFigure& operator=(EasyVecFigure& source);
 
 private:
   /// A flat list to be passed to views

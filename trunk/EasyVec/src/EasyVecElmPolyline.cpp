@@ -23,34 +23,34 @@
 //
 // $Id$
 
-#include "EasyVecElmPolyline.h"
-#include "EasyVec.h"
+#include "EasyVecPolyline.h"
+#include "EasyVecFigure.h"
 #include <fstream>
 #include <iostream>
 
 using namespace std;
 
-bool EasyVecElmPolyline::forward_arrow(bool new_state) {
+bool EasyVecPolyline::forward_arrow(bool new_state) {
   bool oldval = elm_forward_arrow;
   elm_forward_arrow = new_state;
   return oldval;
 }
 
-bool EasyVecElmPolyline::backward_arrow(bool new_state) {
+bool EasyVecPolyline::backward_arrow(bool new_state) {
   bool oldval = elm_backward_arrow;
   elm_backward_arrow = new_state;
   return oldval;
 }
 
-bool EasyVecElmPolyline::forward_arrow(void) {
+bool EasyVecPolyline::forward_arrow(void) {
   return elm_forward_arrow;
 }
 
-bool EasyVecElmPolyline::backward_arrow(void) {
+bool EasyVecPolyline::backward_arrow(void) {
   return elm_backward_arrow;
 }
 
-void EasyVecElmPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
+void EasyVecPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
   vector<EVPosInt>::iterator points_iter = points.begin();
   if (points_iter==points.end()) {
     upper_left = EVPosInt(0,0); // no points! how should we behave???
@@ -64,22 +64,22 @@ void EasyVecElmPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_ri
   }
 }
 
-void EasyVecElmPolyline::add_point(EVPosInt new_point) {
+void EasyVecPolyline::add_point(EVPosInt new_point) {
   points.push_back(new_point);
 //  cout << "Adding point " << new_point.xpos() << ":" << new_point.ypos() << endl;
   parent->handle_change(this);
 }
 
-void EasyVecElmPolyline::add_points(vector<EVPosInt> new_points) {
+void EasyVecPolyline::add_points(vector<EVPosInt> new_points) {
   vector<EVPosInt>::iterator npoints_iter;
   for ( npoints_iter = new_points.begin(); npoints_iter != new_points.end(); ++npoints_iter ) {
     points.push_back(*npoints_iter);
   }
 }
 
-void EasyVecElmPolyline::draw(EasyVecView* view) {
+void EasyVecPolyline::draw(EasyVecView* view) {
   int xscale;
-  EasyVec *testptr;
+  EasyVecFigure *testptr;
   testptr->scale();
   xscale = figure->scale();
   vector<EVPosInt>::iterator points_iter1, points_iter2;
@@ -94,7 +94,7 @@ void EasyVecElmPolyline::draw(EasyVecView* view) {
   }
 }
 
-void EasyVecElmPolyline::saveElm(ofstream &fig_file) {
+void EasyVecPolyline::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
   string fwd_arr_line = "1 1 1.00 60.00 120.00";  

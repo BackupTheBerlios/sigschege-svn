@@ -26,7 +26,7 @@
 #include <wx/colour.h>
 #include <iostream>
 #include "EasyVecVwx.h"
-#include "EasyVec.h"
+#include "EasyVecFigure.h"
 #include "EasyVecElm.h"
 
 using namespace std;
@@ -36,7 +36,7 @@ BEGIN_EVENT_TABLE(EasyVecVwx, wxWindow)
 END_EVENT_TABLE()
 
 // Define a constructor for my canvas
-EasyVecVwx::EasyVecVwx(EasyVec *picture, wxFrame *frame, int x, int y, int w, int h, long style)
+EasyVecVwx::EasyVecVwx(EasyVecFigure *picture, wxFrame *frame, int x, int y, int w, int h, long style)
   : wxWindow(frame, -1, wxPoint(x, y), wxSize(w, h), style), EasyVecView(picture)
 {
   cout << "constr: " << this << endl;

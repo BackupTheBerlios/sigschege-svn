@@ -24,7 +24,7 @@
 // $Id$
 
 #include "EasyVecView.h"
-#include "EasyVec.h"
+#include "EasyVecFigure.h"
 
 EasyVecView::EasyVecView(EasyVec *picture) {
   picture->register_view(this);

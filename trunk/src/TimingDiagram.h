@@ -34,7 +34,7 @@ using namespace std;
 #include "Event.h"
 #include "EventList.h"
 #include <string>
-#include <EasyVec.h>
+#include <EasyVecFigure.h>
 
 //! The TimingDiagram Class is the toplevel class that contains the layout and the objects of a timing diagram.
 /*!
@@ -93,7 +93,7 @@ public:
 
 private:
   int        cWidth;
-  EasyVec    cEasyVec;
+  EasyVecFigure    cEasyVec;
   LayoutList cLayoutList;
   EventList  cEventList;
   int        cBorderTop;

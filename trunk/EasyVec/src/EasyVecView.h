@@ -30,23 +30,23 @@
 #include "EVPosInt.h"
 
 
-class EasyVec;
+class EasyVecFigure;
 
-/// An abstract class for creating views for the EasyVec class.
+/// An abstract class for creating views for the EasyVecFigure class.
 /*!
- * View classes for the EasyVec class must (well, should) be derived from this
+ * View classes for the EasyVecFigure class must (well, should) be derived from this
  * class and must implement the purely virtual member functions.
  */
 class EasyVecView {
 public:
-  EasyVecView(EasyVec *picture);
+  EasyVecView(EasyVecFigure *picture);
   virtual ~EasyVecView();
   virtual void draw_line(EVPosInt from, EVPosInt to, int color) = 0;
   virtual void draw_char(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
   virtual void clear(void) = 0;
 
 protected:
-  EasyVec *mypicture;
+  EasyVecFigure *mypicture;
 };
 
 

@@ -33,7 +33,7 @@
 /// An EasyVec View class for the wxWidgets toolkit.
 class EasyVecVwx : public wxWindow, public EasyVecView {
 public:
-  EasyVecVwx(EasyVec *picture, wxFrame *frame, int x=-1, int y=-1, int width=-1, int height=-1,
+  EasyVecVwx(EasyVecFigure *picture, wxFrame *frame, int x=-1, int y=-1, int width=-1, int height=-1,
              long style=wxTE_MULTILINE);
   virtual void draw_line(EVPosInt from, EVPosInt to, int color);
   virtual void draw_char(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color);

@@ -25,8 +25,8 @@
 
 using namespace std;
 
-#include <EasyVecElmPolyline.h>
-#include <EasyVecElmPolyline.h>
+#include <EasyVecPolyline.h>
+#include <EasyVecPolyline.h>
 #include "EventList.h"
 #include "Handle.t"
 #include<algorithm>
@@ -105,7 +105,7 @@ void EventList::debugEvents(void) {
   cout << "===== EVENT LIST STOP" << endl;
 }
 
-void EventList::setCompound(EasyVecElmCompound *newCompound, int xOffset, int yOffset,
+void EventList::setCompound(EasyVecCompound *newCompound, int xOffset, int yOffset,
                             int width, int height, double timeStart, double timeEnd) {
   evListCompound = newCompound;
   compoundXOffset = xOffset;
@@ -118,7 +118,7 @@ void EventList::setCompound(EasyVecElmCompound *newCompound, int xOffset, int yO
 
 void EventList::paint(void) {
   if (evListCompound==0) return;
-  EasyVecElmPolyline *sigline = evListCompound->polyline();
+  EasyVecPolyline *sigline = evListCompound->polyline();
   string currentState = initialState->getNewState();
   int xCoord;
   vector< Handle<Event> >::iterator eventsIter;

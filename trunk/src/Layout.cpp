@@ -27,7 +27,7 @@ using namespace std;
 
 #include "Layout.h"
 #include <stdio.h>
-#include <EasyVecElmPolyline.h>
+#include <EasyVecPolyline.h>
 
 /*!
  * This constructor will create an layout object without a parent.
@@ -108,7 +108,7 @@ LayoutID Layout::getID() {
 /*!
  * Paint this layout object
  */
-unsigned int Layout::paint(EasyVec& cEasyVec,unsigned int xOffset, unsigned int yOffset) {
+unsigned int Layout::paint(EasyVecFigure& cEasyVec,unsigned int xOffset, unsigned int yOffset) {
   if(cDrawBoundaryBox) {
     cEasyVec.box(EVPosInt(xOffset, yOffset),EVPosInt(getBoundaryWidth()+xOffset,getBoundaryHeight()+yOffset));
   }

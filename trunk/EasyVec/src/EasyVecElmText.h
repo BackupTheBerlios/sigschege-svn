@@ -29,7 +29,7 @@
 
 #include "EVPosInt.h"
 #include "EasyVecElm.h"
-#include "EasyVecElmCompound.h"
+#include "EasyVecCompound.h"
 #include "EasyVecView.h"
 #include <vector>
 extern "C" {
@@ -40,10 +40,10 @@ extern "C" {
 using namespace std;
 
 /// An EasyVec text - corresponds to fig element text
-class EasyVecElmText : public EasyVecElm {
+class EasyVecText : public EasyVecElm {
 public:
-  EasyVecElmText();
-  EasyVecElmText(EasyVecElmCompound* parent_compound, EasyVec* figure_compound);
+  EasyVecText();
+  EasyVecText(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound);
   /// Place the edges of the bounding box in upper_left/lower_right.
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
   /// Return the width of the text.
@@ -61,7 +61,7 @@ public:
   bool setSize(int new_size);
   /// Set the origin of the text in the figure.
   bool setOrigin(EVPosInt new_origin);
-  static bool initFreetype(void); // will be called by EasyVec class
+  static bool initFreetype(void); // will be called by EasyVecFigure class
   /// Switch the fig2dev_fontfix on/off. Must be true for xfig/transfig versions before 3.2.5, false otherwise.
   /*!
    * This fixes a bug concerning font sizes for transfig/fig2dev for versions before 3.2.5. Instead
@@ -83,7 +83,7 @@ private:
   FT_Face face;
   int text_height, text_width; // cache information to reduce cpu effort
   
-  bool initEasyVecElmText();
+  bool initEasyVecText();
   void updateDimensions(); // must be called by all methods which change text size!
 
   // must be true for transfig<3.2.5 

@@ -25,16 +25,16 @@
 
 #include <fstream>
 #include <iostream>
-#include "EasyVecElmText.h"
-#include "EasyVec.h"
+#include "EasyVecText.h"
+#include "EasyVecFigure.h"
 
 using namespace std;
 
-FT_Library  EasyVecElmText::freetype_lib;
-bool EasyVecElmText::freetype_already_initialized = false;
-bool EasyVecElmText::fix_fig2dev_quirk = false;
+FT_Library  EasyVecText::freetype_lib;
+bool EasyVecText::freetype_already_initialized = false;
+bool EasyVecText::fix_fig2dev_quirk = false;
 
-string EasyVecElmText::gs_fontpath = "/var/lib/defoma/gs.d/dirs/fonts/";
+string EasyVecText::gs_fontpath = "/var/lib/defoma/gs.d/dirs/fonts/";
 
 const char* easyvec_font_files[] = {
   "n021003l.pfb", // 0 = NimbusRomNo9L-Regu = Times-Roman
@@ -74,7 +74,7 @@ const char* easyvec_font_files[] = {
 	"d050000l.pfb" // 34 = Zapf Dingbats
 };
 
-bool EasyVecElmText::initFreetype(void) {
+bool EasyVecText::initFreetype(void) {
   if (freetype_already_initialized) return true;
   int freetype_fail = FT_Init_FreeType( &freetype_lib );
   if (freetype_fail==0) {
@@ -86,11 +86,11 @@ bool EasyVecElmText::initFreetype(void) {
 }
 
 /// update the dimensions - calls draw without a view
-void EasyVecElmText::updateDimensions() {
+void EasyVecText::updateDimensions() {
   draw(NULL); 
 }
 
-void EasyVecElmText::draw(EasyVecView* view) {
+void EasyVecText::draw(EasyVecView* view) {
   string::iterator text_iter;
   char cur_char;
   FT_UInt glyph_index, old_glyph_i;
@@ -147,7 +147,7 @@ void EasyVecElmText::draw(EasyVecView* view) {
 }
 
 
-bool EasyVecElmText::initEasyVecElmText() {
+bool EasyVecText::initEasyVecText() {
   bool success;
   elm_font = 0;
   elm_size = 18;
@@ -158,29 +158,29 @@ bool EasyVecElmText::initEasyVecElmText() {
 }
 
 
-EasyVecElmText::EasyVecElmText() {
-  initEasyVecElmText();
+EasyVecText::EasyVecText() {
+  initEasyVecText();
 }
 
-EasyVecElmText::EasyVecElmText(EasyVecElmCompound* parent_compound, EasyVec* figure_compound)
+EasyVecText::EasyVecText(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
   : EasyVecElm(parent_compound, figure_compound)
 {
-  initEasyVecElmText();
+  initEasyVecText();
 };
 
 
-void EasyVecElmText::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
+void EasyVecText::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
   upper_left  = elm_origin - EVPosInt(0, text_height); 
   lower_right = elm_origin + EVPosInt(text_width, 0);
 }
 
-bool EasyVecElmText::setText(const string &new_text) {
+bool EasyVecText::setText(const string &new_text) {
   elm_text = new_text;
   updateDimensions();
   return true;
 }
 
-bool EasyVecElmText::setFont(int new_font) {
+bool EasyVecText::setFont(int new_font) {
   int ft_fail;
   if (new_font>=0 && new_font<34) {
     elm_font = new_font;
@@ -193,18 +193,18 @@ bool EasyVecElmText::setFont(int new_font) {
 }
 
 
-bool EasyVecElmText::setSize(int new_size) {
+bool EasyVecText::setSize(int new_size) {
   elm_size = new_size;
   updateDimensions();
   return true;
 }
 
-bool EasyVecElmText::setOrigin(EVPosInt new_origin) {
+bool EasyVecText::setOrigin(EVPosInt new_origin) {
   elm_origin = new_origin;
   return true;
 }
 
-void EasyVecElmText::saveElm(ofstream &fig_file) {
+void EasyVecText::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
   fig_file << "4 0 " << elm_pen_color << " " << elm_depth

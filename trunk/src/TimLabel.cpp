@@ -27,7 +27,7 @@ using namespace std;
 
 #include "TimLabel.h"
 #include <iostream>
-#include <EasyVecElmText.h>
+#include <EasyVecText.h>
 
 /*!
  * This constructor will create an layout object without a parent.
@@ -70,14 +70,14 @@ void TimLabel::setText(string newText) {
 /*!
  * Paint this text layout object
  */
-unsigned int TimLabel::paint(EasyVec& cEasyVec, unsigned int xOffset, unsigned int yOffset) {
+unsigned int TimLabel::paint(EasyVecFigure& cEasyVec, unsigned int xOffset, unsigned int yOffset) {
   int text_width  = 0;
   int text_height = 0;
   int width;
   int height;
   
   if(!cText.empty()){
-    EasyVecElmText *txt = cEasyVec.text();
+    EasyVecText *txt = cEasyVec.text();
     // set font and text
     txt->setFont(cFontType);
     txt->setSize(cFontSize);

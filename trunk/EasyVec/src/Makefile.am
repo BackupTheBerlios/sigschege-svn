@@ -1,5 +1,5 @@
 lib_LTLIBRARIES = lib_easyvec.la
-lib_easyvec_la_SOURCES = EVPosInt.cpp EVPosInt.h EasyVecElmPolyline.cpp EasyVecElmPolyline.h  EasyVecElmText.cpp EasyVecElmText.h EasyVecElmCompound.cpp EasyVecElmCompound.h EasyVec.cpp EasyVec.h EasyVecElm.cpp EasyVecElm.h EasyVecElmBox.cpp  EasyVecElmBox.h
+lib_easyvec_la_SOURCES = EVPosInt.cpp EVPosInt.h EasyVecPolyline.cpp EasyVecPolyline.h  EasyVecText.cpp EasyVecText.h EasyVecCompound.cpp EasyVecCompound.h EasyVec.cpp EasyVec.h EasyVecElm.cpp EasyVecElm.h EasyVecBox.cpp  EasyVecBox.h
 lib_easyvec_la_CXXFLAGS = $(shell wx-config --cxxflags) $(shell freetype-config --cflags) -Wall -g
 lib_easyvec_la_LDFLAGS = $(shell freetype-config --libs)
 

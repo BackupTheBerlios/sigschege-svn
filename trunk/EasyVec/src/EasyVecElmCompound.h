@@ -55,7 +55,7 @@ public:
   EasyVecElmCompound(EasyVecElmCompound* parent_compound, EasyVec* figure_compound)
     : EasyVecElm(parent_compound, figure_compound) {};
 
-  //virtual EasyVecElmCompound& operator=(const EasyVecElmCompound& right);
+  ~EasyVecElmCompound() { clear(); };
   
   /// Create a polyline (class EasyVecElmPolyline), points must be added later
   EasyVecElmPolyline* polyline();
@@ -73,6 +73,9 @@ public:
   virtual void handle_change(EasyVecElm*);
   virtual void saveElm(ofstream &fig_file);
   void save_content(ofstream &fig_file);
+  void copy_members(EasyVecElmCompound& source);
+  void clear(void);
+  EasyVecElmCompound& operator=(EasyVecElmCompound& source);
 
   /// Return the type of an element - values are from enum EasyVecElm::Type
   virtual EasyVecElm::Type type(void) { return Compound; };

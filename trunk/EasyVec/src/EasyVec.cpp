@@ -84,6 +84,14 @@ void EasyVec::unregister_view(EasyVecView* view) {
   }
 }
 
+EasyVec& EasyVec::operator=(EasyVec& source) {
+  copy_members(source);
+  file_dpi = source.file_dpi;
+  screen_dpi = source.screen_dpi;
+  members_flat_valid = false;
+  build_views();
+  return *this;
+}
 
 bool EasyVec::save(string filename) {
   ofstream fig_file;

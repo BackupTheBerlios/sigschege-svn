@@ -93,6 +93,63 @@ vector<EasyVecElm*> EasyVecElmCompound::flatList() {
   return result_list;
 }
 
+void EasyVecElmCompound::clear(void) {
+  EasyVecElm* last_elm;
+  while (members.size()>0) {
+    last_elm = members.back();
+    delete last_elm;
+    members.pop_back();
+  }
+}
+
+
+/*!
+  This function copies all member elements of another compound to this compound.
+  It is used by the assignment operators of EasyVecElmCompound and the derived
+  EasyVec class.
+  Please note that this function does not clear the members of this compound,
+  you must call the clear function yourself if you want this.
+ */
+void EasyVecElmCompound::copy_members(EasyVecElmCompound& source) {
+  vector<EasyVecElm*>::iterator source_members_iter;
+  EasyVecElmText* new_text;
+  EasyVecElmBox* new_box;
+  EasyVecElmPolyline* new_polyline;
+  EasyVecElmCompound* new_compound;
+    
+  for (source_members_iter = source.members.begin();
+       source_members_iter != source.members.end();
+       ++source_members_iter ) {
+    switch ((*source_members_iter)->type()) {
+    case Text:
+      new_text = text();
+      *new_text = *(static_cast<EasyVecElmText*>(*source_members_iter));
+      break;
+    case Box:
+      new_box = box(EVPosInt(0,0),EVPosInt(0,0));
+      *new_box = *(static_cast<EasyVecElmBox*>(*source_members_iter));
+      break;
+    case Polyline:
+      new_polyline = polyline();
+      *new_polyline = *(static_cast<EasyVecElmPolyline*>(*source_members_iter));
+      break;
+    case Compound:
+      new_compound = compound();
+      *new_compound = *(static_cast<EasyVecElmCompound*>(*source_members_iter));
+      break;
+    default:
+      cerr << "Error: Unknown type" << endl;
+    }
+  }
+}
+
+EasyVecElmCompound& EasyVecElmCompound::operator=(EasyVecElmCompound& source) {
+  clear();
+  copy_members(source);
+  return *this;
+}
+
+
 void EasyVecElmCompound::handle_change(EasyVecElm* changed_element) {
   if (parent != 0) parent->handle_change(changed_element);
 }
@@ -114,3 +171,4 @@ void EasyVecElmCompound::save_content(ofstream &fig_file) {
     (*members_iter)->saveElm(fig_file);
   }  
 }
+

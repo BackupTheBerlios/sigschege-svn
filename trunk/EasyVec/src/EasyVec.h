@@ -66,6 +66,7 @@ public:
   bool save(string filename);
   /// Directly export into a foreign format.
   bool export_fig2dev(string language, string filename);
+  EasyVec& operator=(EasyVec& source);
 
 private:
   /// A flat list to be passed to views

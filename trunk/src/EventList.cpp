@@ -26,6 +26,7 @@
 using namespace std;
 
 #include "EventList.h"
+#include "Handle.t"
 #include<algorithm>
 #include<iostream>
 
@@ -52,6 +53,17 @@ Handle<Event> EventList::createEvent() {
   events.push_back(new_handle);
   return new_handle;
 }
+
+Handle<Event> EventList::createEvent(Handle<Event> &refEvent, double eventDelay, string eventNewState) {
+  Handle<Event> new_event = createEvent();
+  if (refEvent.Object()!=0) {
+    new_event->setReference(refEvent);
+  }
+  new_event->setDelay(eventDelay);
+  new_event->setNewState(eventNewState);
+  return new_event;
+}
+
 
 bool EventList::deleteEvent(Handle<Event> obsoleteEvent) {
   vector< Handle<Event> >::iterator eventsIter;

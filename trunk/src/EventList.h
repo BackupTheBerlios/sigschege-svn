@@ -29,6 +29,7 @@
 using namespace std;
 
 #include <vector>
+#include <string>
 #include "Event.h"
 #include <EasyVec.h>
 
@@ -60,6 +61,17 @@ class EventList {
    * \sa deleteEvent 
    */
   Handle<Event> createEvent();
+
+  //! Create a new Event
+  /*!
+   * This function creates a new Event.
+   * \param refEvent A Handle to the referenced event. If it is a 0 pointer the delay is the absolute time.
+   * \param eventDelay The delay to the reference event, or the absolute time if there is no reference event.
+   * \param eventNewState The new state created by the event.
+   * \return A pointer to the new event.
+   * \sa deleteEvent 
+   */
+  Handle<Event> createEvent(Handle<Event> &refEvent, double eventDelay, string eventNewState);
   
   //! Delete an Events
   /*! 

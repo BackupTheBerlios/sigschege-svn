@@ -30,6 +30,7 @@ using namespace std;
 
 #include "Handle.t"
 #include <vector>
+#include <string>
 
 //! An Event Class stores the delay, the time and the dependencies to other events
 /*!
@@ -129,6 +130,28 @@ public:
    */
   void delReference();
 
+  //! Set the new state which is created by this event
+  /*!
+   * This sets the new state of the event. States are defined simply as strings.
+   * For binary signals use "1", "0", "X", "Z", these will be mapped to corresponding views.
+   * \return The old new state is returned.
+   * \sa getNewState
+   */
+  string setNewState(string newNewState) {
+    string tmp = newState;
+    newState = newNewState;
+    return tmp;
+  }
+  
+  //! Get the new state which is created by this event
+  /*!
+   * This returns the new state of the event. 
+   * \sa setNewState
+   */
+  string &getNewState(void) {
+    return newState;
+  }
+  
   //! Return the current reference count 
   int objRefCount() { return refCount; }
 
@@ -138,13 +161,14 @@ public:
 private:
   double EventDelay;
   double EventTime;
+  string newState;
   int refCount;
   Handle<Event> reference;
   vector< Handle<Event> > referrers;
 
-  //! Increment the reference count - only for use by handle class!
+  //! Increment the reference count - only for use by Handle class!
   void incrementRefcount();
-  //! Decrement the reference count - only for use by handle class!
+  //! Decrement the reference count - only for use by Handle class!
   void decrementRefcount();
 };
 

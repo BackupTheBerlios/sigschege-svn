@@ -33,7 +33,9 @@ using namespace std;
  * Requirements for customer classes:
  * Integer variable refCount, a reference counter.
  * Function void incrementRefcount(void) and void decrementRefcount(void) to change the refCount.
- * Function int objRefCount(void) to return the refCount,
+ * Function int objRefCount(void) to return the refCount
+ * Note: incrementRefcount and decrementRefcount should be private and Handle<CustomerClass> should
+ * be declared as a friend class.
  */
 template<class T> class Handle {
 

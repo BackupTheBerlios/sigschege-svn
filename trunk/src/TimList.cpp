@@ -89,8 +89,8 @@ Handle <TimLabel> TimList::createLabel() {
 /*!
  * This Function will return a Handle to a Timing Diagram Signal Object
  */
-Handle <TimSignal> TimList::createSignal() {
-  Handle<TimSignal> newTimSignal = new TimSignal;
+Handle <TimSignal> TimList::createSignal(double defaultSlope) {
+  Handle<TimSignal> newTimSignal = new TimSignal(defaultSlope);
   newTimSignal->setCompound(getCompound()->compound());
   return newTimSignal;
 }

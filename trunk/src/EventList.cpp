@@ -32,7 +32,9 @@ using namespace std;
 #include<algorithm>
 #include<iostream>
 
-EventList::EventList() : events(), initialState(new Event) {
+EventList::EventList(double defaultSlope)
+  : events(), initialState(new Event), cDefaultSlope(defaultSlope)
+{
   namedEvents = false;
 }
 
@@ -64,6 +66,7 @@ Handle<Event> EventList::createEvent(const State &eventNewState, double eventDel
   }
   new_event->setDelay(eventDelay);
   new_event->setNewState(eventNewState);
+  new_event->setSlope(cDefaultSlope);
   return new_event;
 }
 

@@ -31,6 +31,10 @@ using namespace std;
 TimingDiagram::TimingDiagram() {
   cTimList.setCompound(cEasyVec.compound());
   cTimList.setPadding(0);
+  cDefaultHeight = 1000;
+  cDefaultPadding = 200;
+  cDefaultBorder = true;
+  cDefaultSigOffset = 1500;
 }
 
 TimingDiagram::~TimingDiagram() {
@@ -70,22 +74,33 @@ void TimingDiagram::addLast(Handle<LayoutObject> newLayoutObject) {
  * This Function will return a Handle to a Text Layout Object without a text
  */
 Handle <TimLabel> TimingDiagram::createLabel() {
-  return cTimList.createLabel();
+  Handle <TimLabel> newLabel = cTimList.createLabel();
+  newLabel->setHeight(cDefaultHeight);
+  newLabel->enableBorder(cDefaultBorder);
+  return newLabel;
 }
 
 
 /*!
  * This Function will return a Handle to a Timing Diagram Signal Object
  */
-Handle <TimSignal> TimingDiagram::createSignal() {
-  return cTimList.createSignal();
+Handle <TimSignal> TimingDiagram::createSignal(double defaultSlope) {
+  Handle <TimSignal> newSignal = cTimList.createSignal(defaultSlope);
+  newSignal->setHeight(cDefaultHeight);
+  newSignal->enableBorder(cDefaultBorder);
+  newSignal->setPadding(cDefaultPadding);
+  newSignal->setSigOffset(cDefaultSigOffset);
+  return newSignal;
 }
 
 /*!
  * This Function will return a Handle a Timing Diagram Signal Object
  */
 Handle <TimList> TimingDiagram::createList() {
-  return cTimList.createList();
+  Handle <TimList> newList = cTimList.createList();
+  newList->enableBorder(cDefaultBorder);
+  newList->setPadding(cDefaultPadding);
+  return newList;
 }
 
 /*!
@@ -96,6 +111,10 @@ Handle<TimTime> TimingDiagram::createTime(double newStartTime, double newEndTime
   Handle<TimTime> newTimTime = new TimTime(newStartTime, newEndTime, autoCalc, newLabelDistance,
                                            newFirstLabel, newTickDistance);
   newTimTime->setCompound(cEasyVec.compound());
+  newTimTime->setHeight(cDefaultHeight);
+  newTimTime->enableBorder(cDefaultBorder);
+  newTimTime->setPadding(cDefaultPadding);
+  newTimTime->setSigOffset(cDefaultSigOffset); 
   return newTimTime;  
 }
 

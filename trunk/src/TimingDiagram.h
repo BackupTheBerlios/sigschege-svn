@@ -68,7 +68,7 @@ public:
   Handle<TimLabel> createLabel();
 
   //! Create a empty Timing Diagram Signal Object
-  Handle<TimSignal> createSignal();
+  Handle<TimSignal> createSignal(double defaultSlope=0.0);
 
   //! Create a empty Timing Diagram List Object
   Handle<TimList> createList();
@@ -78,11 +78,25 @@ public:
                              double newLabelDistance, double newFirstLabel, double newTickDistance);
   //! Set the Width of the Timing Diagram
   void setWidth(int width);
+
+  //! Set the default height of the timing diagram elements.
+  void setDefaultHeight(int defaultHeight) { cDefaultHeight = defaultHeight; }
+  //! Set the default padding of the timing diagram elements.
+  void setDefaultPadding(int defaultPadding) { cDefaultPadding = defaultPadding; }
+  //! Set the default default border of the timing diagram elements.
+  void setDefaultBorder(bool defaultBorder) { cDefaultBorder = defaultBorder; }
+  //! Set the default default offset of signals 
+  void setDefaultSigOffset(int defaultSigOffset) { cDefaultSigOffset = defaultSigOffset; }
   
   //! Set the space between two slices
   void setSliceSpace(int space);
 private:
   TimList       cTimList;
   EasyVecFigure cEasyVec;
+  // defaults for signals/labels/time scale
+  int cDefaultHeight;
+  int cDefaultPadding;
+  bool cDefaultBorder;
+  int cDefaultSigOffset;
 };
 #endif // _H_TIMING

@@ -40,29 +40,14 @@ void layout (void) {
 
   Handle<TimList> List1 = tim.createList();
 
-  Label1->setHeight(1000);
   Label1->setText("Hello World! This is a demo timing diagram from Sigschege!");
   Label1->setFontType(2);
   Label1->setFontSize(16);
-  Label1->enableBorder(true);
 
-  Signal0->setHeight(1000);
   Signal0->setText("Input");
-  Signal0->setSigOffset(1500);
-  Signal0->enableBorder(true);
-  Signal0->setPadding(200);
 
-  Signal1->setHeight(1000);
   Signal1->setText("Output");
-  Signal1->setSigOffset(1500);
-  Signal1->enableBorder(true);
-  Signal1->setPadding(200);
 
-  Time1->setHeight(1000);
-  Time1->enableBorder(true);
-  Time1->setPadding(200);
-  Time1->setSigOffset(1500);
-  
   Handle<Event> ev1 = Signal1->createEvent(State("X"), -50.0);
   for (int i=0; i<8; i++) {
     string nstate;
@@ -90,12 +75,21 @@ void layout (void) {
   Label4->setHeight(1000);
   Label4->enableBorder(true);
 
+  Handle<TimSignal> Signal2 = tim.createSignal(5);
+  Handle<Event> s2[4];
+  s2[0] = Signal2->createEvent(State("1"), 50);
+  s2[1] = Signal2->createEvent(State("0"), 100);
+  s2[2] = Signal2->createEvent(State("1"), 150);
+  s2[3] = Signal2->createEvent(State("0"), 200);
+  s2[2]->setSlope(10.0);
+  Signal2->setText("Sync");
+
   Handle<TimLabel> Label5 = List1->createLabel();
   Label5->setText("Two");
   Label5->setHeight(1000);
   Label5->enableBorder(true);
 
-  List1->enableBorder(true);
+  
   List1->addLast(Label3.Object());
   List1->addLast(Label4.Object());
   List1->addLast(Label5.Object());
@@ -129,6 +123,7 @@ void layout (void) {
   tim.addLast(Signal0.Object());
   tim.addLast(List1.Object());
   tim.addLast(Signal1.Object());
+  tim.addLast(Signal2.Object());
   tim.addLast(Time1.Object());
 
   tim.setWidth(10000);

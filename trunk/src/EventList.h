@@ -40,8 +40,12 @@ using namespace std;
  */
 class EventList {
  public:
-  //! This constructor will create a empty EventList
-  EventList();
+  //! This constructor will create an empty EventList.
+  /*!
+   * \param evTime The point in time from which the first event is returned. 
+   * \param evTime The point in time from which the first event is returned. 
+   */
+  EventList(double defaultSlope=0.0);
 
   //! This destructor will destroy the EventList and all stored events.
   ~EventList();
@@ -120,11 +124,14 @@ class EventList {
   //! Set the Size
   void setSize(int width, int height);
 
-  //!
+  //! Set the type of events (binary or named).
   void setNamedEvents(bool named) {
     namedEvents = named;
   };
 
+  //! Set the default slope, which is give to all new events.
+  void setDefaultSlope(double defaultSlope) { cDefaultSlope = defaultSlope; }
+  
   //! Set the compound to which the signal is drawn.
   void setCompound(EasyVecCompound *newCompound, int xOffset, int yOffset, int width, int height,
                    double timeStart, double timeEnd);
@@ -146,6 +153,7 @@ private:
   double compoundTimeStart, compoundTimeEnd;
   EVPosInt cOrigin, cSize;
   bool namedEvents;
+  double cDefaultSlope; 
 };
 
 #endif /* _H_EVENTLIST */

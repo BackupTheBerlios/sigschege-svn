@@ -32,7 +32,7 @@ using namespace std;
 /*!
  * Construct a Timing Diagram Signal Object
  */
-TimSignal::TimSignal():LayoutObject() {
+TimSignal::TimSignal(double defaultSlope):LayoutObject(), EventList(defaultSlope) {
   cFontType  = 14;
   cFontSize  = 20;
   cSigOffset = 0;
@@ -73,7 +73,7 @@ void TimSignal::paint(void) {
   EasyVecText *text;
 
   // check if a compound is available
-  if(getCompound()==0) return;
+  if (getCompound()==0) return;
 
   // first we have to clear out compound
   getCompound()->clear();

@@ -56,7 +56,7 @@ public:
   Handle<TimLabel> createLabel();
 
   //! Create a empty Timing Diagram Signal Object
-  Handle<TimSignal> createSignal();
+  Handle<TimSignal> createSignal(double defaultSlope=0.0);
 
   //! Create a time scale
   Handle<TimTime> createTime(double newStartTime, double newEndTime, bool autoCalc,

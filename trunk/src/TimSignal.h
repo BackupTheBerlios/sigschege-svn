@@ -36,7 +36,7 @@ using namespace std;
 class TimSignal : public LayoutObject, protected EventList {
 public:
   //! The standard constructor
-  TimSignal();
+  TimSignal(double defaultSlope=0.0);
 
   //! Create a Signal with Text
   TimSignal(string signalLabel);

@@ -113,23 +113,23 @@ bool MyApp::OnInit()
   EasyVecFigure *ev_pic = new EasyVecFigure();
   EasyVecPolyline *nline;
   nline = ev_pic->polyline();
-  nline->add_point(1500, 1500);
-  nline->add_point(300, 1500);
-  nline->add_point(3300, 1500);
+  nline->addPoint(1500, 1500);
+  nline->addPoint(300, 1500);
+  nline->addPoint(3300, 1500);
 
   mainline = nline;
   mainpic = ev_pic;
   
   nline = ev_pic->polyline();
-  nline->add_point(600, 1500);
-  nline->add_point(300, 3000);
-  nline->add_point(1500, 1800);
+  nline->addPoint(600, 1500);
+  nline->addPoint(300, 3000);
+  nline->addPoint(1500, 1800);
 
   nline = ev_pic->polyline();
   nline->pen_color(4);
-  nline->add_point(660, 1560);
-  nline->add_point(360, 3060);
-  nline->add_point(1560, 1860);
+  nline->addPoint(660, 1560);
+  nline->addPoint(360, 3060);
+  nline->addPoint(1560, 1860);
 
   EasyVecText *ntext;
   ntext = ev_pic->text();
@@ -198,5 +198,5 @@ void MyFrame::add_pline_point(wxCommandEvent& event) {
   x *= 15*200.0/RAND_MAX;
   y *= 15*200.0/RAND_MAX;
   cout << "add_pline_point =" << x << ":" << y << endl;
-  mainline->add_point(static_cast<int>(x), static_cast<int>(y)); 
+  mainline->addPoint(static_cast<int>(x), static_cast<int>(y)); 
 }

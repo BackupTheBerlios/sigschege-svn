@@ -85,11 +85,6 @@ bool EasyVecText::initFreetype(void) {
   }
 }
 
-/// update the dimensions - calls draw without a view
-void EasyVecText::updateDimensions() {
-  draw(NULL); 
-}
-
 
 
 EVPosInt EasyVecText::drawOrCalc(EasyVecView* view, bool noUpdate) {
@@ -100,7 +95,11 @@ EVPosInt EasyVecText::drawOrCalc(EasyVecView* view, bool noUpdate) {
   FT_GlyphSlot  glyph;
   int resolution;
   EVPosInt char_origin;
+  FT_Vector kerning;
+  int newHeight, newWidth;
 
+  newWidth = newHeight = 0;
+  
   if (view) {
     resolution = figure->get_screen_dpi();    
   } else {
@@ -121,6 +120,7 @@ EVPosInt EasyVecText::drawOrCalc(EasyVecView* view, bool noUpdate) {
   if (view==0 && !noUpdate) textWidth = textHeight = 0;
 
   old_glyph_i = 0;
+  kerning.x = kerning.y = 0;
   char_origin = elmOrigin/figure->scale();
   
   for ( text_iter = elmText.begin(); text_iter != elmText.end(); ++text_iter ) {
@@ -130,22 +130,26 @@ EVPosInt EasyVecText::drawOrCalc(EasyVecView* view, bool noUpdate) {
     if (view) ft_fail |= FT_Render_Glyph( face->glyph, FT_RENDER_MODE_MONO );
     if (ft_fail!=0) cerr << "Glyph loading failed for char " << *text_iter << glyph_index<< endl;
     glyph = face->glyph;
-    if ( old_glyph_i && glyph_index ) {
-      FT_Vector delta;
-      FT_Get_Kerning( face, old_glyph_i, glyph_index, FT_KERNING_DEFAULT, &delta );
+    if (old_glyph_i && glyph_index) {
+      FT_Get_Kerning(face, old_glyph_i, glyph_index, FT_KERNING_DEFAULT, &kerning);
     }
     
     if (view) {
       FT_Bitmap cbitmap;
       cbitmap = glyph->bitmap;
-      view->draw_char(char_origin-EVPosInt(0, glyph->bitmap_top), cbitmap.rows, cbitmap.width, cbitmap.pitch, cbitmap.buffer, elm_pen_color);
-      char_origin = char_origin+EVPosInt(glyph->metrics.horiAdvance/64, 0);
-    } else {
-      textWidth += glyph->metrics.horiAdvance/64; // TODO: add kerning
-      if (glyph->metrics.height/64>textHeight) textHeight = glyph->metrics.height/64;
+      view->draw_char(char_origin-EVPosInt(0, glyph->bitmap_top), cbitmap.rows, cbitmap.width, cbitmap.pitch,
+                      cbitmap.buffer, elmPenColor);
+      char_origin = char_origin+EVPosInt(glyph->metrics.horiAdvance/64+kerning.x, 0);
     }
+    newWidth += glyph->metrics.horiAdvance/64+kerning.x; 
+    if (glyph->metrics.height/64>newHeight) newHeight = glyph->metrics.height/64;
     old_glyph_i = glyph_index;
   }
+  if (!noUpdate) {
+    textWidth = newWidth;
+    textHeight = newHeight;
+  }
+  return (EVPosInt(newWidth, newHeight));
 }
 
 
@@ -213,14 +217,24 @@ bool EasyVecText::setOrigin(EVPosInt new_origin) {
 }
 
 int EasyVecText::sizeForBox(int height, int width, bool allowIncrease) {
-  // TODO
+  int origSize=elmSize;
+  EVPosInt bBox(textWidth, textHeight);
+  int newSize;
+  
+  while ((bBox.xpos()>width || bBox.ypos()>height) && elmSize>0) {
+    elmSize--;
+    bBox=drawOrCalc(0, true); // calculate only
+  }
+  newSize=elmSize;
+  elmSize=origSize;
+  return newSize;
 }
 
 
 void EasyVecText::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
-  fig_file << "4 " << elmJustification << " " << elm_pen_color << " " << elm_depth
+  fig_file << "4 " << elmJustification << " " << elmPenColor << " " << elm_depth
            << " 0 " << elmFont << " " << elmSize << " 0 4 " << textHeight << " " << textWidth
            << " " << elmOrigin.xpos() << " " << elmOrigin.ypos() << " "<< elmText
            << "\\001" << endl;

@@ -53,17 +53,17 @@ void EasyVecBox::draw(EasyVecView* view) {
   ur = EVPosInt(lr.xpos(), ul.ypos());
   ll = EVPosInt(ul.xpos(), lr.ypos());
   
-  view->draw_line(ul, ur, elm_pen_color);
-  view->draw_line(ur, lr, elm_pen_color);
-  view->draw_line(lr, ll, elm_pen_color);
-  view->draw_line(ll, ul, elm_pen_color);
+  view->draw_line(ul, ur, elmPenColor);
+  view->draw_line(ur, lr, elmPenColor);
+  view->draw_line(lr, ll, elmPenColor);
+  view->draw_line(ll, ul, elmPenColor);
 
 }
 
 void EasyVecBox::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
-  fig_file << "2 1 " << elmLineStyle << " 1 " << elm_pen_color << " " << elm_fill_color << " " << elm_depth
+  fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elm_depth
            << " 0 -1 " << elmStyleValue << " 0 0 0 0 0 " << 5 << endl;
   fig_file << " ";
   

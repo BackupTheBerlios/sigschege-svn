@@ -63,8 +63,16 @@ public:
   bool setOrigin(EVPosInt new_origin);
   /// Set the justification of the text relative to its origin.
   bool setJustification(int newJustification);
+  /// Draw the text into a view or calculate its dimensions.
+  /*!
+   * This function combines the actual drawing and the dimension calculations. Both share
+   * similar code.
+   * \param view The view to which the text should be drawn.
+   * \param noUpdate Suppress updating of the cached text dimensions.
+   * \return The new text dimensions.
+   */
   EVPosInt drawOrCalc(EasyVecView* view, bool noUpdate=false);
-  /// Calculates the maximum point size so that the text fits into the given box
+  /// Calculates the maximum point size so that the text fits into the given box.
   int sizeForBox(int height, int width, bool allowIncrease = false);
   static bool initFreetype(void); // will be called by EasyVecFigure class
   /// Switch the fig2dev_fontfix on/off. Must be true for xfig/transfig versions before 3.2.5, false otherwise.
@@ -108,6 +116,11 @@ inline bool EasyVecText::setJustification(int newJustification) {
     elmJustification = static_cast<justification>(newJustification);
     return true;
   } else return false;
+}
+
+/// update the dimensions - calls draw without a view
+inline void EasyVecText::updateDimensions() {
+  draw(NULL); 
 }
 
 

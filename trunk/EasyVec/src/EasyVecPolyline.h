@@ -42,25 +42,25 @@ public:
   /// general constructor with no extra arguments
   EasyVecPolyline(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound);
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
-  void add_point(EVPosInt new_point);
-  void add_point(int x, int y) { this->add_point(EVPosInt(x, y)); };
-  void add_points(vector<EVPosInt> new_points);
+  void addPoint(EVPosInt new_point);
+  void addPoint(int x, int y) { this->addPoint(EVPosInt(x, y)); };
+  void addPoints(vector<EVPosInt> new_points);
   vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(EasyVecView* view);
   virtual void saveElm(ofstream &fig_file);
   /// Set the state of the forward arrow to new_state and return the old value.
-  bool forward_arrow(bool new_state);
+  bool forwardArrow(bool new_state);
   /// Return the current state of the forward arrow
-  bool forward_arrow(void);
+  bool forwardArrow(void);
   /// Set the state of the backward arrow to new_state and return the old value.
-  bool backward_arrow(bool new_state);
+  bool backwardArrow(bool new_state);
   /// Return the current state of the backward arrow
-  bool backward_arrow(void);
+  bool backwardArrow(void);
 
 
 private:
   vector<EVPosInt> points;
-  bool elm_forward_arrow, elm_backward_arrow;
+  bool elmForwardArrow, elmBackwardArrow;
 };
 
 #endif /* _EASYVECELMPOLYLINE_H */

@@ -91,8 +91,8 @@ void TimTime::paint(void) {
   while (tickTime<endTime) {
     xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime/(endTime-startTime)*scaleWidth);
     EasyVecPolyline *tick = getCompound()->polyline();
-    tick->add_point(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
-    tick->add_point(xpos, getBottomPos()-cPadding-cSize.ypos()/10 );
+    tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
+    tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/10 );
     
     tickTime += tickDistance;
   }
@@ -104,8 +104,8 @@ void TimTime::paint(void) {
     ostringstream strConv;
     xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime*scaleWidth/endTime-startTime);
     EasyVecPolyline *tick = getCompound()->polyline();
-    tick->add_point(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
-    tick->add_point(xpos, getBottomPos()-cPadding-cSize.ypos()/5 );
+    tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
+    tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/5 );
     // current time as text
     text = getCompound()->text();
     strConv << tickTime;

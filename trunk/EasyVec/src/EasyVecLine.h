@@ -27,7 +27,7 @@
 #ifndef _EASYVECELMLINE_H
 #define _EASYVECELMLINE_H _EASYVECELMLINE_H 
 
-/// An EasyVecFigure polyline element - corresponds to fig element polyline (not box)
+/// An EasyVecFigure line base class  - used for polyline and box
 class EasyVecLine {
 public:
   EasyVecLine();
@@ -39,6 +39,9 @@ public:
   bool styleValue(double newStyleValue);
   /// Return the current style value.
   double styleValue(void) { return elmStyleValue; }
+  /// Set the line thickness.
+  void lineThickness(int newThickness) { elmThickness=newThickness; }
+  int lineThickness(void) { return elmThickness; }
 
   enum lineStyleType {
     solid,
@@ -55,6 +58,7 @@ public:
 private:
   int elmLineStyle;
   double elmStyleValue;
+  int elmThickness;
 };
 
 

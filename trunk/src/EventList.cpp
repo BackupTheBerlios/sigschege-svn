@@ -261,11 +261,11 @@ void EventList::paint(void) {
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
           if (where==0) {
-            sigline1->add_point(EVPosInt(cOrigin.xpos(), y1));
+            sigline1->addPoint(EVPosInt(cOrigin.xpos(), y1));
           }
         }
-        sigline1->add_point(EVPosInt(startX, y1));
-        sigline1->add_point(EVPosInt(endX, y1));
+        sigline1->addPoint(EVPosInt(startX, y1));
+        sigline1->addPoint(EVPosInt(endX, y1));
         if (newState.isDrawState("X")) {
           // 1->X, make sure top2bottom works on the right sigline
           sigline_tmp = sigline1;
@@ -278,11 +278,11 @@ void EventList::paint(void) {
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
           if (where==0 && !partialStart) {
-            sigline1->add_point(EVPosInt(cOrigin.xpos(), y1start));
+            sigline1->addPoint(EVPosInt(cOrigin.xpos(), y1start));
           }
         }
-        sigline1->add_point(EVPosInt(startX, y1start));
-        sigline1->add_point(EVPosInt(endX, y0end));
+        sigline1->addPoint(EVPosInt(startX, y1start));
+        sigline1->addPoint(EVPosInt(endX, y0end));
         swapSiglines = true;
       }
       if ((currentState.isDrawState("0") && newState.isDrawState("X")) || (currentState.isDrawState("X") && newState.isDrawState("0"))) {
@@ -290,11 +290,11 @@ void EventList::paint(void) {
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
           if (where==0) {
-            sigline0->add_point(EVPosInt(cOrigin.xpos(), y0));
+            sigline0->addPoint(EVPosInt(cOrigin.xpos(), y0));
           }
         }
-        sigline0->add_point(EVPosInt(startX, y0));
-        sigline0->add_point(EVPosInt(endX, y0));
+        sigline0->addPoint(EVPosInt(startX, y0));
+        sigline0->addPoint(EVPosInt(endX, y0));
         if (newState.isDrawState("X")) {
           // 0->X, make sure bottom2top works on the right sigline
           sigline_tmp = sigline1;
@@ -307,11 +307,11 @@ void EventList::paint(void) {
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
           if (where==0 && !partialStart) {
-            sigline0->add_point(EVPosInt(cOrigin.xpos(), y0start));
+            sigline0->addPoint(EVPosInt(cOrigin.xpos(), y0start));
           }
         }
-        sigline0->add_point(EVPosInt(startX, y0start));
-        sigline0->add_point(EVPosInt(endX, y1end));
+        sigline0->addPoint(EVPosInt(startX, y0start));
+        sigline0->addPoint(EVPosInt(endX, y1end));
         swapSiglines = true;
       }
 
@@ -342,10 +342,10 @@ void EventList::paint(void) {
   
   // Add the last point of the signal
   if (sigline0!=0) {
-    sigline0->add_point(EVPosInt(xMax, y0end));
+    sigline0->addPoint(EVPosInt(xMax, y0end));
   }
   if (sigline1!=0) {
-    sigline1->add_point(EVPosInt(xMax, y1end));
+    sigline1->addPoint(EVPosInt(xMax, y1end));
   }
 }
 

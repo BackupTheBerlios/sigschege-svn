@@ -32,28 +32,28 @@ using namespace std;
 
 EasyVecPolyline::EasyVecPolyline(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
   : EasyVecElm(parent_compound, figure_compound), EasyVecLine() {
-  elm_forward_arrow = elm_backward_arrow = false;
+  elmForwardArrow = elmBackwardArrow = false;
 };
 
 
-bool EasyVecPolyline::forward_arrow(bool new_state) {
-  bool oldval = elm_forward_arrow;
-  elm_forward_arrow = new_state;
+bool EasyVecPolyline::forwardArrow(bool new_state) {
+  bool oldval = elmForwardArrow;
+  elmForwardArrow = new_state;
   return oldval;
 }
 
-bool EasyVecPolyline::backward_arrow(bool new_state) {
-  bool oldval = elm_backward_arrow;
-  elm_backward_arrow = new_state;
+bool EasyVecPolyline::backwardArrow(bool new_state) {
+  bool oldval = elmBackwardArrow;
+  elmBackwardArrow = new_state;
   return oldval;
 }
 
-bool EasyVecPolyline::forward_arrow(void) {
-  return elm_forward_arrow;
+bool EasyVecPolyline::forwardArrow(void) {
+  return elmForwardArrow;
 }
 
-bool EasyVecPolyline::backward_arrow(void) {
-  return elm_backward_arrow;
+bool EasyVecPolyline::backwardArrow(void) {
+  return elmBackwardArrow;
 }
 
 void EasyVecPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
@@ -70,13 +70,13 @@ void EasyVecPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right
   }
 }
 
-void EasyVecPolyline::add_point(EVPosInt new_point) {
+void EasyVecPolyline::addPoint(EVPosInt new_point) {
   points.push_back(new_point);
 //  cout << "Adding point " << new_point.xpos() << ":" << new_point.ypos() << endl;
   parent->handle_change(this);
 }
 
-void EasyVecPolyline::add_points(vector<EVPosInt> new_points) {
+void EasyVecPolyline::addPoints(vector<EVPosInt> new_points) {
   vector<EVPosInt>::iterator npoints_iter;
   for ( npoints_iter = new_points.begin(); npoints_iter != new_points.end(); ++npoints_iter ) {
     points.push_back(*npoints_iter);
@@ -94,7 +94,7 @@ void EasyVecPolyline::draw(EasyVecView* view) {
   points_iter2 = points_iter1;
   points_iter2++;
   while (points_iter2 != points.end()) {
-    view->draw_line((*points_iter1)/xscale, (*points_iter2)/xscale, elm_pen_color);
+    view->draw_line((*points_iter1)/xscale, (*points_iter2)/xscale, elmPenColor);
     points_iter1 = points_iter2;
     ++points_iter2;
   }
@@ -106,13 +106,13 @@ void EasyVecPolyline::saveElm(ofstream &fig_file) {
   string fwd_arr_line = "1 1 1.00 60.00 120.00";  
   string bwd_arr_line = "1 1 1.00 60.00 120.00";
   
-  fig_file << "2 1 " << elmLineStyle << " 1 " << elm_pen_color << " " << elm_fill_color << " " << elm_depth
-           << " 0 -1 " << elmStyleValue << " 0 0 0 " << (elm_forward_arrow? 1 : 0) << " "
-           << (elm_backward_arrow? 1 : 0) << " " << points.size() << endl;
-  if (elm_forward_arrow) {
+  fig_file << "2 1 " << elmLineStyle << " " << elmThickness<< " " << elmPenColor << " " << elmFillColor << " " << elm_depth
+           << " 0 -1 " << elmStyleValue << " 0 0 0 " << (elmForwardArrow? 1 : 0) << " "
+           << (elmBackwardArrow? 1 : 0) << " " << points.size() << endl;
+  if (elmForwardArrow) {
     fig_file << fwd_arr_line << endl;
   }
-  if (elm_backward_arrow) {
+  if (elmBackwardArrow) {
     fig_file << bwd_arr_line << endl;
   }
   

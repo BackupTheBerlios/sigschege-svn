@@ -68,31 +68,31 @@ public:
 protected:
   EasyVecCompound *parent; // needed to inform the owner about change events
   EasyVecFigure *figure; // needed to access global picture states
-  int elm_pen_color;
-  int elm_fill_color;
+  int elmPenColor;
+  int elmFillColor;
   int elm_depth;
 };
 
 inline bool EasyVecElm::pen_color(int new_color) {
   if (new_color>=0 && new_color<512) {
-    elm_pen_color=new_color;
+    elmPenColor=new_color;
     return true;
   } else return false;
 }
 
 inline int EasyVecElm::pen_color(void) {
-  return elm_pen_color;
+  return elmPenColor;
 }
 
 inline bool EasyVecElm::fill_color(int new_color) {
   if (new_color>=0 && new_color<512) {
-    elm_fill_color=new_color;
+    elmFillColor=new_color;
     return true;
   } else return false;
 }
 
 inline int EasyVecElm::fill_color(void) {
-  return elm_fill_color;
+  return elmFillColor;
 }
 
 inline bool EasyVecElm::depth(int new_depth) {

@@ -75,7 +75,7 @@ void test_a(void) {
   for (i=0; i<10; i++) {
     cplines[i] = pic2.polyline();
     cplines[i]->lineStyle(EasyVecLine::dashed);
-    cplines[i]->add_point(5700-150*i, 400); cplines[i]->add_point(5700-150*i, 5600);
+    cplines[i]->addPoint(5700-150*i, 400); cplines[i]->addPoint(5700-150*i, 5600);
 
   }
   cplines[1]->styleValue(5.0);
@@ -123,25 +123,25 @@ int main(void) {
 
   EasyVecPolyline *line1 =  mypic.polyline();
   
-  line1->add_point(Schortens);
-  line1->add_point(1000, 500);
-  line1->add_point(500, 1000);
-  line1->add_point(1000, 1000);
+  line1->addPoint(Schortens);
+  line1->addPoint(1000, 500);
+  line1->addPoint(500, 1000);
+  line1->addPoint(1000, 1000);
   
   EasyVecCompound *cmp1 =  mypic.compound();
   EasyVecCompound *cmp1a =  cmp1->compound();
   
   EasyVecPolyline *line2 =  cmp1a->polyline();
   
-  line2->add_points(points1);
+  line2->addPoints(points1);
   EasyVecCompound *cmp2 =  mypic.compound();
   EasyVecPolyline *line3 =  cmp2->polyline();
-  line3->add_point(Schortens+Prag);
-  line3->add_point(Prag);
-  line3->add_point(Schortens);
-  line3->add_point(Dortmund);
+  line3->addPoint(Schortens+Prag);
+  line3->addPoint(Prag);
+  line3->addPoint(Schortens);
+  line3->addPoint(Dortmund);
   line3->pen_color(4);
-  line3->forward_arrow(true);
+  line3->forwardArrow(true);
 
   mypic.save("example.fig");
   
@@ -152,6 +152,9 @@ int main(void) {
   txt->setSize(22);
   txt->setText("Use intermediate files");
   txt->getBoundingBox(text_ul, text_lr);
+
+  cout << "upper left: " << text_ul << endl;
+  cout << "lower right: " << text_lr << endl;
 
   EasyVecBox *textbox =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
 
@@ -165,9 +168,44 @@ int main(void) {
 
   EasyVecBox *textbox2 =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
 
+
+  EasyVecText *txt3 = mypic.text();
+  txt3->setOrigin(EVPosInt(500, 6000));
+  txt3->setSize(22);
+  txt3->setFont(11);
+  txt3->setText("////////////////");
+  txt3->getBoundingBox(text_ul, text_lr);
+
+  EasyVecBox *textbox3 =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
+
+  EasyVecText *txt4 = mypic.text();
+  txt4->setOrigin(EVPosInt(500, 6500));
+  txt4->setSize(22);
+  txt4->setFont(11);
+  txt4->setText("M/M/M/M/M/M/M/M/");
+  txt4->getBoundingBox(text_ul, text_lr);
+
+  EasyVecBox *textbox4 =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
+
+  EasyVecBox *textbox5 =  mypic.box(EVPosInt(500, 7000), EVPosInt(5000, 7500));
+  EasyVecText *txt5 = mypic.text();
+  txt5->setOrigin(EVPosInt(550, 7450));
+  txt5->setSize(40);
+  txt5->setFont(11);
+  txt5->setText("A text to fit in the box.");
+  int recSize5=txt5->sizeForBox(400, 4400);
+  cout << "Text size is now: " << recSize5 << endl;
+  txt5->setSize(recSize5);
+  
+  EasyVecBox *thickBox;
+  for (int i=1; i<=5; i++) {
+    thickBox=mypic.box(EVPosInt(1000+100*i, 1000+100*i), text_lr+EVPosInt(4000-100*i, 4000-100*i));
+    thickBox->lineThickness(i);
+  }
+  
   // EasyVecPolyline *line4 =  mypic.polyline();
-  // line4->add_point(text_lr);
-  // line4->add_point(text_lr-EVPosInt(0, 500));
+  // line4->addPoint(text_lr);
+  // line4->addPoint(text_lr-EVPosInt(0, 500));
 
   cout << "Lower Right is " << text_lr << endl;
   mypic.save("example_text.fig");

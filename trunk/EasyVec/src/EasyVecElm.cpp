@@ -28,8 +28,8 @@
 
 EasyVecElm::EasyVecElm(void) {
   parent = 0;
-  elm_pen_color = 0;
-  elm_fill_color = 0;
+  elmPenColor = 0;
+  elmFillColor = 0;
   elm_depth = 0;
 };
 
@@ -37,8 +37,8 @@ EasyVecElm::EasyVecElm(void) {
 EasyVecElm::EasyVecElm(EasyVecCompound *parent_compound, EasyVecFigure *figure_compound) {
   parent = parent_compound;
   figure = figure_compound;
-  elm_pen_color = parent->pen_color();
-  elm_fill_color = parent->fill_color();
+  elmPenColor = parent->pen_color();
+  elmFillColor = parent->fill_color();
   elm_depth = parent->depth();
   
 };

@@ -205,6 +205,11 @@ bool EasyVecText::setOrigin(EVPosInt new_origin) {
   return true;
 }
 
+int EasyVecText::sizeForBox(int height, int width, bool allowIncrease) {
+  // TODO
+}
+
+
 void EasyVecText::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 

@@ -36,7 +36,7 @@ void layout (void) {
   Handle<TimLabel>  Label1  = tim.createLabel();
   Handle<TimSignal> Signal0 = tim.createSignal();
   Handle<TimSignal> Signal1 = tim.createSignal();
-  Handle<TimTime> Time1 = tim.createTime(0.0, 20.3, false, 1.0, 0.0, 0.2);
+  Handle<TimTime> Time1 = tim.createTime(0.0, 222.0, false, 50.0, 0.0, 10);
 
   Handle<TimList> List1 = tim.createList();
 
@@ -63,8 +63,13 @@ void layout (void) {
   Time1->setPadding(200);
   Time1->setSigOffset(1500);
   
-  Handle<Event> ev1 = Signal1->createEvent("1", 100);
+  Handle<Event> ev1 = Signal1->createEvent("X", -50.0);
+  for (int i=0; i<8; i++) {
+    ev1 = Signal1->createEvent("X", i*31-1.0);
+    ev1->setSlope(7.0);
+  }
 
+  
   Handle<TimLabel> Label3 = List1->createLabel();
   Label3->setText("List in a List !!!");
   Label3->setHeight(1000);
@@ -85,7 +90,9 @@ void layout (void) {
   List1->addLast(Label4.Object());
   List1->addLast(Label5.Object());
 
-  Handle<Event> s0ev1 = Signal0->createEvent("1", 80);
+  Handle<Event> s0ev_1 = Signal0->createEvent("1", -200);
+  Handle<Event> s0ev0 = Signal0->createEvent("0", -5);
+  Handle<Event> s0ev1 = Signal0->createEvent("X", 80);
   Handle<Event> s0ev2 = Signal0->createEvent();
   Handle<Event> s0ev3 = Signal0->createEvent();
   Handle<Event> s0ev4 = Signal0->createEvent("1", 50, &s0ev3);
@@ -102,6 +109,12 @@ void layout (void) {
   s0ev4->setSlope(10.0);
   s0ev4->setNewState("0");
 
+  s0ev_1->setSlope(20.0);
+  s0ev0->setSlope(10.0);
+
+  
+  Signal0->debugEvents();
+  
   tim.addLast(Label1.Object());
   tim.addLast(Signal0.Object());
   tim.addLast(List1.Object());

@@ -196,6 +196,14 @@ public:
   string &getNewState(void) {
     return newState;
   }
+
+  //! Return the percentage of the event that has passed at time.
+  /*!
+   * \param time  A time between getTime(0) and getTime(100)
+   * \return The percentage of the event completion.
+   */
+  double getPercentAtTime(double time);
+  
   
   //! Return the current reference count 
   int objRefCount() { return refCount; }

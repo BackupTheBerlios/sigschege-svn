@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -99,7 +99,8 @@ void EventList::debugEvents(void) {
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
     cout << "Event:  " << eventsIter->Object() << endl;
     cout << " Delay: " << eventsIter->Object()->getDelay() << endl;
-    cout << " Time:  " << eventsIter->Object()->getTime() << endl;
+    cout << " Time Start:  " << eventsIter->Object()->getTime(0) << endl;
+    cout << " Time End:  " << eventsIter->Object()->getTime(100) << endl;
     cout << " New State:  " << eventsIter->Object()->getNewState() << endl;
   }
   cout << "===== EVENT LIST STOP" << endl;
@@ -193,30 +194,159 @@ void EventList::setCompound(EasyVecCompound *newCompound, EVPosInt newOrigin, EV
 void EventList::paint(void) {
   if (evListCompound==0) return;
   sort(); // makes life easier... 
-  EasyVecPolyline *sigline = evListCompound->polyline();
+  EasyVecPolyline *sigline0 = 0;
+  EasyVecPolyline *sigline1 = 0;
+  EasyVecPolyline *sigline_tmp = 0;
+
   string currentState = initialState->getNewState();
   int xCoord,xMax = cOrigin.xpos()+cSize.xpos();
   vector< Handle<Event> >::iterator eventsIter;
+  string newState;
+  double eventStart, eventEnd;
+  int where = 0;
+  bool sigline0IsTop, sigline1IsTop;
+  double compoundTimeDiff = compoundTimeEnd-compoundTimeStart;
+  int startX, endX;
+  int y0start, y0end, y1start, y1end;
+  bool partialStart;
 
-  // we want to draw lines without arrows
-  sigline->forward_arrow(false);
-  sigline->backward_arrow(false);
-
-  // Set the first point of the signal
-  sigline->add_point(EVPosInt(cOrigin.xpos(), (currentState==string("1")) ? cOrigin.ypos() : cSize.ypos()+cOrigin.ypos()));
-
+  int y0 = cOrigin.ypos()+cSize.ypos();
+  int y1 = cOrigin.ypos();    
+    
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
-   
-    xCoord = cOrigin.xpos() +  static_cast<int>(static_cast<double>(cSize.xpos()) * (eventsIter->Object()->getTime(0)-compoundTimeStart) /(compoundTimeEnd-compoundTimeStart));
-    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? cOrigin.ypos() : cSize.ypos()+cOrigin.ypos()));
-    currentState = eventsIter->Object()->getNewState();
-    if (eventsIter->Object()->getSlope()!=0.0) { // get time for end of slope, if we have a slope!
-      xCoord = cOrigin.xpos() +  static_cast<int>(static_cast<double>(cSize.xpos()) * (eventsIter->Object()->getTime(100)-compoundTimeStart) /(compoundTimeEnd-compoundTimeStart));
-    }
-    sigline->add_point(EVPosInt(xCoord, (currentState==string("1")) ? cOrigin.ypos() : cSize.ypos()+cOrigin.ypos()));
-  }
 
+    bool swapSiglines = false;
+    Event *curEv = eventsIter->Object(); // unclean, but we don't manipulate events here...
+    newState = eventsIter->Object()->getNewState();
+    eventStart = eventsIter->Object()->getTime(0);
+    eventEnd = eventsIter->Object()->getTime(100);
+
+    startX = cOrigin.xpos()+static_cast<int>(static_cast<double>(cSize.xpos())
+                                             * (eventStart-compoundTimeStart)/(compoundTimeDiff));
+    endX = cOrigin.xpos()+static_cast<int>(static_cast<double>(cSize.xpos())
+                                           * (eventEnd-compoundTimeStart)/(compoundTimeDiff));
+    
+    if (where==1 || (where==0 && eventEnd>compoundTimeStart)) {
+      // we are in the visible area (2nd condition means we just entered)
+
+      if (eventStart<compoundTimeStart) {
+        // event crosses start of visible area
+        startX = cOrigin.xpos();
+        y1start = static_cast<int>(cOrigin.ypos()+cSize.ypos()*(1.0-(eventEnd-compoundTimeStart)/(eventEnd-eventStart)));
+        y0start = static_cast<int>(cOrigin.ypos()+cSize.ypos()*(eventEnd-compoundTimeStart)/(eventEnd-eventStart));
+        partialStart = true;
+      } else {
+        y0start=y0;
+        y1start=y1;
+        partialStart = false;
+      }
+
+      if (eventEnd>compoundTimeEnd) {
+        // event crosses end of visible area
+        endX = cOrigin.xpos()+cSize.xpos();
+        y1end = static_cast<int>(cOrigin.ypos()+cSize.ypos()*(1.0-(compoundTimeEnd-eventStart)/(eventEnd-eventStart)));
+        y0end = static_cast<int>(cOrigin.ypos()+cSize.ypos()*(compoundTimeEnd-eventStart)/(eventEnd-eventStart));
+        where = 2;
+      } else {
+        y0end=y0;
+        y1end=y1;
+      }
+
+      if ((currentState==string("1") && newState==string("X")) || (currentState==string("X") && newState==string("1"))) {
+        // 1->X and X->1 need a top2top line
+        if (sigline1==0) {
+          sigline1 = evListCompound->polyline();
+          if (where==0) {
+            sigline1->add_point(EVPosInt(cOrigin.xpos(), y1));
+          }
+        }
+        sigline1->add_point(EVPosInt(startX, y1));
+        sigline1->add_point(EVPosInt(endX, y1));
+        if (newState==string("X")) {
+          // 1->X, make sure top2bottom works on the right sigline
+          sigline_tmp = sigline1;
+          sigline1 = sigline0;
+          sigline0 = sigline_tmp;
+        }
+      }
+      if ((currentState!=string("0") && newState!=string("1"))) {
+        // 1->0, 1->X, X->X, X->0 need a top2bottom line
+        if (sigline1==0) {
+          sigline1 = evListCompound->polyline();
+          if (where==0 && !partialStart) {
+            sigline1->add_point(EVPosInt(cOrigin.xpos(), y1start));
+          }
+        }
+        sigline1->add_point(EVPosInt(startX, y1start));
+        sigline1->add_point(EVPosInt(endX, y0end));
+        swapSiglines = true;
+      }
+      if ((currentState==string("0") && newState==string("X")) || (currentState==string("X") && newState==string("0"))) {
+        // 0->X and X->0 need a bottom2bottom line
+        if (sigline0==0) {
+          sigline0 = evListCompound->polyline();
+          if (where==0) {
+            sigline0->add_point(EVPosInt(cOrigin.xpos(), y0));
+          }
+        }
+        sigline0->add_point(EVPosInt(startX, y0));
+        sigline0->add_point(EVPosInt(endX, y0));
+        if (newState==string("X")) {
+          // 0->X, make sure bottom2top works on the right sigline
+          sigline_tmp = sigline1;
+          sigline1 = sigline0;
+          sigline0 = sigline_tmp;
+        }
+      }
+      if (currentState!=string("1") && newState!=string("0")) {
+        // 0->1, 0->X, X->X and X->1 need a bottom2top line
+        if (sigline0==0) {
+          sigline0 = evListCompound->polyline();
+          if (where==0 && !partialStart) {
+            sigline0->add_point(EVPosInt(cOrigin.xpos(), y0start));
+          }
+        }
+        sigline0->add_point(EVPosInt(startX, y0start));
+        sigline0->add_point(EVPosInt(endX, y1end));
+        swapSiglines = true;
+      }
+
+      if (swapSiglines) {
+        sigline_tmp = sigline1;
+        sigline1 = sigline0;
+        sigline0 = sigline_tmp;
+      }
+      if (currentState==string("X") && (newState==string("1") || newState==string("0"))) {
+        if (newState==string("0")) sigline1 = 0;
+        else sigline0 = 0;
+      }      
+      where = 1;
+    }
+
+    if (where == 0) { // before compound start
+      if (eventEnd<compoundTimeStart) {
+        // event before compound: just get its new state
+        currentState = newState;
+      } else if (eventStart<compoundTimeStart) {
+        // event overlaps start of compound
+        if ((currentState==string("1") && newState==string("X")) || (currentState==string("X") && newState==string("1"))) {
+          sigline0 = evListCompound->polyline();
+          sigline0->add_point(EVPosInt(cOrigin.xpos(), cSize.ypos()+cOrigin.ypos()));
+          sigline0->add_point(EVPosInt(endX, cSize.ypos()+cOrigin.ypos()));
+          sigline0IsTop = true;
+        }
+        where = 1;
+      }
+    }
+    currentState = newState;
+  }
+  
   // Add the last point of the signal
-  sigline->add_point(EVPosInt(xMax, (currentState==string("1")) ? cOrigin.ypos() : cSize.ypos()+cOrigin.ypos()));
+  if (sigline0!=0) {
+    sigline0->add_point(EVPosInt(xMax, y0end));
+  }
+  if (sigline1!=0) {
+    sigline1->add_point(EVPosInt(xMax, y1end));
+  }
 }
 

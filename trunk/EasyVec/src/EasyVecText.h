@@ -63,6 +63,8 @@ public:
   bool setOrigin(EVPosInt new_origin);
   /// Set the justification of the text relative to its origin.
   bool setJustification(int newJustification);
+  /// Calculates the maximum point size so that the text fits into the given box
+  int sizeForBox(int height, int width, bool allowIncrease = false);
   static bool initFreetype(void); // will be called by EasyVecFigure class
   /// Switch the fig2dev_fontfix on/off. Must be true for xfig/transfig versions before 3.2.5, false otherwise.
   /*!

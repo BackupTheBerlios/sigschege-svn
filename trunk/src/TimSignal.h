@@ -56,6 +56,7 @@ public:
   LayoutObject::setCompound;
   EventList::createEvent;
   EventList::deleteEvent;
+  EventList::debugEvents;
 private:
   string    cText;
   int       cFontType;

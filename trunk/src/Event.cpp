@@ -167,3 +167,7 @@ void  Event::updateTime() {
 const double Event::getTime(int level_percent) {
   return(eventTime+slopeTime/100.0*level_percent);
 }
+
+double Event::getPercentAtTime(double time) {
+  return(100.0*(eventTime+slopeTime-time)/slopeTime);
+}

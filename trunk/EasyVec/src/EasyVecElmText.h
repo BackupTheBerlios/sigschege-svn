@@ -44,14 +44,14 @@ class EasyVecElmText : public EasyVecElm {
 public:
   EasyVecElmText();
   EasyVecElmText(EasyVecElmCompound* parent_compound, EasyVec* master_compound);
-  virtual void get_limits(EVPosInt &upper_left, EVPosInt &lower_right);
-  vector<EasyVecElm*> flat_list() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
+  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
+  vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(EasyVecView* view);
-  virtual void save_elm(ofstream &fig_file);
-  bool set_text(const string &new_text);
-  bool set_size(int new_size);
-  bool set_origin(EVPosInt new_origin);
-  static bool init_freetype(void); // will be called by EasyVec class
+  virtual void saveElm(ofstream &fig_file);
+  bool setText(const string &new_text);
+  bool setSize(int new_size);
+  bool setOrigin(EVPosInt new_origin);
+  static bool initFreetype(void); // will be called by EasyVec class
 
 private:
   EVPosInt elm_origin;

@@ -134,10 +134,10 @@ bool MyApp::OnInit()
 
   EasyVecElmText *ntext;
   ntext = ev_pic->text();
-  ntext->set_text("This is an EasyVec Demo");
+  ntext->setText("This is an EasyVec Demo");
 
   EVPosInt ul, lr;
-  //ntext->get_limits(ul, lr); TODO
+  //ntext->getBoundingBox(ul, lr); TODO
   //cout << ul << ":" << lr << endl;
 
   ul = EVPosInt(600, 600); 

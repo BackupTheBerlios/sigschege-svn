@@ -22,7 +22,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 
 #ifndef _EASYVECELM_H
@@ -56,10 +56,10 @@ public:
   // destructor
   virtual ~EasyVecElm();
   
-  virtual void get_limits(EVPosInt &upper_left, EVPosInt &lower_right)=0;
-  virtual vector<EasyVecElm*> flat_list() = 0;
+  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right)=0;
+  virtual vector<EasyVecElm*> flatList() = 0;
   virtual void draw(EasyVecView* view) = 0;
-  virtual void save_elm(ofstream &fig_file) = 0;
+  virtual void saveElm(ofstream &fig_file) = 0;
 
   int pen_color(void);
   bool pen_color(int new_color);

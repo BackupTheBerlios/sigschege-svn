@@ -22,7 +22,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #include "EasyVecElmPolyline.h"
 #include "EasyVec.h"
@@ -34,7 +34,7 @@ using namespace std;
 EasyVecElmPolyline::EasyVecElmPolyline() {
 }
 
-void EasyVecElmPolyline::get_limits(EVPosInt &upper_left, EVPosInt &lower_right) {
+void EasyVecElmPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
   vector<EVPosInt>::iterator points_iter = points.begin();
   if (points_iter==points.end()) {
     upper_left = EVPosInt(0,0); // no points! how should we behave???
@@ -78,7 +78,7 @@ void EasyVecElmPolyline::draw(EasyVecView* view) {
   }
 }
 
-void EasyVecElmPolyline::save_elm(ofstream &fig_file) {
+void EasyVecElmPolyline::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
   fig_file << "2 1 0 1 " << elm_pen_color << " " << elm_fill_color << " " << elm_depth

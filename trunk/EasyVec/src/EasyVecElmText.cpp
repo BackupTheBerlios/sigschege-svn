@@ -73,9 +73,9 @@ const char* easyvec_font_files[] = {
 
 };
 
-bool EasyVecElmText::init_freetype(void) {
+bool EasyVecElmText::initFreetype(void) {
   if (freetype_already_initialized) return true;
-  int freetype_fail = FT_Init_FreeType( &freetype_lib );
+  int freetype_fail = FT_InitFreetype( &freetype_lib );
   if (freetype_fail==0) {
     freetype_already_initialized = true;
     return true;
@@ -85,7 +85,7 @@ bool EasyVecElmText::init_freetype(void) {
 }
 
 /// update the dimensions - calls draw without a view
-void EasyVecElmText::update_dimensions() {
+void EasyVecElmText::updateDimensions() {
   draw(NULL); 
 }
 
@@ -146,7 +146,7 @@ void EasyVecElmText::draw(EasyVecView* view) {
 }
 
 
-bool EasyVecElmText::init_EasyVecElmText() {
+bool EasyVecElmText::initEasyVecElmText() {
   int ft_fail;
   elm_font = 0;
   elm_size = 18;
@@ -155,47 +155,47 @@ bool EasyVecElmText::init_EasyVecElmText() {
                           0, &face );
   if (ft_fail!=0) cerr << "Face creation failed" << endl;
   
-  update_dimensions();
+  updateDimensions();
   cout << "Finis!" << endl;
   return ft_fail==0;
 }
 
 
 EasyVecElmText::EasyVecElmText() {
-  init_EasyVecElmText();
+  initEasyVecElmText();
 }
 
 EasyVecElmText::EasyVecElmText(EasyVecElmCompound* parent_compound, EasyVec* master_compound)
   : EasyVecElm(parent_compound, master_compound)
 {
-  init_EasyVecElmText();
+  initEasyVecElmText();
 };
 
 
-void EasyVecElmText::get_limits(EVPosInt &upper_left, EVPosInt &lower_right) {
+void EasyVecElmText::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
   upper_left  = elm_origin - EVPosInt(0, text_height/master->scale()); 
   lower_right = elm_origin + EVPosInt(text_width, 0);
 }
 
 
-bool EasyVecElmText::set_text(const string &new_text) {
+bool EasyVecElmText::setText(const string &new_text) {
   elm_text = new_text;
-  update_dimensions();
+  updateDimensions();
   return true;
 }
 
-bool EasyVecElmText::set_size(int new_size) {
+bool EasyVecElmText::setSize(int new_size) {
   elm_size = new_size;
-  update_dimensions();
+  updateDimensions();
   return true;
 }
 
-bool EasyVecElmText::set_origin(EVPosInt new_origin) {
+bool EasyVecElmText::setOrigin(EVPosInt new_origin) {
   elm_origin = new_origin;
   return true;
 }
 
-void EasyVecElmText::save_elm(ofstream &fig_file) {
+void EasyVecElmText::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
   fig_file << "4 0 " << elm_pen_color << " " << elm_depth

@@ -60,7 +60,7 @@ void EasyVecElmBox::draw(EasyVecView* view) {
 
 }
 
-void EasyVecElmBox::save_elm(ofstream &fig_file) {
+void EasyVecElmBox::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
   fig_file << "2 1 0 1 " << elm_pen_color << " " << elm_fill_color << " " << elm_depth

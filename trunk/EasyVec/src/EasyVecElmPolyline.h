@@ -22,7 +22,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 
 #ifndef _EASYVECELMPOLYLINE_H
@@ -41,13 +41,13 @@ public:
   EasyVecElmPolyline();
   EasyVecElmPolyline(EasyVecElmCompound* parent_compound, EasyVec* master_compound)
     : EasyVecElm(parent_compound, master_compound) {};
-  virtual void get_limits(EVPosInt &upper_left, EVPosInt &lower_right);
+  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
   void add_point(EVPosInt new_point);
   void add_point(int x, int y) { this->add_point(EVPosInt(x, y)); };
   void add_points(vector<EVPosInt> new_points);
-  vector<EasyVecElm*> flat_list() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
+  vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(EasyVecView* view);
-  virtual void save_elm(ofstream &fig_file);
+  virtual void saveElm(ofstream &fig_file);
 
 private:
   vector<EVPosInt> points;

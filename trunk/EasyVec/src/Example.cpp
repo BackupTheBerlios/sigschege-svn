@@ -22,7 +22,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #include "EVPosInt.h"
 #include "EasyVec.h"
@@ -77,11 +77,11 @@ int main(void) {
   mypic.save("example.fig");
 
   EasyVecElmText *txt = mypic.text();
-  txt->set_text("Moin");
+  txt->setText("Moin");
   EVPosInt text_ul, text_lr;
-  txt->set_origin(EVPosInt(0, 3000));
-  txt->set_text("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-  txt->get_limits(text_ul, text_lr);
+  txt->setOrigin(EVPosInt(0, 3000));
+  txt->setText("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+  txt->getBoundingBox(text_ul, text_lr);
 
   EasyVecElmPolyline *line4 =  mypic.polyline();
   line4->add_point(text_lr);

@@ -37,22 +37,40 @@ class EasyVecElmText;
 #include "EasyVecElm.h"
 using namespace std;
 
+/// A class containing a fig compound
 
+/*
+ * This class implements a compound, which can contain graphical objects, including
+ * other compounds. This allows hierarchical structuring of figures.
+ *
+ * Note that this class is also used as a base class for EasyVec, which implements a
+ * complete figure. The reason for this is that the functionality is very similar,
+ * actually the figure itself is like an invisible compound as it can contain several
+ * graphical objects.
+ */
 class EasyVecElmCompound : public EasyVecElm {
 public:
+  /// Standard constructor - is it useful at all???
   EasyVecElmCompound();
+  /// General constructor which accepts the parent compound and the master compound (figure)
   EasyVecElmCompound(EasyVecElmCompound* parent_compound, EasyVec* master_compound)
     : EasyVecElm(parent_compound, master_compound) {};
 
+  /// Create a polyline (class EasyVecElmPolyline), points must be added later
   EasyVecElmPolyline* polyline();
+  /// Create a box (class EasyVecElmBox)
   EasyVecElmBox* box(EVPosInt &upper_left, EVPosInt &lower_right);
+  /// Create a text element (class EasyVecElmText)
   EasyVecElmText* text();
+  /// Create a compound (class EasyVecElmCompound)
   EasyVecElmCompound* compound();
-  virtual void get_limits(EVPosInt &upper_left, EVPosInt &lower_right);
-  virtual vector<EasyVecElm*> flat_list();
+  /// Determine the region that is covered by this compound
+  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
+  /// return all elements of this compound as a flat list
+  virtual vector<EasyVecElm*> flatList();
   virtual void draw(EasyVecView* view) {};
   virtual void handle_change(EasyVecElm*);
-  virtual void save_elm(ofstream &fig_file);
+  virtual void saveElm(ofstream &fig_file);
   void save_content(ofstream &fig_file);
 
 protected:

@@ -22,7 +22,7 @@
 //
 // #############################################################################
 //
-// $Id: $
+// $Id$
 
 #include "EasyVec.h"
 #include "EasyVecElmText.h"
@@ -33,7 +33,7 @@
 
 EasyVec::EasyVec() : EasyVecElmCompound() {
   
-  EasyVecElmText::init_freetype(); //ugly hack
+  EasyVecElmText::initFreetype(); //ugly hack
   auto_update = false;
   members_flat_valid = false;
   file_dpi = 1200;
@@ -59,7 +59,7 @@ void EasyVec::build_views(void) {
 }
 
 void EasyVec::draw_view(EasyVecView* view) {
-  members_flat = flat_list();
+  members_flat = flatList();
   members_flat_valid = true;
   vector<EasyVecElm*>::iterator members_iter;
   for ( members_iter = members.begin(); members_iter != members.end(); ++members_iter ) {
@@ -94,7 +94,7 @@ bool EasyVec::save(string filename) {
   fig_file << "100" << endl;
   fig_file << "Single" << endl;
   fig_file << -2 << endl;
-  fig_file << "1200 2" << endl;
-  save_content(fig_file);
+  fig_file << file_dpi << " 2" << endl;
+  save_content(fig_file); // method from base class EasyVecElmCompound to save compound content
   return true;
 }

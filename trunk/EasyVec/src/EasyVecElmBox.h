@@ -46,7 +46,7 @@ public:
   EasyVecElmBox(EasyVecElmCompound* parent_compound, EasyVec* master_compound, EVPosInt upper_left, EVPosInt lower_right);
 
   /// Return the limits of this element
-  virtual void get_limits(EVPosInt &upper_left, EVPosInt &lower_right) {
+  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
     upper_left  = elm_upper_left;
     lower_right = elm_lower_right;
   }
@@ -56,12 +56,12 @@ public:
     lower_right = elm_lower_right;
   }
   
-  vector<EasyVecElm*> flat_list() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
+  vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
 
   /// send draw commands to the given view
   virtual void draw(EasyVecView* view);
   /// save element into a fig file
-  virtual void save_elm(ofstream &fig_file);
+  virtual void saveElm(ofstream &fig_file);
 
 private:
   EVPosInt elm_upper_left, elm_lower_right;

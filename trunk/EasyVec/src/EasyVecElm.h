@@ -58,11 +58,20 @@ public:
   /// Save this element into the given output file stream.
   virtual void saveElm(ofstream &fig_file) = 0;
 
+  /// Print some (or some more) information about this figure element.
+  virtual void debugPrint(ostream &dest, bool verbose, int depth) = 0;
+  
+  /// Return the pen color of this object.
   int pen_color(void);
+  /// Set the pen color of this object.
   bool pen_color(int new_color);
+  /// Return the fill color of this object.
   int fill_color(void);
+  /// Set the fill color of this object.
   bool fill_color(int new_color);
+  /// Return the depth (layer) of this object.
   int depth(void);
+  /// Set the depth (layer) of this object.
   bool depth(int new_depth);
 
 protected:
@@ -70,7 +79,7 @@ protected:
   EasyVecFigure *figure; // needed to access global picture states
   int elmPenColor;
   int elmFillColor;
-  int elm_depth;
+  int elmDepth;
 };
 
 inline bool EasyVecElm::pen_color(int new_color) {
@@ -97,13 +106,13 @@ inline int EasyVecElm::fill_color(void) {
 
 inline bool EasyVecElm::depth(int new_depth) {
   if (new_depth>=0 && new_depth<512) {
-    elm_depth=new_depth;
+    elmDepth=new_depth;
     return true;
   } else return false;
 }
 
 inline int EasyVecElm::depth(void) {
-  return elm_depth;
+  return elmDepth;
 }
 
 extern const int easyvec_std_colors[][3];

@@ -28,6 +28,7 @@
 #define _EASYVECVIEW_H _EASYVECVIEW_H 
 
 #include "EVPosInt.h"
+#include "EasyVecLine.h"
 
 
 class EasyVecFigure;
@@ -41,7 +42,7 @@ class EasyVecView {
 public:
   EasyVecView(EasyVecFigure *picture);
   virtual ~EasyVecView();
-  virtual void drawLine(EVPosInt from, EVPosInt to, int color) = 0;
+  virtual void drawLine(EVPosInt from, EVPosInt to, int color, int lineStyle, double styleLength) = 0;
   virtual void drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
   virtual void clear(void) = 0;
 

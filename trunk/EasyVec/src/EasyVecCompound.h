@@ -65,6 +65,8 @@ public:
   EasyVecText* text();
   /// Create a compound (class EasyVecCompound)
   EasyVecCompound* compound();
+  /// remove the figure element, return true if element was found and deleted.
+  bool remove(EasyVecElm* elm);
   /// Determine the region that is covered by this compound
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
   /// return all elements of this compound as a flat list
@@ -72,6 +74,8 @@ public:
   virtual void draw(EasyVecView* view) {};
   virtual void handleChange(EasyVecElm*);
   virtual void saveElm(ofstream &fig_file);
+  /// Print some (or some more) information about this figure element.
+  virtual void debugPrint(ostream &dest, bool verbose, int depth);
   void save_content(ofstream &fig_file);
   void copy_members(EasyVecCompound& source);
   void clear(void);

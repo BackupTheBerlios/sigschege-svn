@@ -62,6 +62,8 @@ public:
   virtual void draw(EasyVecView* view);
   /// save element into a fig file
   virtual void saveElm(ofstream &fig_file);
+  /// Print some (or some more) information about this figure element.
+  virtual void debugPrint(ostream &dest, bool verbose, int depth);
 
 
 private:

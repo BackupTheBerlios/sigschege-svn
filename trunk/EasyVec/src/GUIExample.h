@@ -45,6 +45,7 @@ public:
 
     void add_pline_point(wxCommandEvent& event);
     void toggleScreenDpi(wxCommandEvent& event);
+    void toggleDashedLines(wxCommandEvent& event);
     void save(wxCommandEvent& event);
     void TestNotebookSizers(wxCommandEvent& event);
     void About(wxCommandEvent& event);
@@ -61,7 +62,8 @@ private:
 #define LAYOUT_ABOUT      102
 #define LAYOUT_ADD_PLINE_POINT 104
 #define LAYOUT_TOGGLE_SCREENDPI    105
-#define LAYOUT_SAVE    106
+#define LAYOUT_TOGGLE_DASHY    106
+#define LAYOUT_SAVE    107
 
 
 #endif /* _DEMOGUI_H */

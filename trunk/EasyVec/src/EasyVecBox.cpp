@@ -40,10 +40,8 @@ EasyVecBox::EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_c
 
 
 void EasyVecBox::draw(EasyVecView* view) {
-  int xscale;
-  EasyVecFigure *testptr;
-  testptr->scale();
-  xscale = figure->scale();
+  int xscale = figure->scale();
+
   EVPosInt ul, lr;
   EVPosInt ur, ll;
 
@@ -52,18 +50,20 @@ void EasyVecBox::draw(EasyVecView* view) {
 
   ur = EVPosInt(lr.xpos(), ul.ypos());
   ll = EVPosInt(ul.xpos(), lr.ypos());
-  
-  view->drawLine(ul, ur, elmPenColor);
-  view->drawLine(ur, lr, elmPenColor);
-  view->drawLine(lr, ll, elmPenColor);
-  view->drawLine(ll, ul, elmPenColor);
+
+  double styleLength = elmStyleValue*15/xscale;
+
+  view->drawLine(ul, ur, elmPenColor, elmLineStyle, styleLength);
+  view->drawLine(ur, lr, elmPenColor, elmLineStyle, styleLength);
+  view->drawLine(lr, ll, elmPenColor, elmLineStyle, styleLength);
+  view->drawLine(ll, ul, elmPenColor, elmLineStyle, styleLength);
 
 }
 
 void EasyVecBox::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
-  fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elm_depth
+  fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
            << " 0 -1 " << elmStyleValue << " 0 0 0 0 0 " << 5 << endl;
   fig_file << " ";
   
@@ -74,4 +74,12 @@ void EasyVecBox::saveElm(ofstream &fig_file) {
            << elm_upper_left.xpos()  << " " << elm_upper_left.ypos();
 
   fig_file << endl;
+}
+
+
+void EasyVecBox::debugPrint(ostream &dest, bool verbose, int depth) {
+  dest << string(depth, ' ') << "Box " << endl;
+  if (verbose) {
+      dest << string(depth+4, ' ') << "Upper Left: " << elm_upper_left << "Lower Right: " << elm_lower_right << endl;
+  }
 }

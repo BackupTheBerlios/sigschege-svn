@@ -64,15 +64,15 @@ void EasyVecPolyline::addPoints(vector<EVPosInt> new_points) {
 }
 
 void EasyVecPolyline::draw(EasyVecView* view) {
-  int xscale;
-  xscale = figure->scale();
+  int xscale = figure->scale();
+  double styleLength = elmStyleValue*15/xscale;
   vector<EVPosInt>::iterator points_iter1, points_iter2;
   points_iter1 = points.begin();
   if (points_iter1==points.end()) return;
   points_iter2 = points_iter1;
   points_iter2++;
   while (points_iter2 != points.end()) {
-    view->drawLine((*points_iter1)/xscale, (*points_iter2)/xscale, elmPenColor);
+    view->drawLine((*points_iter1)/xscale, (*points_iter2)/xscale, elmPenColor, elmLineStyle, styleLength);
     points_iter1 = points_iter2;
     ++points_iter2;
   }
@@ -82,7 +82,7 @@ void EasyVecPolyline::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
   
-  fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elm_depth
+  fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
            << " 0 -1 " << elmStyleValue << " 0 0 0 " << (forwardArrow()? 1 : 0) << " "
            << (backwardArrow()? 1 : 0) << " " << points.size() << endl;
   if (forwardArrow()) {
@@ -98,4 +98,15 @@ void EasyVecPolyline::saveElm(ofstream &fig_file) {
     fig_file << (*points_iter).xpos() << " " << (*points_iter).ypos() << " " ;
   }
   fig_file << endl;
+}
+
+void EasyVecPolyline::debugPrint(ostream &dest, bool verbose, int depth) {
+  dest << string(depth, ' ') << "Polyline " << points.size() << " points." << endl;
+  if (verbose) {
+    vector<EVPosInt>::iterator pointsIt;
+    for ( pointsIt = points.begin(); pointsIt != points.end(); ++pointsIt ) {
+      dest << string(depth+4, ' ') << (*pointsIt) << " -> ";
+    }
+    dest << endl;
+  }
 }

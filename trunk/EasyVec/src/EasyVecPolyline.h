@@ -49,6 +49,8 @@ public:
   vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(EasyVecView* view);
   virtual void saveElm(ofstream &fig_file);
+  /// Print some (or some more) information about this figure element.
+  virtual void debugPrint(ostream &dest, bool verbose, int depth);
 
 
 private:

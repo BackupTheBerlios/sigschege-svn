@@ -35,9 +35,9 @@ double EVPosInt::distance(const EVPosInt &dest) const {
   xdist = cx - dest.cx;
   ydist = cy - dest.cy;
   if (xdist==0) {
-    return ydist;
+    return fabs(ydist);
   } else if (ydist==0) {
-    return xdist;
+    return fabs(xdist);
   } else {
     return sqrt(static_cast<double>(xdist)*xdist+static_cast<double>(ydist)*ydist);
   }

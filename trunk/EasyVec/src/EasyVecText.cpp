@@ -234,8 +234,15 @@ int EasyVecText::sizeForBox(int height, int width, bool allowIncrease) {
 void EasyVecText::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
-  fig_file << "4 " << elmJustification << " " << elmPenColor << " " << elm_depth
+  fig_file << "4 " << elmJustification << " " << elmPenColor << " " << elmDepth
            << " 0 " << elmFont << " " << elmSize << " 0 4 " << textHeight << " " << textWidth
            << " " << elmOrigin.xpos() << " " << elmOrigin.ypos() << " "<< elmText
            << "\\001" << endl;
+}
+
+void EasyVecText::debugPrint(ostream &dest, bool verbose, int depth) {
+  dest << string(depth, ' ') << "Text " << endl;
+  if (verbose) {
+    dest << string(depth+4, ' ') << elmText << endl;
+  }
 }

@@ -23,13 +23,13 @@
 //
 // $Id$
 
+#include <fstream>
+#include <iostream>
+#include <typeinfo>
 #include "EasyVecCompound.h"
 #include "EasyVecPolyline.h"
 #include "EasyVecBox.h"
 #include "EasyVecText.h"
-#include <fstream>
-#include <iostream>
-#include <typeinfo>
 
 
 EasyVecPolyline* EasyVecCompound::polyline() {
@@ -54,6 +54,19 @@ EasyVecCompound* EasyVecCompound::compound() {
   EasyVecCompound* new_compound = new EasyVecCompound(static_cast<EasyVecCompound*>(this), figure);
   members.push_back(new_compound);
   return new_compound;
+}
+
+
+bool EasyVecCompound::remove(EasyVecElm* elm) {
+  vector<EasyVecElm*>::iterator elmIt;
+  elmIt = find(members.begin(), members.end(), elm);
+  if (elmIt!=members.end()) {
+    members.erase(elmIt);
+    delete *elmIt;
+    return true;
+  } else {
+    return false;
+  }  
 }
 
 
@@ -133,7 +146,7 @@ void EasyVecCompound::copy_members(EasyVecCompound& source) {
       new_compound = compound();
       *new_compound = *(static_cast<EasyVecCompound*>(*source_members_iter));
     } else {
-      cerr << "Error: Unknown type" << endl;
+      throw string("Error: Unknown type");
     }
   }
 }
@@ -167,3 +180,13 @@ void EasyVecCompound::save_content(ofstream &fig_file) {
   }  
 }
 
+void EasyVecCompound::debugPrint(ostream &dest, bool verbose, int depth) {
+  dest << string(depth, ' ') << "Compound with " << members.size() << " elements." << endl;
+  if (verbose) {
+    vector<EasyVecElm*>::iterator membersIt;
+    for ( membersIt = members.begin(); membersIt != members.end(); ++membersIt ) {
+      (*membersIt)->debugPrint(dest, verbose, depth+4);
+    }
+    dest << endl;
+  }
+}

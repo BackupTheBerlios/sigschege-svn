@@ -37,7 +37,7 @@ EasyVecFigure::EasyVecFigure() : EasyVecCompound() {
   // ugly hack, initFreetype must be called only once, we call it here, because
   // creation of a new figure won't happen too often...
   EasyVecText::initFreetype(); 
-  auto_update = false;
+  noViewUpdate = false;
   members_flat_valid = false;
   file_dpi = 1200;
   setScreenDpi(80);
@@ -54,21 +54,24 @@ bool EasyVecFigure::setScreenDpi(int newScreenDpi) {
 }
 
 void EasyVecFigure::buildViews(void) {
-  for (vector<EasyVecView*>::iterator views_iter = views.begin();
-       views_iter != views.end(); views_iter++) {
-    (*views_iter)->clear();
-    drawView(*views_iter);
+  if (!noViewUpdate) {
+    for (vector<EasyVecView*>::iterator views_iter = views.begin();
+         views_iter != views.end(); views_iter++) {
+      (*views_iter)->clear();
+      drawView(*views_iter);
+    }
   }
 }
 
 void EasyVecFigure::drawView(EasyVecView* view) {
   members_flat = flatList();
   sortMembersByDepth();
-  cout << "========================================";
+  cout << "========================================" << endl;
   members_flat_valid = true;
   vector<EasyVecElm*>::iterator members_iter;
   for ( members_iter = members_flat.begin(); members_iter != members_flat.end(); ++members_iter ) {
     (*members_iter)->draw(view);
+    (*members_iter)->debugPrint(cout, true, 4);
   }
 }
 

@@ -45,35 +45,47 @@
  */
 class EasyVecFigure : public EasyVecCompound {
 public:
-  // constructor
+  /// constructor
   EasyVecFigure();
+  
   void drawView(EasyVecView* view);
   // do we need a copy constructor?
   virtual void handleChange(EasyVecElm*);
-  /// Register a view showing this figure
+
+  /// Register a view showing this figure.
   void registerView(EasyVecView* view) { views.push_back(view); }
-  /// 
+
+  /// Unregister a view that has doesn't want to be updated any more.
   void unregisterView(EasyVecView* view);
+
+  /// Query the screen resolution in dpi
   bool setScreenDpi(int newScreenDpi);
   /// Set the screen resolution in dpi
   int getScreenDpi(void) { return screen_dpi; };
+
   /// Set the file resolution - should not be used (see file_dpi variable)
   int getFileDPi(void) { return file_dpi; };
+
   /// Return the scaling factor file_dpi/screen_dpi
   int scale(void) { return scale_fact; }
+
   void buildViews(void);
   /// Save the figure in the fig file 'filename'.
   bool save(string filename);
-  /// Directly export into a foreign format.
+
+  /// Directly export into a foreign graphics format.
   bool exportFig2dev(string language, string filename);
   EasyVecFigure& operator=(EasyVecFigure& source);
 
+  void updating(bool newUpdateStatus) { noViewUpdate = !newUpdateStatus; }
+  
 private:
   /// A flat list to be passed to views
   vector <EasyVecElm*> members_flat;
   /// Indicate if members_flat is still valid or needs to be recreated
   bool members_flat_valid;
-  bool auto_update;
+  /// Used to suspend view updating during several changes.
+  bool noViewUpdate;
   /// List of views which show this figure
   vector<EasyVecView*> views;
   /// Resolution in fig file

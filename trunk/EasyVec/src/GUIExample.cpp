@@ -34,6 +34,7 @@
 #include "EasyVecPolyline.h"
 #include "EasyVecText.h"
 #include "EasyVecVwx.h"
+#include <list>
 
 #include <cstdio>
 
@@ -45,17 +46,84 @@ wxMenuBar *menu_bar = (wxMenuBar *) NULL;
 IMPLEMENT_APP(MyApp);
 
 EasyVecPolyline* mainline;
+list<EasyVecPolyline *> dlines;
 EasyVecFigure *mainpic;
 
 MyApp::MyApp()
 {
 }
 
+static void gen_dlines(void) {
+  EasyVecPolyline *dline;
+  for (int i=100; i<5000; i+=1000) {
+    dline = mainpic->polyline();
+    dline->addPoint(3000, 4000);
+    dline->addPoint(i, 100);
+    dline->lineStyle(EasyVecLine::dashed);
+    dline->styleValue(8.0);
+    dlines.push_back(dline);
+    
+    dline = mainpic->polyline();
+    dline->addPoint(3000, 4000);
+    dline->addPoint(i+200, 100);
+    dline->lineStyle(EasyVecLine::dotted);
+    dline->styleValue(8.0);
+    dlines.push_back(dline);
+    
+    dline = mainpic->polyline();
+    dline->addPoint(3000, 4000);
+    dline->addPoint(i+400, 100);
+    dline->lineStyle(EasyVecLine::dash_dotted);
+    dline->styleValue(5.0);
+    dlines.push_back(dline);
+    
+    dline = mainpic->polyline();
+    dline->addPoint(3000, 4000);
+    dline->addPoint(i+600, 100);
+    dline->lineStyle(EasyVecLine::dash_double_dotted);
+    dline->styleValue(8.0);
+    dlines.push_back(dline);
+    
+    dline = mainpic->polyline();
+    dline->addPoint(3000, 4000);
+    dline->addPoint(i+800, 100);
+    dline->lineStyle(EasyVecLine::dash_triple_dotted);
+    dline->styleValue(8.0);
+    dlines.push_back(dline);
+  }
+}
+
 
 bool MyApp::OnInit()
 {
+
+  EasyVecFigure *ev_pic = new EasyVecFigure();
+  EasyVecPolyline *nline;
+  nline = ev_pic->polyline();
+  nline->addPoint(1500, 1500);
+  nline->addPoint(300, 1500);
+  nline->addPoint(3300, 1500);
+  nline->addPoint(1720, 60);
+  nline->depth(66);
+  mainline = nline;
+  mainpic = ev_pic;
+  
+
+  EasyVecText *ntext;
+  ntext = ev_pic->text();
+  ntext->setText("This is an EasyVec Demo");
+  ntext->pen_color(2);
+  ntext->setOrigin(EVPosInt(300, 1000));
+  ntext->depth(55);
+  EVPosInt ul, lr;
+  //ntext->getBoundingBox(ul, lr); TODO
+  //cout << ul << ":" << lr << endl;
+
+  ul = EVPosInt(600, 600); 
+  lr = EVPosInt(1000, 2000); 
+
   // Create the main frame window
-  frame = new MyFrame(NULL, _T("EasyVec Demo"), -1, -1, 400, 300);
+  frame = new MyFrame(NULL, _T("EasyVec Demo"), -1, -1, 800, 600);
 
   frame->SetAutoLayout(TRUE);
 
@@ -64,6 +132,7 @@ bool MyApp::OnInit()
 
   file_menu->Append(LAYOUT_ADD_PLINE_POINT, _T("&Add point"),      _T("Add point"));
   file_menu->Append(LAYOUT_TOGGLE_SCREENDPI, _T("&Toggle screen dpi"),      _T("Toggle screen dpi"));
+  file_menu->Append(LAYOUT_TOGGLE_DASHY, _T("&Toggle dashed lines"),      _T("Toggle dashed lines"));
   file_menu->Append(LAYOUT_SAVE, _T("&Save"),      _T("Save"));
 
   file_menu->AppendSeparator();
@@ -83,9 +152,26 @@ bool MyApp::OnInit()
   // Make a panel
   wxPanel *panel = new wxPanel(frame);
 
-  // Create some panel items
-  wxButton *btn1 = new wxButton(panel, -1, _T("A button (1)")) ;
+  wxLayoutConstraints *c1 = new wxLayoutConstraints;
 
+  c1->left.SameAs       (frame, wxLeft);
+  c1->top.SameAs        (frame, wxTop);
+  c1->right.SameAs      (frame, wxRight);
+  c1->height.PercentOf  (frame, wxHeight, 10);
+  panel->SetConstraints(c1);
+
+  // Create some panel items
+  wxButton *btn1 = new wxButton(panel, -1, _T("Toggle dashed lines")) ;
+
+  EasyVecVwx *canvas = new EasyVecVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
+  // Set constraints for canvas subwindow
+  wxLayoutConstraints *c2 = new wxLayoutConstraints;
+  c2->left.SameAs       (frame, wxLeft);
+  c2->top.Below        (panel, wxTop);
+  c2->right.SameAs      (frame, wxRight);
+  c2->bottom.SameAs  (frame, wxBottom);
+  canvas->SetConstraints(c2);
+  
   wxLayoutConstraints *b1 = new wxLayoutConstraints;
   b1->centreX.SameAs    (panel, wxCentreX);
   b1->top.SameAs        (panel, wxTop, 5);
@@ -94,12 +180,12 @@ bool MyApp::OnInit()
   btn1->SetConstraints(b1);
 
 
-  wxLayoutConstraints *b2 = new wxLayoutConstraints;
-  b2->top.Below         (btn1, 5);
-  b2->left.SameAs       (panel, wxLeft, 5);
-  b2->width.PercentOf   (panel, wxWidth, 40);
-  b2->bottom.SameAs     (panel, wxBottom, 5);
-  //list->SetConstraints(b2);
+//   wxLayoutConstraints *b2 = new wxLayoutConstraints;
+//   b2->top.Below         (btn1, 5);
+//   b2->left.SameAs       (panel, wxLeft, 5);
+//   b2->width.PercentOf   (panel, wxWidth, 40);
+//   b2->bottom.SameAs     (panel, wxBottom, 5);
+//   list->SetConstraints(b2);
 
 //  wxTextCtrl *mtext = new wxTextCtrl(panel, -1, _T("Some text"));
 
@@ -110,52 +196,10 @@ bool MyApp::OnInit()
 //   b3->bottom.SameAs     (panel, wxBottom, 5);
 //   mtext->SetConstraints(b3);
 
-  EasyVecFigure *ev_pic = new EasyVecFigure();
-  EasyVecPolyline *nline;
-  nline = ev_pic->polyline();
-  nline->addPoint(1500, 1500);
-  nline->addPoint(300, 1500);
-  nline->addPoint(3300, 1500);
-  nline->addPoint(1720, 60);
-  nline->depth(66);
-  mainline = nline;
-  mainpic = ev_pic;
+
   
-  nline = ev_pic->polyline();
-  nline->addPoint(600, 1500);
-  nline->addPoint(300, 3000);
-  nline->addPoint(1500, 1800);
 
-  nline = ev_pic->polyline();
-  nline->pen_color(4);
-  nline->addPoint(660, 1560);
-  nline->addPoint(360, 3060);
-  nline->addPoint(1560, 1860);
 
-  EasyVecText *ntext;
-  ntext = ev_pic->text();
-  ntext->setText("This is an EasyVec Demo");
-  ntext->pen_color(2);
-  ntext->setOrigin(EVPosInt(300, 1000));
-  ntext->depth(55);
-  EVPosInt ul, lr;
-  //ntext->getBoundingBox(ul, lr); TODO
-  //cout << ul << ":" << lr << endl;
-
-  ul = EVPosInt(600, 600); 
-  lr = EVPosInt(1000, 2000); 
-
-  EasyVecVwx *canvas = new EasyVecVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
-
-  // Set constraints for canvas subwindow
-  wxLayoutConstraints *c2 = new wxLayoutConstraints;
-
-  c2->left.SameAs       (frame, wxLeft);
-  c2->top.SameAs        (frame, wxTop);
-  c2->right.SameAs      (frame, wxRight);
-  c2->bottom.SameAs  (frame, wxBottom);
-
-  canvas->SetConstraints(c2);
 
 
   frame->Show(TRUE);
@@ -177,6 +221,7 @@ BEGIN_EVENT_TABLE(MyFrame, wxFrame)
   EVT_MENU(LAYOUT_QUIT, MyFrame::OnQuit)
   EVT_MENU(LAYOUT_ADD_PLINE_POINT, MyFrame::add_pline_point)
   EVT_MENU(LAYOUT_TOGGLE_SCREENDPI, MyFrame::toggleScreenDpi)
+  EVT_MENU(LAYOUT_TOGGLE_DASHY, MyFrame::toggleDashedLines)
   EVT_MENU(LAYOUT_SAVE, MyFrame::save)
 END_EVENT_TABLE()
 
@@ -188,6 +233,21 @@ void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event) )
 void MyFrame::toggleScreenDpi(wxCommandEvent& event) {
   if (mainpic->getScreenDpi()==80) mainpic->setScreenDpi(160);
   else  mainpic->setScreenDpi(80);
+  Refresh();
+}
+
+void MyFrame::toggleDashedLines(wxCommandEvent& event) {
+  mainpic->updating(false);
+  if (dlines.empty()) gen_dlines();
+  else {
+    list<EasyVecPolyline*>::iterator dlineIt;
+    for ( dlineIt = dlines.begin(); dlineIt != dlines.end(); ++dlineIt ) {
+      if (!mainpic->remove(*dlineIt)) cerr << "ERROR: DashedLine element did not exist!" << endl; 
+    }
+    dlines.clear();
+  }
+  mainpic->updating(true);
+  Refresh();
 }
 
 void MyFrame::save(wxCommandEvent& event) {
@@ -195,6 +255,7 @@ void MyFrame::save(wxCommandEvent& event) {
 }
 
 void MyFrame::add_pline_point(wxCommandEvent& event) {
+  mainpic->updating(false);
   double x, y;
   x = rand(); 
   y = rand();
@@ -202,4 +263,6 @@ void MyFrame::add_pline_point(wxCommandEvent& event) {
   y *= 15*200.0/RAND_MAX;
   cout << "add_pline_point =" << x << ":" << y << endl;
   mainline->addPoint(static_cast<int>(x), static_cast<int>(y)); 
+  mainpic->updating(true);
+  Refresh();
 }

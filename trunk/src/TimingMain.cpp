@@ -33,40 +33,9 @@ using namespace std;
 void layout (void) {
   TimingDiagram tim;
 
-  tim.setWidth(10000);
-  tim.setBorderTop(100);
-  tim.setBorderLeft(100);
-  tim.setBorderRight(100);
-  tim.setBorderBottom(100);
+  Handle<TimLabel> Label1 = tim.createTimLabel();
 
-  TimLabel *hello  = tim.createTimLabel("Hello");
-  TimLabel *world  = tim.createTimLabel("World!");
-  TimLabel *Slice1 = tim.createTimLabel();
-  TimLabel *Slice2 = tim.createTimLabel();
-
-  hello->setFontType(11);
-  hello->setFontSize(10);
-  hello->drawBoundaryBox(true);
-  hello->setPadding(50);
-
-  world->setFontType(10);
-  world->setFontSize(20);
-  world->setPadding(50);
-
-  Slice1->setBoundaryHeight(200);
-  Slice1->drawBoundaryBox(true);
-  Slice1->setPadding(50);
-
-  Slice2->setText("Slice2");
-  Slice2->setPadding(50);
-
-  tim.addLast(hello);
-  tim.addLast(world);
-  tim.addLast(Slice1);
-  tim.addLast(Slice2);
-  tim.addLast(Slice2);
-  
-  tim.save("test.fig");
+  Label1->paint();
 
   return;
 }

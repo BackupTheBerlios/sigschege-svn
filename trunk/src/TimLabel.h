@@ -28,14 +28,14 @@
 
 using namespace std;
 
-#include "Layout.h"
+#include "LayoutObject.h"
 #include <string>
 
 /// Layout Text Class
 /*!
  * This Text Layout Class can be used as header or footer
  */
-class TimLabel : public Layout {
+class TimLabel : public LayoutObject {
 public:
   /// The standard constructor
   TimLabel();
@@ -46,9 +46,6 @@ public:
   /// The standard destructor
   ~TimLabel();
   
-  /// Return the ID of this layout object
-  LayoutID getID();
-
   /// Set a new Text
   void setText(string newText);
 
@@ -59,7 +56,7 @@ public:
   void setFontSize(int new_size);
 
   /// paint the layout object
-  unsigned int paint(EasyVecFigure& cEasyVec, unsigned int xOffset, unsigned int yOffset);
+  void paint(void);
 
 private:
   string cText;

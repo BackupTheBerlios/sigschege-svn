@@ -32,7 +32,7 @@ using namespace std;
 /*!
  * This constructor will create an layout object without a parent.
  */
-TimLabel::TimLabel():Layout(){
+TimLabel::TimLabel():LayoutObject(){
   cFontType = 14;
   cFontSize = 20;
 }
@@ -41,7 +41,7 @@ TimLabel::TimLabel():Layout(){
  * This constructor will create an layout object without a parent.
  * newText will be set as Text
  */
-TimLabel::TimLabel(string newText):Layout(){
+TimLabel::TimLabel(string newText):LayoutObject(){
   cText = newText;
   cFontType = 14;
   cFontSize = 20;
@@ -51,13 +51,6 @@ TimLabel::TimLabel(string newText):Layout(){
 TimLabel::~TimLabel(){
 }
 
-/*!
- * Return a TEXT Id
- * \return Layout Object ID of this object (TEXT)
- */
-LayoutID TimLabel::getID() {
-  return(TEXT);
-}
 
 /*!
  * Set a new Text
@@ -70,35 +63,8 @@ void TimLabel::setText(string newText) {
 /*!
  * Paint this text layout object
  */
-unsigned int TimLabel::paint(EasyVecFigure& cEasyVec, unsigned int xOffset, unsigned int yOffset) {
-  int text_width  = 0;
-  int text_height = 0;
-  int width;
-  int height;
-  
-  if(!cText.empty()){
-    EasyVecText *txt = cEasyVec.text();
-    // set font and text
-    txt->setFont(cFontType);
-    txt->setSize(cFontSize);
-    txt->setText(cText.c_str());
-
-    // calculate and set the origin
-    text_width  = txt->getWidth();
-    text_height = txt->getHeight();
-    txt->setOrigin(EVPosInt(xOffset+getPadding(), text_height+yOffset+getPadding()));
-  }
-  
-  height = (getBoundaryHeight()<text_height?text_height:getBoundaryHeight())+2*getPadding();
-  width  = getBoundaryWidth()<text_width?text_width:getBoundaryWidth();
-
-  setBoundaryHeight(height);
-  setBoundaryWidth(width-xOffset);
-
-  // draw the boundary box
-  Layout::paint(cEasyVec,xOffset,yOffset);
-
-  return(height);
+void TimLabel::paint(void) {
+  cout << "Paint Label" << endl;
 }
 
 /// Set the Font Type

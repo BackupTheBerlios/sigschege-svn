@@ -9,8 +9,8 @@ AM_INIT_AUTOMAKE
 AC_CONFIG_HEADER([src/config.h])
 
 # Checks for programs.
+AC_PROG_LIBTOOL
 AC_PROG_CXX
-AC_PROG_CC
 
 # Checks for libraries.
 
@@ -24,5 +24,5 @@ AC_C_CONST
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
-AC_CONFIG_FILES([Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile EasyVec/Makefile EasyVec/src/Makefile])
 AC_OUTPUT

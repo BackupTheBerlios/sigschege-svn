@@ -75,6 +75,17 @@ Handle <TimSignal> TimList::createSignal() {
 }
 
 /*!
+ * This Function will return a Handle to a time scale object
+ */
+Handle<TimTime> TimList::createTime(double newStartTime, double newEndTime, bool autoCalc,
+                                    double newLabelDistance, double newFirstLabel, double newTickDistance) {
+  Handle<TimTime> newTimTime = new TimTime(newStartTime, newEndTime, autoCalc, newLabelDistance,
+                                           newFirstLabel, newTickDistance);
+  newTimTime->setCompound(getCompound()->compound());
+  return newTimTime;  
+}
+
+/*!
  * This Function will return a Handle a Timing Diagram Signal Object
  */
 Handle <TimList> TimList::createList() {

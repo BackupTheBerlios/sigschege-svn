@@ -54,6 +54,10 @@ public:
   //! Create a empty Timing Diagram Signal Object
   Handle<TimSignal> createSignal();
 
+  //! Create a time scale
+  Handle<TimTime> createTime(double newStartTime, double newEndTime, bool autoCalc,
+                             double newLabelDistance, double newFirstLabel, double newTickDistance);
+  
   //! Create a empty Timing Diagram Signal Object
   Handle<TimList> createList();
 

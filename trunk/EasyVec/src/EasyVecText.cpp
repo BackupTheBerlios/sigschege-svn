@@ -152,6 +152,7 @@ bool EasyVecText::initEasyVecText() {
   elm_font = 0;
   elm_size = 18;
   elm_origin = EVPosInt(300, 300);
+  elmJustification = left;
   success = setFont(0);  
   // updateDimensions(); ... is already done in setFont!
   return success;
@@ -207,7 +208,7 @@ bool EasyVecText::setOrigin(EVPosInt new_origin) {
 void EasyVecText::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
-  fig_file << "4 0 " << elm_pen_color << " " << elm_depth
+  fig_file << "4 " << elmJustification << " " << elm_pen_color << " " << elm_depth
            << " 0 " << elm_font << " " << elm_size << " 0 4 " << text_height << " " << text_width
            << " " << elm_origin.xpos() << " " << elm_origin.ypos() << " "<< elm_text
            << "\\001" << endl;

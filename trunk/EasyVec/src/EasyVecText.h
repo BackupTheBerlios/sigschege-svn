@@ -61,6 +61,8 @@ public:
   bool setSize(int new_size);
   /// Set the origin of the text in the figure.
   bool setOrigin(EVPosInt new_origin);
+  /// Set the justification of the text relative to its origin.
+  bool setJustification(int newJustification);
   static bool initFreetype(void); // will be called by EasyVecFigure class
   /// Switch the fig2dev_fontfix on/off. Must be true for xfig/transfig versions before 3.2.5, false otherwise.
   /*!
@@ -71,11 +73,19 @@ public:
     fix_fig2dev_quirk = needed;
   };
   static bool fig2dev_fontfix(void) { return fix_fig2dev_quirk; }
-  
+
+  /// The justifications of text to its origin point.
+  enum justification {
+    left,
+    center,
+    right
+  };
+
 private:
   EVPosInt elm_origin;
   string elm_text;
   int elm_font, elm_size;
+  justification elmJustification;
   static FT_Library  freetype_lib;
   static bool freetype_already_initialized;
   FT_Face face;
@@ -88,6 +98,13 @@ private:
   static bool fix_fig2dev_quirk;
   static string gs_fontpath;
 };
+
+inline bool EasyVecText::setJustification(int newJustification) {
+  if (newJustification>0 && newJustification<3) {
+    elmJustification = static_cast<justification>(newJustification);
+    return true;
+  } else return false;
+}
 
 
 

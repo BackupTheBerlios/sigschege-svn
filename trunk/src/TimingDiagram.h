@@ -31,6 +31,7 @@ using namespace std;
 #include "LayoutObject.h"
 #include "TimLabel.h"
 #include "TimSignal.h"
+#include "TimTime.h"
 #include "Handle.t"
 #include <string>
 #include <EasyVecFigure.h>
@@ -56,8 +57,11 @@ public:
   //! Add a LayoutObject to the Objectlist
   void addLast(Handle<LayoutObject> newLayoutObject);
 
-  //! Export the Timing Diagram to a xfig file
+  //! Export the Timing Diagram to an xfig file
   void exportFig(string file);
+
+  //! Export the Timing Diagram to an encapsulated postscript (EPS)
+  void exportEPS(string file);
 
   //! Create a empty Timing Diagram Label Object
   Handle<TimLabel> createLabel();
@@ -65,6 +69,10 @@ public:
   //! Create a empty Timing Diagram Signal Object
   Handle<TimSignal> createSignal();
   
+  //! Create a time scale
+  Handle<TimTime> createTime(double newStartTime, double newEndTime, bool autoCalc,
+                             double newLabelDistance, double newFirstLabel, double newTickDistance);
+
 private:
   vector< Handle<LayoutObject> > cLayoutList;
   EasyVecFigure    cEasyVec;

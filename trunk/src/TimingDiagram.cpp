@@ -51,6 +51,15 @@ void TimingDiagram::exportFig(string file) {
 }
 
 /*!
+ * Export the Timingdiagram to an encapsulated postscript
+ * \param file EPS File Name
+ */
+void TimingDiagram::exportEPS(string file) {
+  paint();
+  cEasyVec.export_fig2dev("eps", file);
+}
+
+/*!
  * Add a LayoutObject to the end of the list
  * \param newLayoutObject Handel to the Layoutobject that should be added
  */
@@ -75,4 +84,15 @@ Handle <TimSignal> TimingDiagram::createSignal() {
   Handle<TimSignal> newTimSignal = new TimSignal;
   newTimSignal->setCompound(cEasyVec.compound());
   return newTimSignal;
+}
+
+/*!
+ * This Function will return a Handle to a time scale object
+ */
+Handle<TimTime> TimingDiagram::createTime(double newStartTime, double newEndTime, bool autoCalc,
+                                    double newLabelDistance, double newFirstLabel, double newTickDistance) {
+  Handle<TimTime> newTimTime = new TimTime(newStartTime, newEndTime, autoCalc, newLabelDistance,
+                                           newFirstLabel, newTickDistance);
+  newTimTime->setCompound(cEasyVec.compound());
+  return newTimTime;  
 }

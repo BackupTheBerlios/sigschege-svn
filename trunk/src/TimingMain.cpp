@@ -34,37 +34,66 @@ void layout (void) {
   TimingDiagram tim;
 
   Handle<TimLabel> Label1 = tim.createLabel();
-  Handle<TimLabel> Label2 = tim.createLabel();
+  Handle<TimSignal> Signal0 = tim.createSignal();
   
   Handle<TimSignal> Signal1 = tim.createSignal();
+  Handle<TimTime> Time1 = tim.createTime(0.0, 20.3, false, 1.0, 0.0, 0.2);
 
   Label1->setULPos(0,0);
   Label1->setBRPos(1000,10000);
-  Label1->setText("Hello World!");
+  Label1->setText("Hello World! This is a demo timing diagram from Sigschege!");
   Label1->setFontType(2);
-  Label1->setFontSize(10);
+  Label1->setFontSize(16);
   Label1->enableBorder(true);
   
-  Label2->setULPos(1100,0);
-  Label2->setBRPos(2100,10000);
-  Label2->enableBorder(true);
+  Signal0->setULPos(1100,0);
+  Signal0->setBRPos(2100,10000);
+  Signal0->setText("Input");
+  Signal0->setSigOffset(1500);
+  Signal0->enableBorder(true);
+  Signal0->setPadding(200);
 
   Signal1->setULPos(2200,0);
   Signal1->setBRPos(3200,10000);
-  Signal1->setText("First Signal");
-  Signal1->setSigOffset(3000);
+  Signal1->setText("Output");
+  Signal1->setSigOffset(1500);
   Signal1->enableBorder(true);
   Signal1->setPadding(200);
 
+  Time1->setULPos(3300,0);
+  Time1->setBRPos(4300,10000);
+  Time1->enableBorder(true);
+  Time1->setPadding(200);
+  Time1->setSigOffset(1500);
+  
   Handle<Event> ev1 = Signal1->createEvent("1", 100);
+
+  Handle<Event> s0ev1 = Signal0->createEvent("1", 80);
+  Handle<Event> s0ev2 = Signal0->createEvent();
+  Handle<Event> s0ev3 = Signal0->createEvent();
+  Handle<Event> s0ev4 = Signal0->createEvent("1", 50, &s0ev3);
+  s0ev2->setReference(s0ev1);
+  s0ev3->setReference(s0ev2);
+  s0ev3->setReference(s0ev1);
+  s0ev1->setSlope(20.0);
+  s0ev2->setDelay(50.0);
+  s0ev2->setSlope(10.0);
+  s0ev3->setDelay(75.0);
+  s0ev3->setSlope(10.0);
+  s0ev2->setNewState("0");
+  s0ev3->setNewState("1");
+  s0ev4->setSlope(10.0);
+
 
 
   tim.addLast(Label1.Object());
-  tim.addLast(Label2.Object());
+  tim.addLast(Signal0.Object());
   tim.addLast(Signal1.Object());
+  tim.addLast(Time1.Object());
 
 
   tim.exportFig("test.fig");
+  tim.exportEPS("test.eps");
   return;
 }
 

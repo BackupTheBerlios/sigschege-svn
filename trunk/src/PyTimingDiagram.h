@@ -1,4 +1,4 @@
-// -*- c++ -*-
+#// -*- c++ -*-
 // \file 
 // Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
@@ -21,7 +21,7 @@
 //
 // #############################################################################
 //
-// $Id: State.h 72 2004-12-25 16:22:22Z ro_kenn $
+// $Id$
 
 #ifndef _H_PYTIMINGDIARAM
 #define _H_PYTIMINGDIARAM
@@ -31,6 +31,10 @@ using namespace std;
 #include <Python.h>
 #include "TimingDiagram.h"
 
+typedef struct {
+  PyObject_HEAD
+  Handle<TimTime> timescale;
+} TimTimescaleObject;
 
 typedef struct {
   PyObject_HEAD

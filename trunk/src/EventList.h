@@ -30,6 +30,7 @@ using namespace std;
 
 #include <vector>
 #include "Event.h"
+#include <EasyVec.h>
 
 //! EventList class for handling events
 /*!
@@ -81,10 +82,20 @@ class EventList {
 
   //! A function for debugging the event list - not for general use! 
   void debugEvents(void);
+
+  //! Set the compound to which the signal is drawn.
+  /*!
+   * 
+   * \param newCompound  A pointer to the new compound.
+   * \param xOffset The horizontal offset of the compound in the figure. 
+   * \param yOffset The vertical offset of the compound in the figure. 
+   * \param 
+   */
+  void setCompound(EasyVecElmCompound *newCompound, int xOffset, int yOffset); //TODO
   
 private:
   vector< Handle<Event> > events;
-  
+  EasyVecElmCompound *evListCompound;
 };
 
 #endif /* _H_EVENTLIST */

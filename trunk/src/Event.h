@@ -129,19 +129,23 @@ public:
    */
   void delReference();
 
-  //! Increment the reference count - only for use by handle class!
-  void incrementRefcount();
-  //! Decrement the reference count - only for use by handle class!
-  void decrementRefcount();
   //! Return the current reference count 
   int objRefCount() { return refCount; }
 
+  // Must be a friend to access the private functions for modifying the reference count
+  friend class Handle<Event>;
+  
 private:
   double EventDelay;
   double EventTime;
   int refCount;
   Handle<Event> reference;
   vector< Handle<Event> > referrers;
+
+  //! Increment the reference count - only for use by handle class!
+  void incrementRefcount();
+  //! Decrement the reference count - only for use by handle class!
+  void decrementRefcount();
 };
 
 #endif /* _H_EVENT */

@@ -1,6 +1,15 @@
 
+$Id: $
 
 * Handle class: remove Object() function usage.
   Object() still necessary for pointer comparison?
   => assigned to Ulf
+
+* Implement EasyVecElmCompound in EventList class
+  => assigned to Ulf
+
+* Implement state functionality in Event class
+  => assigned to Ulf
+
+* EventList: How should the initial state be set? pseudo-event?
 

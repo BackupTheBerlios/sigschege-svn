@@ -79,13 +79,15 @@ int main(void) {
   EasyVecElmText *txt = mypic.text();
   txt->setText("Moin");
   EVPosInt text_ul, text_lr;
-  txt->setOrigin(EVPosInt(0, 3000));
-  txt->setText("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+  txt->setOrigin(EVPosInt(500, 3000));
+  //txt->setText("Use pipes rather than intermediate files");
   txt->getBoundingBox(text_ul, text_lr);
 
-  EasyVecElmPolyline *line4 =  mypic.polyline();
-  line4->add_point(text_lr);
-  line4->add_point(text_lr-EVPosInt(0, 500));
+  EasyVecElmBox *textbox =  mypic.box(text_ul-EVPosInt(400, 400), text_lr+EVPosInt(400, 400));
+  
+  // EasyVecElmPolyline *line4 =  mypic.polyline();
+  // line4->add_point(text_lr);
+  // line4->add_point(text_lr-EVPosInt(0, 500));
 
   cout << "Lower Right is " << text_lr << endl;
   mypic.save("example_text.fig");

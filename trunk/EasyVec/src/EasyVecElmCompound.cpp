@@ -42,7 +42,7 @@ EasyVecElmPolyline* EasyVecElmCompound::polyline() {
   return new_polyline;
 }
 
-EasyVecElmBox* EasyVecElmCompound::box(EVPosInt &upper_left, EVPosInt &lower_right) {
+EasyVecElmBox* EasyVecElmCompound::box(EVPosInt upper_left, EVPosInt lower_right) {
   EasyVecElmBox* new_box = new EasyVecElmBox(static_cast<EasyVecElmCompound*>(this), master, upper_left, lower_right);
   members.push_back(new_box);
   return new_box;

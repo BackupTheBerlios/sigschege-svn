@@ -59,7 +59,7 @@ public:
   /// Create a polyline (class EasyVecElmPolyline), points must be added later
   EasyVecElmPolyline* polyline();
   /// Create a box (class EasyVecElmBox)
-  EasyVecElmBox* box(EVPosInt &upper_left, EVPosInt &lower_right);
+  EasyVecElmBox* box(EVPosInt upper_left, EVPosInt lower_right);
   /// Create a text element (class EasyVecElmText)
   EasyVecElmText* text();
   /// Create a compound (class EasyVecElmCompound)

@@ -52,7 +52,9 @@ public:
   void draw_view(EasyVecView* view);
   // do we need a copy constructor?
   virtual void handle_change(EasyVecElm*);
+  /// Register a view showing this figure
   void register_view(EasyVecView* view) { views.push_back(view); }
+  /// 
   void unregister_view(EasyVecView* view);
   bool set_screen_dpi(int new_screen_dpi);
   /// Set the screen resolution in dpi
@@ -76,7 +78,8 @@ private:
   /// Resolution in fig file
 
   /*!
-   * The default value of 1200 should not be changed, because that is what  
+   * The default value of 1200 for file_dpi should not be changed, because that is what
+   * xfig/transfig use in *.fig files.
    */
   int file_dpi;
   /// Resolutions for screen and file and the scaling factor between both

@@ -48,8 +48,11 @@ public:
   vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(EasyVecView* view);
   virtual void saveElm(ofstream &fig_file);
+  /// Set the text to be shown to new_text
   bool setText(const string &new_text);
+  /// Set the size of the text in points.
   bool setSize(int new_size);
+  /// Set the origin of the text in the figure.
   bool setOrigin(EVPosInt new_origin);
   static bool initFreetype(void); // will be called by EasyVec class
 
@@ -65,6 +68,7 @@ private:
   bool initEasyVecElmText();
   void updateDimensions(); // must be called by all methods which change text size!
 
+  // must be true for transfig<3.2.5   TODO: make this a variable
   const static bool fix_fig2dev_quirk = true;
 };
 

@@ -32,8 +32,10 @@
 
 
 EasyVec::EasyVec() : EasyVecElmCompound() {
-  
-  EasyVecElmText::initFreetype(); //ugly hack
+
+  // ugly hack, initFreetype must be called only once, we call it here, because
+  // creation of a new figure won't happen too often...
+  EasyVecElmText::initFreetype(); 
   auto_update = false;
   members_flat_valid = false;
   file_dpi = 1200;

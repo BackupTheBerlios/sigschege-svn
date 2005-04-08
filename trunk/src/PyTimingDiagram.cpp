@@ -132,11 +132,23 @@ static PyObject * TimSignal_addEvent(TimSignalObject *self, PyObject *args, PyOb
   Py_INCREF(Py_None);
   return (Py_None);
 }
-  
+
+static PyObject * TimSignal_setLabel(TimSignalObject *self, PyObject *args, PyObject *kwds) {
+  char *text = "1";
+  static char *kwlist[] = {"text", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "ds|s", kwlist, &text))
+    return NULL;
+  string text_s = text;
+
+  self->signal->setText(text);
+  Py_INCREF(Py_None);
+  return (Py_None);
+}
+
 static PyMethodDef TimSignal_methods[] = {
-  {"addEvent", (PyCFunction)TimSignal_addEvent, METH_VARARGS|METH_KEYWORDS,
-   "Add an event to a signal."
-  },
+  {"addEvent", (PyCFunction)TimSignal_addEvent, METH_VARARGS|METH_KEYWORDS, "Add an event to a signal."},
+  {"setLabel", (PyCFunction)TimSignal_setLabel, METH_VARARGS|METH_KEYWORDS, "Set the label text for this signal."},
   {NULL}  /* Sentinel */
 };
 

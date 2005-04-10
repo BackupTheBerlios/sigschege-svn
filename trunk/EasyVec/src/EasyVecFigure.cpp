@@ -2,29 +2,29 @@
 // \file 
 // Copyright 2004 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
 // $Id$
 
-#include "EasyVecFigure.h"
-#include "EasyVecText.h"
+#include "YaVecFigure.h"
+#include "YaVecText.h"
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
@@ -32,11 +32,11 @@
 
 
 
-EasyVecFigure::EasyVecFigure() : EasyVecCompound() {
+YaVecFigure::YaVecFigure() : YaVecCompound() {
 
   // ugly hack, initFreetype must be called only once, we call it here, because
   // creation of a new figure won't happen too often...
-  EasyVecText::initFreetype(); 
+  YaVecText::initFreetype(); 
   noViewUpdate = false;
   viewIsDirty = true;
   members_flat_valid = false;
@@ -45,7 +45,7 @@ EasyVecFigure::EasyVecFigure() : EasyVecCompound() {
   figure = this;
 }
 
-bool EasyVecFigure::setScreenDpi(int newScreenDpi) {
+bool YaVecFigure::setScreenDpi(int newScreenDpi) {
   if (newScreenDpi>0) {
     screen_dpi = newScreenDpi;
     scale_fact = file_dpi/screen_dpi;
@@ -54,9 +54,9 @@ bool EasyVecFigure::setScreenDpi(int newScreenDpi) {
   } else return false;
 }
 
-void EasyVecFigure::buildViews(void) {
+void YaVecFigure::buildViews(void) {
   if (!noViewUpdate) {
-    for (vector<EasyVecView*>::iterator views_iter = views.begin();
+    for (vector<YaVecView*>::iterator views_iter = views.begin();
          views_iter != views.end(); views_iter++) {
       (*views_iter)->clear();
       drawView(*views_iter);
@@ -67,12 +67,12 @@ void EasyVecFigure::buildViews(void) {
   }
 }
 
-void EasyVecFigure::drawView(EasyVecView* view) {
+void YaVecFigure::drawView(YaVecView* view) {
   if (!noViewUpdate) {
     members_flat = flatList();
     sortMembersByDepth();
     members_flat_valid = true;
-    vector<EasyVecElm*>::iterator members_iter;
+    vector<YaVecElm*>::iterator members_iter;
     cout << "================================================================================" << endl;
     for ( members_iter = members_flat.begin(); members_iter != members_flat.end(); ++members_iter ) {
       cout << "DRAWING: ";
@@ -85,12 +85,12 @@ void EasyVecFigure::drawView(EasyVecView* view) {
   }
 }
 
-void EasyVecFigure::handleChange(EasyVecElm* changed_element) {
+void YaVecFigure::handleChange(YaVecElm* changed_element) {
   buildViews();
 }
 
-void EasyVecFigure::unregisterView(EasyVecView* view) {
-  vector<EasyVecView*>::iterator views_iter = views.begin();
+void YaVecFigure::unregisterView(YaVecView* view) {
+  vector<YaVecView*>::iterator views_iter = views.begin();
   while (views_iter != views.end()) {
     if (*views_iter == view) {
       views_iter = views.erase(views_iter);
@@ -100,7 +100,7 @@ void EasyVecFigure::unregisterView(EasyVecView* view) {
   }
 }
 
-EasyVecFigure& EasyVecFigure::operator=(EasyVecFigure& source) {
+YaVecFigure& YaVecFigure::operator=(YaVecFigure& source) {
   copy_members(source);
   file_dpi = source.file_dpi;
   screen_dpi = source.screen_dpi;
@@ -109,7 +109,7 @@ EasyVecFigure& EasyVecFigure::operator=(EasyVecFigure& source) {
   return *this;
 }
 
-bool EasyVecFigure::save(string filename) {
+bool YaVecFigure::save(string filename) {
   ofstream fig_file;
   fig_file.open(filename.c_str(), ios::out);
   if (!fig_file) return false;
@@ -121,15 +121,15 @@ bool EasyVecFigure::save(string filename) {
   fig_file << "Single" << endl;
   fig_file << -2 << endl;
   fig_file << file_dpi << " 2" << endl;
-  save_content(fig_file); // method from base class EasyVecCompound to save compound content
+  save_content(fig_file); // method from base class YaVecCompound to save compound content
   return true;
 }
 
-bool EasyVecFigure::exportFig2dev(string language, string filename) {
+bool YaVecFigure::exportFig2dev(string language, string filename) {
   string tmpfigfile = filename + "_tmp.fig";
   string fig2dev_cmd = "fig2dev ";
   save(tmpfigfile);
-  fig2dev_cmd += "-L " + language + (EasyVecText::fig2dev_fontfix()? " ": " -F ") + tmpfigfile + " " + filename;
+  fig2dev_cmd += "-L " + language + (YaVecText::fig2dev_fontfix()? " ": " -F ") + tmpfigfile + " " + filename;
 
   cout << "Running: " << fig2dev_cmd << endl;
   
@@ -142,6 +142,6 @@ bool EasyVecFigure::exportFig2dev(string language, string filename) {
   return ret_stat==0;
 }
 
-void EasyVecFigure::sortMembersByDepth(void) {
+void YaVecFigure::sortMembersByDepth(void) {
   ::sort(members_flat.begin(), members_flat.end(), membersDepthCmp());
 }

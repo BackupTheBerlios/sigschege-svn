@@ -28,8 +28,8 @@ using namespace std;
 #include "TimingDiagram.h"
 #include <stdio.h>
 
-TimingDiagram::TimingDiagram(double newStartTime, double newEndTime) : cTimList(), cEasyVec() {
-  cTimList.setCompound(cEasyVec.compound());
+TimingDiagram::TimingDiagram(double newStartTime, double newEndTime) : cTimList(), cYaVec() {
+  cTimList.setCompound(cYaVec.compound());
   cTimList.setPadding(0);
   cDefaultHeight = 1000;
   cDefaultPadding = 200;
@@ -52,7 +52,7 @@ void TimingDiagram::paint() {
  */
 void TimingDiagram::exportFig(string file) {
   paint();
-  cEasyVec.save(file);
+  cYaVec.save(file);
 }
 
 /*!
@@ -61,7 +61,7 @@ void TimingDiagram::exportFig(string file) {
  */
 void TimingDiagram::exportEPS(string file) {
   paint();
-  cEasyVec.exportFig2dev("eps", file);
+  cYaVec.exportFig2dev("eps", file);
 }
 
 /*!
@@ -71,7 +71,7 @@ void TimingDiagram::exportEPS(string file) {
  */
 void TimingDiagram::exportAny(string file, string format) {
   paint();
-  cEasyVec.exportFig2dev(format, file);
+  cYaVec.exportFig2dev(format, file);
 }
 
 /*!
@@ -121,7 +121,7 @@ Handle <TimList> TimingDiagram::createList() {
 Handle<TimTime> TimingDiagram::createTime(bool autoCalc, double newLabelDistance, double newFirstLabel, double newTickDistance) {
   Handle<TimTime> newTimTime = new TimTime(startTime, endTime, autoCalc, newLabelDistance,
                                            newFirstLabel, newTickDistance);
-  newTimTime->setCompound(cEasyVec.compound());
+  newTimTime->setCompound(cYaVec.compound());
   newTimTime->setHeight(cDefaultHeight);
   newTimTime->enableBorder(cDefaultBorder);
   newTimTime->setPadding(cDefaultPadding);

@@ -2,31 +2,31 @@
 // \file 
 // Copyright 2004 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
 // $Id$
 
-#include "EasyVecElm.h"
-#include "EasyVecCompound.h"
+#include "YaVecElm.h"
+#include "YaVecCompound.h"
 
-EasyVecElm::EasyVecElm(void) {
+YaVecElm::YaVecElm(void) {
   parent = 0;
   elmPenColor = 0;
   elmFillColor = 0;
@@ -34,7 +34,7 @@ EasyVecElm::EasyVecElm(void) {
 };
 
 
-EasyVecElm::EasyVecElm(EasyVecCompound *parent_compound, EasyVecFigure *figure_compound) {
+YaVecElm::YaVecElm(YaVecCompound *parent_compound, YaVecFigure *figure_compound) {
   parent = parent_compound;
   figure = figure_compound;
   elmPenColor = parent->penColor();
@@ -43,11 +43,11 @@ EasyVecElm::EasyVecElm(EasyVecCompound *parent_compound, EasyVecFigure *figure_c
   
 };
 
-EasyVecElm::~EasyVecElm() {
+YaVecElm::~YaVecElm() {
   // notify owner? 
 };
 
-bool EasyVecElm::checkProximity(EVPosInt selPos, EVPosInt point, int fuzzyFact, int &fuzzyRes) {
+bool YaVecElm::checkProximity(EVPosInt selPos, EVPosInt point, int fuzzyFact, int &fuzzyRes) {
   int deltaX = abs(point.xpos()-selPos.xpos());
   int deltaY = abs(point.ypos()-selPos.ypos());
   if (deltaX>fuzzyFact || deltaY>fuzzyFact) {

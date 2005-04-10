@@ -26,7 +26,7 @@
 using namespace std;
 
 #include "TimSignal.h"
-#include <EasyVecText.h>
+#include <YaVecText.h>
 #include <iostream>
 
 /*!
@@ -73,7 +73,7 @@ void TimSignal::setSigOffset(int sigOffset) {
  * Paint this Signal object
  */
 void TimSignal::paint(void) {
-  EasyVecText *text;
+  YaVecText *text;
 
   // check if a compound is available
   if (getCompound()==0) return;

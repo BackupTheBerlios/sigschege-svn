@@ -2,41 +2,41 @@
 // \file  
 // Copyright 2004, 2005 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
 // $Id$
 
-#include "EasyVecPolyline.h"
-#include "EasyVecFigure.h"
+#include "YaVecPolyline.h"
+#include "YaVecFigure.h"
 #include <fstream>
 #include <iostream>
 
 using namespace std;
 
-EasyVecPolyline::EasyVecPolyline(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
-  : EasyVecElm(parent_compound, figure_compound), EasyVecLine(), EasyVecArrow() {
+YaVecPolyline::YaVecPolyline(YaVecCompound* parent_compound, YaVecFigure* figure_compound)
+  : YaVecElm(parent_compound, figure_compound), YaVecLine(), YaVecArrow() {
 };
 
 
 
-void EasyVecPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
+void YaVecPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
   vector<EVPosInt>::iterator points_iter = points.begin();
   if (points_iter==points.end()) {
     upper_left = EVPosInt(0,0); // no points! how should we behave???
@@ -50,20 +50,20 @@ void EasyVecPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right
   }
 }
 
-void EasyVecPolyline::addPoint(EVPosInt new_point) {
+void YaVecPolyline::addPoint(EVPosInt new_point) {
   points.push_back(new_point);
 //  cout << "Adding point " << new_point.xpos() << ":" << new_point.ypos() << endl;
   parent->handleChange(this);
 }
 
-void EasyVecPolyline::addPoints(vector<EVPosInt> new_points) {
+void YaVecPolyline::addPoints(vector<EVPosInt> new_points) {
   vector<EVPosInt>::iterator npoints_iter;
   for ( npoints_iter = new_points.begin(); npoints_iter != new_points.end(); ++npoints_iter ) {
     points.push_back(*npoints_iter);
   }
 }
 
-void EasyVecPolyline::draw(EasyVecView* view) {
+void YaVecPolyline::draw(YaVecView* view) {
   double styleLength = elmStyleValue*15;
   vector<EVPosInt>::iterator points_iter1, points_iter2;
   EVPosInt oldPoint;
@@ -84,7 +84,7 @@ void EasyVecPolyline::draw(EasyVecView* view) {
 }
 
 
-void EasyVecPolyline::saveElm(ofstream &fig_file) {
+void YaVecPolyline::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
   
   fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
@@ -105,14 +105,14 @@ void EasyVecPolyline::saveElm(ofstream &fig_file) {
   fig_file << endl;
 }
 
-void EasyVecPolyline::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                                    list<EasyVecElmHit> &hits) {
+void YaVecPolyline::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                                    list<YaVecElmHit> &hits) {
   vector<EVPosInt>::iterator pointsIt;
   int fuzzyRes;
   int i = 0;
   for ( pointsIt = points.begin(); pointsIt != points.end(); ++pointsIt, ++i ) {
     if (checkProximity(pos, (*pointsIt), fuzzyFact, fuzzyRes)) {
-      EasyVecElmHit newHit;
+      YaVecElmHit newHit;
       newHit.elmP = this;
       newHit.distance = fuzzyRes;
       newHit.idx = i;
@@ -121,7 +121,7 @@ void EasyVecPolyline::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchic
   }
 }
 
-void EasyVecPolyline::debugPrint(ostream &dest, bool verbose, int depth) {
+void YaVecPolyline::debugPrint(ostream &dest, bool verbose, int depth) {
   dest << string(depth, ' ') << "Polyline " << points.size() << " points." << endl;
   if (verbose) {
     vector<EVPosInt>::iterator pointsIt;

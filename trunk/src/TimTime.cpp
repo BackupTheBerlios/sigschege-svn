@@ -28,8 +28,8 @@ using namespace std;
 #include "TimTime.h"
 #include <iostream>
 #include <sstream>
-#include <EasyVecText.h>
-#include <EasyVecPolyline.h>
+#include <YaVecText.h>
+#include <YaVecPolyline.h>
 
 
 
@@ -63,7 +63,7 @@ void TimTime::calcTicks(void) {
  * Paint this text layout object
  */
 void TimTime::paint(void) {
-  EasyVecText *text;
+  YaVecText *text;
   int scaleWidth, xpos;
   double tickTime;
 
@@ -90,7 +90,7 @@ void TimTime::paint(void) {
   tickTime = firstLabel-tickDistance*floor((firstLabel-startTime)/tickDistance);
   while (tickTime<endTime) {
     xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime/(endTime-startTime)*scaleWidth);
-    EasyVecPolyline *tick = getCompound()->polyline();
+    YaVecPolyline *tick = getCompound()->polyline();
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/10 );
     
@@ -103,7 +103,7 @@ void TimTime::paint(void) {
     string timeStr;
     ostringstream strConv;
     xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime*scaleWidth/endTime-startTime);
-    EasyVecPolyline *tick = getCompound()->polyline();
+    YaVecPolyline *tick = getCompound()->polyline();
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/5 );
     // current time as text
@@ -113,7 +113,7 @@ void TimTime::paint(void) {
     text->setText(timeStr);
     text->setFont(cFontType);
     text->setSize(cFontSize/2);
-    text->setJustification(EasyVecText::center);
+    text->setJustification(YaVecText::center);
     text->setOrigin(EVPosInt(xpos, cOrigin.ypos()+cSize.ypos()-cPadding-cSize.ypos()*32/100));
     
     tickTime += labelDistance;

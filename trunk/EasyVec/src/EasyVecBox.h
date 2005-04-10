@@ -2,22 +2,22 @@
 // \file  
 // Copyright 2004, 2005 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
@@ -28,22 +28,22 @@
 #define _EASYVECBOX_H _EASYVECBOX_H 
 
 #include "EVPosInt.h"
-#include "EasyVecLine.h"
-#include "EasyVecElm.h"
-#include "EasyVecCompound.h"
-#include "EasyVecView.h"
+#include "YaVecLine.h"
+#include "YaVecElm.h"
+#include "YaVecCompound.h"
+#include "YaVecView.h"
 #include <vector>
 
 using namespace std;
 
-/// An EasyVec box element - corresponds to fig element polyline:box and polyline:arcbox
-class EasyVecBox : public EasyVecElm, public EasyVecLine  {
+/// An YaVec box element - corresponds to fig element polyline:box and polyline:arcbox
+class YaVecBox : public YaVecElm, public YaVecLine  {
 public:
   /// general constructor with no extra arguments
-  EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
-    : EasyVecElm(parent_compound, figure_compound) {};
+  YaVecBox(YaVecCompound* parent_compound, YaVecFigure* figure_compound)
+    : YaVecElm(parent_compound, figure_compound) {};
   /// general constructor accepting corner points
-  EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound, EVPosInt upper_left, EVPosInt lower_right);
+  YaVecBox(YaVecCompound* parent_compound, YaVecFigure* figure_compound, EVPosInt upper_left, EVPosInt lower_right);
 
   /// Return the limits of this element
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
@@ -56,16 +56,16 @@ public:
     lower_right = elm_lower_right;
   }
   
-  vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
+  vector<YaVecElm*> flatList() { vector<YaVecElm*> res; res.push_back(this); return (res); };
 
   /// send draw commands to the given view
-  virtual void draw(EasyVecView* view);
+  virtual void draw(YaVecView* view);
   /// save element into a fig file
   virtual void saveElm(ofstream &fig_file);
 
   /// find a figure element near the given position.
   virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                             list<EasyVecElmHit> &hits);
+                             list<YaVecElmHit> &hits);
 
   /// Print some (or some more) information about this figure element.
   virtual void debugPrint(ostream &dest, bool verbose, int depth);

@@ -2,22 +2,22 @@
 // \file  
 // Copyright 2004 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
@@ -29,37 +29,37 @@
 
 #include <vector>
 #include <string>
-#include "EasyVecElm.h"
-#include "EasyVecCompound.h"
+#include "YaVecElm.h"
+#include "YaVecCompound.h"
        
 /// A vector figure class in Fig format
 /*!
  * This class implements a complete vector figure in Fig format.
  *
- * It is derived from EasyVecCompound since it shares a lot of code with
+ * It is derived from YaVecCompound since it shares a lot of code with
  * that class. Basically the figure is like an "invisible" compound.
  *
  * To create a figure, instantiate an object of this class.
  * Functions for creating objects (box, polyline, text,...) are inherited from
- * the EasyVecCompound class and explained there.
+ * the YaVecCompound class and explained there.
  */
-class EasyVecFigure : public EasyVecCompound {
+class YaVecFigure : public YaVecCompound {
 public:
   /// constructor
-  EasyVecFigure();
+  YaVecFigure();
 
   /// Draw the figure to this view.
-  void drawView(EasyVecView* view);
+  void drawView(YaVecView* view);
 
   // do we need a copy constructor?
   
-  virtual void handleChange(EasyVecElm*);
+  virtual void handleChange(YaVecElm*);
 
   /// Register a view showing this figure.
-  void registerView(EasyVecView* view) { views.push_back(view); }
+  void registerView(YaVecView* view) { views.push_back(view); }
 
   /// Unregister a view that has doesn't want to be updated any more.
-  void unregisterView(EasyVecView* view);
+  void unregisterView(YaVecView* view);
 
   /// Query the screen resolution in dpi
   bool setScreenDpi(int newScreenDpi);
@@ -78,13 +78,13 @@ public:
 
   /// Directly export into a foreign graphics format.
   bool exportFig2dev(string language, string filename);
-  EasyVecFigure& operator=(EasyVecFigure& source);
+  YaVecFigure& operator=(YaVecFigure& source);
 
   void updating(bool newUpdateStatus) { noViewUpdate = !newUpdateStatus; }
   
 private:
   /// A flat list to be passed to views
-  vector <EasyVecElm*> members_flat;
+  vector <YaVecElm*> members_flat;
   /// Indicate if members_flat is still valid or needs to be recreated
   bool members_flat_valid;
   /// Used to suspend view updating during several changes.
@@ -92,7 +92,7 @@ private:
   /// Views don't reflect current figure and need redrawing.
   bool viewIsDirty;
   /// List of views which show this figure
-  vector<EasyVecView*> views;
+  vector<YaVecView*> views;
   /// Resolution in fig file
 
   /*!
@@ -106,7 +106,7 @@ private:
 
   void sortMembersByDepth(void);
   struct membersDepthCmp {
-    bool operator()(EasyVecElm *x, EasyVecElm *y) {
+    bool operator()(YaVecElm *x, YaVecElm *y) {
       return x->depth()>y->depth();
     }
   };

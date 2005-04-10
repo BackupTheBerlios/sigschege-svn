@@ -2,22 +2,22 @@
 // \file  
 // Copyright 2004, 2005 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
@@ -25,20 +25,20 @@
 
 #include <wx/colour.h>
 #include <iostream>
-#include "EasyVecVwx.h"
-#include "EasyVecFigure.h"
-#include "EasyVecElm.h"
+#include "YaVecVwx.h"
+#include "YaVecFigure.h"
+#include "YaVecElm.h"
 
 using namespace std;
 
-BEGIN_EVENT_TABLE(EasyVecVwx, wxWindow)
-    EVT_PAINT(EasyVecVwx::OnPaint)
-    EVT_RIGHT_DOWN(EasyVecVwx::OnMouse)
+BEGIN_EVENT_TABLE(YaVecVwx, wxWindow)
+    EVT_PAINT(YaVecVwx::OnPaint)
+    EVT_RIGHT_DOWN(YaVecVwx::OnMouse)
 END_EVENT_TABLE()
 
 // Define a constructor for my canvas
-EasyVecVwx::EasyVecVwx(EasyVecFigure *picture, wxFrame *frame, int x, int y, int w, int h, long style)
-  : wxWindow(frame, -1, wxPoint(x, y), wxSize(w, h), style), EasyVecView(picture)
+YaVecVwx::YaVecVwx(YaVecFigure *picture, wxFrame *frame, int x, int y, int w, int h, long style)
+  : wxWindow(frame, -1, wxPoint(x, y), wxSize(w, h), style), YaVecView(picture)
 {
   cout << "constr: " << this << endl;
   SetBackgroundColour(*wxWHITE);
@@ -46,7 +46,7 @@ EasyVecVwx::EasyVecVwx(EasyVecFigure *picture, wxFrame *frame, int x, int y, int
 }
 
 
-void EasyVecVwx::drawLine(EVPosInt from, EVPosInt to, int width, int color, int lineStyle, double styleLength) {
+void YaVecVwx::drawLine(EVPosInt from, EVPosInt to, int width, int color, int lineStyle, double styleLength) {
   wxColour wxMyColour(easyvec_std_colors[color][0], easyvec_std_colors[color][1], easyvec_std_colors[color][2]);
   wxPen wxMyPen(wxMyColour, width, 1);
   wxWindowDC *paintPtr;
@@ -60,7 +60,7 @@ void EasyVecVwx::drawLine(EVPosInt from, EVPosInt to, int width, int color, int 
   to   /= xscale;
   styleLength /= xscale;
   
-  if (lineStyle==EasyVecLine::solid) {
+  if (lineStyle==YaVecLine::solid) {
     paintPtr->DrawLine(from.xpos(), from.ypos(), to.xpos(), to.ypos());
   } else {
     double dotLength = 0.0125*mypicture->getScreenDpi();
@@ -74,17 +74,17 @@ void EasyVecVwx::drawLine(EVPosInt from, EVPosInt to, int width, int color, int 
     EVPosInt curPoint(from);
     EVPosInt nextPoint;
     int activeCnt = 0;
-    double activeLength = lineStyle==EasyVecLine::dashed ? styleLength : dotLength;
+    double activeLength = lineStyle==YaVecLine::dashed ? styleLength : dotLength;
     while (curDist<distance) {
       if (activePhase) {
-        if (lineStyle!=EasyVecLine::solid && lineStyle!=EasyVecLine::dashed) {
-          if (lineStyle==EasyVecLine::dash_dotted) {
+        if (lineStyle!=YaVecLine::solid && lineStyle!=YaVecLine::dashed) {
+          if (lineStyle==YaVecLine::dash_dotted) {
             activeLength = activeCnt==0 ? styleLength : dotLength;
             if (++activeCnt > 1) activeCnt=0;
-          } else if (lineStyle==EasyVecLine::dash_double_dotted) {
+          } else if (lineStyle==YaVecLine::dash_double_dotted) {
             activeLength = activeCnt==0 ? styleLength : dotLength;
             if (++activeCnt > 2) activeCnt=0;
-          } else if (lineStyle==EasyVecLine::dash_triple_dotted) {
+          } else if (lineStyle==YaVecLine::dash_triple_dotted) {
             activeLength = activeCnt==0 ? styleLength : dotLength;
             if (++activeCnt > 3) activeCnt=0;
           }
@@ -106,7 +106,7 @@ void EasyVecVwx::drawLine(EVPosInt from, EVPosInt to, int width, int color, int 
   if (onPaintPaintDCp==0) delete paintPtr;
 }
 
-void EasyVecVwx::drawArc(EVPosInt center, int radius, double phiStart, double phiEnd, int width, int color, int lineStyle, double styleLength) {
+void YaVecVwx::drawArc(EVPosInt center, int radius, double phiStart, double phiEnd, int width, int color, int lineStyle, double styleLength) {
   wxColour wxMyColour(easyvec_std_colors[color][0], easyvec_std_colors[color][1], easyvec_std_colors[color][2]);
   wxPen wxMyPen(wxMyColour, width, 5);
   wxWindowDC *paintPtr;
@@ -129,7 +129,7 @@ void EasyVecVwx::drawArc(EVPosInt center, int radius, double phiStart, double ph
 
 
 
-void EasyVecVwx::drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
+void YaVecVwx::drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
   int x,y, bit_no, bit_val;
   char bb;
 
@@ -159,7 +159,7 @@ void EasyVecVwx::drawChar(EVPosInt origin, int rows, int width, int pitch, unsig
 }
 
 
-void EasyVecVwx::drawArrow(const EVPosInt &tip, double angle, int color, EasyVecArrow::arrowInfo *arrow) {
+void YaVecVwx::drawArrow(const EVPosInt &tip, double angle, int color, YaVecArrow::arrowInfo *arrow) {
   wxWindowDC *paintPtr;
   int xscale = mypicture->scale();
   EVPosInt tipVres = tip/xscale;
@@ -172,14 +172,14 @@ void EasyVecVwx::drawArrow(const EVPosInt &tip, double angle, int color, EasyVec
   paintPtr->SetPen(wxMyPen);
 
   EVPosInt pL, pR, pM;
-  EasyVecArrow::calcPoints(*arrow, tip, angle, pL, pR, pM);
+  YaVecArrow::calcPoints(*arrow, tip, angle, pL, pR, pM);
   pL /= xscale;
   pR /= xscale;
   pM /= xscale;
   
   paintPtr->DrawLine(pL.xpos(), pL.ypos(), tipVres.xpos(), tipVres.ypos());
   paintPtr->DrawLine(pR.xpos(), pR.ypos(), tipVres.xpos(), tipVres.ypos());
-  if (arrow->Type==EasyVecArrow::closed_indented_butt || arrow->Type==EasyVecArrow::closed_pointed_butt) {
+  if (arrow->Type==YaVecArrow::closed_indented_butt || arrow->Type==YaVecArrow::closed_pointed_butt) {
     paintPtr->DrawLine(pR.xpos(), pR.ypos(), pM.xpos(), pM.ypos());
     paintPtr->DrawLine(pL.xpos(), pL.ypos(), pM.xpos(), pM.ypos());
   }
@@ -188,12 +188,12 @@ void EasyVecVwx::drawArrow(const EVPosInt &tip, double angle, int color, EasyVec
 }
 
 
-void EasyVecVwx::clear(void) {
+void YaVecVwx::clear(void) {
   cout << "Clear" << endl;
   Clear();
 }
 
-void EasyVecVwx::refreshAll(void) {
+void YaVecVwx::refreshAll(void) {
   int width, height;
   GetClientSize(&width, &height);
   wxRect rect = wxRect(0, 0, width, height);
@@ -202,7 +202,7 @@ void EasyVecVwx::refreshAll(void) {
 
 
 // Define the repainting behaviour
-void EasyVecVwx::OnPaint(wxPaintEvent& WXUNUSED(event) )
+void YaVecVwx::OnPaint(wxPaintEvent& WXUNUSED(event) )
 {
   //SetBackgroundColour(*wxWHITE);
   wxPaintDC dc(this);
@@ -214,11 +214,11 @@ void EasyVecVwx::OnPaint(wxPaintEvent& WXUNUSED(event) )
   onPaintPaintDCp = 0;
 }
 
-void EasyVecVwx::OnMouse(wxMouseEvent& event)
+void YaVecVwx::OnMouse(wxMouseEvent& event)
 {
   EVPosInt pos(event.m_x, event.m_y);
   cout << "MOUSE @ " << pos << endl;
-  list<EasyVecElmHit> hits;
+  list<YaVecElmHit> hits;
   mypicture->getElmNearPos(pos*mypicture->scale(), maxDist, true, true, hits);
   cout << "HITS " << hits.size() << endl;
 }

@@ -1,1 +1,1 @@
-SUBDIRS = EasyVec src doc
+SUBDIRS = YaVec src doc

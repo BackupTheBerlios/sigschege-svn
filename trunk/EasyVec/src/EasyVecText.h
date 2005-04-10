@@ -2,22 +2,22 @@
 // \file  
 // Copyright 2004, 2005 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
@@ -28,9 +28,9 @@
 #define _EASYVECELMTEXT_H _EASYVECELMTEXT_H 
 
 #include "EVPosInt.h"
-#include "EasyVecElm.h"
-#include "EasyVecCompound.h"
-#include "EasyVecView.h"
+#include "YaVecElm.h"
+#include "YaVecCompound.h"
+#include "YaVecView.h"
 #include <vector>
 extern "C" {
 #include <ft2build.h>
@@ -39,19 +39,19 @@ extern "C" {
 
 using namespace std;
 
-/// An EasyVec text - corresponds to fig element text
-class EasyVecText : public EasyVecElm {
+/// An YaVec text - corresponds to fig element text
+class YaVecText : public YaVecElm {
 public:
-  EasyVecText();
-  EasyVecText(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound);
+  YaVecText();
+  YaVecText(YaVecCompound* parent_compound, YaVecFigure* figure_compound);
   /// Place the edges of the bounding box in upper_left/lower_right.
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
   /// Return the width of the text.
   int getWidth(void) { return textWidth; }
   /// Return the height of the text.
   int getHeight(void) { return textHeight; }
-  vector<EasyVecElm*> flatList() { vector<EasyVecElm*> res; res.push_back(this); return (res); };
-  virtual void draw(EasyVecView* view);
+  vector<YaVecElm*> flatList() { vector<YaVecElm*> res; res.push_back(this); return (res); };
+  virtual void draw(YaVecView* view);
   virtual void saveElm(ofstream &fig_file);
   /// Print some (or some more) information about this figure element.
   virtual void debugPrint(ostream &dest, bool verbose, int depth);
@@ -73,10 +73,10 @@ public:
    * \param noUpdate Suppress updating of the cached text dimensions.
    * \return The new text dimensions.
    */
-  EVPosInt drawOrCalc(EasyVecView* view, bool noUpdate=false);
+  EVPosInt drawOrCalc(YaVecView* view, bool noUpdate=false);
   /// Calculates the maximum point size so that the text fits into the given box.
   int sizeForBox(int height, int width, bool allowIncrease = false);
-  static bool initFreetype(void); // will be called by EasyVecFigure class
+  static bool initFreetype(void); // will be called by YaVecFigure class
   /// Switch the fig2dev_fontfix on/off. Must be true for xfig/transfig versions before 3.2.5, false otherwise.
   /*!
    * This fixes a bug concerning font sizes for transfig/fig2dev for versions before 3.2.5. Instead
@@ -96,7 +96,7 @@ public:
 
   /// find a figure element near the given position.
   virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                             list<EasyVecElmHit> &hits);
+                             list<YaVecElmHit> &hits);
 
 private:
   EVPosInt elmOrigin;
@@ -108,7 +108,7 @@ private:
   FT_Face face;
   int textHeight, textWidth; // cache information to reduce cpu effort
   
-  bool initEasyVecText();
+  bool initYaVecText();
   void updateDimensions(); // must be called by all methods which change text size!
 
   // must be true for transfig<3.2.5 
@@ -117,7 +117,7 @@ private:
 };
 
 
-inline bool EasyVecText::setJustification(int newJustification) {
+inline bool YaVecText::setJustification(int newJustification) {
   if (newJustification>0 && newJustification<3) {
     elmJustification = static_cast<justification>(newJustification);
     return true;
@@ -125,7 +125,7 @@ inline bool EasyVecText::setJustification(int newJustification) {
 }
 
 /// update the dimensions - calls draw without a view
-inline void EasyVecText::updateDimensions() {
+inline void YaVecText::updateDimensions() {
   draw(NULL); 
 }
 

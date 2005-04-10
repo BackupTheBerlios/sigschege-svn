@@ -2,22 +2,22 @@
 // \file  
 // Copyright 2005 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
@@ -32,8 +32,8 @@
 
 using namespace std;
 
-/// An EasyVecFigure arrow base class  - used for polyarrow and box
-class EasyVecArrow {
+/// An YaVecFigure arrow base class  - used for polyarrow and box
+class YaVecArrow {
 public:
 
   enum arrowTypeType {
@@ -55,8 +55,8 @@ public:
     double Height;
   };
 
-  EasyVecArrow();
-  ~EasyVecArrow();
+  YaVecArrow();
+  ~YaVecArrow();
   /// Set the state of the forward arrow to new_state.
   void forwardArrow(bool new_state);
   /// Return the current state of the forward arrow.
@@ -110,7 +110,7 @@ public:
   static void calcPoints(arrowInfo &arrow, const EVPosInt &tip, double tipAngle, 
                          EVPosInt &pLeft, EVPosInt &pRight, EVPosInt &pMid);
   
-  friend class EasyVecPolyline;
+  friend class YaVecPolyline;
   
 private:
   // array with length 2 - 0 is forward arrow, 1 is backward arrow
@@ -123,43 +123,43 @@ private:
 
 };
 
-inline int EasyVecArrow::forwardArrowType(void) {
+inline int YaVecArrow::forwardArrowType(void) {
   return forwardArrow() ? elmArrows[0]->Type : -1;
 }
 
-inline int EasyVecArrow::backwardArrowType(void) {
+inline int YaVecArrow::backwardArrowType(void) {
   return backwardArrow() ? elmArrows[1]->Type : -1;
 }
 
-inline int EasyVecArrow::forwardArrowStyle(void) {
+inline int YaVecArrow::forwardArrowStyle(void) {
   return forwardArrow() ? elmArrows[0]->Style : -1;
 }
 
-inline int EasyVecArrow::backwardArrowStyle(void) {
+inline int YaVecArrow::backwardArrowStyle(void) {
   return backwardArrow() ? elmArrows[1]->Style : -1;
 }
 
-inline double EasyVecArrow::forwardArrowThickness(void) {
+inline double YaVecArrow::forwardArrowThickness(void) {
   return forwardArrow() ? elmArrows[0]->Thickness : -1.0;
 }
 
-inline double EasyVecArrow::backwardArrowThickness(void) {
+inline double YaVecArrow::backwardArrowThickness(void) {
   return backwardArrow() ? elmArrows[1]->Thickness : -1.0;
 }
 
-inline double EasyVecArrow::forwardArrowWidth(void) {
+inline double YaVecArrow::forwardArrowWidth(void) {
   return forwardArrow() ? elmArrows[0]->Width : -1.0;
 }
 
-inline double EasyVecArrow::backwardArrowWidth(void) {
+inline double YaVecArrow::backwardArrowWidth(void) {
   return backwardArrow() ? elmArrows[1]->Width : -1.0;
 }
 
-inline double EasyVecArrow::forwardArrowHeight(void) {
+inline double YaVecArrow::forwardArrowHeight(void) {
   return forwardArrow() ? elmArrows[0]->Height : -1.0;
 }
 
-inline double EasyVecArrow::backwardArrowHeight(void) {
+inline double YaVecArrow::backwardArrowHeight(void) {
   return backwardArrow() ? elmArrows[1]->Height : -1.0;
 }
 

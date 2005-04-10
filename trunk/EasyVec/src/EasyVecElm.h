@@ -2,22 +2,22 @@
 // \file  
 // Copyright 2004, 2005 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
@@ -27,33 +27,33 @@
 #ifndef _EASYVECELM_H
 #define _EASYVECELM_H _EASYVECELM_H
 
-class EasyVecCompound;
+class YaVecCompound;
 
 #include <vector>
 #include <list>
 #include "EVPosInt.h"
-#include "EasyVecView.h"
+#include "YaVecView.h"
 
 using namespace std;
 
-class EasyVecElm;
+class YaVecElm;
 
 /// structure for element queries by position
-struct EasyVecElmHit {
-  EasyVecElm *elmP; // pointer to the element
+struct YaVecElmHit {
+  YaVecElm *elmP; // pointer to the element
   int distance;     // distance of the element to the given position
   int idx;          // index: which part of the element was clicked meaning depends on type of element) 
 };
 
-/// An EasyVec Element - abstract base class for all EasyVec elements (compound, polyline, text,...)
-class EasyVecElm {
+/// An YaVec Element - abstract base class for all YaVec elements (compound, polyline, text,...)
+class YaVecElm {
 public:
   // constructor
-  EasyVecElm(void);
-  EasyVecElm(EasyVecCompound* parent_compound, EasyVecFigure *figure_compound);
+  YaVecElm(void);
+  YaVecElm(YaVecCompound* parent_compound, YaVecFigure *figure_compound);
   // do we need a copy constructor?
   // destructor
-  virtual ~EasyVecElm();
+  virtual ~YaVecElm();
 
   /// Return the bounding box in upper_left/lower_right
   /*!
@@ -61,9 +61,9 @@ public:
    * lower_right that is covered by the content of the object.
    */
   virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right)=0;
-  virtual vector<EasyVecElm*> flatList() = 0;
+  virtual vector<YaVecElm*> flatList() = 0;
   /// Draw this object in the given view.
-  virtual void draw(EasyVecView* view) = 0;
+  virtual void draw(YaVecView* view) = 0;
   /// Save this element into the given output file stream.
   virtual void saveElm(ofstream &fig_file) = 0;
 
@@ -85,49 +85,49 @@ public:
 
   /// find a figure element near the given position.
   virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                             list<EasyVecElmHit> &hits) = 0;
+                             list<YaVecElmHit> &hits) = 0;
 
   /// Check if the selected position is near the point.
   static bool checkProximity(EVPosInt selPos, EVPosInt point, int fuzzyFact, int &fuzzyRes);
   
 protected:
-  EasyVecCompound *parent; // needed to inform the owner about change events
-  EasyVecFigure *figure; // needed to access global picture states
+  YaVecCompound *parent; // needed to inform the owner about change events
+  YaVecFigure *figure; // needed to access global picture states
   int elmPenColor;
   int elmFillColor;
   int elmDepth;
 };
 
-inline bool EasyVecElm::penColor(int new_color) {
+inline bool YaVecElm::penColor(int new_color) {
   if (new_color>=0 && new_color<512) {
     elmPenColor=new_color;
     return true;
   } else return false;
 }
 
-inline int EasyVecElm::penColor(void) {
+inline int YaVecElm::penColor(void) {
   return elmPenColor;
 }
 
-inline bool EasyVecElm::fillColor(int new_color) {
+inline bool YaVecElm::fillColor(int new_color) {
   if (new_color>=0 && new_color<512) {
     elmFillColor=new_color;
     return true;
   } else return false;
 }
 
-inline int EasyVecElm::fillColor(void) {
+inline int YaVecElm::fillColor(void) {
   return elmFillColor;
 }
 
-inline bool EasyVecElm::depth(int new_depth) {
+inline bool YaVecElm::depth(int new_depth) {
   if (new_depth>=0 && new_depth<512) {
     elmDepth=new_depth;
     return true;
   } else return false;
 }
 
-inline int EasyVecElm::depth(void) {
+inline int YaVecElm::depth(void) {
   return elmDepth;
 }
 

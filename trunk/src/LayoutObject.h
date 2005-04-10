@@ -30,7 +30,7 @@ using namespace std;
 
 #include "Handle.t"
 #include <vector>
-#include <EasyVecFigure.h>
+#include <YaVecFigure.h>
 
 class LayoutObject {
 public:
@@ -40,9 +40,9 @@ public:
   //! The standard destructor
   virtual ~LayoutObject();
 
-  virtual void setCompound(EasyVecCompound *newCompound);
+  virtual void setCompound(YaVecCompound *newCompound);
 
-  EasyVecCompound* getCompound();
+  YaVecCompound* getCompound();
 
   //! Paint this Layout Object
   virtual void paint(void);
@@ -145,7 +145,7 @@ private:
   bool cDrawBorder;
   Handle<LayoutObject> reference;
   vector< Handle<LayoutObject> > referrers;
-  EasyVecCompound *evListCompound;
+  YaVecCompound *evListCompound;
 };
 
 #endif

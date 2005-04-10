@@ -42,11 +42,11 @@ LayoutObject::~LayoutObject() {
  * Set the Compound which is used to draw this Event.
  * \param newCompound The Compound to use.
  */
-void LayoutObject::setCompound(EasyVecCompound *newCompound) {
+void LayoutObject::setCompound(YaVecCompound *newCompound) {
   evListCompound = newCompound;
 }
 
-EasyVecCompound* LayoutObject::getCompound() {
+YaVecCompound* LayoutObject::getCompound() {
   return evListCompound;
 }
 

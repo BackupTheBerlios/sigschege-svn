@@ -2,22 +2,22 @@
 // \file  
 // Copyright 2004 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
@@ -27,10 +27,10 @@
 #ifndef _EASYVECELMLINE_H
 #define _EASYVECELMLINE_H _EASYVECELMLINE_H 
 
-/// An EasyVecFigure line base class  - used for polyline and box
-class EasyVecLine {
+/// An YaVecFigure line base class  - used for polyline and box
+class YaVecLine {
 public:
-  EasyVecLine();
+  YaVecLine();
   /// Set the line style for this polyline - allowed values are 0 - 5 
   bool lineStyle(int newLineStyle);
   /// Return the current line style.
@@ -61,7 +61,7 @@ protected:
 };
 
 
-inline bool EasyVecLine::lineStyle(int newLineStyle) {
+inline bool YaVecLine::lineStyle(int newLineStyle) {
   if (newLineStyle>=0 && newLineStyle<=5) {
     elmLineStyle = newLineStyle;
     return true;
@@ -70,7 +70,7 @@ inline bool EasyVecLine::lineStyle(int newLineStyle) {
   }
 }
 
-inline bool EasyVecLine::styleValue(double newStyleValue) {
+inline bool YaVecLine::styleValue(double newStyleValue) {
   if (newStyleValue>0.0) {
     elmStyleValue = newStyleValue;
     return true;

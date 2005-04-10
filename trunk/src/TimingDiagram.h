@@ -35,7 +35,7 @@ using namespace std;
 #include "TimTime.h"
 #include "Handle.t"
 #include <string>
-#include <EasyVecFigure.h>
+#include <YaVecFigure.h>
 #include "EventList.h"
 #include <vector>
 
@@ -94,7 +94,7 @@ public:
   void setSliceSpace(int space);
 private:
   TimList       cTimList;
-  EasyVecFigure cEasyVec;
+  YaVecFigure cYaVec;
   // defaults for signals/labels/time scale
   int  cDefaultHeight;
   int  cDefaultPadding;

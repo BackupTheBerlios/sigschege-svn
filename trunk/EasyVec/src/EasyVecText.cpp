@@ -2,22 +2,22 @@
 // \file 
 // Copyright 2004, 2005 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
@@ -25,16 +25,16 @@
 
 #include <fstream>
 #include <iostream>
-#include "EasyVecText.h"
-#include "EasyVecFigure.h"
+#include "YaVecText.h"
+#include "YaVecFigure.h"
 
 using namespace std;
 
-FT_Library  EasyVecText::freetype_lib;
-bool EasyVecText::freetype_already_initialized = false;
-bool EasyVecText::fix_fig2dev_quirk = false;
+FT_Library  YaVecText::freetype_lib;
+bool YaVecText::freetype_already_initialized = false;
+bool YaVecText::fix_fig2dev_quirk = false;
 
-string EasyVecText::gs_fontpath = "/var/lib/defoma/gs.d/dirs/fonts/";
+string YaVecText::gs_fontpath = "/var/lib/defoma/gs.d/dirs/fonts/";
 
 const char* easyvec_font_files[] = {
   "n021003l.pfb", // 0 = NimbusRomNo9L-Regu = Times-Roman
@@ -74,7 +74,7 @@ const char* easyvec_font_files[] = {
 	"d050000l.pfb" // 34 = Zapf Dingbats
 };
 
-bool EasyVecText::initFreetype(void) {
+bool YaVecText::initFreetype(void) {
   if (freetype_already_initialized) return true;
   int freetype_fail = FT_Init_FreeType( &freetype_lib );
   if (freetype_fail==0) {
@@ -87,7 +87,7 @@ bool EasyVecText::initFreetype(void) {
 
 
 
-EVPosInt EasyVecText::drawOrCalc(EasyVecView* view, bool noUpdate) {
+EVPosInt YaVecText::drawOrCalc(YaVecView* view, bool noUpdate) {
   string::iterator text_iter;
   char cur_char;
   FT_UInt glyph_index, old_glyph_i;
@@ -153,12 +153,12 @@ EVPosInt EasyVecText::drawOrCalc(EasyVecView* view, bool noUpdate) {
 }
 
 
-void EasyVecText::draw(EasyVecView* view) {
+void YaVecText::draw(YaVecView* view) {
   drawOrCalc(view);
 }
 
 
-bool EasyVecText::initEasyVecText() {
+bool YaVecText::initYaVecText() {
   bool success;
   elmFont = 0;
   elmSize = 18;
@@ -170,29 +170,29 @@ bool EasyVecText::initEasyVecText() {
 }
 
 
-EasyVecText::EasyVecText() {
-  initEasyVecText();
+YaVecText::YaVecText() {
+  initYaVecText();
 }
 
-EasyVecText::EasyVecText(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound)
-  : EasyVecElm(parent_compound, figure_compound)
+YaVecText::YaVecText(YaVecCompound* parent_compound, YaVecFigure* figure_compound)
+  : YaVecElm(parent_compound, figure_compound)
 {
-  initEasyVecText();
+  initYaVecText();
 };
 
 
-void EasyVecText::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
+void YaVecText::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
   upper_left  = elmOrigin - EVPosInt(0, textHeight); 
   lower_right = elmOrigin + EVPosInt(textWidth, 0);
 }
 
-bool EasyVecText::setText(const string &new_text) {
+bool YaVecText::setText(const string &new_text) {
   elmText = new_text;
   updateDimensions();
   return true;
 }
 
-bool EasyVecText::setFont(int new_font) {
+bool YaVecText::setFont(int new_font) {
   int ft_fail;
   if (new_font>=0 && new_font<34) {
     elmFont = new_font;
@@ -205,18 +205,18 @@ bool EasyVecText::setFont(int new_font) {
 }
 
 
-bool EasyVecText::setSize(int new_size) {
+bool YaVecText::setSize(int new_size) {
   elmSize = new_size;
   updateDimensions();
   return true;
 }
 
-bool EasyVecText::setOrigin(EVPosInt new_origin) {
+bool YaVecText::setOrigin(EVPosInt new_origin) {
   elmOrigin = new_origin;
   return true;
 }
 
-int EasyVecText::sizeForBox(int height, int width, bool allowIncrease) {
+int YaVecText::sizeForBox(int height, int width, bool allowIncrease) {
   int origSize=elmSize;
   EVPosInt bBox(textWidth, textHeight);
   int newSize;
@@ -231,7 +231,7 @@ int EasyVecText::sizeForBox(int height, int width, bool allowIncrease) {
 }
 
 
-void EasyVecText::saveElm(ofstream &fig_file) {
+void YaVecText::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
   fig_file << "4 " << elmJustification << " " << elmPenColor << " " << elmDepth
@@ -240,12 +240,12 @@ void EasyVecText::saveElm(ofstream &fig_file) {
            << "\\001" << endl;
 }
 
-void EasyVecText::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                                    list<EasyVecElmHit> &hits) {
+void YaVecText::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                                    list<YaVecElmHit> &hits) {
   // TODO: add other corner points
   int fuzzyRes;
   if (checkProximity(pos, elmOrigin, fuzzyFact, fuzzyRes)) {
-    EasyVecElmHit newHit;
+    YaVecElmHit newHit;
     newHit.elmP = this;
     newHit.distance = fuzzyRes;
     newHit.idx = 0;
@@ -254,7 +254,7 @@ void EasyVecText::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, 
 }
 
 
-void EasyVecText::debugPrint(ostream &dest, bool verbose, int depth) {
+void YaVecText::debugPrint(ostream &dest, bool verbose, int depth) {
   dest << string(depth, ' ') << "Text " << endl;
   if (verbose) {
     dest << string(depth+4, ' ') << elmText << endl;

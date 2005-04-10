@@ -27,7 +27,7 @@ using namespace std;
 
 #include "TimLabel.h"
 #include <iostream>
-#include <EasyVecText.h>
+#include <YaVecText.h>
 
 /*!
  * This constructor will create an Timing Diagram Label Object
@@ -64,7 +64,7 @@ void TimLabel::setText(string newText) {
  * Paint this text layout object
  */
 void TimLabel::paint(void) {
-  EasyVecText *text;
+  YaVecText *text;
 
   // check if a compound is available
   if(getCompound()==0) return;

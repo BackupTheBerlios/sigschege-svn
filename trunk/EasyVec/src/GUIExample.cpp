@@ -1,22 +1,22 @@
 // \file  
 // Copyright 2004 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
@@ -29,13 +29,13 @@
 #include "wx/notebook.h"
 
 #include "GUIExample.h"
-#include "EasyVecFigure.h"
-#include "EasyVecElm.h"
-#include "EasyVecPolyline.h"
-#include "EasyVecBox.h"
-#include "EasyVecArc.h"
-#include "EasyVecText.h"
-#include "EasyVecVwx.h"
+#include "YaVecFigure.h"
+#include "YaVecElm.h"
+#include "YaVecPolyline.h"
+#include "YaVecBox.h"
+#include "YaVecArc.h"
+#include "YaVecText.h"
+#include "YaVecVwx.h"
 #include <list>
 
 #include <cstdio>
@@ -44,17 +44,17 @@ using namespace std;
 
 MyFrame   *frame = (MyFrame *) NULL;
 wxMenuBar *menu_bar = (wxMenuBar *) NULL;
-EasyVecVwx *canvas;
+YaVecVwx *canvas;
 
 
 IMPLEMENT_APP(MyApp);
 
-EasyVecPolyline* mainline;
-list<EasyVecPolyline *> dlines;
-list<EasyVecPolyline *> alines;
-list<EasyVecArc *> arcs;
-list<EasyVecBox *> boxes;
-EasyVecFigure *mainpic;
+YaVecPolyline* mainline;
+list<YaVecPolyline *> dlines;
+list<YaVecPolyline *> alines;
+list<YaVecArc *> arcs;
+list<YaVecBox *> boxes;
+YaVecFigure *mainpic;
 
 MyApp::MyApp()
 {
@@ -64,8 +64,8 @@ MyApp::MyApp()
 bool MyApp::OnInit()
 {
 
-  EasyVecFigure *ev_pic = new EasyVecFigure();
-  EasyVecPolyline *nline;
+  YaVecFigure *ev_pic = new YaVecFigure();
+  YaVecPolyline *nline;
   nline = ev_pic->polyline();
   nline->addPoint(1500, 1500);
   nline->addPoint(300, 1500);
@@ -76,9 +76,9 @@ bool MyApp::OnInit()
   mainpic = ev_pic;
   
 
-  EasyVecText *ntext;
+  YaVecText *ntext;
   ntext = ev_pic->text();
-  ntext->setText("This is an EasyVec Demo");
+  ntext->setText("This is an YaVec Demo");
   ntext->penColor(2);
   ntext->setOrigin(EVPosInt(300, 1000));
   ntext->depth(55);
@@ -90,7 +90,7 @@ bool MyApp::OnInit()
   lr = EVPosInt(1000, 2000); 
 
   // Create the main frame window
-  frame = new MyFrame(NULL, _T("EasyVec Demo"), -1, -1, 800, 600);
+  frame = new MyFrame(NULL, _T("YaVec Demo"), -1, -1, 800, 600);
 
   frame->SetAutoLayout(TRUE);
 
@@ -133,7 +133,7 @@ bool MyApp::OnInit()
   wxButton *btn3 = new wxButton(panel, BUTTON_ARROWS, _T("Toggle arrow lines")) ;
   wxButton *btn4 = new wxButton(panel, BUTTON_ARCS, _T("Toggle arcs")) ;
 
-  canvas = new EasyVecVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
+  canvas = new YaVecVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
   // Set constraints for canvas subwindow
   wxLayoutConstraints *c2 = new wxLayoutConstraints;
   c2->left.SameAs       (frame, wxLeft);
@@ -192,7 +192,7 @@ bool MyApp::OnInit()
 
   frame->Show(TRUE);
 
-  frame->SetStatusText(_T("EasyVec demo"));
+  frame->SetStatusText(_T("YaVec demo"));
 
   SetTopWindow(frame);
 
@@ -232,45 +232,45 @@ void MyFrame::toggleScreenDpi(wxCommandEvent& event) {
 void MyFrame::toggleDashedLines(wxCommandEvent& event) {
   mainpic->updating(false);
   if (dlines.empty()) {
-    EasyVecPolyline *dline;
+    YaVecPolyline *dline;
     for (int i=100; i<5000; i+=1000) {
       dline = mainpic->polyline();
       dline->addPoint(3000, 4000);
       dline->addPoint(i, 100);
-      dline->lineStyle(EasyVecLine::dashed);
+      dline->lineStyle(YaVecLine::dashed);
       dline->styleValue(8.0);
       dlines.push_back(dline);
       
       dline = mainpic->polyline();
       dline->addPoint(3000, 4000);
       dline->addPoint(i+200, 100);
-      dline->lineStyle(EasyVecLine::dotted);
+      dline->lineStyle(YaVecLine::dotted);
       dline->styleValue(8.0);
       dlines.push_back(dline);
       
       dline = mainpic->polyline();
       dline->addPoint(3000, 4000);
       dline->addPoint(i+400, 100);
-      dline->lineStyle(EasyVecLine::dash_dotted);
+      dline->lineStyle(YaVecLine::dash_dotted);
       dline->styleValue(5.0);
       dlines.push_back(dline);
       
       dline = mainpic->polyline();
       dline->addPoint(3000, 4000);
       dline->addPoint(i+600, 100);
-      dline->lineStyle(EasyVecLine::dash_double_dotted);
+      dline->lineStyle(YaVecLine::dash_double_dotted);
       dline->styleValue(8.0);
       dlines.push_back(dline);
       
       dline = mainpic->polyline();
       dline->addPoint(3000, 4000);
       dline->addPoint(i+800, 100);
-      dline->lineStyle(EasyVecLine::dash_triple_dotted);
+      dline->lineStyle(YaVecLine::dash_triple_dotted);
       dline->styleValue(8.0);
       dlines.push_back(dline);
     }
   } else {
-    list<EasyVecPolyline*>::iterator dlineIt;
+    list<YaVecPolyline*>::iterator dlineIt;
     for ( dlineIt = dlines.begin(); dlineIt != dlines.end(); ++dlineIt ) {
       if (!mainpic->remove(*dlineIt)) cerr << "ERROR: DashedLine element did not exist!" << endl; 
     }
@@ -284,26 +284,26 @@ void MyFrame::toggleDashedLines(wxCommandEvent& event) {
 void MyFrame::toggleArrows(wxCommandEvent& event) {
   mainpic->updating(false);
   if (alines.empty()) {
-    EasyVecPolyline *aline;
+    YaVecPolyline *aline;
     for (int i=900; i<8000; i+=499) {
       aline = mainpic->polyline();
       aline->addPoint(i, 200);
       aline->addPoint(4000, 2000);
       aline->addPoint(8500-i, 3000);
-      aline->lineStyle(EasyVecLine::solid);
+      aline->lineStyle(YaVecLine::solid);
       aline->styleValue(8.0);
       aline->lineThickness(1+(i&3));
       if ((i&1)==1) aline->forwardArrow(true);
       if ((i&1)==1) aline->penColor(3);
       if ((i&2)==2) aline->backwardArrow(true);
       aline->backwardArrowType(3);
-      aline->forwardArrowType(EasyVecArrow::closed_indented_butt);
+      aline->forwardArrowType(YaVecArrow::closed_indented_butt);
       aline->forwardArrowSize(1.0, 100.0, 250.0);
       aline->forwardArrowSize(1.0, 50.0, 250.0);
       alines.push_back(aline);
     }
   } else {
-    list<EasyVecPolyline*>::iterator alineIt;
+    list<YaVecPolyline*>::iterator alineIt;
     for ( alineIt = alines.begin(); alineIt != alines.end(); ++alineIt ) {
       if (!mainpic->remove(*alineIt)) cerr << "ERROR: DashedLine element did not exist!" << endl; 
     }
@@ -316,7 +316,7 @@ void MyFrame::toggleArrows(wxCommandEvent& event) {
 void MyFrame::toggleArcs(wxCommandEvent& event) {
   mainpic->updating(false);
   if (arcs.empty()) {
-    EasyVecArc *arc;
+    YaVecArc *arc;
     for (int i=0; i<8; i++) {
       arc = mainpic->arc(EVPosInt(100+i*500,4000), EVPosInt(200+i*500,4500), EVPosInt(400+i*500,4000));
       //arc->lineThickness(1+(i&3));
@@ -324,13 +324,13 @@ void MyFrame::toggleArcs(wxCommandEvent& event) {
       //if ((i&1)==1) aline->penColor(3);
       //if ((i&2)==2) aline->backwardArrow(true);
       //aline->backwardArrowType(3);
-      //aline->forwardArrowType(EasyVecArrow::closed_indented_butt);
+      //aline->forwardArrowType(YaVecArrow::closed_indented_butt);
       //aline->forwardArrowSize(1.0, 100.0, 250.0);
       //aline->forwardArrowSize(1.0, 50.0, 250.0);
       arcs.push_back(arc);
     }
   } else {
-    list<EasyVecArc*>::iterator arcIt;
+    list<YaVecArc*>::iterator arcIt;
     for ( arcIt = arcs.begin(); arcIt != arcs.end(); ++arcIt ) {
       if (!mainpic->remove(*arcIt)) cerr << "ERROR: ARC element did not exist!" << endl; 
     }
@@ -343,10 +343,10 @@ void MyFrame::toggleArcs(wxCommandEvent& event) {
 void MyFrame::toggleBoxes(wxCommandEvent& event) {
   mainpic->updating(false);
   if (boxes.empty()) {
-    EasyVecBox *dbox;
+    YaVecBox *dbox;
     for (int i=100; i<4000; i+=499) {
       dbox = mainpic->box(EVPosInt(i*2, 4200-i), EVPosInt((i+500)*2, 4200-i+500));
-      dbox->lineStyle(EasyVecLine::dashed);
+      dbox->lineStyle(YaVecLine::dashed);
       dbox->styleValue(static_cast<double>(i&15));
       boxes.push_back(dbox);
 
@@ -355,7 +355,7 @@ void MyFrame::toggleBoxes(wxCommandEvent& event) {
       boxes.push_back(dbox);
     }
   } else {
-    list<EasyVecBox*>::iterator boxIt;
+    list<YaVecBox*>::iterator boxIt;
     for ( boxIt = boxes.begin(); boxIt != boxes.end(); ++boxIt ) {
       if (!mainpic->remove(*boxIt)) cerr << "ERROR: Box element did not exist!" << endl;
     }

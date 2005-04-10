@@ -50,5 +50,5 @@ AC_C_CONST
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
-AC_CONFIG_FILES([Makefile src/Makefile EasyVec/Makefile EasyVec/src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile YaVec/Makefile YaVec/src/Makefile])
 AC_OUTPUT

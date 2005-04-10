@@ -31,7 +31,7 @@ using namespace std;
 #include <vector>
 #include <string>
 #include "Event.h"
-#include <EasyVecFigure.h>
+#include <YaVecFigure.h>
 #include <EVPosInt.h>
 
 //! EventList class for handling events
@@ -110,7 +110,7 @@ class EventList {
   }
 
   //! Set the compound
-  void setCompound(EasyVecCompound *newCompound);
+  void setCompound(YaVecCompound *newCompound);
 
   //! Set the Origin
   void setOrigin(EVPosInt newOrigin);
@@ -133,11 +133,11 @@ class EventList {
   void setDefaultSlope(double defaultSlope) { cDefaultSlope = defaultSlope; }
   
   //! Set the compound to which the signal is drawn.
-  void setCompound(EasyVecCompound *newCompound, int xOffset, int yOffset, int width, int height,
+  void setCompound(YaVecCompound *newCompound, int xOffset, int yOffset, int width, int height,
                    double timeStart, double timeEnd);
 
   //! Set the compound to which the signal is drawn.
-  void setCompound(EasyVecCompound *newCompound, EVPosInt newOrigin, EVPosInt newSize,
+  void setCompound(YaVecCompound *newCompound, EVPosInt newOrigin, EVPosInt newSize,
                    double timeStart, double timeEnd);
 
   //! Paint the signal into the compound
@@ -147,7 +147,7 @@ private:
   vector< Handle<Event> > events;
   // pseudo event to define initial state - no reference event, no time/delay (time is "-infinity")
   Handle<Event> initialState; 
-  EasyVecCompound *evListCompound;
+  YaVecCompound *evListCompound;
   int compoundXOffset, compoundYOffset;
   int compoundWidth, compoundHeight;
   double compoundTimeStart, compoundTimeEnd;

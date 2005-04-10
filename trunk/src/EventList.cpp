@@ -25,8 +25,8 @@
 
 using namespace std;
 
-#include <EasyVecPolyline.h>
-#include <EasyVecText.h>
+#include <YaVecPolyline.h>
+#include <YaVecText.h>
 #include "EventList.h"
 #include "Handle.t"
 #include <algorithm>
@@ -114,7 +114,7 @@ void EventList::debugEvents(void) {
  * Set the compound
  * \param newCompound The new Compound
  */
-void EventList::setCompound(EasyVecCompound *newCompound) {
+void EventList::setCompound(YaVecCompound *newCompound) {
   evListCompound = newCompound;
 }
 
@@ -164,7 +164,7 @@ void EventList::setSize(int width, int height) {
  * \param timeStart The start time of the signal 
  * \param timeEnd   The end time of the signal 
  */
-void EventList::setCompound(EasyVecCompound *newCompound, int xOffset, int yOffset,
+void EventList::setCompound(YaVecCompound *newCompound, int xOffset, int yOffset,
                             int width, int height, double timeStart, double timeEnd) {
   evListCompound = newCompound;
   cOrigin.set(xOffset,yOffset);
@@ -185,7 +185,7 @@ void EventList::setCompound(EasyVecCompound *newCompound, int xOffset, int yOffs
  * \param timeStart The start time of the signal 
  * \param timeEnd   The end time of the signal 
  */
-void EventList::setCompound(EasyVecCompound *newCompound, EVPosInt newOrigin, EVPosInt newSize, double timeStart, double timeEnd) {
+void EventList::setCompound(YaVecCompound *newCompound, EVPosInt newOrigin, EVPosInt newSize, double timeStart, double timeEnd) {
   evListCompound = newCompound;
   cOrigin = newOrigin;
 
@@ -225,9 +225,9 @@ int EventList::vertPosFromState(State::drawStateType state, State::drawStateType
 void EventList::paint(void) {
   if (evListCompound==0) return;
   sort(); // makes life easier... 
-  EasyVecPolyline *sigline0 = 0;
-  EasyVecPolyline *sigline1 = 0;
-  EasyVecPolyline *sigline_tmp = 0;
+  YaVecPolyline *sigline0 = 0;
+  YaVecPolyline *sigline1 = 0;
+  YaVecPolyline *sigline_tmp = 0;
 
   State currentState = initialState->getNewState();
   currentState = (currentState==State::Named? State::X : currentState); // map Named to X - drawn the same way
@@ -468,10 +468,10 @@ void EventList::paint(void) {
       if (namedEvents && (where==in_visible || eventEnd>compoundTimeEnd)) {
         string stateText = currentState.getStateName();
         if (stateText!="") {
-          EasyVecText* label = evListCompound->text();
+          YaVecText* label = evListCompound->text();
           label->setOrigin(EVPosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/5));
           label->setText(stateText);
-          label->setJustification(EasyVecText::center);
+          label->setJustification(YaVecText::center);
           label->setSize(10);
         }
       }

@@ -2,44 +2,44 @@
 // \file 
 // Copyright 2004, 2005 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
 // $Id$
 
-#include "EasyVecBox.h"
-#include "EasyVecFigure.h"
+#include "YaVecBox.h"
+#include "YaVecFigure.h"
 #include <fstream>
 #include <iostream>
 
 using namespace std;
 
-EasyVecBox::EasyVecBox(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound,
+YaVecBox::YaVecBox(YaVecCompound* parent_compound, YaVecFigure* figure_compound,
                              EVPosInt upper_left, EVPosInt lower_right)
-  : EasyVecElm(parent_compound, figure_compound),
-    EasyVecLine(),
+  : YaVecElm(parent_compound, figure_compound),
+    YaVecLine(),
     elm_upper_left(upper_left),
     elm_lower_right(lower_right) {};
 
 
 
-void EasyVecBox::draw(EasyVecView* view) {
+void YaVecBox::draw(YaVecView* view) {
 
   EVPosInt ul, lr;
   EVPosInt ur, ll;
@@ -59,7 +59,7 @@ void EasyVecBox::draw(EasyVecView* view) {
 
 }
 
-void EasyVecBox::saveElm(ofstream &fig_file) {
+void YaVecBox::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
 
   fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
@@ -75,8 +75,8 @@ void EasyVecBox::saveElm(ofstream &fig_file) {
   fig_file << endl;
 }
 
-void EasyVecBox::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                                    list<EasyVecElmHit> &hits) {
+void YaVecBox::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                                    list<YaVecElmHit> &hits) {
   vector<EVPosInt> allCorners(4);
   allCorners[0] = elm_upper_left;
   allCorners[1] = EVPosInt(elm_lower_right.xpos(), elm_upper_left.ypos());
@@ -85,7 +85,7 @@ void EasyVecBox::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, b
   int fuzzyRes, i;
   for (i=0; i<4; i++) {
     if (checkProximity(pos, allCorners[i], fuzzyFact, fuzzyRes)) {
-      EasyVecElmHit newHit;
+      YaVecElmHit newHit;
       newHit.elmP = this;
       newHit.distance = fuzzyRes;
       newHit.idx = i;
@@ -95,7 +95,7 @@ void EasyVecBox::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, b
 }
 
 
-void EasyVecBox::debugPrint(ostream &dest, bool verbose, int depth) {
+void YaVecBox::debugPrint(ostream &dest, bool verbose, int depth) {
   dest << string(depth, ' ') << "Box " << endl;
   if (verbose) {
       dest << string(depth+4, ' ') << "Upper Left: " << elm_upper_left << "Lower Right: " << elm_lower_right << endl;

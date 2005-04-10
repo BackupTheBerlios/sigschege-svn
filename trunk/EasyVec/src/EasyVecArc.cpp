@@ -2,36 +2,36 @@
 // \file  
 // Copyright 2005 by Ulf Klaperski
 //
-// This file is part of EasyVec - Vector Figure Creation Library.
+// This file is part of YaVec - Vector Figure Creation Library.
 // 
 // #############################################################################
 //
-// EasyVec is free software; you can redistribute it and/or modify
+// YaVec is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 // 
-// EasyVec is distributed in the hope that it will be useful,
+// YaVec is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with the EasyVec sources; see the file COPYING.  
+// along with the YaVec sources; see the file COPYING.  
 //
 // #############################################################################
 //
 // $Id$
 
-#include "EasyVecArc.h"
-#include "EasyVecFigure.h"
+#include "YaVecArc.h"
+#include "YaVecFigure.h"
 #include <fstream>
 #include <iostream>
 
 using namespace std;
 
-EasyVecArc::EasyVecArc(EasyVecCompound* parent_compound, EasyVecFigure* figure_compound, EVPosInt p1, EVPosInt p2, EVPosInt p3)
-  : EasyVecElm(parent_compound, figure_compound), EasyVecLine(), EasyVecArrow() {
+YaVecArc::YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, EVPosInt p1, EVPosInt p2, EVPosInt p3)
+  : YaVecElm(parent_compound, figure_compound), YaVecLine(), YaVecArrow() {
   isPieWedge = false;
   setPoints(p1, p2, p3);
 };
@@ -58,7 +58,7 @@ static double asinq(double x, double y, double r) {
   return phi;
 }
 
-void EasyVecArc::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
+void YaVecArc::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
   int qs, qe;
   upper_left = lower_right = elmPoint1;
   upper_left.minValues(elmPoint2);
@@ -83,7 +83,7 @@ void EasyVecArc::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
   }
 }
 
-void EasyVecArc::computeArc(void) {
+void YaVecArc::computeArc(void) {
    EVPosInt p1, p2, p3, ptmp;
    double y0, x0, x1, y1, x2, y2, x3, y3;
    p1 = elmPoint1;
@@ -115,7 +115,7 @@ void EasyVecArc::computeArc(void) {
    cout << "X Center: " << x0 << " Y Center: " << y0 << " clockwise:" << clockwise << endl;
 }
 
-void EasyVecArc::setPoint(int num, EVPosInt newPosition) {
+void YaVecArc::setPoint(int num, EVPosInt newPosition) {
    switch (num) {
    case 0:
      elmPoint1 = newPosition;
@@ -133,7 +133,7 @@ void EasyVecArc::setPoint(int num, EVPosInt newPosition) {
    parent->handleChange(this);
 }
 
-void EasyVecArc::setPoints(EVPosInt newPoint1, EVPosInt newPoint2, EVPosInt newPoint3) {
+void YaVecArc::setPoints(EVPosInt newPoint1, EVPosInt newPoint2, EVPosInt newPoint3) {
   elmPoint1 = newPoint1;
   elmPoint2 = newPoint2;
   elmPoint3 = newPoint3;
@@ -141,19 +141,19 @@ void EasyVecArc::setPoints(EVPosInt newPoint1, EVPosInt newPoint2, EVPosInt newP
   parent->handleChange(this);
 }
 
-void EasyVecArc::setArc(EVPosInt center, double radius, bool clockwise, double angle1, double angle3) {
+void YaVecArc::setArc(EVPosInt center, double radius, bool clockwise, double angle1, double angle3) {
   // TODO
 }
 
 
-void EasyVecArc::draw(EasyVecView* view) {
+void YaVecArc::draw(YaVecView* view) {
    double styleLength = elmStyleValue*15;
    view->drawArc(EVPosInt(xCenter, yCenter), radius, phi1,
                  phi3, elmThickness, elmPenColor, elmLineStyle, styleLength);
 }
 
 
-void EasyVecArc::saveElm(ofstream &fig_file) {
+void YaVecArc::saveElm(ofstream &fig_file) {
   vector<EVPosInt>::iterator points_iter;
   
   fig_file << "5 " << (isPieWedge? "2 " : "1 ") << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
@@ -170,8 +170,8 @@ void EasyVecArc::saveElm(ofstream &fig_file) {
   }
 }
 
-void EasyVecArc::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                                    list<EasyVecElmHit> &hits) {
+void YaVecArc::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                                    list<YaVecElmHit> &hits) {
   vector<EVPosInt> allPoints(3);
   allPoints[0] = elmPoint1;
   allPoints[1] = elmPoint2;
@@ -179,7 +179,7 @@ void EasyVecArc::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, b
   int fuzzyRes, i;
   for (i=0; i<3; i++) {
     if (checkProximity(pos, allPoints[i], fuzzyFact, fuzzyRes)) {
-      EasyVecElmHit newHit;
+      YaVecElmHit newHit;
       newHit.elmP = this;
       newHit.distance = fuzzyRes;
       newHit.idx = i;
@@ -188,7 +188,7 @@ void EasyVecArc::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, b
   }
 }
 
-void EasyVecArc::debugPrint(ostream &dest, bool verbose, int depth) {
+void YaVecArc::debugPrint(ostream &dest, bool verbose, int depth) {
    dest << string(depth, ' ') << "Arc " << endl;
    if (verbose) {
      dest << string(depth+4, ' ') << elmPoint1 << " -> " << elmPoint2 << " -> " << elmPoint3 << endl;

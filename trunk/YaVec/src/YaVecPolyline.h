@@ -27,7 +27,7 @@
 #ifndef _EASYVECELMPOLYLINE_H
 #define _EASYVECELMPOLYLINE_H _EASYVECELMPOLYLINE_H 
 
-#include "EVPosInt.h"
+#include "YVPosInt.h"
 #include "YaVecLine.h"
 #include "YaVecArrow.h"
 #include "YaVecElm.h"
@@ -42,10 +42,10 @@ class YaVecPolyline : public YaVecElm, public YaVecLine, public YaVecArrow {
 public:
   /// general constructor with no extra arguments
   YaVecPolyline(YaVecCompound* parent_compound, YaVecFigure* figure_compound);
-  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
-  void addPoint(EVPosInt new_point);
-  void addPoint(int x, int y) { this->addPoint(EVPosInt(x, y)); };
-  void addPoints(vector<EVPosInt> new_points);
+  virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right);
+  void addPoint(YVPosInt new_point);
+  void addPoint(int x, int y) { this->addPoint(YVPosInt(x, y)); };
+  void addPoints(vector<YVPosInt> new_points);
   vector<YaVecElm*> flatList() { vector<YaVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(YaVecView* view);
   virtual void saveElm(ofstream &fig_file);
@@ -53,11 +53,11 @@ public:
   virtual void debugPrint(ostream &dest, bool verbose, int depth);
 
   /// find a figure element near the given position.
-  virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+  virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<YaVecElmHit> &hits);
 
 private:
-  vector<EVPosInt> points;
+  vector<YVPosInt> points;
 };
 
 #endif /* _EASYVECELMPOLYLINE_H */

@@ -60,7 +60,7 @@ void TimList::paint(void) {
   
   for (LayoutObjectIter = cLayoutList.begin(); LayoutObjectIter != cLayoutList.end(); LayoutObjectIter++){
     LayoutObjectIter->Object()->setCompound(getCompound()->compound());
-    LayoutObjectIter->Object()->setOrigin(cOrigin+EVPosInt(cPadding,current_pos));
+    LayoutObjectIter->Object()->setOrigin(cOrigin+YVPosInt(cPadding,current_pos));
     LayoutObjectIter->Object()->setWidth(cSize.xpos()-2*cPadding);
     LayoutObjectIter->Object()->paint();
     current_pos+=LayoutObjectIter->Object()->getHeight()+cSliceSpace;

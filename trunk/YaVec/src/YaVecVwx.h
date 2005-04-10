@@ -35,10 +35,10 @@ class YaVecVwx : public wxWindow, public YaVecView {
 public:
   YaVecVwx(YaVecFigure *picture, wxFrame *frame, int x=-1, int y=-1, int width=-1, int height=-1,
              long style=wxTE_MULTILINE);
-  virtual void drawLine(EVPosInt from, EVPosInt to, int width, int color, int lineStyle, double styleLength);
-  virtual void drawArc(EVPosInt center, int radius, double phiStart, double phiEnd, int width, int color, int lineStyle, double styleLength);  
-  virtual void drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color);
-  virtual void drawArrow(const EVPosInt &tip, double angle, int color, YaVecArrow::arrowInfo *arrow);
+  virtual void drawLine(YVPosInt from, YVPosInt to, int width, int color, int lineStyle, double styleLength);
+  virtual void drawArc(YVPosInt center, int radius, double phiStart, double phiEnd, int width, int color, int lineStyle, double styleLength);  
+  virtual void drawChar(YVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color);
+  virtual void drawArrow(const YVPosInt &tip, double angle, int color, YaVecArrow::arrowInfo *arrow);
   virtual void refreshAll(void);
   virtual void clear(void);
   

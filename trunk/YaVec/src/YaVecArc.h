@@ -27,7 +27,7 @@
 #ifndef _EASYVECARC_H
 #define _EASYVECARC_H _EASYVECARC_H 
 
-#include "EVPosInt.h"
+#include "YVPosInt.h"
 #include "YaVecLine.h"
 #include "YaVecArrow.h"
 #include "YaVecElm.h"
@@ -41,15 +41,15 @@ using namespace std;
 class YaVecArc : public YaVecElm, public YaVecLine, public YaVecArrow {
 public:
   /// general constructor with no extra arguments
-  YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, EVPosInt p1, EVPosInt p2, EVPosInt p3);
-  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
+  YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt p1, YVPosInt p2, YVPosInt p3);
+  virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right);
 
   /// Set point number num to the given position.
-  void setPoint(int num, EVPosInt newPosition);
+  void setPoint(int num, YVPosInt newPosition);
   /// Set all three points.
-  void setPoints(EVPosInt newPoint1, EVPosInt newPoint2, EVPosInt newPoint3);
+  void setPoints(YVPosInt newPoint1, YVPosInt newPoint2, YVPosInt newPoint3);
   /// Set arc geometry by center, radius, direction and angles.
-  void setArc(EVPosInt center, double radius, bool clockwise, double angle1, double angle3);
+  void setArc(YVPosInt center, double radius, bool clockwise, double angle1, double angle3);
 
   vector<YaVecElm*> flatList() { vector<YaVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(YaVecView* view);
@@ -58,11 +58,11 @@ public:
   virtual void debugPrint(ostream &dest, bool verbose, int depth);
 
   /// find a figure element near the given position.
-  virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+  virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<YaVecElmHit> &hits);
 
 private:
-  EVPosInt elmPoint1, elmPoint2, elmPoint3;
+  YVPosInt elmPoint1, elmPoint2, elmPoint3;
   bool isPieWedge;
   double xCenter, yCenter, radius;
   bool clockwise;

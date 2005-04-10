@@ -23,7 +23,7 @@
 //
 // $Id$
 
-#include "EVPosInt.h"
+#include "YVPosInt.h"
 #include "YaVecFigure.h"
 #include "YaVecBox.h"
 #include "YaVecPolyline.h"
@@ -37,15 +37,15 @@ using namespace std;
 void test_a(void) {
   YaVecFigure pic1, pic2;
 
-  YaVecBox *framebox1 = pic1.box(EVPosInt(120, 120), EVPosInt(6000-120, 6000-120));
-  YaVecBox *framebox2 = pic1.box(EVPosInt(240, 240), EVPosInt(6000-240, 6000-240));
+  YaVecBox *framebox1 = pic1.box(YVPosInt(120, 120), YVPosInt(6000-120, 6000-120));
+  YaVecBox *framebox2 = pic1.box(YVPosInt(240, 240), YVPosInt(6000-240, 6000-240));
 
-  //YaVecText *ctxt = pic1.text(EVPosInt(0, 0), "A centered Text");
+  //YaVecText *ctxt = pic1.text(YVPosInt(0, 0), "A centered Text");
   YaVecText *ctxt = pic1.text();
   ctxt->setText("A centered Text");
   ctxt->setSize(16);
   int width = ctxt->getWidth();
-  ctxt->setOrigin(EVPosInt(3000-width/2, 2000));
+  ctxt->setOrigin(YVPosInt(3000-width/2, 2000));
 
 
   pic2 = pic1;
@@ -112,18 +112,18 @@ int main(void) {
   
   test_a();
 
-  EVPosInt Schortens, Dortmund;
-  EVPosInt Prag(8700, 8000);
+  YVPosInt Schortens, Dortmund;
+  YVPosInt Prag(8700, 8000);
 
   Schortens.set(3000, 0);
   Dortmund.set(2000, 2500);
 
-  vector<EVPosInt> points1;
-  points1.push_back(EVPosInt(1200, 800));
-  points1.push_back(EVPosInt(1200, 2000));
-  points1.push_back(EVPosInt(5000, 2000));
-  points1.push_back(EVPosInt(3000, 3000));
-  points1.push_back(EVPosInt(1200, 1000));
+  vector<YVPosInt> points1;
+  points1.push_back(YVPosInt(1200, 800));
+  points1.push_back(YVPosInt(1200, 2000));
+  points1.push_back(YVPosInt(5000, 2000));
+  points1.push_back(YVPosInt(3000, 3000));
+  points1.push_back(YVPosInt(1200, 1000));
   
   cout << "Prag ist bei " << Prag << endl;
   cout << "Entfernung Schortens-Prag: " << Schortens.distance(Prag) << endl;
@@ -159,8 +159,8 @@ int main(void) {
   
   YaVecText *txt = mypic.text();
   txt->setText("Moin");
-  EVPosInt text_ul, text_lr;
-  txt->setOrigin(EVPosInt(500, 3000));
+  YVPosInt text_ul, text_lr;
+  txt->setOrigin(YVPosInt(500, 3000));
   txt->setSize(22);
   txt->setText("Use intermediate files");
   txt->getBoundingBox(text_ul, text_lr);
@@ -168,40 +168,40 @@ int main(void) {
   cout << "upper left: " << text_ul << endl;
   cout << "lower right: " << text_lr << endl;
 
-  YaVecBox *textbox =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
+  YaVecBox *textbox =  mypic.box(text_ul-YVPosInt(50, 50), text_lr+YVPosInt(50, 50));
 
 
   YaVecText *txt2 = mypic.text();
-  txt2->setOrigin(EVPosInt(500, 5000));
+  txt2->setOrigin(YVPosInt(500, 5000));
   txt2->setSize(22);
   txt2->setFont(15);
   txt2->setText("Use intermediate files");
   txt2->getBoundingBox(text_ul, text_lr);
 
-  YaVecBox *textbox2 =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
+  YaVecBox *textbox2 =  mypic.box(text_ul-YVPosInt(50, 50), text_lr+YVPosInt(50, 50));
 
 
   YaVecText *txt3 = mypic.text();
-  txt3->setOrigin(EVPosInt(500, 6000));
+  txt3->setOrigin(YVPosInt(500, 6000));
   txt3->setSize(22);
   txt3->setFont(11);
   txt3->setText("////////////////");
   txt3->getBoundingBox(text_ul, text_lr);
 
-  YaVecBox *textbox3 =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
+  YaVecBox *textbox3 =  mypic.box(text_ul-YVPosInt(50, 50), text_lr+YVPosInt(50, 50));
 
   YaVecText *txt4 = mypic.text();
-  txt4->setOrigin(EVPosInt(500, 6500));
+  txt4->setOrigin(YVPosInt(500, 6500));
   txt4->setSize(22);
   txt4->setFont(11);
   txt4->setText("M/M/M/M/M/M/M/M/");
   txt4->getBoundingBox(text_ul, text_lr);
 
-  YaVecBox *textbox4 =  mypic.box(text_ul-EVPosInt(50, 50), text_lr+EVPosInt(50, 50));
+  YaVecBox *textbox4 =  mypic.box(text_ul-YVPosInt(50, 50), text_lr+YVPosInt(50, 50));
 
-  YaVecBox *textbox5 =  mypic.box(EVPosInt(500, 7000), EVPosInt(5000, 7500));
+  YaVecBox *textbox5 =  mypic.box(YVPosInt(500, 7000), YVPosInt(5000, 7500));
   YaVecText *txt5 = mypic.text();
-  txt5->setOrigin(EVPosInt(550, 7450));
+  txt5->setOrigin(YVPosInt(550, 7450));
   txt5->setSize(40);
   txt5->setFont(11);
   txt5->setText("A text to fit in the box.");
@@ -211,14 +211,14 @@ int main(void) {
   
   YaVecBox *thickBox;
   for (int i=1; i<=5; i++) {
-    thickBox=mypic.box(EVPosInt(1000+100*i, 1000+100*i), text_lr+EVPosInt(4000-100*i, 4000-100*i));
+    thickBox=mypic.box(YVPosInt(1000+100*i, 1000+100*i), text_lr+YVPosInt(4000-100*i, 4000-100*i));
     thickBox->lineThickness(i);
   }
   
   // YaVecPolyline *line4 =  mypic.polyline();
   // line4->addPoint(text_lr);
-  // line4->addPoint(text_lr-EVPosInt(0, 500));
-  YaVecArc *arc1 = mypic.arc(EVPosInt(1000, 500), EVPosInt(0, 450), EVPosInt(2000, 400));
+  // line4->addPoint(text_lr-YVPosInt(0, 500));
+  YaVecArc *arc1 = mypic.arc(YVPosInt(1000, 500), YVPosInt(0, 450), YVPosInt(2000, 400));
 
   cout << "Lower Right is " << text_lr << endl;
   mypic.save("example_text.fig");

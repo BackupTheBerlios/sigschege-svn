@@ -31,7 +31,7 @@ YaVecView::YaVecView(YaVecFigure *picture) {
   mypicture = picture;
 };
 
-void YaVecView::drawArrow(const EVPosInt &tip, const EVPosInt &from, int color, YaVecArrow::arrowInfo *arrow) {
+void YaVecView::drawArrow(const YVPosInt &tip, const YVPosInt &from, int color, YaVecArrow::arrowInfo *arrow) {
   double angle = tip.angle(from);
   drawArrow(tip, angle, color, arrow);
 }

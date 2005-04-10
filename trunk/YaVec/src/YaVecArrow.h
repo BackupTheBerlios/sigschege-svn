@@ -28,7 +28,7 @@
 #define _EASYVECARROW_H _EASYVECARROW_H 
 
 #include <string>
-#include "EVPosInt.h"
+#include "YVPosInt.h"
 
 using namespace std;
 
@@ -107,8 +107,8 @@ public:
   /// Return the string to be inserted into fig file for a backward arrow.
   string backwardArrowString(void);
 
-  static void calcPoints(arrowInfo &arrow, const EVPosInt &tip, double tipAngle, 
-                         EVPosInt &pLeft, EVPosInt &pRight, EVPosInt &pMid);
+  static void calcPoints(arrowInfo &arrow, const YVPosInt &tip, double tipAngle, 
+                         YVPosInt &pLeft, YVPosInt &pRight, YVPosInt &pMid);
   
   friend class YaVecPolyline;
   

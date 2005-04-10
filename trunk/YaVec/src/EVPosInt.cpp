@@ -22,19 +22,19 @@
 //
 // $Id$
 
-#include "EVPosInt.h"
+#include "YVPosInt.h"
 #include <cmath>
 
-EVPosInt &EVPosInt::operator-(const EVPosInt &destination) const {
-    EVPosInt *rv = new EVPosInt;
+YVPosInt &YVPosInt::operator-(const YVPosInt &destination) const {
+    YVPosInt *rv = new YVPosInt;
     *rv = *this;
     rv->cx -= destination.cx;
     rv->cy -= destination.cy;
     return *rv;
   };
 
-EVPosInt &EVPosInt::operator*(int mult) const {
-    EVPosInt *rv = new EVPosInt;
+YVPosInt &YVPosInt::operator*(int mult) const {
+    YVPosInt *rv = new YVPosInt;
     *rv = *this;
     rv->cx *= mult;
     rv->cy *= mult;
@@ -42,25 +42,25 @@ EVPosInt &EVPosInt::operator*(int mult) const {
   
 }
 
-EVPosInt &EVPosInt::operator/=(double divisor) {
+YVPosInt &YVPosInt::operator/=(double divisor) {
   cx = static_cast<int>(cx / divisor);
   cy = static_cast<int>(cy / divisor);
   return *this;
 };
 
-EVPosInt &EVPosInt::operator/(double divisor) const {
-  EVPosInt *rv = new EVPosInt;
+YVPosInt &YVPosInt::operator/(double divisor) const {
+  YVPosInt *rv = new YVPosInt;
   *rv /= divisor;
   return *rv;
 };
 
 
-std::ostream& operator<<(std::ostream& ostr, const EVPosInt Place) {
+std::ostream& operator<<(std::ostream& ostr, const YVPosInt Place) {
   ostr << "x=" << Place.xpos() << ",y=" << Place.ypos();
   return ostr;
 }
 
-double EVPosInt::distance(const EVPosInt &dest) const {
+double YVPosInt::distance(const YVPosInt &dest) const {
   int xdist, ydist;
   xdist = cx - dest.cx;
   ydist = cy - dest.cy;
@@ -73,7 +73,7 @@ double EVPosInt::distance(const EVPosInt &dest) const {
   }
 }
 
-double EVPosInt::angle(const EVPosInt &from) const {
+double YVPosInt::angle(const YVPosInt &from) const {
   double angl;
   int xdiff = xpos()-from.xpos();
   angl = atan(static_cast<double>(ypos()-from.ypos())/xdiff);

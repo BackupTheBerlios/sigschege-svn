@@ -46,8 +46,8 @@ YaVecVwx::YaVecVwx(YaVecFigure *picture, wxFrame *frame, int x, int y, int w, in
 }
 
 
-void YaVecVwx::drawLine(EVPosInt from, EVPosInt to, int width, int color, int lineStyle, double styleLength) {
-  wxColour wxMyColour(easyvec_std_colors[color][0], easyvec_std_colors[color][1], easyvec_std_colors[color][2]);
+void YaVecVwx::drawLine(YVPosInt from, YVPosInt to, int width, int color, int lineStyle, double styleLength) {
+  wxColour wxMyColour(yavec_std_colors[color][0], yavec_std_colors[color][1], yavec_std_colors[color][2]);
   wxPen wxMyPen(wxMyColour, width, 1);
   wxWindowDC *paintPtr;
   int xscale = mypicture->scale();
@@ -68,11 +68,11 @@ void YaVecVwx::drawLine(EVPosInt from, EVPosInt to, int width, int color, int li
     double curDist = 0.0;
     double nextDist = 0.0;
     bool activePhase = true;
-    EVPosInt delta = to-from;
+    YVPosInt delta = to-from;
     double deltaX = delta.xpos()/distance;
     double deltaY = delta.ypos()/distance;
-    EVPosInt curPoint(from);
-    EVPosInt nextPoint;
+    YVPosInt curPoint(from);
+    YVPosInt nextPoint;
     int activeCnt = 0;
     double activeLength = lineStyle==YaVecLine::dashed ? styleLength : dotLength;
     while (curDist<distance) {
@@ -91,11 +91,11 @@ void YaVecVwx::drawLine(EVPosInt from, EVPosInt to, int width, int color, int li
         }
         nextDist += activeLength;
         if (nextDist>distance) nextDist = distance;
-        nextPoint = from+EVPosInt(static_cast<int>(nextDist*deltaX), static_cast<int>(nextDist*deltaY));
+        nextPoint = from+YVPosInt(static_cast<int>(nextDist*deltaX), static_cast<int>(nextDist*deltaY));
         paintPtr->DrawLine(curPoint.xpos(), curPoint.ypos(), nextPoint.xpos(), nextPoint.ypos());
       } else {
         nextDist += styleLength;
-        nextPoint = from+EVPosInt(static_cast<int>(nextDist*deltaX), static_cast<int>(nextDist*deltaY));
+        nextPoint = from+YVPosInt(static_cast<int>(nextDist*deltaX), static_cast<int>(nextDist*deltaY));
       }
       curPoint = nextPoint;
       curDist = nextDist;
@@ -106,8 +106,8 @@ void YaVecVwx::drawLine(EVPosInt from, EVPosInt to, int width, int color, int li
   if (onPaintPaintDCp==0) delete paintPtr;
 }
 
-void YaVecVwx::drawArc(EVPosInt center, int radius, double phiStart, double phiEnd, int width, int color, int lineStyle, double styleLength) {
-  wxColour wxMyColour(easyvec_std_colors[color][0], easyvec_std_colors[color][1], easyvec_std_colors[color][2]);
+void YaVecVwx::drawArc(YVPosInt center, int radius, double phiStart, double phiEnd, int width, int color, int lineStyle, double styleLength) {
+  wxColour wxMyColour(yavec_std_colors[color][0], yavec_std_colors[color][1], yavec_std_colors[color][2]);
   wxPen wxMyPen(wxMyColour, width, 5);
   wxWindowDC *paintPtr;
   int xscale = mypicture->scale();
@@ -129,7 +129,7 @@ void YaVecVwx::drawArc(EVPosInt center, int radius, double phiStart, double phiE
 
 
 
-void YaVecVwx::drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
+void YaVecVwx::drawChar(YVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
   int x,y, bit_no, bit_val;
   char bb;
 
@@ -137,7 +137,7 @@ void YaVecVwx::drawChar(EVPosInt origin, int rows, int width, int pitch, unsigne
   if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
   else paintPtr = new wxClientDC;
 
-  wxColour wxMyColour(easyvec_std_colors[color][0], easyvec_std_colors[color][1], easyvec_std_colors[color][2]);
+  wxColour wxMyColour(yavec_std_colors[color][0], yavec_std_colors[color][1], yavec_std_colors[color][2]);
   wxPen wxMyPen(wxMyColour, 1, 1);
   paintPtr->SetPen(wxMyPen);
 
@@ -159,19 +159,19 @@ void YaVecVwx::drawChar(EVPosInt origin, int rows, int width, int pitch, unsigne
 }
 
 
-void YaVecVwx::drawArrow(const EVPosInt &tip, double angle, int color, YaVecArrow::arrowInfo *arrow) {
+void YaVecVwx::drawArrow(const YVPosInt &tip, double angle, int color, YaVecArrow::arrowInfo *arrow) {
   wxWindowDC *paintPtr;
   int xscale = mypicture->scale();
-  EVPosInt tipVres = tip/xscale;
+  YVPosInt tipVres = tip/xscale;
 
   if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
   else paintPtr = new wxClientDC;
 
-  wxColour wxMyColour(easyvec_std_colors[color][0], easyvec_std_colors[color][1], easyvec_std_colors[color][2]);
+  wxColour wxMyColour(yavec_std_colors[color][0], yavec_std_colors[color][1], yavec_std_colors[color][2]);
   wxPen wxMyPen(wxMyColour, 1, 1);
   paintPtr->SetPen(wxMyPen);
 
-  EVPosInt pL, pR, pM;
+  YVPosInt pL, pR, pM;
   YaVecArrow::calcPoints(*arrow, tip, angle, pL, pR, pM);
   pL /= xscale;
   pR /= xscale;
@@ -216,7 +216,7 @@ void YaVecVwx::OnPaint(wxPaintEvent& WXUNUSED(event) )
 
 void YaVecVwx::OnMouse(wxMouseEvent& event)
 {
-  EVPosInt pos(event.m_x, event.m_y);
+  YVPosInt pos(event.m_x, event.m_y);
   cout << "MOUSE @ " << pos << endl;
   list<YaVecElmHit> hits;
   mypicture->getElmNearPos(pos*mypicture->scale(), maxDist, true, true, hits);

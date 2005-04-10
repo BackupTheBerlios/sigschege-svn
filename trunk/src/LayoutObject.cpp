@@ -68,7 +68,7 @@ void LayoutObject::paint(void) {
  * Set the Origin of this Layout Object
  * \param newOrigin The new Origin for this Layout Object
  */
-void LayoutObject::setOrigin(EVPosInt newOrigin) {
+void LayoutObject::setOrigin(YVPosInt newOrigin) {
   cOrigin = newOrigin;
 }
 
@@ -85,7 +85,7 @@ void LayoutObject::setOrigin(int x, int y) {
  * Get the Origin of this Layout Object
  * \return The current origin of this Laout Object
  */
-EVPosInt LayoutObject::getOrigin() {
+YVPosInt LayoutObject::getOrigin() {
   return(cOrigin);
 }
 
@@ -93,7 +93,7 @@ EVPosInt LayoutObject::getOrigin() {
  * Set the Size of this Layout Object
  * \param newSize The new Size for this Layout Object
  */
-void LayoutObject::setSize(EVPosInt newSize) {
+void LayoutObject::setSize(YVPosInt newSize) {
   cSize = newSize;
 }
 
@@ -110,7 +110,7 @@ void LayoutObject::setSize(int width, int height) {
  * Get the Size of this Layout Object
  * \return The current Size of this Laout Object
  */
-EVPosInt LayoutObject::getSize() {
+YVPosInt LayoutObject::getSize() {
   return(cSize);
 }
 

@@ -104,7 +104,7 @@ public:
   int getRightPos();
   
   //! Set the Size of this Layout Object
-  void setSize(EVPosInt newSize);
+  void setSize(YVPosInt newSize);
 
   //! Set the Size of this Layout Object
   void setSize(int width, int height);
@@ -116,19 +116,19 @@ public:
   void setHeight(int height);
 
   //! Get the Size of this Layout Object
-  EVPosInt getSize();
+  YVPosInt getSize();
 
   //! Get the height of this Layout Object
   virtual int getHeight();
 
   //! Set the Origin of this Layout Object
-  void setOrigin(EVPosInt newOrigin);
+  void setOrigin(YVPosInt newOrigin);
 
   //! Set the Origin of this Layout Object
   void setOrigin(int x, int y);
 
   //! Get the Origin of this Layout Object
-  EVPosInt getOrigin();
+  YVPosInt getOrigin();
 
   //! Enable/Disable drawing of the Border
   void enableBorder(bool enable);
@@ -137,8 +137,8 @@ public:
 
 protected:
   int      cPadding;
-  EVPosInt cOrigin;
-  EVPosInt cSize;
+  YVPosInt cOrigin;
+  YVPosInt cSize;
 
 private:
   int refCount;

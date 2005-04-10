@@ -36,11 +36,11 @@ YaVecPolyline::YaVecPolyline(YaVecCompound* parent_compound, YaVecFigure* figure
 
 
 
-void YaVecPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
-  vector<EVPosInt>::iterator points_iter = points.begin();
+void YaVecPolyline::getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right) {
+  vector<YVPosInt>::iterator points_iter = points.begin();
   if (points_iter==points.end()) {
-    upper_left = EVPosInt(0,0); // no points! how should we behave???
-    lower_right = EVPosInt(0,0);
+    upper_left = YVPosInt(0,0); // no points! how should we behave???
+    lower_right = YVPosInt(0,0);
   } else {
     lower_right = upper_left = *points_iter;
     while (++points_iter!=points.end()) {
@@ -50,14 +50,14 @@ void YaVecPolyline::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) 
   }
 }
 
-void YaVecPolyline::addPoint(EVPosInt new_point) {
+void YaVecPolyline::addPoint(YVPosInt new_point) {
   points.push_back(new_point);
 //  cout << "Adding point " << new_point.xpos() << ":" << new_point.ypos() << endl;
   parent->handleChange(this);
 }
 
-void YaVecPolyline::addPoints(vector<EVPosInt> new_points) {
-  vector<EVPosInt>::iterator npoints_iter;
+void YaVecPolyline::addPoints(vector<YVPosInt> new_points) {
+  vector<YVPosInt>::iterator npoints_iter;
   for ( npoints_iter = new_points.begin(); npoints_iter != new_points.end(); ++npoints_iter ) {
     points.push_back(*npoints_iter);
   }
@@ -65,8 +65,8 @@ void YaVecPolyline::addPoints(vector<EVPosInt> new_points) {
 
 void YaVecPolyline::draw(YaVecView* view) {
   double styleLength = elmStyleValue*15;
-  vector<EVPosInt>::iterator points_iter1, points_iter2;
-  EVPosInt oldPoint;
+  vector<YVPosInt>::iterator points_iter1, points_iter2;
+  YVPosInt oldPoint;
   points_iter1 = points.begin();
   if (points_iter1==points.end()) return;
   points_iter2 = points_iter1;
@@ -85,7 +85,7 @@ void YaVecPolyline::draw(YaVecView* view) {
 
 
 void YaVecPolyline::saveElm(ofstream &fig_file) {
-  vector<EVPosInt>::iterator points_iter;
+  vector<YVPosInt>::iterator points_iter;
   
   fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
            << " 0 -1 " << elmStyleValue << " 0 0 0 " << (forwardArrow()? 1 : 0) << " "
@@ -105,9 +105,9 @@ void YaVecPolyline::saveElm(ofstream &fig_file) {
   fig_file << endl;
 }
 
-void YaVecPolyline::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+void YaVecPolyline::getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                                     list<YaVecElmHit> &hits) {
-  vector<EVPosInt>::iterator pointsIt;
+  vector<YVPosInt>::iterator pointsIt;
   int fuzzyRes;
   int i = 0;
   for ( pointsIt = points.begin(); pointsIt != points.end(); ++pointsIt, ++i ) {
@@ -124,7 +124,7 @@ void YaVecPolyline::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical
 void YaVecPolyline::debugPrint(ostream &dest, bool verbose, int depth) {
   dest << string(depth, ' ') << "Polyline " << points.size() << " points." << endl;
   if (verbose) {
-    vector<EVPosInt>::iterator pointsIt;
+    vector<YVPosInt>::iterator pointsIt;
     for ( pointsIt = points.begin(); pointsIt != points.end(); ++pointsIt ) {
       dest << string(depth+4, ' ') << (*pointsIt) << " -> " << endl;
     }

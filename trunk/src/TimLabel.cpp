@@ -81,7 +81,7 @@ void TimLabel::paint(void) {
   text->setText(cText);
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(cOrigin+EVPosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
+  text->setOrigin(cOrigin+YVPosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
 }
 
 /// Set the Font Type

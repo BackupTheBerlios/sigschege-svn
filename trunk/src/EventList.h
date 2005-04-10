@@ -32,7 +32,7 @@ using namespace std;
 #include <string>
 #include "Event.h"
 #include <YaVecFigure.h>
-#include <EVPosInt.h>
+#include <YVPosInt.h>
 
 //! EventList class for handling events
 /*!
@@ -113,13 +113,13 @@ class EventList {
   void setCompound(YaVecCompound *newCompound);
 
   //! Set the Origin
-  void setOrigin(EVPosInt newOrigin);
+  void setOrigin(YVPosInt newOrigin);
 
   //! Set the Origin
   void setOrigin(int xOffset, int yOffset);
 
   //! Set the Size
-  void setSize(EVPosInt newSize);
+  void setSize(YVPosInt newSize);
 
   //! Set the Size
   void setSize(int width, int height);
@@ -137,7 +137,7 @@ class EventList {
                    double timeStart, double timeEnd);
 
   //! Set the compound to which the signal is drawn.
-  void setCompound(YaVecCompound *newCompound, EVPosInt newOrigin, EVPosInt newSize,
+  void setCompound(YaVecCompound *newCompound, YVPosInt newOrigin, YVPosInt newSize,
                    double timeStart, double timeEnd);
 
   //! Paint the signal into the compound
@@ -151,7 +151,7 @@ private:
   int compoundXOffset, compoundYOffset;
   int compoundWidth, compoundHeight;
   double compoundTimeStart, compoundTimeEnd;
-  EVPosInt cOrigin, cSize;
+  YVPosInt cOrigin, cSize;
   bool namedEvents;
   double cDefaultSlope;
 

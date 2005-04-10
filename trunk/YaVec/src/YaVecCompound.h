@@ -33,7 +33,7 @@ class YaVecArc;
 class YaVecText;
 
 #include <vector>
-#include "EVPosInt.h"
+#include "YVPosInt.h"
 #include "YaVecElm.h"
 using namespace std;
 
@@ -61,9 +61,9 @@ public:
   /// Create a polyline (class YaVecPolyline), points must be added later
   YaVecPolyline* polyline();
   /// Create an arc (class YaVecArc)
-  YaVecArc* arc(EVPosInt p1, EVPosInt p2, EVPosInt p3);
+  YaVecArc* arc(YVPosInt p1, YVPosInt p2, YVPosInt p3);
   /// Create a box (class YaVecBox)
-  YaVecBox* box(EVPosInt upper_left, EVPosInt lower_right);
+  YaVecBox* box(YVPosInt upper_left, YVPosInt lower_right);
   /// Create a text element (class YaVecText)
   YaVecText* text();
   /// Create a compound (class YaVecCompound)
@@ -71,7 +71,7 @@ public:
   /// remove the figure element, return true if element was found and deleted.
   bool remove(YaVecElm* elm);
   /// Determine the region that is covered by this compound
-  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
+  virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right);
   /// return all elements of this compound as a flat list
   virtual vector<YaVecElm*> flatList();
   virtual void draw(YaVecView* view) {};
@@ -85,7 +85,7 @@ public:
   YaVecCompound& operator=(YaVecCompound& source);
 
   /// find a figure element near the given position.
-  virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+  virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<YaVecElmHit> &hits);
 
 protected:

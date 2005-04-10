@@ -36,7 +36,7 @@ bool YaVecText::fix_fig2dev_quirk = false;
 
 string YaVecText::gs_fontpath = "/var/lib/defoma/gs.d/dirs/fonts/";
 
-const char* easyvec_font_files[] = {
+const char* yavec_font_files[] = {
   "n021003l.pfb", // 0 = NimbusRomNo9L-Regu = Times-Roman
   "n021023l.pfb", // 1 = NimbusRomNo9L-ReguItal = Times-Italic
  	"n021004l.pfb", //  2 = NimbusRomNo9L-Medi = Times Bold
@@ -87,14 +87,14 @@ bool YaVecText::initFreetype(void) {
 
 
 
-EVPosInt YaVecText::drawOrCalc(YaVecView* view, bool noUpdate) {
+YVPosInt YaVecText::drawOrCalc(YaVecView* view, bool noUpdate) {
   string::iterator text_iter;
   char cur_char;
   FT_UInt glyph_index, old_glyph_i;
   int ft_fail;
   FT_GlyphSlot  glyph;
   int resolution;
-  EVPosInt char_origin;
+  YVPosInt char_origin;
   FT_Vector kerning;
   int newHeight, newWidth;
 
@@ -137,9 +137,9 @@ EVPosInt YaVecText::drawOrCalc(YaVecView* view, bool noUpdate) {
     if (view) {
       FT_Bitmap cbitmap;
       cbitmap = glyph->bitmap;
-      view->drawChar(char_origin-EVPosInt(0, glyph->bitmap_top), cbitmap.rows, cbitmap.width, cbitmap.pitch,
+      view->drawChar(char_origin-YVPosInt(0, glyph->bitmap_top), cbitmap.rows, cbitmap.width, cbitmap.pitch,
                       cbitmap.buffer, elmPenColor);
-      char_origin = char_origin+EVPosInt(glyph->metrics.horiAdvance/64+kerning.x, 0);
+      char_origin = char_origin+YVPosInt(glyph->metrics.horiAdvance/64+kerning.x, 0);
     }
     newWidth += glyph->metrics.horiAdvance/64+kerning.x; 
     if (glyph->metrics.height/64>newHeight) newHeight = glyph->metrics.height/64;
@@ -149,7 +149,7 @@ EVPosInt YaVecText::drawOrCalc(YaVecView* view, bool noUpdate) {
     textWidth = newWidth;
     textHeight = newHeight;
   }
-  return (EVPosInt(newWidth, newHeight));
+  return (YVPosInt(newWidth, newHeight));
 }
 
 
@@ -162,7 +162,7 @@ bool YaVecText::initYaVecText() {
   bool success;
   elmFont = 0;
   elmSize = 18;
-  elmOrigin = EVPosInt(300, 300);
+  elmOrigin = YVPosInt(300, 300);
   elmJustification = left;
   success = setFont(0);  
   // updateDimensions(); ... is already done in setFont!
@@ -181,9 +181,9 @@ YaVecText::YaVecText(YaVecCompound* parent_compound, YaVecFigure* figure_compoun
 };
 
 
-void YaVecText::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
-  upper_left  = elmOrigin - EVPosInt(0, textHeight); 
-  lower_right = elmOrigin + EVPosInt(textWidth, 0);
+void YaVecText::getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right) {
+  upper_left  = elmOrigin - YVPosInt(0, textHeight); 
+  lower_right = elmOrigin + YVPosInt(textWidth, 0);
 }
 
 bool YaVecText::setText(const string &new_text) {
@@ -196,7 +196,7 @@ bool YaVecText::setFont(int new_font) {
   int ft_fail;
   if (new_font>=0 && new_font<34) {
     elmFont = new_font;
-    string font = gs_fontpath + string(easyvec_font_files[elmFont]);
+    string font = gs_fontpath + string(yavec_font_files[elmFont]);
     ft_fail = FT_New_Face(freetype_lib, font.c_str(), 0, &face );
     if (ft_fail!=0) cerr << "Face creation failed" << endl;
     updateDimensions();
@@ -211,14 +211,14 @@ bool YaVecText::setSize(int new_size) {
   return true;
 }
 
-bool YaVecText::setOrigin(EVPosInt new_origin) {
+bool YaVecText::setOrigin(YVPosInt new_origin) {
   elmOrigin = new_origin;
   return true;
 }
 
 int YaVecText::sizeForBox(int height, int width, bool allowIncrease) {
   int origSize=elmSize;
-  EVPosInt bBox(textWidth, textHeight);
+  YVPosInt bBox(textWidth, textHeight);
   int newSize;
   
   while ((bBox.xpos()>width || bBox.ypos()>height) && elmSize>0) {
@@ -232,7 +232,7 @@ int YaVecText::sizeForBox(int height, int width, bool allowIncrease) {
 
 
 void YaVecText::saveElm(ofstream &fig_file) {
-  vector<EVPosInt>::iterator points_iter;
+  vector<YVPosInt>::iterator points_iter;
 
   fig_file << "4 " << elmJustification << " " << elmPenColor << " " << elmDepth
            << " 0 " << elmFont << " " << elmSize << " 0 4 " << textHeight << " " << textWidth
@@ -240,7 +240,7 @@ void YaVecText::saveElm(ofstream &fig_file) {
            << "\\001" << endl;
 }
 
-void YaVecText::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+void YaVecText::getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                                     list<YaVecElmHit> &hits) {
   // TODO: add other corner points
   int fuzzyRes;

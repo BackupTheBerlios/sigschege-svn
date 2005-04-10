@@ -27,7 +27,7 @@
 #ifndef _EASYVECVIEW_H
 #define _EASYVECVIEW_H _EASYVECVIEW_H 
 
-#include "EVPosInt.h"
+#include "YVPosInt.h"
 #include "YaVecLine.h"
 #include "YaVecArrow.h"
 
@@ -56,7 +56,7 @@ public:
    * \param lineStyle The line style (solid, dashed, dotted, dash-dotted).
    * \param styleLength The length of the dashes or spaces between dashes or dots.
    */
-  virtual void drawLine(EVPosInt from, EVPosInt to, int width, int color, int lineStyle, double styleLength) = 0;
+  virtual void drawLine(YVPosInt from, YVPosInt to, int width, int color, int lineStyle, double styleLength) = 0;
   /// Draw a single arc to the view. Used by Arc. The arc is drawn counterclockwise.
   /*! 
    * \param center Center of the arc circle.
@@ -67,13 +67,13 @@ public:
    * \param lineStyle The arc style (solid, dashed, dotted, dash-dotted).
    * \param styleLength The length of the dashes or spaces between dashes or dots.
    */
-  virtual void drawArc(EVPosInt center, int radius, double phiStart, double phiEnd, int width, int color, int lineStyle, double styleLength) = 0;
+  virtual void drawArc(YVPosInt center, int radius, double phiStart, double phiEnd, int width, int color, int lineStyle, double styleLength) = 0;
   /// Draw the character given in buffer to the view.
-  virtual void drawChar(EVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
+  virtual void drawChar(YVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
   // Draw an arrow head (of a line).  
-  virtual void drawArrow(const EVPosInt &tip, double angle, int color, YaVecArrow::arrowInfo *arrow) = 0;
+  virtual void drawArrow(const YVPosInt &tip, double angle, int color, YaVecArrow::arrowInfo *arrow) = 0;
   // Draw an arrow head (of a line). This is just a convenience function which calculates the angle from the line.  
-  void drawArrow(const EVPosInt &tip, const EVPosInt &from, int color, YaVecArrow::arrowInfo *arrow);
+  void drawArrow(const YVPosInt &tip, const YVPosInt &from, int color, YaVecArrow::arrowInfo *arrow);
   /// Force a redraw of the complete figure area.
   virtual void refreshAll(void) = 0;
   /// Clear the figure area.

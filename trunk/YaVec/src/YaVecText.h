@@ -27,7 +27,7 @@
 #ifndef _EASYVECELMTEXT_H
 #define _EASYVECELMTEXT_H _EASYVECELMTEXT_H 
 
-#include "EVPosInt.h"
+#include "YVPosInt.h"
 #include "YaVecElm.h"
 #include "YaVecCompound.h"
 #include "YaVecView.h"
@@ -45,7 +45,7 @@ public:
   YaVecText();
   YaVecText(YaVecCompound* parent_compound, YaVecFigure* figure_compound);
   /// Place the edges of the bounding box in upper_left/lower_right.
-  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right);
+  virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right);
   /// Return the width of the text.
   int getWidth(void) { return textWidth; }
   /// Return the height of the text.
@@ -62,7 +62,7 @@ public:
   /// Set the size of the text in points.
   bool setSize(int new_size);
   /// Set the origin of the text in the figure.
-  bool setOrigin(EVPosInt new_origin);
+  bool setOrigin(YVPosInt new_origin);
   /// Set the justification of the text relative to its origin.
   bool setJustification(int newJustification);
   /// Draw the text into a view or calculate its dimensions.
@@ -73,7 +73,7 @@ public:
    * \param noUpdate Suppress updating of the cached text dimensions.
    * \return The new text dimensions.
    */
-  EVPosInt drawOrCalc(YaVecView* view, bool noUpdate=false);
+  YVPosInt drawOrCalc(YaVecView* view, bool noUpdate=false);
   /// Calculates the maximum point size so that the text fits into the given box.
   int sizeForBox(int height, int width, bool allowIncrease = false);
   static bool initFreetype(void); // will be called by YaVecFigure class
@@ -95,11 +95,11 @@ public:
   };
 
   /// find a figure element near the given position.
-  virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+  virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<YaVecElmHit> &hits);
 
 private:
-  EVPosInt elmOrigin;
+  YVPosInt elmOrigin;
   string elmText;
   int elmFont, elmSize;
   justification elmJustification;

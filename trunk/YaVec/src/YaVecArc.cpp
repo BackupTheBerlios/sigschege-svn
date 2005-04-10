@@ -30,7 +30,7 @@
 
 using namespace std;
 
-YaVecArc::YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, EVPosInt p1, EVPosInt p2, EVPosInt p3)
+YaVecArc::YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt p1, YVPosInt p2, YVPosInt p3)
   : YaVecElm(parent_compound, figure_compound), YaVecLine(), YaVecArrow() {
   isPieWedge = false;
   setPoints(p1, p2, p3);
@@ -58,7 +58,7 @@ static double asinq(double x, double y, double r) {
   return phi;
 }
 
-void YaVecArc::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
+void YaVecArc::getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right) {
   int qs, qe;
   upper_left = lower_right = elmPoint1;
   upper_left.minValues(elmPoint2);
@@ -84,7 +84,7 @@ void YaVecArc::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
 }
 
 void YaVecArc::computeArc(void) {
-   EVPosInt p1, p2, p3, ptmp;
+   YVPosInt p1, p2, p3, ptmp;
    double y0, x0, x1, y1, x2, y2, x3, y3;
    p1 = elmPoint1;
    p2 = elmPoint2;
@@ -115,7 +115,7 @@ void YaVecArc::computeArc(void) {
    cout << "X Center: " << x0 << " Y Center: " << y0 << " clockwise:" << clockwise << endl;
 }
 
-void YaVecArc::setPoint(int num, EVPosInt newPosition) {
+void YaVecArc::setPoint(int num, YVPosInt newPosition) {
    switch (num) {
    case 0:
      elmPoint1 = newPosition;
@@ -133,7 +133,7 @@ void YaVecArc::setPoint(int num, EVPosInt newPosition) {
    parent->handleChange(this);
 }
 
-void YaVecArc::setPoints(EVPosInt newPoint1, EVPosInt newPoint2, EVPosInt newPoint3) {
+void YaVecArc::setPoints(YVPosInt newPoint1, YVPosInt newPoint2, YVPosInt newPoint3) {
   elmPoint1 = newPoint1;
   elmPoint2 = newPoint2;
   elmPoint3 = newPoint3;
@@ -141,20 +141,20 @@ void YaVecArc::setPoints(EVPosInt newPoint1, EVPosInt newPoint2, EVPosInt newPoi
   parent->handleChange(this);
 }
 
-void YaVecArc::setArc(EVPosInt center, double radius, bool clockwise, double angle1, double angle3) {
+void YaVecArc::setArc(YVPosInt center, double radius, bool clockwise, double angle1, double angle3) {
   // TODO
 }
 
 
 void YaVecArc::draw(YaVecView* view) {
    double styleLength = elmStyleValue*15;
-   view->drawArc(EVPosInt(xCenter, yCenter), radius, phi1,
+   view->drawArc(YVPosInt(xCenter, yCenter), radius, phi1,
                  phi3, elmThickness, elmPenColor, elmLineStyle, styleLength);
 }
 
 
 void YaVecArc::saveElm(ofstream &fig_file) {
-  vector<EVPosInt>::iterator points_iter;
+  vector<YVPosInt>::iterator points_iter;
   
   fig_file << "5 " << (isPieWedge? "2 " : "1 ") << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
            << " -1 -1 " << elmStyleValue << " 0 0 " << (forwardArrow()? 1 : 0) << " "
@@ -170,9 +170,9 @@ void YaVecArc::saveElm(ofstream &fig_file) {
   }
 }
 
-void YaVecArc::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+void YaVecArc::getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                                     list<YaVecElmHit> &hits) {
-  vector<EVPosInt> allPoints(3);
+  vector<YVPosInt> allPoints(3);
   allPoints[0] = elmPoint1;
   allPoints[1] = elmPoint2;
   allPoints[2] = elmPoint3;

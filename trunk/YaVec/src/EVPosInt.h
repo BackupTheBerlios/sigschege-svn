@@ -33,40 +33,40 @@
 /// A simple 2D Position class which handles integer x,y coordinate pairs 
 
 
-class EVPosInt {
+class YVPosInt {
 public:
   /// Default constructor, which initializes both coordinates to 0. 
-  EVPosInt() { cx = cy = 0; }
+  YVPosInt() { cx = cy = 0; }
   /// General constructor to initialize coordinate from two ints.
-  EVPosInt(int x, int y) {cx = x; cy = y;}
+  YVPosInt(int x, int y) {cx = x; cy = y;}
   /// General constructor to initialize coordinate from two doubles.
-  EVPosInt(double x, double y) {cx = static_cast<int>(x); cy = static_cast<int>(y);}
+  YVPosInt(double x, double y) {cx = static_cast<int>(x); cy = static_cast<int>(y);}
   /// Function to set both coordinates. returns reference to result.
-  EVPosInt &set(int x, int y) { cx=x; cy=y; return *this; };
+  YVPosInt &set(int x, int y) { cx=x; cy=y; return *this; };
   /// Subtraction operator.
-  EVPosInt &operator-(const EVPosInt &destination) const;
+  YVPosInt &operator-(const YVPosInt &destination) const;
   /// Multiplication (with an int) operator.
-  EVPosInt &operator*(int mult ) const;
+  YVPosInt &operator*(int mult ) const;
   /// Division assignment operator.
-  EVPosInt &operator/=(double divisor);
+  YVPosInt &operator/=(double divisor);
   /// Division operator.
-  EVPosInt &operator/(double divisor) const;
+  YVPosInt &operator/(double divisor) const;
   
   /// Return the x coordinate.
   int xpos(void) const { return cx; };
   /// Return the y coordinate.
   int ypos(void) const { return cy; };
   /// Return the distance between two positions as double.
-  double distance(const EVPosInt &destination) const;
+  double distance(const YVPosInt &destination) const;
   /// Return the angle of a line (against X-axis).
-  double angle(const EVPosInt &dest) const;
-  /// Set the coordinates of this to the minimum of this and the other EVPosInt object. 
-  inline void minValues(const EVPosInt &other) {
+  double angle(const YVPosInt &dest) const;
+  /// Set the coordinates of this to the minimum of this and the other YVPosInt object. 
+  inline void minValues(const YVPosInt &other) {
     cx = cx<other.cx?cx:other.cx;
     cy = cy<other.cy?cy:other.cy;
   }
-  /// Set the coordinates of this to the maximum of this and the other EVPosInt object. 
-  inline void maxValues(const EVPosInt &other) {
+  /// Set the coordinates of this to the maximum of this and the other YVPosInt object. 
+  inline void maxValues(const YVPosInt &other) {
     cx = cx>other.cx?cx:other.cx;
     cy = cy>other.cy?cy:other.cy;
   }
@@ -79,26 +79,26 @@ private:
 };
 
 /// Standard C++ ostream operator.
-std::ostream& operator<<(std::ostream& ostr, const EVPosInt Place);
+std::ostream& operator<<(std::ostream& ostr, const YVPosInt Place);
 
 /// Divide both coordinates by integer argument
-inline EVPosInt operator/(const EVPosInt &z, int n) {
-  return EVPosInt(z.xpos()/n, z.ypos()/n);
+inline YVPosInt operator/(const YVPosInt &z, int n) {
+  return YVPosInt(z.xpos()/n, z.ypos()/n);
 }
 
-/// Add two EVPosInt.
-inline EVPosInt operator+(const EVPosInt &a, const EVPosInt &b) {
-  return EVPosInt(a.xpos()+b.xpos(), a.ypos()+b.ypos());
+/// Add two YVPosInt.
+inline YVPosInt operator+(const YVPosInt &a, const YVPosInt &b) {
+  return YVPosInt(a.xpos()+b.xpos(), a.ypos()+b.ypos());
 }
 
-/// Return the minimum coordinates (independently) of both EVPosInts.
-inline EVPosInt min_coords(const EVPosInt &a, const EVPosInt &b) {
-  return EVPosInt(a.xpos()<b.xpos()?a.xpos():b.xpos(), a.ypos()<b.ypos()?a.ypos():b.ypos());
+/// Return the minimum coordinates (independently) of both YVPosInts.
+inline YVPosInt min_coords(const YVPosInt &a, const YVPosInt &b) {
+  return YVPosInt(a.xpos()<b.xpos()?a.xpos():b.xpos(), a.ypos()<b.ypos()?a.ypos():b.ypos());
 }
 
-/// Return the maximum coordinates (independently) of both EVPosInts.
-inline EVPosInt max_coords(const EVPosInt &a, const EVPosInt &b) {
-  return EVPosInt(a.xpos()>b.xpos()?a.xpos():b.xpos(), a.ypos()>b.ypos()?a.ypos():b.ypos());
+/// Return the maximum coordinates (independently) of both YVPosInts.
+inline YVPosInt max_coords(const YVPosInt &a, const YVPosInt &b) {
+  return YVPosInt(a.xpos()>b.xpos()?a.xpos():b.xpos(), a.ypos()>b.ypos()?a.ypos():b.ypos());
 }
 
 

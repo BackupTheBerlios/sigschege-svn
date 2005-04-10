@@ -80,14 +80,14 @@ bool MyApp::OnInit()
   ntext = ev_pic->text();
   ntext->setText("This is an YaVec Demo");
   ntext->penColor(2);
-  ntext->setOrigin(EVPosInt(300, 1000));
+  ntext->setOrigin(YVPosInt(300, 1000));
   ntext->depth(55);
-  EVPosInt ul, lr;
+  YVPosInt ul, lr;
   //ntext->getBoundingBox(ul, lr); TODO
   //cout << ul << ":" << lr << endl;
 
-  ul = EVPosInt(600, 600); 
-  lr = EVPosInt(1000, 2000); 
+  ul = YVPosInt(600, 600); 
+  lr = YVPosInt(1000, 2000); 
 
   // Create the main frame window
   frame = new MyFrame(NULL, _T("YaVec Demo"), -1, -1, 800, 600);
@@ -318,7 +318,7 @@ void MyFrame::toggleArcs(wxCommandEvent& event) {
   if (arcs.empty()) {
     YaVecArc *arc;
     for (int i=0; i<8; i++) {
-      arc = mainpic->arc(EVPosInt(100+i*500,4000), EVPosInt(200+i*500,4500), EVPosInt(400+i*500,4000));
+      arc = mainpic->arc(YVPosInt(100+i*500,4000), YVPosInt(200+i*500,4500), YVPosInt(400+i*500,4000));
       //arc->lineThickness(1+(i&3));
       //if ((i&1)==1) aline->forwardArrow(true);
       //if ((i&1)==1) aline->penColor(3);
@@ -345,12 +345,12 @@ void MyFrame::toggleBoxes(wxCommandEvent& event) {
   if (boxes.empty()) {
     YaVecBox *dbox;
     for (int i=100; i<4000; i+=499) {
-      dbox = mainpic->box(EVPosInt(i*2, 4200-i), EVPosInt((i+500)*2, 4200-i+500));
+      dbox = mainpic->box(YVPosInt(i*2, 4200-i), YVPosInt((i+500)*2, 4200-i+500));
       dbox->lineStyle(YaVecLine::dashed);
       dbox->styleValue(static_cast<double>(i&15));
       boxes.push_back(dbox);
 
-      dbox = mainpic->box(EVPosInt((i+200)*2, 4200-i+200), EVPosInt((i+500+200)*2, 4200-i+500+200));
+      dbox = mainpic->box(YVPosInt((i+200)*2, 4200-i+200), YVPosInt((i+500+200)*2, 4200-i+500+200));
       dbox->penColor(i&7);
       boxes.push_back(dbox);
     }
@@ -367,7 +367,7 @@ void MyFrame::toggleBoxes(wxCommandEvent& event) {
 
 void MyFrame::OnMouse(wxMouseEvent& event)
 {
-  EVPosInt pos(event.m_x, event.m_y);
+  YVPosInt pos(event.m_x, event.m_y);
   cout << "MOUSE @ " << pos << endl;
 }
 

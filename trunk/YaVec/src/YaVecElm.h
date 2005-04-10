@@ -31,7 +31,7 @@ class YaVecCompound;
 
 #include <vector>
 #include <list>
-#include "EVPosInt.h"
+#include "YVPosInt.h"
 #include "YaVecView.h"
 
 using namespace std;
@@ -60,7 +60,7 @@ public:
    * The bounding box of an object is a rectangle defined by the points upper_left and
    * lower_right that is covered by the content of the object.
    */
-  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right)=0;
+  virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right)=0;
   virtual vector<YaVecElm*> flatList() = 0;
   /// Draw this object in the given view.
   virtual void draw(YaVecView* view) = 0;
@@ -84,11 +84,11 @@ public:
   bool depth(int new_depth);
 
   /// find a figure element near the given position.
-  virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+  virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<YaVecElmHit> &hits) = 0;
 
   /// Check if the selected position is near the point.
-  static bool checkProximity(EVPosInt selPos, EVPosInt point, int fuzzyFact, int &fuzzyRes);
+  static bool checkProximity(YVPosInt selPos, YVPosInt point, int fuzzyFact, int &fuzzyRes);
   
 protected:
   YaVecCompound *parent; // needed to inform the owner about change events
@@ -131,7 +131,7 @@ inline int YaVecElm::depth(void) {
   return elmDepth;
 }
 
-extern const int easyvec_std_colors[][3];
+extern const int yavec_std_colors[][3];
 
 #endif /* _EASYVECELM_H */
 

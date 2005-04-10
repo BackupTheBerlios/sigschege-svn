@@ -32,7 +32,7 @@
 #include "YaVecBox.h"
 #include "YaVecText.h"
 
-YaVecArc* YaVecCompound::arc(EVPosInt p1, EVPosInt p2, EVPosInt p3) {
+YaVecArc* YaVecCompound::arc(YVPosInt p1, YVPosInt p2, YVPosInt p3) {
   YaVecArc* new_arc = new YaVecArc(static_cast<YaVecCompound*>(this), figure, p1, p2, p3);
   members.push_back(new_arc);
   return new_arc;
@@ -45,7 +45,7 @@ YaVecPolyline* YaVecCompound::polyline() {
   return new_polyline;
 }
 
-YaVecBox* YaVecCompound::box(EVPosInt upper_left, EVPosInt lower_right) {
+YaVecBox* YaVecCompound::box(YVPosInt upper_left, YVPosInt lower_right) {
   YaVecBox* new_box = new YaVecBox(static_cast<YaVecCompound*>(this), figure, upper_left, lower_right);
   members.push_back(new_box);
   return new_box;
@@ -80,12 +80,12 @@ bool YaVecCompound::remove(YaVecElm* elm) {
  * This function returns the bounding box of this compound. This is the rectangular area
  * defined by all objects contained in this compound.
  */
-void YaVecCompound::getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
+void YaVecCompound::getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right) {
   vector<YaVecElm*>::iterator members_iter = members.begin();
-  EVPosInt member_point_min, member_point_max;
+  YVPosInt member_point_min, member_point_max;
   if (members_iter==members.end()) {
-    upper_left = EVPosInt(0,0); // no points! how should we behave???
-    lower_right = EVPosInt(0,0);
+    upper_left = YVPosInt(0,0); // no points! how should we behave???
+    lower_right = YVPosInt(0,0);
   } else {
     (*members_iter)->getBoundingBox(member_point_min, member_point_max);
     upper_left = member_point_min;
@@ -143,7 +143,7 @@ void YaVecCompound::copy_members(YaVecCompound& source) {
       new_text = text();
       *new_text = *(static_cast<YaVecText*>(*source_members_iter));
     } else if (typeid(**source_members_iter) == typeid(YaVecBox)) {
-      new_box = box(EVPosInt(0,0),EVPosInt(0,0));
+      new_box = box(YVPosInt(0,0),YVPosInt(0,0));
       *new_box = *(static_cast<YaVecBox*>(*source_members_iter));
     } else if (typeid(**source_members_iter) == typeid(YaVecPolyline)) {
       new_polyline = polyline();
@@ -170,7 +170,7 @@ void YaVecCompound::handleChange(YaVecElm* changed_element) {
 
 
 void YaVecCompound::saveElm(ofstream &fig_file) {
-  EVPosInt pos_min, pos_max;
+  YVPosInt pos_min, pos_max;
   getBoundingBox(pos_min, pos_max);
   fig_file << "6 " << pos_min.xpos() << " " << pos_min.ypos() << " " <<
            pos_max.xpos() << " " << pos_max.ypos() << " " << endl;
@@ -186,7 +186,7 @@ void YaVecCompound::save_content(ofstream &fig_file) {
   }  
 }
 
-void YaVecCompound::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+void YaVecCompound::getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                                     list<YaVecElmHit> &hits) {
   vector<YaVecElm*>::iterator membersIt;
   for ( membersIt = members.begin(); membersIt != members.end(); ++membersIt ) {

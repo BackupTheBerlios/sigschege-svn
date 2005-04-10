@@ -31,7 +31,7 @@
 using namespace std;
 
 YaVecBox::YaVecBox(YaVecCompound* parent_compound, YaVecFigure* figure_compound,
-                             EVPosInt upper_left, EVPosInt lower_right)
+                             YVPosInt upper_left, YVPosInt lower_right)
   : YaVecElm(parent_compound, figure_compound),
     YaVecLine(),
     elm_upper_left(upper_left),
@@ -41,14 +41,14 @@ YaVecBox::YaVecBox(YaVecCompound* parent_compound, YaVecFigure* figure_compound,
 
 void YaVecBox::draw(YaVecView* view) {
 
-  EVPosInt ul, lr;
-  EVPosInt ur, ll;
+  YVPosInt ul, lr;
+  YVPosInt ur, ll;
 
   ul = elm_upper_left;
   lr = elm_lower_right;
 
-  ur = EVPosInt(lr.xpos(), ul.ypos());
-  ll = EVPosInt(ul.xpos(), lr.ypos());
+  ur = YVPosInt(lr.xpos(), ul.ypos());
+  ll = YVPosInt(ul.xpos(), lr.ypos());
 
   double styleLength = elmStyleValue*15;
 
@@ -60,7 +60,7 @@ void YaVecBox::draw(YaVecView* view) {
 }
 
 void YaVecBox::saveElm(ofstream &fig_file) {
-  vector<EVPosInt>::iterator points_iter;
+  vector<YVPosInt>::iterator points_iter;
 
   fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
            << " 0 -1 " << elmStyleValue << " 0 0 0 0 0 " << 5 << endl;
@@ -75,12 +75,12 @@ void YaVecBox::saveElm(ofstream &fig_file) {
   fig_file << endl;
 }
 
-void YaVecBox::getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+void YaVecBox::getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                                     list<YaVecElmHit> &hits) {
-  vector<EVPosInt> allCorners(4);
+  vector<YVPosInt> allCorners(4);
   allCorners[0] = elm_upper_left;
-  allCorners[1] = EVPosInt(elm_lower_right.xpos(), elm_upper_left.ypos());
-  allCorners[2] = EVPosInt(elm_upper_left.xpos(), elm_lower_right.ypos());
+  allCorners[1] = YVPosInt(elm_lower_right.xpos(), elm_upper_left.ypos());
+  allCorners[2] = YVPosInt(elm_upper_left.xpos(), elm_lower_right.ypos());
   allCorners[3] = elm_lower_right;
   int fuzzyRes, i;
   for (i=0; i<4; i++) {

@@ -84,7 +84,7 @@ void TimTime::paint(void) {
   text->setText("Time");
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(cOrigin+EVPosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
+  text->setOrigin(cOrigin+YVPosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
 
   // draw the small ticks
   tickTime = firstLabel-tickDistance*floor((firstLabel-startTime)/tickDistance);
@@ -114,7 +114,7 @@ void TimTime::paint(void) {
     text->setFont(cFontType);
     text->setSize(cFontSize/2);
     text->setJustification(YaVecText::center);
-    text->setOrigin(EVPosInt(xpos, cOrigin.ypos()+cSize.ypos()-cPadding-cSize.ypos()*32/100));
+    text->setOrigin(YVPosInt(xpos, cOrigin.ypos()+cSize.ypos()-cPadding-cSize.ypos()*32/100));
     
     tickTime += labelDistance;
   }

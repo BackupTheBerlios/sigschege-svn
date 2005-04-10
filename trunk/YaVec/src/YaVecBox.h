@@ -27,7 +27,7 @@
 #ifndef _EASYVECBOX_H
 #define _EASYVECBOX_H _EASYVECBOX_H 
 
-#include "EVPosInt.h"
+#include "YVPosInt.h"
 #include "YaVecLine.h"
 #include "YaVecElm.h"
 #include "YaVecCompound.h"
@@ -43,15 +43,15 @@ public:
   YaVecBox(YaVecCompound* parent_compound, YaVecFigure* figure_compound)
     : YaVecElm(parent_compound, figure_compound) {};
   /// general constructor accepting corner points
-  YaVecBox(YaVecCompound* parent_compound, YaVecFigure* figure_compound, EVPosInt upper_left, EVPosInt lower_right);
+  YaVecBox(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt upper_left, YVPosInt lower_right);
 
   /// Return the limits of this element
-  virtual void getBoundingBox(EVPosInt &upper_left, EVPosInt &lower_right) {
+  virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right) {
     upper_left  = elm_upper_left;
     lower_right = elm_lower_right;
   }
   /// set both corners of the box
-  void set_corners(EVPosInt upper_left, EVPosInt lower_right) {
+  void set_corners(YVPosInt upper_left, YVPosInt lower_right) {
     upper_left  = elm_upper_left;
     lower_right = elm_lower_right;
   }
@@ -64,7 +64,7 @@ public:
   virtual void saveElm(ofstream &fig_file);
 
   /// find a figure element near the given position.
-  virtual void getElmNearPos(EVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+  virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<YaVecElmHit> &hits);
 
   /// Print some (or some more) information about this figure element.
@@ -72,7 +72,7 @@ public:
 
 
 private:
-  EVPosInt elm_upper_left, elm_lower_right;
+  YVPosInt elm_upper_left, elm_lower_right;
 };
 
 #endif /* _EASYVECBOX_H */

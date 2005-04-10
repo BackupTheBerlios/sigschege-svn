@@ -47,7 +47,7 @@ YaVecElm::~YaVecElm() {
   // notify owner? 
 };
 
-bool YaVecElm::checkProximity(EVPosInt selPos, EVPosInt point, int fuzzyFact, int &fuzzyRes) {
+bool YaVecElm::checkProximity(YVPosInt selPos, YVPosInt point, int fuzzyFact, int &fuzzyRes) {
   int deltaX = abs(point.xpos()-selPos.xpos());
   int deltaY = abs(point.ypos()-selPos.ypos());
   if (deltaX>fuzzyFact || deltaY>fuzzyFact) {
@@ -60,7 +60,7 @@ bool YaVecElm::checkProximity(EVPosInt selPos, EVPosInt point, int fuzzyFact, in
 }
 
 
-const int easyvec_std_colors[][3] = {
+const int yavec_std_colors[][3] = {
   {0, 0, 0},          // 0 = black
   {0x00, 0x00, 0xff}, //  1 = blue
   {0x00, 0xff, 0x00}, //  2 = green

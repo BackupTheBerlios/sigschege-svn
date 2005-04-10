@@ -132,15 +132,15 @@ bool YaVecArrow::backwardArrowSize(double newThickness, double newWidth, double 
   return true;
 }
 
-void YaVecArrow::calcPoints(arrowInfo &arrow, const EVPosInt &tip, double tipAngle,
-                                     EVPosInt &pLeft, EVPosInt &pRight, EVPosInt &pMid) {
+void YaVecArrow::calcPoints(arrowInfo &arrow, const YVPosInt &tip, double tipAngle,
+                                     YVPosInt &pLeft, YVPosInt &pRight, YVPosInt &pMid) {
   double arrAngle = atan(arrow.Width/arrow.Height);
   tipAngle += M_PI;
   double length = sqrt(arrow.Width*arrow.Width+arrow.Height*arrow.Height);
-  pLeft  = tip+EVPosInt(static_cast<int>(length*cos(tipAngle+arrAngle)), static_cast<int>(length*sin(tipAngle+arrAngle)));
-  pRight = tip+EVPosInt(static_cast<int>(length*cos(tipAngle-arrAngle)), static_cast<int>(length*sin(tipAngle-arrAngle)));
+  pLeft  = tip+YVPosInt(static_cast<int>(length*cos(tipAngle+arrAngle)), static_cast<int>(length*sin(tipAngle+arrAngle)));
+  pRight = tip+YVPosInt(static_cast<int>(length*cos(tipAngle-arrAngle)), static_cast<int>(length*sin(tipAngle-arrAngle)));
   if (arrow.Type==closed_indented_butt || arrow.Type==closed_pointed_butt) {
     length *= (arrow.Type==closed_indented_butt) ? 0.666 : 1.333; 
-    pMid = tip + EVPosInt(static_cast<int>(length*cos(tipAngle)), static_cast<int>(length*sin(tipAngle)));
+    pMid = tip + YVPosInt(static_cast<int>(length*cos(tipAngle)), static_cast<int>(length*sin(tipAngle)));
   }
 }

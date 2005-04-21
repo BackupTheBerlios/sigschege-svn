@@ -28,6 +28,89 @@
 
 using namespace std;
 
+// add Label class to TimingDiagram Module
+
+static PyObject* TimLabel_new(PyTypeObject *type, PyObject *argc, PyObject *kwds) {
+  TimLabelObject *self;
+  self = (TimLabelObject *)type->tp_alloc(type, 0);
+  return(PyObject *) self;
+}
+
+static int TimLabel_init(TimLabelObject *self,PyObject *args, PyObject *kwds) {
+ return (0);
+}
+
+static void TimLabel_dealloc(TimLabelObject *self) {
+  //delete(self->signal);
+  self->ob_type->tp_free((PyObject *)self);
+}
+
+static int TimLabel_print(TimLabelObject *obj, FILE *fp, int flags)
+{
+  fprintf(fp, "\"<Label: >\"");
+  return 0;
+}
+
+static PyObject * TimLabel_setText(TimLabelObject *self, PyObject *args, PyObject *kwds) {
+  char *text = "1";
+  static char *kwlist[] = {"text", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist, &text))
+    return NULL;
+  string text_s = text;
+
+  self->label->setText(text);
+  Py_INCREF(Py_None);
+  return (Py_None);
+}
+
+static PyMethodDef TimLabel_methods[] = {
+  {"setText", (PyCFunction)TimLabel_setText, METH_VARARGS|METH_KEYWORDS, "Set the label text for this signal."},
+  {NULL}  /* Sentinel */
+};
+
+static  PyTypeObject TimLabelType = {
+  PyObject_HEAD_INIT(NULL)
+  0,                         /*ob_size*/
+  "Label",               /*tp_name*/
+  sizeof(TimLabelObject),   /*tp_basicsize*/
+  0,                         /*tp_itemsize*/
+  (destructor)TimLabel_dealloc,                         /*tp_dealloc*/
+  (printfunc)TimLabel_print,            /*tp_print*/
+  0,                         /*tp_getattr*/
+  0,                         /*tp_setattr*/
+  0,                         /*tp_compare*/
+  0,                         /*tp_repr*/
+  0,                         /*tp_as_number*/
+  0,                         /*tp_as_sequence*/
+  0,                         /*tp_as_mapping*/
+  0,                         /*tp_hash */
+  0,                         /*tp_call*/
+  0,                         /*tp_str*/
+  0,                         /*tp_getattro*/
+  0,                         /*tp_setattro*/
+  0,                         /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,        /*tp_flags*/
+  "Label Object",            /*tp_doc */
+  0,                         /* tp_traverse */
+  0,                         /* tp_clear */
+  0,                         /* tp_richcompare */
+  0,                         /* tp_weaklistoffset */
+  0,                         /* tp_iter */
+  0,                         /* tp_iternext */
+  TimLabel_methods,          /* tp_methods */
+  0,                         /* tp_members */
+  0,                         /* tp_getset */
+  0,                         /* tp_base */
+  0,                         /* tp_dict */
+  0,                         /* tp_descr_get */
+  0,                         /* tp_descr_set */
+  0,                         /* tp_dictoffset */
+  (initproc)TimLabel_init,   /* tp_init */
+  0,                         /* tp_alloc */
+  TimLabel_new,              /* tp_new */
+};
+
 // add Timescale class to TimingDiagram Module
 
 static PyObject* TimTimescale_new(PyTypeObject *type, PyObject *argc, PyObject *kwds) {
@@ -85,7 +168,7 @@ static  PyTypeObject TimTimescaleType = {
   0,                         /* tp_weaklistoffset */
   0,                         /* tp_iter */
   0,                         /* tp_iternext */
-  0, /*TimTimescale_methods, */                        /* tp_methods */
+  TimTimescale_methods,      /* tp_methods */
   0,                         /* tp_members */
   0,                         /* tp_getset */
   0,                         /* tp_base */
@@ -137,7 +220,7 @@ static PyObject * TimSignal_setLabel(TimSignalObject *self, PyObject *args, PyOb
   char *text = "1";
   static char *kwlist[] = {"text", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "ds|s", kwlist, &text))
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist, &text))
     return NULL;
   string text_s = text;
 
@@ -295,7 +378,6 @@ static PyObject * TimingDiagram_createTimescale(TimingDiagramObject *self, PyObj
   Handle<TimTime> newTimescale;
   newTimescale = self->tim->createTime(false, 50.0, 0.0, 10.0);
   self->tim->addLast(newTimescale.Object());
-  // TODO: No Python representation yet! 
   // create a Python signal object to return to user 
   PyObject *newPTimescaleObj;
   TimTimescaleObject *newPTimescale;
@@ -307,6 +389,30 @@ static PyObject * TimingDiagram_createTimescale(TimingDiagramObject *self, PyObj
   return (newPTimescaleObj);
 }
 
+static PyObject * TimingDiagram_createLabel(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
+
+  char *label = "none";
+  static char *kwlist[] = {"label", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|s", kwlist, &label))
+    return NULL;
+  string tmps;
+  tmps = label;
+
+  // create new C++ signal object with TimingDiagram class 
+  Handle<TimLabel> newLabel;
+  newLabel = self->tim->createLabel();
+  self->tim->addLast(newLabel.Object());
+  // create a Python signal object to return to user 
+  PyObject *newPLabelObj;
+  TimLabelObject *newPLabel;
+  newPLabelObj = TimLabel_new(&TimLabelType, 0, 0);
+  newPLabel = (TimLabelObject *)newPLabelObj;
+  TimLabel_init(newPLabel, 0, 0);
+  // attach C++ signal to Python signal
+  newPLabel->label = newLabel;
+  return (newPLabelObj);
+}
 
 static int TimingDiagram_print(TimSignalObject *obj, FILE *fp, int flags)
 {
@@ -325,6 +431,9 @@ static PyMethodDef TimingDiagram_methods[] = {
   },
   {"createTimescale", (PyCFunction)TimingDiagram_createTimescale, METH_VARARGS|METH_KEYWORDS,
    "Create a Time Scale in the Timing Diagram."
+  },
+  {"createLabel", (PyCFunction)TimingDiagram_createLabel, METH_VARARGS|METH_KEYWORDS,
+   "Create a Label in the Timing Diagram."
   },
   {
     "exportFig", (PyCFunction)TimingDiagram_exportFig, METH_VARARGS,
@@ -396,6 +505,10 @@ initTimingDiagram(void)
   //TimTimescaleType.tp_new = PyType_GenericNew;
   if (PyType_Ready(&TimTimescaleType) < 0)
     return;
+
+  //TimTimescaleType.tp_new = PyType_GenericNew;
+  if (PyType_Ready(&TimLabelType) < 0)
+    return;
     
   m = Py_InitModule3("TimingDiagram", TimingDiagram_methods,
                      "TimingDiagram Base Class.");
@@ -405,5 +518,11 @@ initTimingDiagram(void)
 
   Py_INCREF(&TimSignalType);
   PyModule_AddObject(m, "Signal", (PyObject *)&TimSignalType);
+
+  Py_INCREF(&TimTimescaleType);
+  PyModule_AddObject(m, "Timescale", (PyObject *)&TimTimescaleType);
+
+  Py_INCREF(&TimLabelType);
+  PyModule_AddObject(m, "Label", (PyObject *)&TimLabelType);
 }
 

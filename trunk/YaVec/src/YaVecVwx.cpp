@@ -106,31 +106,26 @@ void YaVecVwx::drawLine(YVPosInt from, YVPosInt to, int width, int color, int li
   if (onPaintPaintDCp==0) delete paintPtr;
 }
 
-void YaVecVwx::drawArc(YVPosInt center, int radius, double phiStart, double phiEnd, int width, int color, int lineStyle, double styleLength) {
-  wxColour wxMyColour(yavec_std_colors[color][0], yavec_std_colors[color][1], yavec_std_colors[color][2]);
-  wxPen wxMyPen(wxMyColour, width, 5);
-  wxWindowDC *paintPtr;
+void YaVecVwx::drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width) {
+  
   int xscale = mypicture->scale();
-  if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
-  else paintPtr = new wxClientDC;
-  
-  paintPtr->SetPen(wxMyPen);
-  
-  paintPtr->DrawArc((center.xpos()+radius*cos(phiStart))/xscale, (center.ypos()+radius*sin(phiStart))/xscale,
-                    (center.xpos()+radius*cos(phiEnd))/xscale, (center.ypos()+radius*sin(phiEnd))/xscale,
-                    center.xpos()/xscale, center.ypos()/xscale);
+  double phi, phiDiff;
+  xCenter /= xscale;
+  yCenter /= xscale;
+  radius /= xscale;
+  phiDiff = 2*1.0/(radius*2*M_PI);
 
-  
-  cout << "ARC: X0=" << center.xpos()+radius*cos(phiStart) << " Y0=" << center.ypos()+radius*sin(phiStart)
-       << " X1=" << center.xpos()+radius*cos(phiEnd) << " Y1=" << center.ypos()+radius*sin(phiEnd)
-       << " PHIS=" << phiStart << " PHIE=" << phiEnd << endl;
-  if (onPaintPaintDCp==0) delete paintPtr;
+  phi = phiStart;
+  if (phi<phiEnd) phiEnd -= 2*M_PI;
+  while (phi>=phiEnd) {
+    pBufpaintPtr->DrawPoint(static_cast<int>(xCenter+cos(phi)*radius), static_cast<int>(yCenter+sin(phi)*radius));
+    phi -= phiDiff;
+  }  
 }
 
 
-
 void YaVecVwx::drawChar(YVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
-  int x,y, bit_no, bit_val;
+  int x, y, bit_no, bit_val;
   char bb;
 
   wxWindowDC *paintPtr;
@@ -160,17 +155,16 @@ void YaVecVwx::drawChar(YVPosInt origin, int rows, int width, int pitch, unsigne
 
 
 void YaVecVwx::drawArrow(const YVPosInt &tip, double angle, int color, YaVecArrow::arrowInfo *arrow) {
+  wxColour wxMyColour(yavec_std_colors[color][0], yavec_std_colors[color][1], yavec_std_colors[color][2]);
+  wxPen wxMyPen(wxMyColour, 1, 1);
   wxWindowDC *paintPtr;
-  int xscale = mypicture->scale();
-  YVPosInt tipVres = tip/xscale;
 
   if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
   else paintPtr = new wxClientDC;
 
-  wxColour wxMyColour(yavec_std_colors[color][0], yavec_std_colors[color][1], yavec_std_colors[color][2]);
-  wxPen wxMyPen(wxMyColour, 1, 1);
   paintPtr->SetPen(wxMyPen);
-
+  int xscale = mypicture->scale();
+  YVPosInt tipVres = tip/xscale;
   YVPosInt pL, pR, pM;
   YaVecArrow::calcPoints(*arrow, tip, angle, pL, pR, pM);
   pL /= xscale;
@@ -185,6 +179,25 @@ void YaVecVwx::drawArrow(const YVPosInt &tip, double angle, int color, YaVecArro
   }
   
   if (onPaintPaintDCp==0) delete paintPtr;
+}
+
+void YaVecVwx::setPaintBuffer(int color, int thickness) {
+  if (onPaintPaintDCp!=0) pBufpaintPtr = onPaintPaintDCp;
+  else   pBufpaintPtr = new wxClientDC;
+  // TODO: thickness
+
+  pBufColor = new wxColour(yavec_std_colors[color][0], yavec_std_colors[color][1], yavec_std_colors[color][2]);
+  pBufPen = new wxPen(*pBufColor, 1, 1);
+  pBufpaintPtr->SetPen(*pBufPen);
+}
+
+void YaVecVwx::clrPaintBuffer(void) {
+  delete pBufColor;
+  pBufColor = 0;
+  delete pBufPen;
+  pBufPen = 0;
+  if (pBufpaintPtr != onPaintPaintDCp) delete pBufpaintPtr;
+  pBufpaintPtr = 0;
 }
 
 

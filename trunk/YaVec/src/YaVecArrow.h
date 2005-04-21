@@ -24,8 +24,8 @@
 // $Id$
 
 
-#ifndef _EASYVECARROW_H
-#define _EASYVECARROW_H _EASYVECARROW_H 
+#ifndef _YAVECARROW_H
+#define _YAVECARROW_H _YAVECARROW_H 
 
 #include <string>
 #include "YVPosInt.h"
@@ -164,4 +164,4 @@ inline double YaVecArrow::backwardArrowHeight(void) {
 }
 
 
-#endif /* _EASYVECARROW_H */
+#endif /* _YAVECARROW_H */

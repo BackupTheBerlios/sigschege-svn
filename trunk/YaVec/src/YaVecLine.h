@@ -24,8 +24,8 @@
 // $Id$
 
 
-#ifndef _EASYVECELMLINE_H
-#define _EASYVECELMLINE_H _EASYVECELMLINE_H 
+#ifndef _YAVECELMLINE_H
+#define _YAVECELMLINE_H _YAVECELMLINE_H 
 
 /// An YaVecFigure line base class  - used for polyline and box
 class YaVecLine {
@@ -80,4 +80,4 @@ inline bool YaVecLine::styleValue(double newStyleValue) {
 }
 
 
-#endif /* _EASYVECELMLINE_H */
+#endif /* _YAVECELMLINE_H */

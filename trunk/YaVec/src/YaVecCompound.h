@@ -24,8 +24,8 @@
 // $Id$
 
 
-#ifndef _EASYVECCOMPOUND_H
-#define _EASYVECCOMPOUND_H _EASYVECCOMPOUND_H 
+#ifndef _YAVECCOMPOUND_H
+#define _YAVECCOMPOUND_H _YAVECCOMPOUND_H 
 
 class YaVecPolyline;
 class YaVecBox;
@@ -60,8 +60,10 @@ public:
   
   /// Create a polyline (class YaVecPolyline), points must be added later
   YaVecPolyline* polyline();
-  /// Create an arc (class YaVecArc)
+  /// Create an arc (class YaVecArc), define it by 3 points on the arc.  
   YaVecArc* arc(YVPosInt p1, YVPosInt p2, YVPosInt p3);
+  /// Create an arc (class YaVecArc), define it by center, radius, direction and angles.
+  YaVecArc* arc(YVPosInt center, double radius, bool clockwise, double angle1, double angle3);
   /// Create a box (class YaVecBox)
   YaVecBox* box(YVPosInt upper_left, YVPosInt lower_right);
   /// Create a text element (class YaVecText)
@@ -92,5 +94,5 @@ protected:
   vector<YaVecElm*> members;
 };
 
-#endif /* _EASYVECCOMPOUND_H */
+#endif /* _YAVECCOMPOUND_H */
 

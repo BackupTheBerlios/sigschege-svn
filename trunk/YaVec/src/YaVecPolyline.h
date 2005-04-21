@@ -24,8 +24,8 @@
 // $Id$
 
 
-#ifndef _EASYVECELMPOLYLINE_H
-#define _EASYVECELMPOLYLINE_H _EASYVECELMPOLYLINE_H 
+#ifndef _YAVECELMPOLYLINE_H
+#define _YAVECELMPOLYLINE_H _YAVECELMPOLYLINE_H 
 
 #include "YVPosInt.h"
 #include "YaVecLine.h"
@@ -60,5 +60,5 @@ private:
   vector<YVPosInt> points;
 };
 
-#endif /* _EASYVECELMPOLYLINE_H */
+#endif /* _YAVECELMPOLYLINE_H */
 

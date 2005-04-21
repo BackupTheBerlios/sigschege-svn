@@ -24,8 +24,8 @@
 // $Id$
 
 
-#ifndef _EASYVECELM_H
-#define _EASYVECELM_H _EASYVECELM_H
+#ifndef _YAVECELM_H
+#define _YAVECELM_H _YAVECELM_H
 
 class YaVecCompound;
 
@@ -133,5 +133,5 @@ inline int YaVecElm::depth(void) {
 
 extern const int yavec_std_colors[][3];
 
-#endif /* _EASYVECELM_H */
+#endif /* _YAVECELM_H */
 

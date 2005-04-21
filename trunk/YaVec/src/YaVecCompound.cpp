@@ -39,6 +39,13 @@ YaVecArc* YaVecCompound::arc(YVPosInt p1, YVPosInt p2, YVPosInt p3) {
   
 }
 
+YaVecArc* YaVecCompound::arc(YVPosInt center, double radius, bool clockwise, double angle1, double angle3) {
+  YaVecArc* new_arc = new YaVecArc(static_cast<YaVecCompound*>(this), figure, center, radius, clockwise, angle1, angle3);
+  members.push_back(new_arc);
+  return new_arc;  
+}
+
+
 YaVecPolyline* YaVecCompound::polyline() {
   YaVecPolyline* new_polyline = new YaVecPolyline(static_cast<YaVecCompound*>(this), figure);
   members.push_back(new_polyline);

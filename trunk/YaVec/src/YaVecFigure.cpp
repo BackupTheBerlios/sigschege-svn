@@ -75,8 +75,8 @@ void YaVecFigure::drawView(YaVecView* view) {
     vector<YaVecElm*>::iterator members_iter;
     cout << "================================================================================" << endl;
     for ( members_iter = members_flat.begin(); members_iter != members_flat.end(); ++members_iter ) {
-      cout << "DRAWING: ";
-      (*members_iter)->debugPrint(cout, true, 10);
+      //cout << "DRAWING: ";
+      //(*members_iter)->debugPrint(cout, true, 10);
       (*members_iter)->draw(view);
     }
     viewIsDirty = false;

@@ -24,8 +24,8 @@
 // $Id$
 
 
-#ifndef _EASYVECBOX_H
-#define _EASYVECBOX_H _EASYVECBOX_H 
+#ifndef _YAVECBOX_H
+#define _YAVECBOX_H _YAVECBOX_H 
 
 #include "YVPosInt.h"
 #include "YaVecLine.h"
@@ -75,5 +75,5 @@ private:
   YVPosInt elm_upper_left, elm_lower_right;
 };
 
-#endif /* _EASYVECBOX_H */
+#endif /* _YAVECBOX_H */
 

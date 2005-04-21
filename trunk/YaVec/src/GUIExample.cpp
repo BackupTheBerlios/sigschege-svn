@@ -318,15 +318,13 @@ void MyFrame::toggleArcs(wxCommandEvent& event) {
   if (arcs.empty()) {
     YaVecArc *arc;
     for (int i=0; i<8; i++) {
-      arc = mainpic->arc(YVPosInt(100+i*500,4000), YVPosInt(200+i*500,4500), YVPosInt(400+i*500,4000));
-      //arc->lineThickness(1+(i&3));
-      //if ((i&1)==1) aline->forwardArrow(true);
-      //if ((i&1)==1) aline->penColor(3);
-      //if ((i&2)==2) aline->backwardArrow(true);
-      //aline->backwardArrowType(3);
-      //aline->forwardArrowType(YaVecArrow::closed_indented_butt);
-      //aline->forwardArrowSize(1.0, 100.0, 250.0);
-      //aline->forwardArrowSize(1.0, 50.0, 250.0);
+      arc = mainpic->arc(YVPosInt(0+i*1000,4000), YVPosInt(600+i*1000,4600), YVPosInt(1200+i*1000,4000));
+      arc->lineStyle(i&3);
+      arc->penColor(i+8);
+      arcs.push_back(arc);
+      arc = mainpic->arc(YVPosInt(400+i*800, 2000), 380, true, M_PI*2*7/8, M_PI*2*i/8);
+      arc->penColor(i&15);
+      arc->lineStyle(i&3);
       arcs.push_back(arc);
     }
   } else {

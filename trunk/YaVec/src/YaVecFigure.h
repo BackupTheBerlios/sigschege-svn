@@ -24,8 +24,8 @@
 // $Id$
 
 
-#ifndef _EASYVEC_H
-#define _EASYVEC_H _EASYVEC_H
+#ifndef _YAVEC_H
+#define _YAVEC_H _YAVEC_H
 
 #include <vector>
 #include <string>
@@ -113,5 +113,5 @@ private:
   
 };
 
-#endif /* _EASYVEC_H */
+#endif /* _YAVEC_H */
 

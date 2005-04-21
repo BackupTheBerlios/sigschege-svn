@@ -24,8 +24,8 @@
 // $Id$
 
 
-#ifndef _EASYVECELMTEXT_H
-#define _EASYVECELMTEXT_H _EASYVECELMTEXT_H 
+#ifndef _YAVECELMTEXT_H
+#define _YAVECELMTEXT_H _YAVECELMTEXT_H 
 
 #include "YVPosInt.h"
 #include "YaVecElm.h"
@@ -131,5 +131,5 @@ inline void YaVecText::updateDimensions() {
 
 
 
-#endif /* _EASYVECELMTEXT_H */
+#endif /* _YAVECELMTEXT_H */
 

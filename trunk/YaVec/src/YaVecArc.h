@@ -24,8 +24,8 @@
 // $Id$
 
 
-#ifndef _EASYVECARC_H
-#define _EASYVECARC_H _EASYVECARC_H 
+#ifndef _YAVECARC_H
+#define _YAVECARC_H _YAVECARC_H 
 
 #include "YVPosInt.h"
 #include "YaVecLine.h"
@@ -37,10 +37,12 @@
 
 using namespace std;
 
-/// An YaVecFigure polyline element - corresponds to fig element polyline (not box)
+/// An YaVecFigure arc element - corresponds to fig element arc
 class YaVecArc : public YaVecElm, public YaVecLine, public YaVecArrow {
 public:
-  /// general constructor with no extra arguments
+  /// General constructor which creates the object, from center, radius, angles.
+  YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt center, double radius, bool clockwise, double angle1, double angle3);
+  /// General constructor, which creates the arc from three points.
   YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt p1, YVPosInt p2, YVPosInt p3);
   virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right);
 
@@ -64,13 +66,13 @@ public:
 private:
   YVPosInt elmPoint1, elmPoint2, elmPoint3;
   bool isPieWedge;
-  double xCenter, yCenter, radius;
-  bool clockwise;
-  double phi1, phi2, phi3;
+  double elmXCenter, elmYCenter, elmRadius;
+  bool elmClockwise;
+  double elmPhi1, elmPhi2, elmPhi3;
 
   void computeArc(void);
   
 };
 
-#endif /* _EASYVECARC_H */
+#endif /* _YAVECARC_H */
 

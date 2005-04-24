@@ -34,6 +34,11 @@ TimList::TimList():LayoutObject(), cLayoutList() {
   cSliceHeight = 500;
   cSliceWidth  = 500;
   cSliceSpace  = 0;
+  setPadding(0);
+  cDefaultHeight = 1000;
+  cDefaultPadding = 200;
+  cDefaultBorder = true;
+  cDefaultSigOffset = 1500;
 }
 
 TimList::~TimList() {
@@ -48,7 +53,7 @@ void TimList::paint(void) {
   int current_pos = cPadding;
 
   // check if a compound is available
-  if(getCompound()==0) return;
+  if (getCompound()==0) return;
 
   // first we have to clear out compound
   getCompound()->clear();
@@ -69,6 +74,11 @@ void TimList::paint(void) {
 
 }
 
+void TimList::setTimeRange(double start, double end) {
+  cStartTime = start;
+  cEndTime = end;
+}
+
 /*!
  * Add a LayoutObject to the end of the list
  * \param newLayoutObject Handel to the Layoutobject that should be added
@@ -83,26 +93,35 @@ void TimList::addLast(Handle<LayoutObject> newLayoutObject) {
 Handle <TimLabel> TimList::createLabel() {
   Handle<TimLabel> newTimLabel = new TimLabel;
   newTimLabel->setCompound(getCompound()->compound());
+  newTimLabel->setHeight(cDefaultHeight);
+  newTimLabel->enableBorder(cDefaultBorder);
   return newTimLabel;
 }
 
 /*!
  * This Function will return a Handle to a Timing Diagram Signal Object
  */
-Handle <TimSignal> TimList::createSignal(string label, double newStartTime, double newEndTime, double defaultSlope) {
-  Handle<TimSignal> newTimSignal = new TimSignal(label, newStartTime, newEndTime, defaultSlope);
+Handle <TimSignal> TimList::createSignal(string label, double defaultSlope) {
+  Handle<TimSignal> newTimSignal = new TimSignal(label, cStartTime, cEndTime, defaultSlope);
   newTimSignal->setCompound(getCompound()->compound());
+  newTimSignal->setHeight(cDefaultHeight);
+  newTimSignal->enableBorder(cDefaultBorder);
+  newTimSignal->setPadding(cDefaultPadding);
+  newTimSignal->setSigOffset(cDefaultSigOffset);
   return newTimSignal;
 }
 
 /*!
  * This Function will return a Handle to a time scale object
  */
-Handle<TimTime> TimList::createTime(double newStartTime, double newEndTime, bool autoCalc,
-                                    double newLabelDistance, double newFirstLabel, double newTickDistance) {
-  Handle<TimTime> newTimTime = new TimTime(newStartTime, newEndTime, autoCalc, newLabelDistance,
+Handle<TimTime> TimList::createTime(bool autoCalc, double newLabelDistance, double newFirstLabel, double newTickDistance) {
+  Handle<TimTime> newTimTime = new TimTime(cStartTime, cEndTime, autoCalc, newLabelDistance,
                                            newFirstLabel, newTickDistance);
   newTimTime->setCompound(getCompound()->compound());
+  newTimTime->setHeight(cDefaultHeight);
+  newTimTime->enableBorder(cDefaultBorder);
+  newTimTime->setPadding(cDefaultPadding);
+  newTimTime->setSigOffset(cDefaultSigOffset); 
   return newTimTime;  
 }
 
@@ -112,6 +131,8 @@ Handle<TimTime> TimList::createTime(double newStartTime, double newEndTime, bool
 Handle <TimList> TimList::createList() {
   Handle<TimList> newTimList = new TimList;
   newTimList->setCompound(getCompound()->compound());
+  newTimList->enableBorder(cDefaultBorder);
+  newTimList->setPadding(cDefaultPadding);
   return newTimList;
 }
 
@@ -144,3 +165,5 @@ int TimList::getHeight() {
   }
   return(current_pos);
 }
+
+

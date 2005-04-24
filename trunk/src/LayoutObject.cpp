@@ -34,7 +34,15 @@ LayoutObject::LayoutObject(): reference(), referrers(), evListCompound() {
   cPadding    = 50;
   cOrigin.set(0,0);
 }
-  
+
+LayoutObject::LayoutObject( Handle<LayoutObject> newReference ) {
+  refCount = 0;
+  cDrawBorder = false;
+  cPadding    = 50;
+  cOrigin.set(0,0);
+  setReference(newReference);
+}
+
 LayoutObject::~LayoutObject() {
 }
 
@@ -124,8 +132,8 @@ void LayoutObject::setHeight(int height) {
 
 /*!
  * Get the height of this Layout Object
- * This is importent for all containter objects like lists
- * For this containter objects the height of all sub objects
+ * This is importent for all container objects like lists
+ * For these container objects the height of all sub objects
  * should be accumulated.
  * \return The total height of this Layout Object
  */

@@ -1,0 +1,59 @@
+// -*- c++ -*-
+// \file 
+// Copyright 2005 by Ulf Klaperski
+//
+// This file is part of Sigschege - Signal Schedule Generator
+// 
+// #############################################################################
+//
+// Sigschege is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2, or (at your option)
+// any later version.
+// 
+// Sigschege is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with the Sigschege sources; see the file COPYING.  
+//
+// #############################################################################
+//
+// $Id$
+
+#ifndef _H_TIMMARKER
+#define _H_TIMMARKER
+
+#include "LayoutObject.h"
+#include <iostream>
+
+/// Layout Time Scale Class
+/*!
+ * This Time Scale Layout Class can be used once or more to show the time
+ * as horizontal axis.
+ */
+class TimeMarker : public LayoutObject {
+public:
+  /// General constructor
+  TimeMarker(double time, Handle<LayoutObject> mainLayoutObject,
+             Handle<LayoutObject> topLayoutObject, Handle<LayoutObject> bottomLayoutObject,
+             int topPercentage=100, int bottomPercentage=100);
+  
+  /// The standard destructor
+  ~TimeMarker();
+
+  //! Paint the Signal.
+  void paint(void);
+
+private:
+  // instead of mainReference we just reuse reference from LayoutObject
+  Handle<LayoutObject> topReference;
+  Handle<LayoutObject> bottomReference;
+  int yTop, yBottom;
+  double markedTime;
+};
+
+
+#endif

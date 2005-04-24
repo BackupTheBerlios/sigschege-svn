@@ -44,19 +44,13 @@ using namespace std;
  * This class represents a timing diagram comprised layout objects,timing diagram objects like signal or floating objects.
  * Also all used event will be administered by this class.
  */
-class TimingDiagram {
+class TimingDiagram : public TimList {
 public:
   //! The standard constructor
   TimingDiagram(double newStartTime=0.0, double newEndTime=100.0);
 
   //! The standard destructor
   ~TimingDiagram();
-
-  //! Draw the whole Timing Diagram
-  void paint();
-
-  //! Add a LayoutObject to the Objectlist
-  void addLast(Handle<LayoutObject> newLayoutObject);
 
   //! Export the Timing Diagram to an xfig file
   void exportFig(string file);
@@ -67,20 +61,6 @@ public:
   //! Export the Timing Diagram to any picture format (supported by fig2dev)
   void exportAny(string file, string format);
 
-  //! Create a empty Timing Diagram Label Object
-  Handle<TimLabel> createLabel();
-
-  //! Create a empty Timing Diagram Signal Object
-  Handle<TimSignal> createSignal(string label, double defaultSlope=0.0);
-
-  //! Create a empty Timing Diagram List Object
-  Handle<TimList> createList();
-
-  //! Create a time scale
-  Handle<TimTime> createTime(bool autoCalc, double newLabelDistance, double newFirstLabel, double newTickDistance);
-  //! Set the Width of the Timing Diagram
-  void setWidth(int width);
-
   //! Set the default height of the timing diagram elements.
   void setDefaultHeight(int defaultHeight) { cDefaultHeight = defaultHeight; }
   //! Set the default padding of the timing diagram elements.
@@ -90,17 +70,8 @@ public:
   //! Set the default default offset of signals 
   void setDefaultSigOffset(int defaultSigOffset) { cDefaultSigOffset = defaultSigOffset; }
   
-  //! Set the space between two slices
-  void setSliceSpace(int space);
 private:
-  TimList       cTimList;
   YaVecFigure cYaVec;
-  // defaults for signals/labels/time scale
-  int  cDefaultHeight;
-  int  cDefaultPadding;
-  bool cDefaultBorder;
-  int  cDefaultSigOffset;
-  double startTime, endTime;
 
 };
 #endif // _H_TIMING

@@ -28,23 +28,14 @@ using namespace std;
 #include "TimingDiagram.h"
 #include <stdio.h>
 
-TimingDiagram::TimingDiagram(double newStartTime, double newEndTime) : cTimList(), cYaVec() {
-  cTimList.setCompound(cYaVec.compound());
-  cTimList.setPadding(0);
-  cDefaultHeight = 1000;
-  cDefaultPadding = 200;
-  cDefaultBorder = true;
-  cDefaultSigOffset = 1500;
-  startTime = newStartTime;
-  endTime = newEndTime;
+TimingDiagram::TimingDiagram(double startTime, double endTime) : TimList(), cYaVec() {
+  setCompound(cYaVec.compound());
+  setTimeRange(startTime, endTime);
 }
 
 TimingDiagram::~TimingDiagram() {
 }
 
-void TimingDiagram::paint() {
-  cTimList.paint();
-}
 
 /*!
  * Export the Timingdiagram to a xfig-format
@@ -74,65 +65,6 @@ void TimingDiagram::exportAny(string file, string format) {
   cYaVec.exportFig2dev(format, file);
 }
 
-/*!
- * Add a LayoutObject to the end of the list
- * \param newLayoutObject Handel to the Layoutobject that should be added
- */
-void TimingDiagram::addLast(Handle<LayoutObject> newLayoutObject) {
-  cTimList.addLast(newLayoutObject);
-}
-
-/*!
- * This Function will return a Handle to a Text Layout Object without a text
- */
-Handle <TimLabel> TimingDiagram::createLabel() {
-  Handle <TimLabel> newLabel = cTimList.createLabel();
-  newLabel->setHeight(cDefaultHeight);
-  newLabel->enableBorder(cDefaultBorder);
-  return newLabel;
-}
 
 
-/*!
- * This Function will return a Handle to a Timing Diagram Signal Object
- */
-Handle <TimSignal> TimingDiagram::createSignal(string label, double defaultSlope) {
-  Handle <TimSignal> newSignal = cTimList.createSignal(label, startTime, endTime, defaultSlope);
-  newSignal->setHeight(cDefaultHeight);
-  newSignal->enableBorder(cDefaultBorder);
-  newSignal->setPadding(cDefaultPadding);
-  newSignal->setSigOffset(cDefaultSigOffset);
-  return newSignal;
-}
 
-/*!
- * This Function will return a Handle a Timing Diagram List Object
- */
-Handle <TimList> TimingDiagram::createList() {
-  Handle <TimList> newList = cTimList.createList();
-  newList->enableBorder(cDefaultBorder);
-  newList->setPadding(cDefaultPadding);
-  return newList;
-}
-
-/*!
- * This Function will return a Handle to a time scale object
- */
-Handle<TimTime> TimingDiagram::createTime(bool autoCalc, double newLabelDistance, double newFirstLabel, double newTickDistance) {
-  Handle<TimTime> newTimTime = new TimTime(startTime, endTime, autoCalc, newLabelDistance,
-                                           newFirstLabel, newTickDistance);
-  newTimTime->setCompound(cYaVec.compound());
-  newTimTime->setHeight(cDefaultHeight);
-  newTimTime->enableBorder(cDefaultBorder);
-  newTimTime->setPadding(cDefaultPadding);
-  newTimTime->setSigOffset(cDefaultSigOffset); 
-  return newTimTime;  
-}
-
-void TimingDiagram::setWidth(int width) {
-  cTimList.setWidth(width);
-}
-
-void TimingDiagram::setSliceSpace(int space) {
-  cTimList.setSliceSpace(space);
-}

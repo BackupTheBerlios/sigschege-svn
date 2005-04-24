@@ -36,6 +36,10 @@ class LayoutObject {
 public:
   //! The standard constructor
   LayoutObject();
+
+  //! General constructor setting the reference.
+  LayoutObject( Handle<LayoutObject> newReference );
+
   
   //! The standard destructor
   virtual ~LayoutObject();
@@ -52,7 +56,7 @@ public:
    * Insert a layout object into the referrers list.
    * \return False if the layout object already  existed, true otherwise.
    * \param newReferrer pointer to the layout object that should be added to the referrers list
-   * \sa 
+   * \sa unregisterReferrer
    */
   bool registerReferrer(Handle<LayoutObject> newReferrer);
 
@@ -62,13 +66,14 @@ public:
    * deleted another layout object.
    * \return False if the layout object did not exist, true otherwise.
    * \param newReferrer pointer to the layout object that should be added to the referrers list
-   * \sa unregisterReferrer
+   * \sa registerReferrer
    */
   bool unregisterReferrer(Handle<LayoutObject> newReferrer);
 
   //! Get the pointer of the reference layout object.
   /*!
-   * This function returns the pointer of the reference layout object or NULL if it has no reference layout object
+   * This function returns the pointer of the reference layout object or NULL if it has
+   * no reference layout object.
    * \return A pointer to the reference layout object
    * \sa registerReferrer
    */
@@ -84,7 +89,7 @@ public:
    */
   bool setReference(Handle<LayoutObject> new_reference);
 
-  //! Delete the reference of this layout object
+  //! Delete the reference of this layout object.
   /*!
    * Delete the reference layout object. The parent layout object will NOT be destroyed by this function.
    * \sa hasreference getreference setreference
@@ -116,7 +121,7 @@ public:
   void setHeight(int height);
 
   //! Get the Size of this Layout Object
-  YVPosInt getSize();
+  virtual YVPosInt getSize();
 
   //! Get the height of this Layout Object
   virtual int getHeight();
@@ -139,11 +144,9 @@ protected:
   int      cPadding;
   YVPosInt cOrigin;
   YVPosInt cSize;
-
-private:
   int refCount;
-  bool cDrawBorder;
   Handle<LayoutObject> reference;
+  bool cDrawBorder;
   vector< Handle<LayoutObject> > referrers;
   YaVecCompound *evListCompound;
 };

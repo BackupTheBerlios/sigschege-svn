@@ -49,20 +49,23 @@ public:
   //! Add a LayoutObject to the Objectlist
   void addLast(Handle<LayoutObject> newLayoutObject);
 
-  //! Get the Height of the whole List
+  //! Get the height of the whole list.
   int getHeight();
 
-  //! Create a empty Timing Diagram Label Object
+  //! The time range for all elements of this TimList.
+  void setTimeRange(double startTime, double endTime);
+  
+  
+  //! Create an empty Timing Diagram Label Object
   Handle<TimLabel> createLabel();
 
-  //! Create a empty Timing Diagram Signal Object
-  Handle<TimSignal> createSignal(string label, double newStartTime, double newEndTime, double defaultSlope=0.0);
+  //! Create an empty Timing Diagram Signal Object
+  Handle<TimSignal> createSignal(string label, double defaultSlope=0.0);
 
   //! Create a time scale
-  Handle<TimTime> createTime(double newStartTime, double newEndTime, bool autoCalc,
-                             double newLabelDistance, double newFirstLabel, double newTickDistance);
+  Handle<TimTime> createTime(bool autoCalc, double newLabelDistance, double newFirstLabel, double newTickDistance);
   
-  //! Create a empty Timing Diagram Signal Object
+  //! Create an empty Timing Diagram List Object.
   Handle<TimList> createList();
 
   //! Set the height for each slice
@@ -71,11 +74,17 @@ public:
   //! Set the Slice Space
   void setSliceSpace(int space);
 
-private:
+protected:
   vector< Handle<LayoutObject> > cLayoutList;
   int cSliceHeight;
   int cSliceWidth;
   int cSliceSpace;
+  double cStartTime, cEndTime;
+  // defaults for signals/labels/time scale
+  int  cDefaultHeight;
+  int  cDefaultPadding;
+  bool cDefaultBorder;
+  int  cDefaultSigOffset;
 };
 
 #endif

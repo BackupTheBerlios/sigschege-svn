@@ -42,14 +42,14 @@ TimSignal::TimSignal(double defaultSlope):LayoutObject(), EventList(defaultSlope
  * Construct a Timing Diagram Signal Object with a Text Label
  * \param signalLabel Signal Label
  */
-TimSignal::TimSignal(string signalLabel, double newStartTime, double newEndTime, double defaultSlope)
+TimSignal::TimSignal(string signalLabel, double startTime, double endTime, double defaultSlope)
   : LayoutObject(), EventList(defaultSlope) {
   cText      = signalLabel;
   cFontType  = 14;
   cFontSize  = 20;
   cSigOffset = 0;
-  startTime = newStartTime;
-  endTime = newEndTime;
+  cStartTime = startTime;
+  cEndTime = endTime;
 }
 
 TimSignal::~TimSignal() {
@@ -89,9 +89,10 @@ void TimSignal::paint(void) {
   text->setText(cText);
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(LayoutObject::cOrigin+YVPosInt(cPadding,(LayoutObject::cSize.ypos()+text->getHeight())/2));
+  text->setOrigin(LayoutObject::cOrigin+YVPosInt(cPadding, (LayoutObject::cSize.ypos()+text->getHeight())/2));
   
-  EventList::setCompound(getCompound()->compound(),LayoutObject::cOrigin+YVPosInt(cPadding+cSigOffset,cPadding),LayoutObject::cSize-YVPosInt(cSigOffset+2*cPadding,2*cPadding), 0, 222.0);
+  EventList::setCompound(getCompound()->compound(), LayoutObject::cOrigin+YVPosInt(cPadding+cSigOffset,cPadding),
+                         LayoutObject::cSize-YVPosInt(cSigOffset+2*cPadding,2*cPadding), cStartTime, cEndTime);
   EventList::paint();
 
 }

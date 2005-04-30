@@ -60,15 +60,6 @@ public:
 
   //! Export the Timing Diagram to any picture format (supported by fig2dev)
   void exportAny(string file, string format);
-
-  //! Set the default height of the timing diagram elements.
-  void setDefaultHeight(int defaultHeight) { cDefaultHeight = defaultHeight; }
-  //! Set the default padding of the timing diagram elements.
-  void setDefaultPadding(int defaultPadding) { cDefaultPadding = defaultPadding; }
-  //! Set the default default border of the timing diagram elements.
-  void setDefaultBorder(bool defaultBorder) { cDefaultBorder = defaultBorder; }
-  //! Set the default default offset of signals 
-  void setDefaultSigOffset(int defaultSigOffset) { cDefaultSigOffset = defaultSigOffset; }
   
 private:
   YaVecFigure cYaVec;

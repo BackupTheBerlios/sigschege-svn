@@ -71,6 +71,13 @@ void TimList::paint(void) {
     current_pos+=LayoutObjectIter->Object()->getHeight()+cSliceSpace;
   }
 
+  for (LayoutObjectIter = cOverlayList.begin(); LayoutObjectIter != cOverlayList.end(); LayoutObjectIter++){
+    LayoutObjectIter->Object()->setCompound(getCompound()->compound());
+    LayoutObjectIter->Object()->setOrigin(cOrigin+YVPosInt(cPadding,current_pos));
+    LayoutObjectIter->Object()->setWidth(cSize.xpos()-2*cPadding);
+    LayoutObjectIter->Object()->paint();
+    current_pos+=LayoutObjectIter->Object()->getHeight()+cSliceSpace;
+  }
 
 }
 
@@ -85,6 +92,14 @@ void TimList::setTimeRange(double start, double end) {
  */
 void TimList::addLast(Handle<LayoutObject> newLayoutObject) {
   cLayoutList.push_back(newLayoutObject);
+}
+
+/*!
+ * Add a LayoutObject to the end of the overlay list
+ * \param newLayoutObject Handel to the Layoutobject that should be added
+ */
+void TimList::addOverlay(Handle<LayoutObject> newLayoutObject) {
+  cOverlayList.push_back(newLayoutObject);
 }
 
 /*!
@@ -124,6 +139,15 @@ Handle<TimTime> TimList::createTime(bool autoCalc, double newLabelDistance, doub
   newTimTime->setSigOffset(cDefaultSigOffset); 
   return newTimTime;  
 }
+
+
+Handle<TimeMarker> TimList::createTimeMarker(double time, LayoutObject* topLayoutObject,
+                                             LayoutObject* bottomLayoutObject) {
+  Handle<TimeMarker> newTimeMarker = new TimeMarker(time, this, topLayoutObject, bottomLayoutObject);
+  
+  return newTimeMarker;
+}
+
 
 /*!
  * This Function will return a Handle a Timing Diagram Signal Object

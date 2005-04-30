@@ -126,6 +126,11 @@ void layout (void) {
   tim.addLast(Signal2.Object());
   tim.addLast(Time1.Object());
 
+  Handle<TimeMarker> tm0;
+  tm0 = tim.createTimeMarker(100.0, Signal1.Object(), Signal2.Object() );
+  tm0->setColor(3);
+  tim.addOverlay(tm0.Object());
+
   tim.setWidth(10000);
   tim.setSliceSpace(50);
 

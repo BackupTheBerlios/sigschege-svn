@@ -72,7 +72,7 @@ template<class T> class Handle {
   }
 
   Handle<T>& operator=(const Handle<T> &from) {
-    if(this == &from) return *this;
+    if(this == &from) return *this; // handle assignment to self
     if (myObject != 0) {
       myObject->decrementRefcount();
     }

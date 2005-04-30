@@ -33,6 +33,7 @@ using namespace std;
 #include "TimLabel.h"
 #include "TimTime.h"
 #include "TimSignal.h"
+#include "TimeMarker.h"
 #include "Handle.t"
 
 class TimList : public LayoutObject {
@@ -43,11 +44,14 @@ public:
   //! The standard destructor
   ~TimList();
 
-  //! Paint the List
+  //! Paint the List.
   void paint(void);
 
-  //! Add a LayoutObject to the Objectlist
+  //! Add a LayoutObject to the Objectlist.
   void addLast(Handle<LayoutObject> newLayoutObject);
+
+  //! Add a LayoutObject to the Overlay list.
+  void addOverlay(Handle<LayoutObject> newLayoutObject);
 
   //! Get the height of the whole list.
   int getHeight();
@@ -56,34 +60,58 @@ public:
   void setTimeRange(double startTime, double endTime);
   
   
-  //! Create an empty Timing Diagram Label Object
+  //! Create an empty Timing Diagram Label Object.
   Handle<TimLabel> createLabel();
 
-  //! Create an empty Timing Diagram Signal Object
+  //! Create an empty Timing Diagram Signal Object.
   Handle<TimSignal> createSignal(string label, double defaultSlope=0.0);
 
-  //! Create a time scale
+  //! Create a time scale.
   Handle<TimTime> createTime(bool autoCalc, double newLabelDistance, double newFirstLabel, double newTickDistance);
-  
+
+  //! Create a time marker.
+  Handle<TimeMarker> createTimeMarker(double time, LayoutObject* topLayoutObject, LayoutObject* bottomLayoutObject);
+
   //! Create an empty Timing Diagram List Object.
   Handle<TimList> createList();
 
+  //! Return start time of this timing list.
+  double startTime(void) { return cStartTime; }
+  //! Return end time of this timing list.
+  double endTime(void) { return cEndTime; }
+  
   //! Set the height for each slice
   void setSliceHeight(int nHeight);
 
   //! Set the Slice Space
   void setSliceSpace(int space);
 
+  //! Set the default height of the timing diagram elements.
+  void setDefaultHeight(int defaultHeight) { cDefaultHeight = defaultHeight; }
+  //! Set the default padding of the timing diagram elements.
+  void setDefaultPadding(int defaultPadding) { cDefaultPadding = defaultPadding; }
+  //! Set the default default border of the timing diagram elements.
+  void setDefaultBorder(bool defaultBorder) { cDefaultBorder = defaultBorder; }
+  //! Set the default offset of signals
+  void setDefaultSigOffset(int defaultSigOffset) { cDefaultSigOffset = defaultSigOffset; }
+  //! Get the default offset of signals
+  int getDefaultSigOffset(void) { return cDefaultSigOffset; }
+  
+
 protected:
   vector< Handle<LayoutObject> > cLayoutList;
+  vector< Handle<LayoutObject> > cOverlayList;
   int cSliceHeight;
   int cSliceWidth;
+  // the vertical space between two slices
   int cSliceSpace;
   double cStartTime, cEndTime;
   // defaults for signals/labels/time scale
   int  cDefaultHeight;
   int  cDefaultPadding;
   bool cDefaultBorder;
+  // NOTE: all "time aware" children (signal, time scale, time marker) must
+  // have their sigOffset consistent with the default
   int  cDefaultSigOffset;
 };
 

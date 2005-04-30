@@ -28,7 +28,7 @@ using namespace std;
 #include "LayoutObject.h"
 #include <iostream>
 
-LayoutObject::LayoutObject(): reference(), referrers(), evListCompound() {
+LayoutObject::LayoutObject(): cReference(), cReferrers(), cCompound() {
   refCount = 0;
   cDrawBorder = false;
   cPadding    = 50;
@@ -51,11 +51,11 @@ LayoutObject::~LayoutObject() {
  * \param newCompound The Compound to use.
  */
 void LayoutObject::setCompound(YaVecCompound *newCompound) {
-  evListCompound = newCompound;
+  cCompound = newCompound;
 }
 
 YaVecCompound* LayoutObject::getCompound() {
-  return evListCompound;
+  return cCompound;
 }
 
 /*!
@@ -170,19 +170,19 @@ void LayoutObject::setPadding(int newPadding) {
 
 bool LayoutObject::registerReferrer(Handle<LayoutObject> newReferrer) {
   vector< Handle<LayoutObject> >::iterator referrersIter;
-    for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
+    for ( referrersIter = cReferrers.begin(); referrersIter != cReferrers.end(); ++referrersIter ) {
       if (referrersIter->Object()==newReferrer.Object()) return false;
     }
-    referrers.push_back(newReferrer);
+    cReferrers.push_back(newReferrer);
     refCount++;
     return true;
 }
 
 bool LayoutObject::unregisterReferrer(Handle<LayoutObject> obsoleteReferrer) {
   vector< Handle<LayoutObject> >::iterator referrersIter;
-    for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
+    for ( referrersIter = cReferrers.begin(); referrersIter != cReferrers.end(); ++referrersIter ) {
       if (referrersIter->Object()==obsoleteReferrer.Object()) {
-        referrers.erase(referrersIter);
+        cReferrers.erase(referrersIter);
         return true;
       }
     }
@@ -191,7 +191,7 @@ bool LayoutObject::unregisterReferrer(Handle<LayoutObject> obsoleteReferrer) {
 }
 
 Handle<LayoutObject> LayoutObject::getReference() {
-  return reference;
+  return cReference;
 }
 
 bool LayoutObject::setReference(Handle<LayoutObject> new_reference) {
@@ -202,16 +202,16 @@ bool LayoutObject::setReference(Handle<LayoutObject> new_reference) {
       if (referenceWalk==this) {
         return false;
       }
-      referenceWalk = referenceWalk->reference.Object();
+      referenceWalk = referenceWalk->cReference.Object();
     } while (referenceWalk);
   }
   
-  if (reference.Object()!=0) { // unregister from an old reference, if one existed
-    reference.Object()->unregisterReferrer(this);
+  if (cReference.Object()!=0) { // unregister from an old reference, if one existed
+    cReference.Object()->unregisterReferrer(this);
   }
-  reference = new_reference;
-  if (reference.Object()!=0) { // make sure the event this refers to knows, unless it's a NULL pointer
-    reference.Object()->registerReferrer(this); 
+  cReference = new_reference;
+  if (cReference.Object()!=0) { // make sure the event this refers to knows, unless it's a NULL pointer
+    cReference.Object()->registerReferrer(this); 
   }
   return true;
 }

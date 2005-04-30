@@ -33,13 +33,13 @@ using namespace std;
 #include <string>
 
 //! Signal Call
-class TimSignal : public LayoutObject, protected EventList {
+class TimSignal : public LayoutObject, public EventList {
 public:
   //! The standard constructor
   TimSignal(double defaultSlope=0.0);
 
   //! Create a Signal with Text
-  TimSignal(string signalLabel, double newStartTime, double newEndTime, double defaultSlope=0.0);
+  TimSignal(string signalLabel, double startTime, double endTime, double defaultSlope=0.0);
 
   //! The standard destructor
   ~TimSignal();
@@ -57,17 +57,13 @@ public:
   void paint(void);
 
   LayoutObject::setCompound;
-  EventList::createEvent;
-  EventList::deleteEvent;
-  EventList::debugEvents;
-  EventList::setNamedEvents;
-  EventList::setDefaultSlope;
+
 private:
   string    cText;
   int       cFontType;
   int       cFontSize;
   int       cSigOffset;
-  double    startTime, endTime;
+  double    cStartTime, cEndTime;
 };
 
 #endif

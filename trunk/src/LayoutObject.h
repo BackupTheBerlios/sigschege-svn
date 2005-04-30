@@ -141,14 +141,16 @@ public:
   void setPadding(int newPadding);
 
 protected:
+  // the padding of this layout object 
   int      cPadding;
+  // the origin (upper left corner) of this layout object
   YVPosInt cOrigin;
   YVPosInt cSize;
   int refCount;
-  Handle<LayoutObject> reference;
+  Handle<LayoutObject> cReference;
   bool cDrawBorder;
-  vector< Handle<LayoutObject> > referrers;
-  YaVecCompound *evListCompound;
+  vector< Handle<LayoutObject> > cReferrers;
+  YaVecCompound *cCompound;
 };
 
 #endif

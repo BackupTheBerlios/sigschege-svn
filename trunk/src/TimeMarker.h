@@ -38,12 +38,17 @@ class TimeMarker : public LayoutObject {
 public:
   /// General constructor
   TimeMarker(double time, Handle<LayoutObject> mainLayoutObject,
-             Handle<LayoutObject> topLayoutObject, Handle<LayoutObject> bottomLayoutObject,
+             LayoutObject* topLayoutObject = 0,
+             LayoutObject* bottomLayoutObject = 0,
              int topPercentage=100, int bottomPercentage=100);
   
   /// The standard destructor
   ~TimeMarker();
 
+  /// Set the color for this time marker.
+  void setColor(int color) { cColor = color; };
+ 
+  
   //! Paint the Signal.
   void paint(void);
 
@@ -52,6 +57,7 @@ private:
   Handle<LayoutObject> topReference;
   Handle<LayoutObject> bottomReference;
   int yTop, yBottom;
+  int cColor;
   double markedTime;
 };
 

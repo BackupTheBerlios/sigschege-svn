@@ -2,7 +2,7 @@
 all: docu
 
 docu:
-	doxygen doxygen_easyvec.cfg
+	doxygen doxygen_yavec.cfg
 
 distclean: clean
 

@@ -29,25 +29,30 @@
 #include "LayoutObject.h"
 #include <iostream>
 
-/// Layout Time Scale Class
+/// Layout Time Marker Class
 /*!
  * This Time Scale Layout Class can be used once or more to show the time
  * as horizontal axis.
  */
 class TimeMarker : public LayoutObject {
 public:
-  /// General constructor
+  //! General constructor
   TimeMarker(double time, Handle<LayoutObject> mainLayoutObject,
              LayoutObject* topLayoutObject = 0,
              LayoutObject* bottomLayoutObject = 0,
              int topPercentage=100, int bottomPercentage=100);
   
-  /// The standard destructor
+  //! The standard destructor
   ~TimeMarker();
 
-  /// Set the color for this time marker.
+  //! Set the color for this time marker.
   void setColor(int color) { cColor = color; };
- 
+
+  //! Set the time at which to paint the time marker.
+  void setTime(double time) { markedTime = time; };
+
+  //! Return the time at which to paint the time marker.
+  double getTime(void) { return markedTime; };
   
   //! Paint the Signal.
   void paint(void);

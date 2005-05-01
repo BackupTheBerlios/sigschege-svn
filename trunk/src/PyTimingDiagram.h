@@ -51,6 +51,11 @@ typedef struct {
   Handle<TimLabel> label;
 } TimLabelObject;
 
+typedef struct {
+  PyObject_HEAD
+  Handle<TimeMarker> timemarker;
+} TimeMarkerObject;
+
 extern "C" {
 
   PyMODINIT_FUNC initTimingDiagram(void);

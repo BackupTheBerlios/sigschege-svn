@@ -28,7 +28,9 @@
 
 using namespace std;
 
+////////////////////////////////////////////////////////////////////////////////
 // add Label class to TimingDiagram Module
+////////////////////////////////////////////////////////////////////////////////
 
 static PyObject* TimLabel_new(PyTypeObject *type, PyObject *argc, PyObject *kwds) {
   TimLabelObject *self;
@@ -111,7 +113,9 @@ static  PyTypeObject TimLabelType = {
   TimLabel_new,              /* tp_new */
 };
 
+////////////////////////////////////////////////////////////////////////////////
 // add Timescale class to TimingDiagram Module
+////////////////////////////////////////////////////////////////////////////////
 
 static PyObject* TimTimescale_new(PyTypeObject *type, PyObject *argc, PyObject *kwds) {
   TimTimescaleObject *self;
@@ -181,7 +185,9 @@ static  PyTypeObject TimTimescaleType = {
   TimTimescale_new,                 /* tp_new */
 };
 
+////////////////////////////////////////////////////////////////////////////////
 // add Signal class to TimingDiagram Module
+////////////////////////////////////////////////////////////////////////////////
 
 static PyObject* TimSignal_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
   TimSignalObject *self;
@@ -284,7 +290,106 @@ static  PyTypeObject TimSignalType = {
   TimSignal_new,                 /* tp_new */
 };
 
+////////////////////////////////////////////////////////////////////////////////
+// add TimeMarker class to TimingDiagram Module
+////////////////////////////////////////////////////////////////////////////////
+
+static PyObject* TimeMarker_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+  TimeMarkerObject *self;
+  self = (TimeMarkerObject *)type->tp_alloc(type, 0);
+
+  return (PyObject *) self;
+}
+
+static int TimeMarker_init(TimeMarkerObject *self, PyObject *args, PyObject *kwds) {
+  //self->signal = new TimeMarker();
+  return (0);
+}
+
+static void TimeMarker_dealloc(TimeMarkerObject *self) {
+  self->ob_type->tp_free((PyObject *)self);
+}
+
+static PyObject * TimeMarker_setColor(TimeMarkerObject *self, PyObject *args, PyObject *kwds) {
+  int color = 0;
+  static char *kwlist[] = {"color", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "d", kwlist, &color)) return NULL;
+
+  self->timemarker->setColor(color);
+  Py_INCREF(Py_None);
+  return (Py_None);
+}
+
+static PyObject * TimeMarker_setTime(TimeMarkerObject *self, PyObject *args, PyObject *kwds) {
+  double time = 0.0;
+  static char *kwlist[] = {"time", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "d", kwlist, &time)) return NULL;
+
+  self->timemarker->setTime(time);
+  Py_INCREF(Py_None);
+  return (Py_None);
+}
+
+static PyMethodDef TimeMarker_methods[] = {
+  {"setTime", (PyCFunction)TimeMarker_setTime, METH_VARARGS|METH_KEYWORDS, "Set the time to be marked."},
+  {"setColor", (PyCFunction)TimeMarker_setColor, METH_VARARGS|METH_KEYWORDS, "Set the color of this time marker."},
+  {NULL}  /* Sentinel */
+};
+
+static int TimeMarker_print(TimeMarkerObject *obj, FILE *fp, int flags)
+{
+  double time = obj->timemarker->getTime();
+  fprintf(fp, "\"<TimeMarker @  %d>\"", time);
+  return 0;
+}
+
+static  PyTypeObject TimeMarkerType = {
+  PyObject_HEAD_INIT(NULL)
+  0,                         /*ob_size*/
+  "Signal",               /*tp_name*/
+  sizeof(TimeMarkerObject),   /*tp_basicsize*/
+  0,                         /*tp_itemsize*/
+  (destructor)TimeMarker_dealloc,                         /*tp_dealloc*/
+  (printfunc)TimeMarker_print,            /*tp_print*/
+  0,                         /*tp_getattr*/
+  0,                         /*tp_setattr*/
+  0,                         /*tp_compare*/
+  0,                         /*tp_repr*/
+  0,                         /*tp_as_number*/
+  0,                         /*tp_as_sequence*/
+  0,                         /*tp_as_mapping*/
+  0,                         /*tp_hash */
+  0,                         /*tp_call*/
+  0,                         /*tp_str*/
+  0,                         /*tp_getattro*/
+  0,                         /*tp_setattro*/
+  0,                         /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,        /*tp_flags*/
+  "TimingDiagram",           /*tp_doc */
+  0,                         /* tp_traverse */
+  0,                         /* tp_clear */
+  0,                         /* tp_richcompare */
+  0,                         /* tp_weaklistoffset */
+  0,                         /* tp_iter */
+  0,                         /* tp_iternext */
+  TimeMarker_methods,                         /* tp_methods */
+  0,                         /* tp_members */
+  0,                         /* tp_getset */
+  0,                         /* tp_base */
+  0,                         /* tp_dict */
+  0,                         /* tp_descr_get */
+  0,                         /* tp_descr_set */
+  0,                         /* tp_dictoffset */
+  (initproc)TimeMarker_init,      /* tp_init */
+  0,                         /* tp_alloc */
+  TimeMarker_new,                 /* tp_new */
+};
+
+////////////////////////////////////////////////////////////////////////////////
 // add a new TimingDiagram class to python
+////////////////////////////////////////////////////////////////////////////////
 
 static PyObject* TimingDiagram_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
   TimingDiagramObject *self;
@@ -316,7 +421,6 @@ static void TimingDiagram_dealloc(TimingDiagramObject *self) {
 
 static PyObject * TimingDiagram_exportFig(TimingDiagramObject *self) {
   self->tim->exportFig("demo.fig");
-  printf("export fix\n");
   Py_INCREF(Py_None);
   return (Py_None);
 }
@@ -362,6 +466,37 @@ static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject
   // attach C++ signal to Python signal
   newPSignal->signal = newSignal;
   return (newPSignalObj);
+}
+
+static PyObject * TimingDiagram_createTimemarker(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
+
+  double time = 0.0;
+  PyObject *topRef = 0;
+  PyObject *bottomRef = 0;
+  LayoutObject *topRefL = 0;
+  LayoutObject *bottomRefL = 0;
+  static char *kwlist[] = {"time", "topRef", "bottomRef", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "dOO", kwlist, &time, &topRef, &bottomRef))
+    return NULL;
+
+  //TODO: get LayoutObject from python object and pass it to the TimeMraker class
+//  if (PyObject_IsInstance(topRef, T) {
+//      }
+//
+  // create new C++ signal object with TimingDiagram class 
+  Handle<TimeMarker> newTimeMarker;
+  newTimeMarker = self->tim->createTimeMarker(time, topRefL, bottomRefL);
+  self->tim->addOverlay(newTimeMarker.Object());
+  // create a Python signal object to return to user 
+  PyObject *newPTimeMarkerObj;
+  TimeMarkerObject *newPTimeMarker;
+  newPTimeMarkerObj = TimeMarker_new(&TimeMarkerType, 0, 0);
+  newPTimeMarker = (TimeMarkerObject *)newPTimeMarkerObj;
+  TimeMarker_init(newPTimeMarker, 0, 0);
+  // attach C++ signal to Python signal
+  newPTimeMarker->timemarker = newTimeMarker;
+  return (newPTimeMarkerObj);
 }
 
 static PyObject * TimingDiagram_createTimescale(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
@@ -432,6 +567,9 @@ static PyMethodDef TimingDiagram_methods[] = {
   {"createTimescale", (PyCFunction)TimingDiagram_createTimescale, METH_VARARGS|METH_KEYWORDS,
    "Create a Time Scale in the Timing Diagram."
   },
+  {"createTimemarker", (PyCFunction)TimingDiagram_createTimemarker, METH_VARARGS|METH_KEYWORDS,
+   "Create a Time Marker in the Timing Diagram."
+  },
   {"createLabel", (PyCFunction)TimingDiagram_createLabel, METH_VARARGS|METH_KEYWORDS,
    "Create a Label in the Timing Diagram."
   },
@@ -488,6 +626,9 @@ static PyTypeObject TimingDiagramType = {
   TimingDiagram_new,                 /* tp_new */
 };
 
+////////////////////////////////////////////////////////////////////////////////
+// initialize the sigschege objects
+////////////////////////////////////////////////////////////////////////////////
 
 PyMODINIT_FUNC
 initTimingDiagram(void) 
@@ -495,20 +636,18 @@ initTimingDiagram(void)
   PyObject* m;
     
   //TimingDiagramType.tp_new = PyType_GenericNew;
-  if (PyType_Ready(&TimingDiagramType) < 0)
-    return;
+  if (PyType_Ready(&TimingDiagramType) < 0) return;
     
   //TimSignalType.tp_new = PyType_GenericNew;
-  if (PyType_Ready(&TimSignalType) < 0)
-    return;
+  if (PyType_Ready(&TimSignalType) < 0) return;
 
   //TimTimescaleType.tp_new = PyType_GenericNew;
-  if (PyType_Ready(&TimTimescaleType) < 0)
-    return;
+  if (PyType_Ready(&TimTimescaleType) < 0) return;
 
   //TimTimescaleType.tp_new = PyType_GenericNew;
-  if (PyType_Ready(&TimLabelType) < 0)
-    return;
+  if (PyType_Ready(&TimLabelType) < 0) return;
+    
+  if (PyType_Ready(&TimeMarkerType) < 0) return;
     
   m = Py_InitModule3("TimingDiagram", TimingDiagram_methods,
                      "TimingDiagram Base Class.");
@@ -524,5 +663,8 @@ initTimingDiagram(void)
 
   Py_INCREF(&TimLabelType);
   PyModule_AddObject(m, "Label", (PyObject *)&TimLabelType);
+
+  Py_INCREF(&TimeMarkerType);
+  PyModule_AddObject(m, "Timemarker", (PyObject *)&TimeMarkerType);
 }
 

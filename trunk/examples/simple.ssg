@@ -24,9 +24,13 @@ for i in range(5,220,20):
    mclk.addEvent(i, "1")
    mclk.addEvent(state1="0", time=i+10)
 
-#tm = md.createTimemarker(100.0, mdi, mdo)
-#tm.setColor(5)
-#
+tm1 = md.createTimemarker(115.0, mdi, mts)
+tm1.setColor(1)
+tm1.setTime(80.0)
+
+tm2 = md.createTimemarker(100.0, mdi, mdo)
+tm2.setColor(4)
+
 print mclk
 md.exportFig()
 md.exportPic("Simple.png", "png")

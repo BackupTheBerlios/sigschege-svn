@@ -314,7 +314,7 @@ static PyObject * TimeMarker_setColor(TimeMarkerObject *self, PyObject *args, Py
   int color = 0;
   static char *kwlist[] = {"color", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "d", kwlist, &color)) return NULL;
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "i", kwlist, &color)) return NULL;
 
   self->timemarker->setColor(color);
   Py_INCREF(Py_None);
@@ -465,7 +465,20 @@ static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject
   TimSignal_init(newPSignal, 0, 0);
   // attach C++ signal to Python signal
   newPSignal->signal = newSignal;
+  Py_INCREF(newPSignalObj);
   return (newPSignalObj);
+}
+
+static LayoutObject* getLayoutFromPyObject(PyObject* pyobj) {
+  LayoutObject* lptr;
+  if (PyObject_IsInstance(pyobj, (PyObject*)&TimSignalType)) {
+    lptr = (((TimSignalObject *)pyobj)->signal).Object();
+  } else if (PyObject_IsInstance(pyobj, (PyObject*)&TimTimescaleType)) {
+    lptr = (((TimTimescaleObject *)pyobj)->timescale).Object();
+  } else if (PyObject_IsInstance(pyobj, (PyObject*)&TimLabelType)) {
+    lptr = (((TimLabelObject *)pyobj)->label).Object();
+  }
+  return lptr;
 }
 
 static PyObject * TimingDiagram_createTimemarker(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
@@ -480,10 +493,9 @@ static PyObject * TimingDiagram_createTimemarker(TimingDiagramObject *self, PyOb
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "dOO", kwlist, &time, &topRef, &bottomRef))
     return NULL;
 
-  //TODO: get LayoutObject from python object and pass it to the TimeMraker class
-//  if (PyObject_IsInstance(topRef, T) {
-//      }
-//
+  topRefL = getLayoutFromPyObject(topRef);
+  bottomRefL = getLayoutFromPyObject(bottomRef);
+
   // create new C++ signal object with TimingDiagram class 
   Handle<TimeMarker> newTimeMarker;
   newTimeMarker = self->tim->createTimeMarker(time, topRefL, bottomRefL);
@@ -496,6 +508,7 @@ static PyObject * TimingDiagram_createTimemarker(TimingDiagramObject *self, PyOb
   TimeMarker_init(newPTimeMarker, 0, 0);
   // attach C++ signal to Python signal
   newPTimeMarker->timemarker = newTimeMarker;
+  Py_INCREF(newPTimeMarkerObj);
   return (newPTimeMarkerObj);
 }
 
@@ -521,6 +534,7 @@ static PyObject * TimingDiagram_createTimescale(TimingDiagramObject *self, PyObj
   TimTimescale_init(newPTimescale, 0, 0);
   // attach C++ signal to Python signal
   newPTimescale->timescale = newTimescale;
+  Py_INCREF(newPTimescaleObj);
   return (newPTimescaleObj);
 }
 
@@ -546,6 +560,7 @@ static PyObject * TimingDiagram_createLabel(TimingDiagramObject *self, PyObject 
   TimLabel_init(newPLabel, 0, 0);
   // attach C++ signal to Python signal
   newPLabel->label = newLabel;
+  Py_INCREF(newPLabelObj);
   return (newPLabelObj);
 }
 

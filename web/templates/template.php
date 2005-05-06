@@ -6,7 +6,7 @@
   <link rel="stylesheet" type="text/css" href="css/sigschege.css">
 </head>
 <body>
-<?php include_once("sitebar.php") ?>
+<?php include_once("sidebar.php") ?>
 <div class="right">
 
 </div>

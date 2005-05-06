@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" href="css/sigschege.css">
 </head>
 <body>
-<?php include_once("sitebar.php") ?>
+<?php include_once("sidebar.php") ?>
 <div class="right">
 <h1>Introduction</h1>
 <p> Sigschege will be a software to create timing diagrams for digital electrical circuits.

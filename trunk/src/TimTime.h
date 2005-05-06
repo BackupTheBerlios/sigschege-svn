@@ -39,12 +39,21 @@ using namespace std;
 class TimTime : public LayoutObject {
 public:
   /// General constructor
-  TimTime(double newStartTime, double newEndTime, bool autoCalc = true,
+  TimTime(double newStartTime, double newEndTime,
           double newLabelDistance = 0.0, double newFirstLabel = 0.0, double newTickDistance = 0.0);
   
   /// The standard destructor
   ~TimTime();
   
+  /// Set new values for ticks and labels.
+  /*
+   * \param newLabelDistance The distance between two labels. If set to zero, automatic calculation is
+   * switched on.
+   * \param newFirstLabel The time at which the first label should be drawn.
+   * \param newTickDistance The distance between two ticks.
+   */
+  void setTicks(double newLabelDistance = 0.0, double newFirstLabel = 0.0, double newTickDistance = 0.0);
+
   /// Set the Font Type
   void setFontType(int new_font);
 
@@ -64,10 +73,11 @@ private:
   double labelDistance;
   double firstLabel;
   double tickDistance;
-  double startTime, endTime;
+  double cStartTime, cEndTime;
   int cFontType;
   int cFontSize;
   int cSigOffset;
+  bool autoCalc;
 };
 
 #endif // _H_TIMTIME

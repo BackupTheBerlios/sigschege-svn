@@ -73,8 +73,6 @@ void TimList::paint(void) {
 
   for (LayoutObjectIter = cOverlayList.begin(); LayoutObjectIter != cOverlayList.end(); LayoutObjectIter++){
     LayoutObjectIter->Object()->setCompound(getCompound()->compound());
-    LayoutObjectIter->Object()->setOrigin(cOrigin+YVPosInt(cPadding,current_pos));
-    LayoutObjectIter->Object()->setWidth(cSize.xpos()-2*cPadding);
     LayoutObjectIter->Object()->paint();
     current_pos+=LayoutObjectIter->Object()->getHeight()+cSliceSpace;
   }
@@ -129,8 +127,8 @@ Handle <TimSignal> TimList::createSignal(string label, double defaultSlope) {
 /*!
  * This Function will return a Handle to a time scale object
  */
-Handle<TimTime> TimList::createTime(bool autoCalc, double newLabelDistance, double newFirstLabel, double newTickDistance) {
-  Handle<TimTime> newTimTime = new TimTime(cStartTime, cEndTime, autoCalc, newLabelDistance,
+Handle<TimTime> TimList::createTime(double newLabelDistance, double newFirstLabel, double newTickDistance) {
+  Handle<TimTime> newTimTime = new TimTime(cStartTime, cEndTime, newLabelDistance,
                                            newFirstLabel, newTickDistance);
   newTimTime->setCompound(getCompound()->compound());
   newTimTime->setHeight(cDefaultHeight);

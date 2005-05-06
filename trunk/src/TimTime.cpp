@@ -36,18 +36,13 @@ using namespace std;
 /*!
  * This constructor will create an Timing Diagram Label Object
  */
-TimTime::TimTime(double newStartTime, double newEndTime, bool autoCalc,
+TimTime::TimTime(double newStartTime, double newEndTime,
                  double newLabelDistance, double newFirstLabel, double newTickDistance) : LayoutObject() {
   cFontType = 14;
   cFontSize = 20;
-  startTime = newStartTime;
-  endTime = newEndTime;
-  if (autoCalc) calcTicks();
-  else {
-    labelDistance = newLabelDistance;
-    firstLabel = newFirstLabel;
-    tickDistance = newTickDistance;
-  }
+  cStartTime = newStartTime;
+  cEndTime = newEndTime;
+  setTicks(newLabelDistance, newFirstLabel, newTickDistance);
 }
 
 
@@ -55,7 +50,44 @@ TimTime::~TimTime(){
 }
 
 void TimTime::calcTicks(void) {
-  // TODO
+  double timeRange = cEndTime-cStartTime;
+  double normFactor = pow(10, floor(log10(timeRange)));
+  double timeRangeNorm = timeRange/normFactor;
+  double labelDistNorm;
+  //cout << "DEBUG: starttime=" << cStartTime << "timeRangeNorm=" << timeRangeNorm << endl;
+  if (timeRangeNorm>8.0) {
+    labelDistNorm = 2.0;
+  } else if (timeRangeNorm>5.0) {
+    labelDistNorm = 1.0;
+  } else if (timeRangeNorm>2.5) {
+    labelDistNorm = 0.5;
+  } else if (timeRangeNorm>1.0) {
+    labelDistNorm = 0.2;
+  } else {
+    labelDistNorm = 0.1;
+  }
+  int labelCnt = static_cast<int>(floor(timeRangeNorm/labelDistNorm));
+  //cout << "DEBUG: labelcnt=" << labelCnt << "labelDistNorm=" << labelDistNorm << endl;
+  labelDistance = labelDistNorm*normFactor;
+  if (labelCnt>5) {
+    tickDistance = labelDistance/5.0;
+  } else {
+    tickDistance = labelDistance/10.0;
+  }
+  firstLabel = ceil(cStartTime/labelDistance)*labelDistance;
+  //cout << "DEBUG: labelDistance=" << labelDistance << "firstLabel=" << firstLabel << endl;
+  
+}
+
+void TimTime::setTicks(double newLabelDistance, double newFirstLabel, double newTickDistance) {
+  if (newLabelDistance==0.0) {
+    autoCalc = true;
+    calcTicks();
+  } else {
+    labelDistance = newLabelDistance;
+    firstLabel = newFirstLabel;
+    tickDistance = newTickDistance;
+  }
 }
 
 
@@ -87,9 +119,9 @@ void TimTime::paint(void) {
   text->setOrigin(cOrigin+YVPosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
 
   // draw the small ticks
-  tickTime = firstLabel-tickDistance*floor((firstLabel-startTime)/tickDistance);
-  while (tickTime<endTime) {
-    xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime/(endTime-startTime)*scaleWidth);
+  tickTime = firstLabel-tickDistance*floor((firstLabel-cStartTime)/tickDistance);
+  while (tickTime<cEndTime) {
+    xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime/(cEndTime-cStartTime)*scaleWidth);
     YaVecPolyline *tick = getCompound()->polyline();
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/10 );
@@ -99,10 +131,10 @@ void TimTime::paint(void) {
 
   // draw the big ticks with labels
   tickTime = firstLabel;
-  while (tickTime<endTime) {
+  while (tickTime<cEndTime) {
     string timeStr;
     ostringstream strConv;
-    xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime*scaleWidth/endTime-startTime);
+    xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime*scaleWidth/cEndTime-cStartTime);
     YaVecPolyline *tick = getCompound()->polyline();
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/5 );

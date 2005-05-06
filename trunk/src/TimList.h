@@ -67,7 +67,7 @@ public:
   Handle<TimSignal> createSignal(string label, double defaultSlope=0.0);
 
   //! Create a time scale.
-  Handle<TimTime> createTime(bool autoCalc, double newLabelDistance, double newFirstLabel, double newTickDistance);
+  Handle<TimTime> createTime(double newLabelDistance, double newFirstLabel, double newTickDistance);
 
   //! Create a time marker.
   Handle<TimeMarker> createTimeMarker(double time, LayoutObject* topLayoutObject, LayoutObject* bottomLayoutObject);

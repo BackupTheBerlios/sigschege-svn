@@ -1,9 +1,21 @@
 
-$Id: $
+$Id$
 
 * Handle class: remove Object() function usage.
   Object() still necessary for pointer comparison?
 
 * Event class: constructor with arguments, 
   absolutify function (remove reference but keep absolute time)
+
+* TimList components (TimSignal, TimeMarker, ...)
+  How to handle change of startTime, etc?
+  a> components get current values when needed via callback 
+     -> must actively watch for changes (on paint)
+  b> all components get values by a common call
+     -> deriving from same base class with polymorphism
+        (LayoutObject does not seem appropriate)
+
+* add label to time marker (time label and optional text label)
+
+* datatrans.ssg: why no text at signals?
 

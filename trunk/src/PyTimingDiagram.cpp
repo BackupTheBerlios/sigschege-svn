@@ -435,7 +435,6 @@ static PyObject *TimingDiagram_exportPic(TimingDiagramObject *self, PyObject *ar
   string format_s = format;
 
   self->tim->exportAny( filename, format_s);
-  printf("export fix\n");
 
   Py_INCREF(Py_None);
   return (Py_None);
@@ -515,16 +514,19 @@ static PyObject * TimingDiagram_createTimemarker(TimingDiagramObject *self, PyOb
 static PyObject * TimingDiagram_createTimescale(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
 
   char *label = "none";
-  static char *kwlist[] = {"label", NULL};
+  double labelDistance = 0.0;
+  double labelStart = 0.0;
+  double tickDistance = 0.0;
+  static char *kwlist[] = {"label", "labelDistance", "labelStart", "tickDistance", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|s", kwlist, &label))
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sddd", kwlist, &label, &labelDistance, &labelStart, &tickDistance))
     return NULL;
   string tmps;
   tmps = label;
 
   // create new C++ signal object with TimingDiagram class 
   Handle<TimTime> newTimescale;
-  newTimescale = self->tim->createTime(false, 50.0, 0.0, 10.0);
+  newTimescale = self->tim->createTime(labelDistance, labelStart, tickDistance);
   self->tim->addLast(newTimescale.Object());
   // create a Python signal object to return to user 
   PyObject *newPTimescaleObj;

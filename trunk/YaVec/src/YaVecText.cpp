@@ -25,6 +25,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <cstdlib>
 #include "YaVecText.h"
 #include "YaVecFigure.h"
 
@@ -34,7 +35,8 @@ FT_Library  YaVecText::freetype_lib;
 bool YaVecText::freetype_already_initialized = false;
 bool YaVecText::fix_fig2dev_quirk = false;
 
-string YaVecText::gs_fontpath = "/var/lib/defoma/gs.d/dirs/fonts/";
+//string YaVecText::gs_fontpath = "/var/lib/defoma/gs.d/dirs/fonts/";
+string YaVecText::gs_fontpath = "/var/lib/degoma/gs.d/dirs/fonts/";
 
 const char* yavec_font_files[] = {
   "n021003l.pfb", // 0 = NimbusRomNo9L-Regu = Times-Roman
@@ -75,6 +77,32 @@ const char* yavec_font_files[] = {
 };
 
 bool YaVecText::initFreetype(void) {
+  // just a hack for now - if we need a config it should be read somewhere else
+  // otoh the font path should be configured in a global config file
+  string confFile = getenv("HOME");
+  if (confFile[confFile.length()-1] != '/') confFile += "/";
+  confFile += ".YaVec";
+  ifstream confFileStream;
+  char buf[999];
+  string line, var, val;
+  int eq_pos;
+  confFileStream.open(confFile.c_str(), ios::in);
+  cout << "DEBUG: Reading config" << endl;
+  while (confFileStream.getline(buf, 999)) {
+    line = buf;
+    eq_pos = line.find('=');
+    if (!eq_pos) continue;
+    val = line.substr(eq_pos+1);
+    var = line.substr(0, eq_pos);
+    cout << "DEBUG: var=" << var << " val=" << val << endl;
+    if (var == "FONTPATH") {
+      gs_fontpath = val;
+      cout << "SETTING FP=" << gs_fontpath << endl; 
+    }
+  }
+  confFileStream.close();
+  confFileStream.clear();
+
   if (freetype_already_initialized) return true;
   int freetype_fail = FT_Init_FreeType( &freetype_lib );
   if (freetype_fail==0) {
@@ -198,7 +226,7 @@ bool YaVecText::setFont(int new_font) {
     elmFont = new_font;
     string font = gs_fontpath + string(yavec_font_files[elmFont]);
     ft_fail = FT_New_Face(freetype_lib, font.c_str(), 0, &face );
-    if (ft_fail!=0) cerr << "Face creation failed" << endl;
+    cerr << "Face creation failed. Fontpath correct?" << endl;
     updateDimensions();
     return ft_fail==0;
   } else return false;

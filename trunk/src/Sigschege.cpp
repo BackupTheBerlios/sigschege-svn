@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -45,6 +45,11 @@ int main (int ARGC, char **ARGV) {
 //     Py_INCREF(td_module);
 //   }
   PyRun_SimpleString("import TimingDiagram");
+
+  // TODO: automate version number and add GPL stuff
+  cout << "Sigschege 0.0 - a program for creating timing diagrams" << endl;
+  cout << "(c) 2004-2005 by Ulf Klaperski and Ingo Hinrichs" << endl;
+  
   ret = Py_Main(ARGC, ARGV);
   
   Py_Finalize();

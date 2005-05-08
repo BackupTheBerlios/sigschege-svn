@@ -10,16 +10,16 @@
 <?php include_once("sidebar.php") ?>
 <div class="right">
 
-<h1>Planed Features</h1>
+<h1>Planned Features</h1>
 
 <ul>
    <li class="feature_list">Timing Diagram:
      <ul>
-       <li>Lists (Lists of Text Labels, Signals, Time Scales and other Lists)</li>
+       <li>Lists (Lists of Text Labels, Signals, Time Scales)</li>
        <li>Labels</li>
        <li>Signals</li>
        <li>Time Scales</li>
-       <li>Markers</li>
+       <li>Time Markers</li>
        <li>Pointers</li>
        <li>Comment Boxes</li>
        <li>Line Styles support</li>
@@ -30,30 +30,26 @@
      <ul>
        <li>Events</li>
        <li>Event slope</li>
-       <li>Event uncertainty</li>
-       <li>Signal States</li>
-       <li>Generic Named Data</li>
+       <li>Signal States, binary (0, 1, X) or named (e.g. bus values)</li>
      </ul>
    </li>
-   <li class="feature_list">Input:
-     <ul>   
+   <li class="feature_list">Interfaces:
+     <ul>
        <li>Python Interpreter Batch Mode</li>
        <li>Python Interpreter Interactive Mode</li>
-       <li>Loading Timing Diagrams</li>
      </ul>
    </li>
    <li class="feature_list">Output
-     <ul>   
-       <li>Eps Export</li>
-       <li>PNG Export</li>
-       <li>Transfig Support</li>
-       <li>Saving Timing Diagrams</li>
+     <ul>
+       <li>Export to EPS, PNG or other formats using transfig</li>
+       <li>Export to fig format (as used by xfig)</li>
+       <li>Saving Timing Diagrams in native format (XML?), required for interactive Python interface and GUI</li>
      </ul>
    </li>
-   <li class="feature_list">Future Features:
-     <ul>   
-       <li>GUI
-       <P>Planed for Version 2.0</P>
+   <li class="feature_list">Future Features (version 2.0):
+     <ul>
+       <li>X11 GUI (using wxWidgets)</li>
+       <li>Event uncertainty</li>
        </li>
      </ul>
    </li>

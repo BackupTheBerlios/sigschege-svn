@@ -13,7 +13,10 @@
 <p> Sigschege will be a software to create timing diagrams for digital electrical circuits.
 It is supposed to be operated as batch mode program with Python or (in a later version) as an X11 application.
 </p>
-<h1>Other Open Source Timing Diagram Editors</h1>
+<h1>Status</h1>
+<p>The implementation has already started, but no release is available yet. It is planned to
+release version 0.1, which will just be a first trial to get some feedback,  in a few months. </p>
+<h1>Other free timing diagram editors</h1>
 <ul>
   <li><A href="http://drawtiming.sf.net/" name="DrawTiming">DrawTiming</A></li>
   <li><A href="http://electroutil.sf.net/" name="ElectroUtil">ElectroUtil</A></li>

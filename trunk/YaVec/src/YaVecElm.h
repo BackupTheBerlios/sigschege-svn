@@ -78,11 +78,17 @@ public:
   int fillColor(void);
   /// Set the fill color of this object.
   bool fillColor(int new_color);
+  /// Return the area fill of this object.
+  int areaFill(void);
+  /// Set the fill color of this object.
+  bool areaFill(int areaFill);  
   /// Return the depth (layer) of this object.
   int depth(void);
   /// Set the depth (layer) of this object.
   bool depth(int new_depth);
-
+  /// Return the actual fill color as vector of 3 ints.
+  vector<int> actualFillColor(void);
+  
   /// find a figure element near the given position.
   virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<YaVecElmHit> &hits) = 0;
@@ -95,6 +101,7 @@ protected:
   YaVecFigure *figure; // needed to access global picture states
   int elmPenColor;
   int elmFillColor;
+  int elmAreaFill;
   int elmDepth;
 };
 
@@ -118,6 +125,17 @@ inline bool YaVecElm::fillColor(int new_color) {
 
 inline int YaVecElm::fillColor(void) {
   return elmFillColor;
+}
+
+inline bool YaVecElm::areaFill(int areaFill) {
+  if (areaFill>=-1 && areaFill<63) {
+    elmAreaFill=areaFill;
+    return true;
+  } else return false;
+}
+
+inline int YaVecElm::areaFill(void) {
+  return elmAreaFill;
 }
 
 inline bool YaVecElm::depth(int new_depth) {

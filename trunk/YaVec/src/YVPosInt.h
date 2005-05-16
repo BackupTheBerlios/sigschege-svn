@@ -47,10 +47,15 @@ public:
   YVPosInt &operator-(const YVPosInt &destination) const;
   /// Multiplication (with an int) operator.
   YVPosInt &operator*(int mult ) const;
+  /// Multiplication (with a double) operator.
+  YVPosInt &operator*(double mult ) const;
   /// Division assignment operator.
   YVPosInt &operator/=(double divisor);
   /// Division operator.
   YVPosInt &operator/(double divisor) const;
+  /// Adding assignment operator.
+  YVPosInt &operator+=(YVPosInt &add);
+  YVPosInt &operator+=(YVPosInt add);
   
   /// Return the x coordinate.
   int xpos(void) const { return cx; };
@@ -70,6 +75,10 @@ public:
     cx = cx>other.cx?cx:other.cx;
     cy = cy>other.cy?cy:other.cy;
   }
+  /// Shift left operator (shift applied to both coordinates).
+  YVPosInt operator<<(int shift);
+  /// Shift right operator (shift applied to both coordinates).
+  YVPosInt operator>>(int shift);
   /// Set the x coordinate
   void setx(const int x) { cx = x; }
   /// Set the y coordinate
@@ -90,6 +99,28 @@ inline YVPosInt operator/(const YVPosInt &z, int n) {
 inline YVPosInt operator+(const YVPosInt &a, const YVPosInt &b) {
   return YVPosInt(a.xpos()+b.xpos(), a.ypos()+b.ypos());
 }
+
+/// Add a YVPosInt to this one.
+inline YVPosInt &YVPosInt::operator+=(YVPosInt &add) {
+  this->cx += add.cx;
+  this->cx += add.cx;
+  return *this;
+}
+
+inline YVPosInt &YVPosInt::operator+=(YVPosInt add) {
+  this->cx += add.cx;
+  this->cy += add.cy;
+  return *this;
+}
+
+inline YVPosInt YVPosInt::operator<<(int shift) {
+  return YVPosInt(cx<<shift, cy<<shift);
+}
+
+inline YVPosInt YVPosInt::operator>>(int shift) {
+  return YVPosInt(cx>>shift, cy>>shift);
+}
+
 
 /// Return the minimum coordinates (independently) of both YVPosInts.
 inline YVPosInt min_coords(const YVPosInt &a, const YVPosInt &b) {

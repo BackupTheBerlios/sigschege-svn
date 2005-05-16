@@ -63,7 +63,7 @@ void YaVecBox::saveElm(ofstream &fig_file) {
   vector<YVPosInt>::iterator points_iter;
 
   fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
-           << " 0 -1 " << elmStyleValue << " 0 0 0 0 0 " << 5 << endl;
+           << " 0 " << elmAreaFill << " " << elmStyleValue << " 0 0 0 0 0 " << 5 << endl;
   fig_file << " ";
   
   fig_file << elm_upper_left.xpos()  << " " << elm_upper_left.ypos()  << " "

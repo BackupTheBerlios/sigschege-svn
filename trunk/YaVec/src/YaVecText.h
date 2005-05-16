@@ -35,6 +35,7 @@
 extern "C" {
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include FT_GLYPH_H
 }
 
 using namespace std;
@@ -46,6 +47,8 @@ public:
   YaVecText(YaVecCompound* parent_compound, YaVecFigure* figure_compound);
   /// Place the edges of the bounding box in upper_left/lower_right.
   virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right);
+  /// Return the corner points of a box around the text.
+  void getTextBox(YVPosInt &lowerLeft, YVPosInt &upperRight);
   /// Return the width of the text.
   int getWidth(void) { return textWidth; }
   /// Return the height of the text.
@@ -65,6 +68,8 @@ public:
   bool setOrigin(YVPosInt new_origin);
   /// Set the justification of the text relative to its origin.
   bool setJustification(int newJustification);
+  /// Set the angle of the text.
+  bool setAngle(double angle);
   /// Draw the text into a view or calculate its dimensions.
   /*!
    * This function combines the actual drawing and the dimension calculations. Both share
@@ -98,11 +103,16 @@ public:
   virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<YaVecElmHit> &hits);
 
+  /// Set this variable to true to use kerning. This is not recommended as transfig does not support it
+  static bool use_kerning;
+
 private:
   YVPosInt elmOrigin;
   string elmText;
   int elmFont, elmSize;
   justification elmJustification;
+  double cAngle;
+  
   static FT_Library  freetype_lib;
   static bool freetype_already_initialized;
   FT_Face face;
@@ -111,6 +121,9 @@ private:
   bool initYaVecText();
   void updateDimensions(); // must be called by all methods which change text size!
 
+  YVPosInt BBoxUpperleft;
+  YVPosInt BBoxLowerRight;
+  
   // must be true for transfig<3.2.5 
   static bool fix_fig2dev_quirk;
   static string gs_fontpath;

@@ -42,6 +42,15 @@ YVPosInt &YVPosInt::operator*(int mult) const {
   
 }
 
+YVPosInt &YVPosInt::operator*(double mult) const {
+    YVPosInt *rv = new YVPosInt;
+    *rv = *this;
+    rv->cx = static_cast<int>(rv->cx * mult);
+    rv->cy = static_cast<int>(rv->cy * mult);
+    return *rv;
+  
+}
+
 YVPosInt &YVPosInt::operator/=(double divisor) {
   cx = static_cast<int>(cx / divisor);
   cy = static_cast<int>(cy / divisor);

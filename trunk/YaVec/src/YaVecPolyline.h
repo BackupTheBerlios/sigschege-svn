@@ -46,6 +46,8 @@ public:
   void addPoint(YVPosInt new_point);
   void addPoint(int x, int y) { this->addPoint(YVPosInt(x, y)); };
   void addPoints(vector<YVPosInt> new_points);
+  /// Sets points for a box at a random angle
+  void addAngleBox(YVPosInt corner1, YVPosInt corner2, double angle, bool clear=true);
   vector<YaVecElm*> flatList() { vector<YaVecElm*> res; res.push_back(this); return (res); };
   virtual void draw(YaVecView* view);
   virtual void saveElm(ofstream &fig_file);

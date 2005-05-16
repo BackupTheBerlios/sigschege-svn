@@ -63,6 +63,12 @@ void YaVecPolyline::addPoints(vector<YVPosInt> new_points) {
   }
 }
 
+void YaVecPolyline::addAngleBox(YVPosInt corner1, YVPosInt corner3, double angle, bool clear) {
+  double angleRad = angle*M_PI/180;
+  
+  //TODO
+}
+
 void YaVecPolyline::draw(YaVecView* view) {
   double styleLength = elmStyleValue*15;
   vector<YVPosInt>::iterator points_iter1, points_iter2;
@@ -86,9 +92,11 @@ void YaVecPolyline::draw(YaVecView* view) {
 
 void YaVecPolyline::saveElm(ofstream &fig_file) {
   vector<YVPosInt>::iterator points_iter;
+
+  if (points.size()==0) return; // polyline without points not allowed
   
   fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
-           << " 0 -1 " << elmStyleValue << " 0 0 0 " << (forwardArrow()? 1 : 0) << " "
+           << " 0 " << elmAreaFill << " " << elmStyleValue << " 0 0 0 " << (forwardArrow()? 1 : 0) << " "
            << (backwardArrow()? 1 : 0) << " " << points.size() << endl;
   if (forwardArrow()) {
     fig_file << forwardArrowString() << endl;

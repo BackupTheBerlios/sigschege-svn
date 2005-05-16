@@ -49,6 +49,7 @@ public:
     void toggleBoxes(wxCommandEvent& event);
     void toggleArrows(wxCommandEvent& event);
     void toggleArcs(wxCommandEvent& event);
+    void toggleText(wxCommandEvent& event);
     void OnMouse(wxMouseEvent& event);
     void save(wxCommandEvent& event);
     void TestNotebookSizers(wxCommandEvent& event);
@@ -72,6 +73,7 @@ private:
 #define BUTTON_BOXES 109
 #define BUTTON_ARROWS 110
 #define BUTTON_ARCS 111
+#define BUTTON_TEXT 112
 #define MOUSE_RIGHT_DWN 121
 
 #endif /* _DEMOGUI_H */

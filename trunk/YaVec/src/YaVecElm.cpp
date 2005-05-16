@@ -59,6 +59,33 @@ bool YaVecElm::checkProximity(YVPosInt selPos, YVPosInt point, int fuzzyFact, in
   }
 }
 
+vector<int> YaVecElm::actualFillColor(void) {
+  vector<int> zeroCol, oneCol;
+
+  if (elmFillColor==-1 || elmFillColor==0) { // black or default
+    zeroCol[0] = yavec_std_colors[7][0]; //white
+    zeroCol[1] = yavec_std_colors[7][1]; 
+    zeroCol[2] = yavec_std_colors[7][2]; 
+    oneCol[0] = yavec_std_colors[0][0]; // black
+    oneCol[1] = yavec_std_colors[0][1]; 
+    oneCol[2] = yavec_std_colors[0][2]; 
+  } else {
+    zeroCol[0] = yavec_std_colors[0][0]; // black
+    zeroCol[1] = yavec_std_colors[0][1]; 
+    zeroCol[2] = yavec_std_colors[0][2];
+    oneCol[0] = yavec_std_colors[elmFillColor][0]; // selected fill color
+    oneCol[1] = yavec_std_colors[elmFillColor][1]; 
+    oneCol[2] = yavec_std_colors[elmFillColor][2];     
+  }
+  
+  if (elmAreaFill==20) return oneCol;
+  else if (elmAreaFill==0) return zeroCol;
+  else if (elmAreaFill>0 and elmAreaFill<21) {
+    //TODO
+  }
+  
+}
+
 
 const int yavec_std_colors[][3] = {
   {0, 0, 0},          // 0 = black

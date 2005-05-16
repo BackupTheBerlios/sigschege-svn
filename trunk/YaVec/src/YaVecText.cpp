@@ -31,12 +31,20 @@
 
 using namespace std;
 
+
+// TODO: Add dirty flag to avoid excessive updating of geometry information
+//       (so far updateDimensions() is called on each setFont(), setAngle().
+//        mark dirty and update on first call to paint(), getBoundingBox(), etc)
+//       This would probably give some speedup.
+
+
 FT_Library  YaVecText::freetype_lib;
 bool YaVecText::freetype_already_initialized = false;
 bool YaVecText::fix_fig2dev_quirk = false;
+bool YaVecText::use_kerning = false; // it seems transfig does not do kerning
 
 //string YaVecText::gs_fontpath = "/var/lib/defoma/gs.d/dirs/fonts/";
-string YaVecText::gs_fontpath = "/var/lib/degoma/gs.d/dirs/fonts/";
+string YaVecText::gs_fontpath = "/usr/share/fonts/type1/gsfonts/";
 
 const char* yavec_font_files[] = {
   "n021003l.pfb", // 0 = NimbusRomNo9L-Regu = Times-Roman
@@ -87,14 +95,12 @@ bool YaVecText::initFreetype(void) {
   string line, var, val;
   int eq_pos;
   confFileStream.open(confFile.c_str(), ios::in);
-  cout << "DEBUG: Reading config" << endl;
   while (confFileStream.getline(buf, 999)) {
     line = buf;
     eq_pos = line.find('=');
     if (!eq_pos) continue;
     val = line.substr(eq_pos+1);
     var = line.substr(0, eq_pos);
-    cout << "DEBUG: var=" << var << " val=" << val << endl;
     if (var == "FONTPATH") {
       gs_fontpath = val;
       cout << "SETTING FP=" << gs_fontpath << endl; 
@@ -118,13 +124,19 @@ bool YaVecText::initFreetype(void) {
 YVPosInt YaVecText::drawOrCalc(YaVecView* view, bool noUpdate) {
   string::iterator text_iter;
   char cur_char;
-  FT_UInt glyph_index, old_glyph_i;
-  int ft_fail;
-  FT_GlyphSlot  glyph;
+  FT_UInt glyph_index, old_glyph_i; // index of current and previous glyph - previous is needed for kerning
+  int ft_fail; // indicator that the previous freetype operation failed
+  FT_GlyphSlot  glyphSlot;
+  FT_Glyph  glyph;
   int resolution;
   YVPosInt char_origin;
-  FT_Vector kerning;
+  YVPosInt char_originPrec; // char_origin in full precision to avoid rounding errors
+  YVPosInt upperLeft; // corner of the (freshly calculated) bounding box
+  YVPosInt lowerRight;
+  FT_Vector kerning; // the kerning information from freetype - only used if use_kerning is true
+  int xKerning, yKerning; // x and y portion of kerning for rotated text
   int newHeight, newWidth;
+  double angleRad = cAngle*M_PI/180; 
 
   newWidth = newHeight = 0;
   
@@ -149,37 +161,91 @@ YVPosInt YaVecText::drawOrCalc(YaVecView* view, bool noUpdate) {
 
   old_glyph_i = 0;
   kerning.x = kerning.y = 0;
-  char_origin = elmOrigin/figure->scale();
+  xKerning = yKerning = 0;
   
+  char_origin = view ? elmOrigin/figure->scale() : elmOrigin;
+  char_originPrec = char_origin << 6;
+  BBoxUpperleft = char_origin;
+  BBoxLowerRight = char_origin;
+  
+  FT_Matrix mat;
+  FT_BBox   bbox;
+  if (cAngle!=0) {
+    mat.xx = static_cast<int>(65536*cos(angleRad));
+    mat.xy = static_cast<int>(-65336*sin(angleRad));
+    mat.yx = static_cast<int>(65336*sin(angleRad));
+    mat.yy = static_cast<int>(65536*cos(angleRad));
+    FT_Set_Transform(face, &mat, 0);
+  }
+
   for ( text_iter = elmText.begin(); text_iter != elmText.end(); ++text_iter ) {
     cur_char = *text_iter;
     glyph_index = FT_Get_Char_Index(face, cur_char);
     ft_fail = FT_Load_Glyph( face, glyph_index, FT_LOAD_NO_HINTING );
     if (view) ft_fail |= FT_Render_Glyph( face->glyph, FT_RENDER_MODE_MONO );
     if (ft_fail!=0) cerr << "Glyph loading failed for char " << *text_iter << glyph_index<< endl;
-    glyph = face->glyph;
-    if (old_glyph_i && glyph_index) {
-      FT_Get_Kerning(face, old_glyph_i, glyph_index, FT_KERNING_DEFAULT, &kerning);
-    }
+    glyphSlot = face->glyph;
+    ft_fail = FT_Get_Glyph( face->glyph, &glyph );
     
+    if (old_glyph_i && glyph_index && use_kerning) {
+      FT_Get_Kerning(face, old_glyph_i, glyph_index, FT_KERNING_DEFAULT, &kerning);
+      xKerning = static_cast<int>(kerning.x*cos(angleRad));
+      yKerning = static_cast<int>(kerning.x*sin(angleRad));
+    }
+    FT_Glyph_Get_CBox(  glyph, ft_glyph_bbox_pixels, &bbox );
+    upperLeft = char_origin + YVPosInt(xKerning>>6, -yKerning>>6) + YVPosInt(static_cast<int>(bbox.xMin), static_cast<int>(-bbox.yMax));
+    lowerRight = char_origin + YVPosInt(xKerning>>6, -yKerning>>6) + YVPosInt(static_cast<int>(bbox.xMax), static_cast<int>(-bbox.yMin));
+#if 0
+    // debug
+    cout << cur_char << ":ORIGIN=" << char_origin << " UL=" << upperLeft << " LR=" << lowerRight << endl;
+#endif
+    // adapt bounding box to include this character
+    BBoxUpperleft = min_coords(BBoxUpperleft, upperLeft);
+    BBoxLowerRight = max_coords(BBoxLowerRight, lowerRight);
+#if 0
+    if (view) { //debug: draw bounding boxes around characters 
+      view->drawLine(upperLeft*figure->scale(), lowerRight*figure->scale(), 1, 0, 0, 8); 
+      view->drawLine(upperLeft*figure->scale(), YVPosInt(lowerRight.xpos(), upperLeft.ypos())*figure->scale(), 1, 0, 0, 8); 
+      view->drawLine(YVPosInt(lowerRight.xpos(), upperLeft.ypos())*figure->scale(), lowerRight*figure->scale(), 1, 0, 0, 8); 
+      view->drawLine(upperLeft*figure->scale(), YVPosInt(upperLeft.xpos(), lowerRight.ypos())*figure->scale(), 1, 0, 0, 8); 
+      view->drawLine(YVPosInt(upperLeft.xpos(), lowerRight.ypos())*figure->scale(), lowerRight*figure->scale(), 1, 0, 0, 8);
+    }
+#endif
     if (view) {
       FT_Bitmap cbitmap;
-      cbitmap = glyph->bitmap;
-      view->drawChar(char_origin-YVPosInt(0, glyph->bitmap_top), cbitmap.rows, cbitmap.width, cbitmap.pitch,
-                      cbitmap.buffer, elmPenColor);
-      char_origin = char_origin+YVPosInt(glyph->metrics.horiAdvance/64+kerning.x, 0);
+      cbitmap = glyphSlot->bitmap;
+      view->drawChar(char_origin+YVPosInt(glyphSlot->bitmap_left+(xKerning>>6), -glyphSlot->bitmap_top-(yKerning>>6)),
+                     cbitmap.rows, cbitmap.width, cbitmap.pitch, cbitmap.buffer, elmPenColor);
+#if 0
+      // debug output
+      cout << ">" << cur_char << ": adv=" << xAdvance << " bitmap_top=" << glyphSlot->bitmap_top << " cbitmap.width=" << cbitmap.width << endl;
+      cout << cur_char << ">" << xKerning << ":" << yKerning << endl;
+#endif
     }
-    newWidth += glyph->metrics.horiAdvance/64+kerning.x; 
-    if (glyph->metrics.height/64>newHeight) newHeight = glyph->metrics.height/64;
+#if 0
+    // debug output
+    cout << cur_char << ": glyphSlot->bitmap_top=" << glyphSlot->bitmap_top << " glyphSlot->metrics.height=" << glyphSlot->metrics.height 
+         << " bbox.yMax=" << bbox.yMax << " bbox.yMin=" << bbox.yMin << endl;
+#endif
+    char_originPrec += YVPosInt(static_cast<int>(glyphSlot->advance.x+xKerning), -static_cast<int>(glyphSlot->advance.y+yKerning));
+    char_origin = char_originPrec >> 6;
+    newWidth += (glyphSlot->metrics.horiAdvance+kerning.x) >> 6; 
+    if (glyphSlot->metrics.height/64>newHeight) newHeight = glyphSlot->metrics.height/64;
     old_glyph_i = glyph_index;
   }
+
+#if 0
+  // debug output
+  cout << "ANGLE:" << cAngle << " newWidth=" << newWidth << " newHeight=" << newHeight << endl;
+#endif
+  
   if (!noUpdate) {
     textWidth = newWidth;
     textHeight = newHeight;
   }
+
   return (YVPosInt(newWidth, newHeight));
 }
-
 
 void YaVecText::draw(YaVecView* view) {
   drawOrCalc(view);
@@ -192,9 +258,16 @@ bool YaVecText::initYaVecText() {
   elmSize = 18;
   elmOrigin = YVPosInt(300, 300);
   elmJustification = left;
+  cAngle = 0.0;
   success = setFont(0);  
   // updateDimensions(); ... is already done in setFont!
   return success;
+}
+
+bool YaVecText::setAngle(double angle) {
+  cAngle = angle;
+  updateDimensions();
+  return true;
 }
 
 
@@ -210,8 +283,17 @@ YaVecText::YaVecText(YaVecCompound* parent_compound, YaVecFigure* figure_compoun
 
 
 void YaVecText::getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right) {
-  upper_left  = elmOrigin - YVPosInt(0, textHeight); 
-  lower_right = elmOrigin + YVPosInt(textWidth, 0);
+  upper_left  = BBoxUpperleft;
+  lower_right = BBoxLowerRight;
+}
+
+void YaVecText::getTextBox(YVPosInt &lowerLeft, YVPosInt &upperRight) {
+  //double angleRad = cAngle*M_PI/180; 
+
+  //TODO: add proper calculation of box
+  //   lowerLeft = elmOrigin;
+  //   upperRight = elmOrigin+YVPosInt(static_cast<int>(textWidth*cos(angleRad)-textHeight*sin(angleRad)),
+  //                                   static_cast<int>(-textWidth*sin(angleRad)-textHeight*cos(angleRad)));
 }
 
 bool YaVecText::setText(const string &new_text) {
@@ -225,8 +307,12 @@ bool YaVecText::setFont(int new_font) {
   if (new_font>=0 && new_font<34) {
     elmFont = new_font;
     string font = gs_fontpath + string(yavec_font_files[elmFont]);
+    string afm = font;
+    afm.replace(afm.length()-3, 3, "afm");
     ft_fail = FT_New_Face(freetype_lib, font.c_str(), 0, &face );
-    cerr << "Face creation failed. Fontpath correct?" << endl;
+    if (ft_fail!=0) cerr << "Face creation failed. Fontpath correct?" << endl;
+    ft_fail = FT_Attach_File(face, afm.c_str() );
+    if (ft_fail!=0) cerr << "Reading kerning failed. No AFM? " << afm << endl;
     updateDimensions();
     return ft_fail==0;
   } else return false;
@@ -263,8 +349,8 @@ void YaVecText::saveElm(ofstream &fig_file) {
   vector<YVPosInt>::iterator points_iter;
 
   fig_file << "4 " << elmJustification << " " << elmPenColor << " " << elmDepth
-           << " 0 " << elmFont << " " << elmSize << " 0 4 " << textHeight << " " << textWidth
-           << " " << elmOrigin.xpos() << " " << elmOrigin.ypos() << " "<< elmText
+           << " 0 " << elmFont << " " << elmSize << " " << cAngle*M_PI/180 << " 4 " << textHeight << " "
+           << textWidth << " " << elmOrigin.xpos() << " " << elmOrigin.ypos() << " "<< elmText
            << "\\001" << endl;
 }
 

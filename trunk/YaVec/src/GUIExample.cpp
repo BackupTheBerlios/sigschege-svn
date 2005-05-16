@@ -53,6 +53,7 @@ YaVecPolyline* mainline;
 list<YaVecPolyline *> dlines;
 list<YaVecPolyline *> alines;
 list<YaVecArc *> arcs;
+list<YaVecText *> texts;
 list<YaVecBox *> boxes;
 YaVecFigure *mainpic;
 
@@ -78,17 +79,17 @@ bool MyApp::OnInit()
 
   YaVecText *ntext;
   ntext = ev_pic->text();
-  ntext->setText("This is an YaVec Demo");
+  ntext->setText("This is a good YaVec Demo");
   ntext->penColor(2);
-  ntext->setOrigin(YVPosInt(300, 1000));
+  ntext->setOrigin(YVPosInt(300, 4500));
+  ntext->setSize(30);
   ntext->depth(55);
-  YVPosInt ul, lr;
-  //ntext->getBoundingBox(ul, lr); TODO
-  //cout << ul << ":" << lr << endl;
 
-  ul = YVPosInt(600, 600); 
-  lr = YVPosInt(1000, 2000); 
-
+  YaVecPolyline *tline;
+  tline = ev_pic->polyline();
+  nline->addPoint(300, 4500);
+  nline->addPoint(5000, 4500);
+  
   // Create the main frame window
   frame = new MyFrame(NULL, _T("YaVec Demo"), -1, -1, 800, 600);
 
@@ -132,6 +133,7 @@ bool MyApp::OnInit()
   wxButton *btn2 = new wxButton(panel, BUTTON_BOXES, _T("Toggle boxes")) ;
   wxButton *btn3 = new wxButton(panel, BUTTON_ARROWS, _T("Toggle arrow lines")) ;
   wxButton *btn4 = new wxButton(panel, BUTTON_ARCS, _T("Toggle arcs")) ;
+  wxButton *btn5 = new wxButton(panel, BUTTON_TEXT, _T("Toggle text")) ;
 
   canvas = new YaVecVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
   // Set constraints for canvas subwindow
@@ -174,21 +176,13 @@ bool MyApp::OnInit()
   b4->height.AsIs       ();
   btn4->SetConstraints(b4);
 
-
-//   b2->top.Below         (btn1, 5);
-//   b2->left.SameAs       (panel, wxLeft, 5);
-//   b2->width.PercentOf   (panel, wxWidth, 40);
-//   b2->bottom.SameAs     (panel, wxBottom, 5);
-//   list->SetConstraints(b2);
-
-//  wxTextCtrl *mtext = new wxTextCtrl(panel, -1, _T("Some text"));
-
-//   wxLayoutConstraints *b3 = new wxLayoutConstraints;
-//   b3->top.Below         (btn1, 5);
-//   b3->left.RightOf      (list, 5);
-//   b3->right.SameAs      (panel, wxRight, 5);
-//   b3->bottom.SameAs     (panel, wxBottom, 5);
-//   mtext->SetConstraints(b3);
+  wxLayoutConstraints *b5 = new wxLayoutConstraints;
+  //b3->centreX.SameAs    (panel, wxCentreX);
+  b5->top.SameAs        (panel, wxTop, 5);
+  b5->width.PercentOf   (panel, wxWidth, 20);
+  b5->left.SameAs       (btn4, wxRight);
+  b5->height.AsIs       ();
+  btn5->SetConstraints(b5);
 
   frame->Show(TRUE);
 
@@ -215,6 +209,7 @@ BEGIN_EVENT_TABLE(MyFrame, wxFrame)
   EVT_BUTTON(BUTTON_BOXES, MyFrame::toggleBoxes)
   EVT_BUTTON(BUTTON_ARROWS, MyFrame::toggleArrows)
   EVT_BUTTON(BUTTON_ARCS, MyFrame::toggleArcs)
+  EVT_BUTTON(BUTTON_TEXT, MyFrame::toggleText)
   EVT_RIGHT_DOWN(MyFrame::OnMouse)
 END_EVENT_TABLE()
 
@@ -338,6 +333,40 @@ void MyFrame::toggleArcs(wxCommandEvent& event) {
   canvas->refreshAll();
 }
 
+void MyFrame::toggleText(wxCommandEvent& event) {
+  mainpic->updating(false);
+  if (texts.empty()) {
+    YaVecText *atext;
+    double angle;
+    YaVecBox *nbox;
+    YVPosInt ul, lr;
+    for (int i=1; i<7; i++) {
+      angle = 60*i;
+      atext = mainpic->text();
+      atext->penColor(i+3);
+      atext->setOrigin(YVPosInt(4000, 4200));
+      atext->setSize(30);
+      atext->setAngle(angle);
+      atext->setText("Text with angle AVA");
+      atext->depth(11);
+      atext->getBoundingBox(ul, lr);
+      cout << "BBOX=" << ul << lr << endl;
+      nbox = mainpic->box(ul, lr);
+      nbox->depth(1);
+      texts.push_back(atext);
+  }
+  } else {
+    list<YaVecText*>::iterator textIt;
+    for ( textIt = texts.begin(); textIt != texts.end(); ++textIt ) {
+      if (!mainpic->remove(*textIt)) cerr << "ERROR: Text element did not exist!" << endl; 
+    }
+    texts.clear();
+  }
+  mainpic->updating(true);
+  canvas->refreshAll();
+}
+
+
 void MyFrame::toggleBoxes(wxCommandEvent& event) {
   mainpic->updating(false);
   if (boxes.empty()) {
@@ -372,6 +401,7 @@ void MyFrame::OnMouse(wxMouseEvent& event)
 
 void MyFrame::save(wxCommandEvent& event) {
   mainpic->save("demogui_result.fig");  
+  mainpic->exportFig2dev("png", "demogui_result.png");  
   
 }
 

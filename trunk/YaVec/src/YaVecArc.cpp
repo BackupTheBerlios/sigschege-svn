@@ -216,7 +216,7 @@ void YaVecArc::saveElm(ofstream &fig_file) {
   vector<YVPosInt>::iterator points_iter;
   
   fig_file << "5 " << (isPieWedge? "2 " : "1 ") << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
-           << " -1 -1 " << elmStyleValue << " 0 0 " << (forwardArrow()? 1 : 0) << " "
+           << " -1 " << elmAreaFill << " " << elmStyleValue << " 0 0 " << (forwardArrow()? 1 : 0) << " "
            << (backwardArrow()? 1 : 0) << " " << elmXCenter << " " << elmYCenter;
   fig_file << " " << elmPoint1.xpos() << " " << elmPoint1.ypos() << " " << elmPoint2.xpos() << " "
            << elmPoint2.ypos() << " " << elmPoint3.xpos() << " " << elmPoint3.ypos() << endl;

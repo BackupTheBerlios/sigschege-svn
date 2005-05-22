@@ -1,1 +1,0 @@
-SUBDIRS = EasyVec src doc

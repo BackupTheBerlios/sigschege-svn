@@ -83,6 +83,16 @@ public:
   void setx(const int x) { cx = x; }
   /// Set the y coordinate
   void sety(const int y) { cy = y; }
+
+  /// Increment the x coordinate
+  int incx(void) { return ++cx; }
+  /// Increment the y coordinate
+  int incy(void) { return ++cy; }
+  /// Decrement the x coordinate
+  int decx(void) { return --cx; }
+  /// Decrement the y coordinate
+  int decy(void) { return --cy; }
+  
 private:
   int cx, cy;
 };

@@ -30,6 +30,7 @@
 #include "YaVecElm.h"
 
 using namespace std;
+using namespace YaVec;
 
 BEGIN_EVENT_TABLE(YaVecVwx, wxWindow)
     EVT_PAINT(YaVecVwx::OnPaint)
@@ -46,8 +47,8 @@ YaVecVwx::YaVecVwx(YaVecFigure *picture, wxFrame *frame, int x, int y, int w, in
 }
 
 
-void YaVecVwx::drawLine(YVPosInt from, YVPosInt to, int width, int color, int lineStyle, double styleLength) {
-  wxColour wxMyColour(yavec_std_colors[color][0], yavec_std_colors[color][1], yavec_std_colors[color][2]);
+void YaVecVwx::drawLine(YVPosInt from, YVPosInt to, int width, FArray<int, 3> &color, int lineStyle, double styleLength) {
+  wxColour wxMyColour(color[0], color[1], color[2]);
   wxPen wxMyPen(wxMyColour, width, 1);
   wxWindowDC *paintPtr;
   int xscale = mypicture->scale();

@@ -23,12 +23,14 @@
 //
 // $Id$
 
+#include "YaVecUtil.h"
 #include "YaVecBox.h"
 #include "YaVecFigure.h"
 #include <fstream>
 #include <iostream>
 
 using namespace std;
+using namespace YaVec;
 
 YaVecBox::YaVecBox(YaVecCompound* parent_compound, YaVecFigure* figure_compound,
                              YVPosInt upper_left, YVPosInt lower_right)
@@ -43,6 +45,7 @@ void YaVecBox::draw(YaVecView* view) {
 
   YVPosInt ul, lr;
   YVPosInt ur, ll;
+  FArray <int, 3> color;
 
   ul = elm_upper_left;
   lr = elm_lower_right;
@@ -52,11 +55,28 @@ void YaVecBox::draw(YaVecView* view) {
 
   double styleLength = elmStyleValue*15;
 
-  view->drawLine(ul, ur, elmThickness, elmPenColor, elmLineStyle, styleLength);
-  view->drawLine(ur, lr, elmThickness, elmPenColor, elmLineStyle, styleLength);
-  view->drawLine(lr, ll, elmThickness, elmPenColor, elmLineStyle, styleLength);
-  view->drawLine(ll, ul, elmThickness, elmPenColor, elmLineStyle, styleLength);
+  getPenColorRGB(color);
+  
+  view->drawLine(ul, ur, elmThickness, color, elmLineStyle, styleLength);
+  view->drawLine(ur, lr, elmThickness, color, elmLineStyle, styleLength);
+  view->drawLine(lr, ll, elmThickness, color, elmLineStyle, styleLength);
+  view->drawLine(ll, ul, elmThickness, color, elmLineStyle, styleLength);
 
+  if (elmAreaFill>=0) {
+    FArray<int, 3> fillCol;
+    YVPosInt left;
+    YVPosInt right;
+    left  = ul; left.incx();
+    right = ur; right.decx();
+    
+    fillCol = actualFillColor();
+    while (left.ypos() < ll.ypos()) {
+      left.incy();
+      right.incy();
+      view->drawLine(left, right, elmThickness, fillCol, YaVecLine::solid, styleLength);
+    }
+  }
+  
 }
 
 void YaVecBox::saveElm(ofstream &fig_file) {

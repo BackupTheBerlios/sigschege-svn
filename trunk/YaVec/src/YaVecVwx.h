@@ -28,14 +28,16 @@
 #define _YAVECVWX_H _YAVECVWX_H 
 
 #include "wx/wx.h"
+#include "YaVecUtil.h"
 #include "YaVecView.h"
+
 
 /// An YaVec View class for the wxWidgets toolkit.
 class YaVecVwx : public wxWindow, public YaVecView {
 public:
   YaVecVwx(YaVecFigure *picture, wxFrame *frame, int x=-1, int y=-1, int width=-1, int height=-1,
              long style=wxTE_MULTILINE);
-  virtual void drawLine(YVPosInt from, YVPosInt to, int width, int color, int lineStyle, double styleLength);
+  virtual void drawLine(YVPosInt from, YVPosInt to, int width, YaVec::FArray<int, 3> &color, int lineStyle, double styleLength);
   /// Draw an arc clockwise from phiStart to phiEnd.
   /*!
    * This draws an arc of a circle. The drawing is done clockwise (negative phi direction) from

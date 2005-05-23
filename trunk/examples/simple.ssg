@@ -32,5 +32,5 @@ tm2 = md.createTimemarker(100.0, mdi, mdo)
 tm2.setColor(4)
 
 print mclk
-md.exportFig()
+md.exportFig("Simple.fig")
 md.exportPic("Simple.png", "png")

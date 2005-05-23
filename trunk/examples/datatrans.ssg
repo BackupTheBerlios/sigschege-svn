@@ -2,6 +2,8 @@
 # $Id: $
 # first example timing diagram creation script for sigschege
 
+from sigschege_addon import *
+
 md = TimingDiagram.TimingDiagram(0.0, 40.0)
 
 mclk = md.createSignal(label="Clock", defaultSlope=0.0)
@@ -26,3 +28,5 @@ mdt.addEvent(20, "X")
 
 mts = md.createTimescale();
 md.exportPic("datatrans.png", "png")
+
+show(md)

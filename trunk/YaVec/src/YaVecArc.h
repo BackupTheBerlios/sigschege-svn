@@ -37,13 +37,15 @@
 
 using namespace std;
 
-/// An YaVecFigure arc element - corresponds to fig element arc
+/// An YaVecFigure arc element - corresponds to fig element arc.
 class YaVecArc : public YaVecElm, public YaVecLine, public YaVecArrow {
 public:
   /// General constructor which creates the object, from center, radius, angles.
-  YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt center, double radius, bool clockwise, double angle1, double angle3);
+  YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt center,
+           double radius, bool clockwise, double angle1, double angle3, bool isPieWedge=false);
   /// General constructor, which creates the arc from three points.
-  YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt p1, YVPosInt p2, YVPosInt p3);
+  YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound,
+           YVPosInt p1, YVPosInt p2, YVPosInt p3, bool isPieWedge=false);
   virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right);
 
   /// Set point number num to the given position.
@@ -65,7 +67,7 @@ public:
 
 private:
   YVPosInt elmPoint1, elmPoint2, elmPoint3;
-  bool isPieWedge;
+  bool elmIsPieWedge;
   double elmXCenter, elmYCenter, elmRadius;
   bool elmClockwise;
   double elmPhi1, elmPhi2, elmPhi3;

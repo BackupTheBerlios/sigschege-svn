@@ -203,12 +203,15 @@ YVPosInt YaVecText::drawOrCalc(YaVecView* view, bool noUpdate) {
     BBoxUpperleft = min_coords(BBoxUpperleft, upperLeft);
     BBoxLowerRight = max_coords(BBoxLowerRight, lowerRight);
 #if 0
-    if (view) { //debug: draw bounding boxes around characters 
-      view->drawLine(upperLeft*figure->scale(), lowerRight*figure->scale(), 1, 0, 0, 8); 
-      view->drawLine(upperLeft*figure->scale(), YVPosInt(lowerRight.xpos(), upperLeft.ypos())*figure->scale(), 1, 0, 0, 8); 
-      view->drawLine(YVPosInt(lowerRight.xpos(), upperLeft.ypos())*figure->scale(), lowerRight*figure->scale(), 1, 0, 0, 8); 
-      view->drawLine(upperLeft*figure->scale(), YVPosInt(upperLeft.xpos(), lowerRight.ypos())*figure->scale(), 1, 0, 0, 8); 
-      view->drawLine(YVPosInt(upperLeft.xpos(), lowerRight.ypos())*figure->scale(), lowerRight*figure->scale(), 1, 0, 0, 8);
+    if (view) { //debug: draw bounding boxes around characters
+      FArray <int, 3> color;
+      getPenColorRGB(color);
+
+      view->drawLine(upperLeft*figure->scale(), lowerRight*figure->scale(), 1, color, 0, 8); 
+      view->drawLine(upperLeft*figure->scale(), YVPosInt(lowerRight.xpos(), upperLeft.ypos())*figure->scale(), 1, color, 0, 8); 
+      view->drawLine(YVPosInt(lowerRight.xpos(), upperLeft.ypos())*figure->scale(), lowerRight*figure->scale(), 1, color, 0, 8); 
+      view->drawLine(upperLeft*figure->scale(), YVPosInt(upperLeft.xpos(), lowerRight.ypos())*figure->scale(), 1, color, 0, 8); 
+      view->drawLine(YVPosInt(upperLeft.xpos(), lowerRight.ypos())*figure->scale(), lowerRight*figure->scale(), 1, color, 0, 8);
     }
 #endif
     if (view) {

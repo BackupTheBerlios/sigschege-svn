@@ -31,10 +31,12 @@ class YaVecCompound;
 
 #include <vector>
 #include <list>
+#include "YaVecUtil.h"
 #include "YVPosInt.h"
 #include "YaVecView.h"
 
 using namespace std;
+using namespace YaVec;
 
 class YaVecElm;
 
@@ -86,8 +88,10 @@ public:
   int depth(void);
   /// Set the depth (layer) of this object.
   bool depth(int new_depth);
+  /// Return the pen color as vector of 3 ints
+  void getPenColorRGB(FArray<int,3> &colorRGB);
   /// Return the actual fill color as vector of 3 ints.
-  vector<int> actualFillColor(void);
+  FArray<int,3> actualFillColor(void);
   
   /// find a figure element near the given position.
   virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
@@ -104,6 +108,8 @@ protected:
   int elmAreaFill;
   int elmDepth;
 };
+
+extern const int yavec_std_colors[][3];
 
 inline bool YaVecElm::penColor(int new_color) {
   if (new_color>=0 && new_color<512) {
@@ -149,7 +155,11 @@ inline int YaVecElm::depth(void) {
   return elmDepth;
 }
 
-extern const int yavec_std_colors[][3];
+inline void YaVecElm::getPenColorRGB(FArray<int,3> &colorRGB) {
+  colorRGB[0] = yavec_std_colors[elmPenColor][0];
+  colorRGB[1] = yavec_std_colors[elmPenColor][1];
+  colorRGB[2] = yavec_std_colors[elmPenColor][2];
+}
 
 #endif /* _YAVECELM_H */
 

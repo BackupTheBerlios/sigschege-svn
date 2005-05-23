@@ -317,7 +317,7 @@ void MyFrame::toggleArcs(wxCommandEvent& event) {
       arc->lineStyle(i&3);
       arc->penColor(i+8);
       arcs.push_back(arc);
-      arc = mainpic->arc(YVPosInt(400+i*800, 2000), 380, true, M_PI*2*7/8, M_PI*2*i/8);
+      arc = mainpic->arc(YVPosInt(400+i*800, 2000), 380, true, M_PI*2*7/8, M_PI*2*i/8, (i%2)==1);
       arc->penColor(i&15);
       arc->lineStyle(i&3);
       arcs.push_back(arc);
@@ -371,10 +371,14 @@ void MyFrame::toggleBoxes(wxCommandEvent& event) {
   mainpic->updating(false);
   if (boxes.empty()) {
     YaVecBox *dbox;
+    int j = 3;
     for (int i=100; i<4000; i+=499) {
+      j++;
       dbox = mainpic->box(YVPosInt(i*2, 4200-i), YVPosInt((i+500)*2, 4200-i+500));
       dbox->lineStyle(YaVecLine::dashed);
       dbox->styleValue(static_cast<double>(i&15));
+      dbox->fillColor(j);
+      dbox->areaFill(20);
       boxes.push_back(dbox);
 
       dbox = mainpic->box(YVPosInt((i+200)*2, 4200-i+200), YVPosInt((i+500+200)*2, 4200-i+500+200));

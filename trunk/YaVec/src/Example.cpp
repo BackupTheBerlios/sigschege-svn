@@ -24,6 +24,7 @@
 // $Id$
 
 #include "YVPosInt.h"
+#include "YaVecUtil.h"
 #include "YaVecFigure.h"
 #include "YaVecBox.h"
 #include "YaVecPolyline.h"
@@ -33,6 +34,7 @@
 #include <typeinfo>
 
 using namespace std;
+using namespace YaVec;
 
 void test_a(void) {
   YaVecFigure pic1, pic2;
@@ -222,9 +224,8 @@ int main(void) {
 
   cout << "Lower Right is " << text_lr << endl;
   mypic.save("example_text.fig");
-
   
-
   mypic.exportFig2dev("eps", "example_text.eps");
+
   
 }

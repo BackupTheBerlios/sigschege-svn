@@ -26,10 +26,12 @@
 #include "YaVecElm.h"
 #include "YaVecCompound.h"
 
+
 YaVecElm::YaVecElm(void) {
   parent = 0;
   elmPenColor = 0;
   elmFillColor = 0;
+  elmAreaFill = -1;
   elmDepth = 50;
 };
 
@@ -39,8 +41,8 @@ YaVecElm::YaVecElm(YaVecCompound *parent_compound, YaVecFigure *figure_compound)
   figure = figure_compound;
   elmPenColor = parent->penColor();
   elmFillColor = parent->fillColor();
+  elmAreaFill = parent->areaFill();
   elmDepth = parent->depth();
-  
 };
 
 YaVecElm::~YaVecElm() {
@@ -59,9 +61,9 @@ bool YaVecElm::checkProximity(YVPosInt selPos, YVPosInt point, int fuzzyFact, in
   }
 }
 
-vector<int> YaVecElm::actualFillColor(void) {
-  vector<int> zeroCol, oneCol;
-
+FArray<int,3> YaVecElm::actualFillColor(void) {
+  FArray<int,3> zeroCol, oneCol, resultCol;
+  double percentZero, percentOne;
   if (elmFillColor==-1 || elmFillColor==0) { // black or default
     zeroCol[0] = yavec_std_colors[7][0]; //white
     zeroCol[1] = yavec_std_colors[7][1]; 
@@ -81,9 +83,15 @@ vector<int> YaVecElm::actualFillColor(void) {
   if (elmAreaFill==20) return oneCol;
   else if (elmAreaFill==0) return zeroCol;
   else if (elmAreaFill>0 and elmAreaFill<21) {
-    //TODO
+    percentOne = 5.0*elmAreaFill;
+    percentZero = 100.0-percentOne;
+    resultCol[0] = static_cast<int>(percentZero*zeroCol[0]+percentOne*oneCol[0]);
+    resultCol[1] = static_cast<int>(percentZero*zeroCol[1]+percentOne*oneCol[1]);
+    resultCol[2] = static_cast<int>(percentZero*zeroCol[2]+percentOne*oneCol[2]);
+  } else {
+    resultCol = oneCol; // TODO
   }
-  
+  return resultCol;
 }
 
 

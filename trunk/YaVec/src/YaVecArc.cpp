@@ -30,15 +30,17 @@
 
 using namespace std;
 
-YaVecArc::YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt p1, YVPosInt p2, YVPosInt p3)
+YaVecArc::YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound,
+                   YVPosInt p1, YVPosInt p2, YVPosInt p3, bool isPieWedge)
   : YaVecElm(parent_compound, figure_compound), YaVecLine(), YaVecArrow() {
-  isPieWedge = false;
+  elmIsPieWedge = isPieWedge;
   setPoints(p1, p2, p3);
 };
 
-YaVecArc::YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt center, double radius, bool clockwise, double angle1, double angle3)
+YaVecArc::YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt center,
+                   double radius, bool clockwise, double angle1, double angle3, bool isPieWedge)
   : YaVecElm(parent_compound, figure_compound), YaVecLine(), YaVecArrow() {
-  isPieWedge = false;
+  elmIsPieWedge = isPieWedge;
   setArc(center, radius, clockwise, angle1, angle3);
 };
 
@@ -171,12 +173,15 @@ void YaVecArc::draw(YaVecView* view) {
    double styleLength = elmStyleValue*15;
    view->setPaintBuffer(elmPenColor, elmThickness);
    debugPrint(cout, true, 4);
+   FArray <int, 3> color;
+   getPenColorRGB(color);
+
    if (elmLineStyle==YaVecLine::solid) {
      view->drawArc(elmXCenter, elmYCenter, elmRadius, elmPhi1, elmPhi3, elmThickness);
    } else {
      double gapPhi, dotPhi, diffPhi, phi1, phi2, phiEnd;
      int activeCnt = 0;
-     gapPhi = elmStyleValue*2*M_PI/elmRadius;
+     gapPhi = styleLength/elmRadius;
      dotPhi = 2*M_PI/elmRadius;
      phi1 = elmPhi1;
      // make sure that comparisons work (2*pi wraparound)
@@ -208,14 +213,19 @@ void YaVecArc::draw(YaVecView* view) {
        phi1 = phi2 + (elmClockwise? (-gapPhi) : gapPhi);;
      }
    }
-     view->clrPaintBuffer();
+   if (elmIsPieWedge) {
+     view->drawLine(YVPosInt(elmXCenter, elmYCenter), elmPoint1, elmThickness, color, elmLineStyle, styleLength);
+     view->drawLine(YVPosInt(elmXCenter, elmYCenter), elmPoint3, elmThickness, color, elmLineStyle, styleLength);
+   }
+   view->clrPaintBuffer();
 }
 
 
 void YaVecArc::saveElm(ofstream &fig_file) {
   vector<YVPosInt>::iterator points_iter;
   
-  fig_file << "5 " << (isPieWedge? "2 " : "1 ") << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
+  fig_file << "5 " << (elmIsPieWedge? "2 " : "1 ") << elmLineStyle << " " << elmThickness << " "
+           << elmPenColor << " " << elmFillColor << " " << elmDepth
            << " -1 " << elmAreaFill << " " << elmStyleValue << " 0 0 " << (forwardArrow()? 1 : 0) << " "
            << (backwardArrow()? 1 : 0) << " " << elmXCenter << " " << elmYCenter;
   fig_file << " " << elmPoint1.xpos() << " " << elmPoint1.ypos() << " " << elmPoint2.xpos() << " "

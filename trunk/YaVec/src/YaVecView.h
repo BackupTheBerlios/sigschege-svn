@@ -30,7 +30,7 @@
 #include "YVPosInt.h"
 #include "YaVecLine.h"
 #include "YaVecArrow.h"
-
+#include "YaVecUtil.h"
 
 class YaVecFigure;
 
@@ -56,7 +56,7 @@ public:
    * \param lineStyle The line style (solid, dashed, dotted, dash-dotted).
    * \param styleLength The length of the dashes or spaces between dashes or dots.
    */
-  virtual void drawLine(YVPosInt from, YVPosInt to, int width, int color, int lineStyle, double styleLength) = 0;
+  virtual void drawLine(YVPosInt from, YVPosInt to, int width, YaVec::FArray<int, 3> &color, int lineStyle, double styleLength) = 0;
   /// Draw a single arc to the view. Used by Arc. The arc is drawn counterclockwise.
   /*! 
    * \param center Center of the arc circle.

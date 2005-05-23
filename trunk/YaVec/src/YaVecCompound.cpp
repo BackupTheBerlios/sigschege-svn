@@ -32,15 +32,18 @@
 #include "YaVecBox.h"
 #include "YaVecText.h"
 
-YaVecArc* YaVecCompound::arc(YVPosInt p1, YVPosInt p2, YVPosInt p3) {
-  YaVecArc* new_arc = new YaVecArc(static_cast<YaVecCompound*>(this), figure, p1, p2, p3);
+YaVecArc* YaVecCompound::arc(YVPosInt p1, YVPosInt p2, YVPosInt p3, bool isPieWedge) {
+  YaVecArc* new_arc = new YaVecArc(static_cast<YaVecCompound*>(this), figure,
+                                   p1, p2, p3, isPieWedge);
   members.push_back(new_arc);
   return new_arc;
   
 }
 
-YaVecArc* YaVecCompound::arc(YVPosInt center, double radius, bool clockwise, double angle1, double angle3) {
-  YaVecArc* new_arc = new YaVecArc(static_cast<YaVecCompound*>(this), figure, center, radius, clockwise, angle1, angle3);
+YaVecArc* YaVecCompound::arc(YVPosInt center, double radius, bool clockwise,
+                             double angle1, double angle3, bool isPieWedge) {
+  YaVecArc* new_arc = new YaVecArc(static_cast<YaVecCompound*>(this), figure,
+                                   center, radius, clockwise, angle1, angle3, isPieWedge);
   members.push_back(new_arc);
   return new_arc;  
 }

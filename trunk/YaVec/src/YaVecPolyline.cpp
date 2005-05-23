@@ -64,7 +64,7 @@ void YaVecPolyline::addPoints(vector<YVPosInt> new_points) {
 }
 
 void YaVecPolyline::addAngleBox(YVPosInt corner1, YVPosInt corner3, double angle, bool clear) {
-  double angleRad = angle*M_PI/180;
+  //double angleRad = angle*M_PI/180;
   
   //TODO
 }
@@ -73,14 +73,19 @@ void YaVecPolyline::draw(YaVecView* view) {
   double styleLength = elmStyleValue*15;
   vector<YVPosInt>::iterator points_iter1, points_iter2;
   YVPosInt oldPoint;
+  FArray <int, 3> color;
+
   points_iter1 = points.begin();
   if (points_iter1==points.end()) return;
   points_iter2 = points_iter1;
   points_iter2++;
+
+  getPenColorRGB(color);
+  
   if (backwardArrow() && points_iter2 != points.end()) 
     view->drawArrow((*points_iter1), (*points_iter2), elmPenColor, elmArrows[1]);
   while (points_iter2 != points.end()) {
-    view->drawLine((*points_iter1), (*points_iter2), elmThickness, elmPenColor, elmLineStyle, styleLength);
+    view->drawLine((*points_iter1), (*points_iter2), elmThickness, color, elmLineStyle, styleLength);
     oldPoint = *points_iter1;
     points_iter1 = points_iter2;
     ++points_iter2;

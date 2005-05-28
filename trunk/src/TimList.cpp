@@ -23,9 +23,11 @@
 //
 // $Id$
 
-using namespace std;
 
 #include "TimList.h"
+
+using namespace std;
+using namespace YaVec;
 
 /*!
  * Construct a Timing Diagram List
@@ -65,7 +67,7 @@ void TimList::paint(void) {
   
   for (LayoutObjectIter = cLayoutList.begin(); LayoutObjectIter != cLayoutList.end(); LayoutObjectIter++){
     LayoutObjectIter->Object()->setCompound(getCompound()->compound());
-    LayoutObjectIter->Object()->setOrigin(cOrigin+YVPosInt(cPadding,current_pos));
+    LayoutObjectIter->Object()->setOrigin(cOrigin+PosInt(cPadding,current_pos));
     LayoutObjectIter->Object()->setWidth(cSize.xpos()-2*cPadding);
     LayoutObjectIter->Object()->paint();
     current_pos+=LayoutObjectIter->Object()->getHeight()+cSliceSpace;

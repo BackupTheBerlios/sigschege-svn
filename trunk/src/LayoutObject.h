@@ -44,9 +44,9 @@ public:
   //! The standard destructor
   virtual ~LayoutObject();
 
-  virtual void setCompound(YaVecCompound *newCompound);
+  virtual void setCompound(YaVec::FCompound *newCompound);
 
-  YaVecCompound* getCompound();
+  YaVec::FCompound* getCompound();
 
   //! Paint this Layout Object
   virtual void paint(void);
@@ -109,7 +109,7 @@ public:
   int getRightPos();
   
   //! Set the Size of this Layout Object
-  void setSize(YVPosInt newSize);
+  void setSize(YaVec::PosInt newSize);
 
   //! Set the Size of this Layout Object
   void setSize(int width, int height);
@@ -121,19 +121,19 @@ public:
   void setHeight(int height);
 
   //! Get the Size of this Layout Object
-  virtual YVPosInt getSize();
+  virtual YaVec::PosInt getSize();
 
   //! Get the height of this Layout Object
   virtual int getHeight();
 
   //! Set the Origin of this Layout Object
-  void setOrigin(YVPosInt newOrigin);
+  void setOrigin(YaVec::PosInt newOrigin);
 
   //! Set the Origin of this Layout Object
   void setOrigin(int x, int y);
 
   //! Get the Origin of this Layout Object
-  YVPosInt getOrigin();
+  YaVec::PosInt getOrigin();
 
   //! Enable/Disable drawing of the Border
   void enableBorder(bool enable);
@@ -144,13 +144,13 @@ protected:
   // the padding of this layout object 
   int      cPadding;
   // the origin (upper left corner) of this layout object
-  YVPosInt cOrigin;
-  YVPosInt cSize;
+  YaVec::PosInt cOrigin;
+  YaVec::PosInt cSize;
   int refCount;
   Handle<LayoutObject> cReference;
   bool cDrawBorder;
   vector< Handle<LayoutObject> > cReferrers;
-  YaVecCompound *cCompound;
+  YaVec::FCompound *cCompound;
 };
 
 #endif

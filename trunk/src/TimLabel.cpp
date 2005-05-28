@@ -23,11 +23,13 @@
 //
 // $Id$
 
-using namespace std;
 
 #include "TimLabel.h"
 #include <iostream>
 #include <YaVecText.h>
+
+using namespace std;
+using namespace YaVec;
 
 /*!
  * This constructor will create an Timing Diagram Label Object
@@ -64,7 +66,7 @@ void TimLabel::setText(string newText) {
  * Paint this text layout object
  */
 void TimLabel::paint(void) {
-  YaVecText *text;
+  FText *text;
 
   // check if a compound is available
   if(getCompound()==0) return;
@@ -81,7 +83,7 @@ void TimLabel::paint(void) {
   text->setText(cText);
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(cOrigin+YVPosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
+  text->setOrigin(cOrigin+PosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
 }
 
 /// Set the Font Type

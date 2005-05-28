@@ -35,50 +35,52 @@
 #include "YaVecView.h"
 #include <vector>
 
-using namespace std;
+namespace YaVec {
 
-/// An YaVecFigure arc element - corresponds to fig element arc.
-class YaVecArc : public YaVecElm, public YaVecLine, public YaVecArrow {
-public:
-  /// General constructor which creates the object, from center, radius, angles.
-  YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt center,
-           double radius, bool clockwise, double angle1, double angle3, bool isPieWedge=false);
-  /// General constructor, which creates the arc from three points.
-  YaVecArc(YaVecCompound* parent_compound, YaVecFigure* figure_compound,
-           YVPosInt p1, YVPosInt p2, YVPosInt p3, bool isPieWedge=false);
-  virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right);
+  /// An FFigure arc element - corresponds to fig element arc.
+  class FArc : public YaVecElm, public YaVecLine, public YaVecArrow {
+  public:
+    /// General constructor which creates the object, from center, radius, angles.
+    FArc(FCompound* parent_compound, FFigure* figure_compound, PosInt center,
+             double radius, bool clockwise, double angle1, double angle3, bool isPieWedge=false);
+    /// General constructor, which creates the arc from three points.
+    FArc(FCompound* parent_compound, FFigure* figure_compound,
+             PosInt p1, PosInt p2, PosInt p3, bool isPieWedge=false);
+    virtual void getBoundingBox(PosInt &upper_left, PosInt &lower_right);
 
-  /// Set point number num to the given position.
-  void setPoint(int num, YVPosInt newPosition);
-  /// Set all three points.
-  void setPoints(YVPosInt newPoint1, YVPosInt newPoint2, YVPosInt newPoint3);
-  /// Set arc geometry by center, radius, direction and angles.
-  void setArc(YVPosInt center, double radius, bool clockwise, double angle1, double angle3);
+    /// Set point number num to the given position.
+    void setPoint(int num, PosInt newPosition);
+    /// Set all three points.
+    void setPoints(PosInt newPoint1, PosInt newPoint2, PosInt newPoint3);
+    /// Set arc geometry by center, radius, direction and angles.
+    void setArc(PosInt center, double radius, bool clockwise, double angle1, double angle3);
 
-  /// Collect all figure elements hierarchicallly as a flat list (just return myself).
-  vector<YaVecElm*> flatList() { vector<YaVecElm*> res; res.push_back(this); return (res); };
-  /// Draw the arc to the given view.
-  virtual void draw(YaVecView* view);
-  virtual void saveElm(ofstream &fig_file);
-  /// Print some (or some more) information about this figure element.
-  virtual void debugPrint(ostream &dest, bool verbose, int depth);
+    /// Collect all figure elements hierarchicallly as a flat list (just return myself).
+    std::vector<YaVecElm*> flatList() { std::vector<YaVecElm*> res; res.push_back(this); return (res); };
+    /// Draw the arc to the given view.
+    virtual void draw(FigView* view);
+    virtual void saveElm(std::ofstream &fig_file);
+    /// Print some (or some more) information about this figure element.
+    virtual void debugPrint(std::ostream &dest, bool verbose, int depth);
 
-  /// Return a list of significant points, which can be used for selection
-  virtual void getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds);
-  /// find a figure element near the given position.
-  virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                             list<YaVecElmHit> &hits);
+    /// Return a list of significant points, which can be used for selection
+    virtual void getPoints(std::vector<PosInt> &points, bool hierarchical, bool withCompounds);
+    /// find a figure element near the given position.
+    virtual void getElmNearPos(PosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                               std::list<YaVecElmHit> &hits);
 
-private:
-  YVPosInt elmPoint1, elmPoint2, elmPoint3;
-  bool elmIsPieWedge;
-  double elmXCenter, elmYCenter, elmRadius;
-  bool elmClockwise;
-  double elmPhi1, elmPhi2, elmPhi3;
+  private:
+    PosInt elmPoint1, elmPoint2, elmPoint3;
+    bool elmIsPieWedge;
+    double elmXCenter, elmYCenter, elmRadius;
+    bool elmClockwise;
+    double elmPhi1, elmPhi2, elmPhi3;
 
-  void computeArc(void);
+    void computeArc(void);
   
-};
+  };
 
+}
+  
 #endif /* _YAVECARC_H */
 

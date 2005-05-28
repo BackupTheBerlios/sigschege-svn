@@ -31,143 +31,145 @@
 #include "YaVecUtil.h"
 #include "YVPosInt.h"
 
-class YaVecView;
 
-using namespace std;
-using namespace YaVec;
+namespace YaVec {
 
-/// An YaVecFigure arrow base class  - used for polyarrow and box
-class YaVecArrow {
-public:
+  class FigView;
 
-  enum arrowTypeType {
-    stick_type,
-    closed_triangle,
-    closed_indented_butt,
-    closed_pointed_butt
+
+  /// An FFigure arrow base class  - used for polyarrow and box
+  class YaVecArrow {
+  public:
+
+    enum arrowTypeType {
+      stick_type,
+      closed_triangle,
+      closed_indented_butt,
+      closed_pointed_butt
+    };
+    enum arrowStyleType {
+      hollow,
+      filled
+    };
+
+    struct arrowInfo {
+      int Type;
+      int Style;
+      double Thickness;
+      double Width;
+      double Height;
+    };
+
+    YaVecArrow();
+    ~YaVecArrow();
+    /// Set the state of the forward arrow to new_state.
+    void forwardArrow(bool new_state);
+    /// Return the current state of the forward arrow.
+    bool forwardArrow(void);
+    /// Set the state of the backward arrow to new_state.
+    void backwardArrow(bool new_state);
+    /// Return the current state of the backward arrow.
+    bool backwardArrow(void);
+
+    /// Set the forward arrow type, value must be one of the values in arrowTypeType.
+    bool forwardArrowType(int newArrowType);
+    /// Return the forward arrow type.
+    int forwardArrowType(void);
+    /// Set the backward arrow type, value must be one of the values in arrowTypeType.
+    bool backwardArrowType(int newArrowType);
+    /// Return the backward arrow type.
+    int backwardArrowType(void);
+  
+    /// Set the forward arrow style, value must be one of the values in arrowStyleType.
+    bool forwardArrowStyle(int newForwardArrowStyle);
+    /// Return the forward arrow style.
+    int forwardArrowStyle(void);
+    /// Set the backward arrow style, value must be one of the values in arrowStyleType.
+    bool backwardArrowStyle(int newBackwardArrowStyle);
+    /// Return the backward arrow style.
+    int backwardArrowStyle(void);
+
+    /// Set the size of the forward arrow.
+    bool forwardArrowSize(double newThickness, double newWidth, double newHeight);
+    /// Return the thickness of the forward arrow. 
+    double forwardArrowThickness(void);
+    /// Return the width of the forward arrow. 
+    double forwardArrowWidth(void);
+    /// Return the height of the forward arrow. 
+    double forwardArrowHeight(void);
+
+    /// Set the size of the backward arrow.
+    bool backwardArrowSize(double newThickness, double newWidth, double newHeight);
+    /// Return the thickness of the backward arrow. 
+    double backwardArrowThickness(void);
+    /// Return the width of the backward arrow. 
+    double backwardArrowWidth(void);
+    /// Return the height of the backward arrow. 
+    double backwardArrowHeight(void);
+
+    /// Return the string to be inserted into fig file for a forward arrow.
+    std::string forwardArrowString(void);
+    /// Return the string to be inserted into fig file for a backward arrow.
+    std::string backwardArrowString(void);
+
+    void drawArrow(const PosInt &tip, const PosInt &from, Array<int, 3> color, int thickness,
+                   FigView* view, int scaleFactor, bool isBackward);
+  
+    static void calcPoints(arrowInfo &arrow, const PosInt &tip, double tipAngle, 
+                           PosInt &pLeft, PosInt &pRight, PosInt &pMid);
+  
+    friend class FPolyline;
+  
+  private:
+    // array with length 2 - 0 is forward arrow, 1 is backward arrow
+    // this makes internal code simpler (common functions which are just passed the index)
+    // TODO (CPUOPT): Cache angle
+    arrowInfo *elmArrows[2];
+
+    std::string arrowString(int arrowIndex);
+
   };
-  enum arrowStyleType {
-    hollow,
-    filled
-  };
 
-  struct arrowInfo {
-    int Type;
-    int Style;
-    double Thickness;
-    double Width;
-    double Height;
-  };
+  inline int YaVecArrow::forwardArrowType(void) {
+    return forwardArrow() ? elmArrows[0]->Type : -1;
+  }
 
-  YaVecArrow();
-  ~YaVecArrow();
-  /// Set the state of the forward arrow to new_state.
-  void forwardArrow(bool new_state);
-  /// Return the current state of the forward arrow.
-  bool forwardArrow(void);
-  /// Set the state of the backward arrow to new_state.
-  void backwardArrow(bool new_state);
-  /// Return the current state of the backward arrow.
-  bool backwardArrow(void);
+  inline int YaVecArrow::backwardArrowType(void) {
+    return backwardArrow() ? elmArrows[1]->Type : -1;
+  }
 
-  /// Set the forward arrow type, value must be one of the values in arrowTypeType.
-  bool forwardArrowType(int newArrowType);
-  /// Return the forward arrow type.
-  int forwardArrowType(void);
-  /// Set the backward arrow type, value must be one of the values in arrowTypeType.
-  bool backwardArrowType(int newArrowType);
-  /// Return the backward arrow type.
-  int backwardArrowType(void);
-  
-  /// Set the forward arrow style, value must be one of the values in arrowStyleType.
-  bool forwardArrowStyle(int newForwardArrowStyle);
-  /// Return the forward arrow style.
-  int forwardArrowStyle(void);
-  /// Set the backward arrow style, value must be one of the values in arrowStyleType.
-  bool backwardArrowStyle(int newBackwardArrowStyle);
-  /// Return the backward arrow style.
-  int backwardArrowStyle(void);
+  inline int YaVecArrow::forwardArrowStyle(void) {
+    return forwardArrow() ? elmArrows[0]->Style : -1;
+  }
 
-  /// Set the size of the forward arrow.
-  bool forwardArrowSize(double newThickness, double newWidth, double newHeight);
-  /// Return the thickness of the forward arrow. 
-  double forwardArrowThickness(void);
-  /// Return the width of the forward arrow. 
-  double forwardArrowWidth(void);
-  /// Return the height of the forward arrow. 
-  double forwardArrowHeight(void);
+  inline int YaVecArrow::backwardArrowStyle(void) {
+    return backwardArrow() ? elmArrows[1]->Style : -1;
+  }
 
-  /// Set the size of the backward arrow.
-  bool backwardArrowSize(double newThickness, double newWidth, double newHeight);
-  /// Return the thickness of the backward arrow. 
-  double backwardArrowThickness(void);
-  /// Return the width of the backward arrow. 
-  double backwardArrowWidth(void);
-  /// Return the height of the backward arrow. 
-  double backwardArrowHeight(void);
+  inline double YaVecArrow::forwardArrowThickness(void) {
+    return forwardArrow() ? elmArrows[0]->Thickness : -1.0;
+  }
 
-  /// Return the string to be inserted into fig file for a forward arrow.
-  string forwardArrowString(void);
-  /// Return the string to be inserted into fig file for a backward arrow.
-  string backwardArrowString(void);
+  inline double YaVecArrow::backwardArrowThickness(void) {
+    return backwardArrow() ? elmArrows[1]->Thickness : -1.0;
+  }
 
-  void drawArrow(const YVPosInt &tip, const YVPosInt &from, FArray<int, 3> color, int thickness,
-                 YaVecView* view, int scaleFactor, bool isBackward);
-  
-  static void calcPoints(arrowInfo &arrow, const YVPosInt &tip, double tipAngle, 
-                         YVPosInt &pLeft, YVPosInt &pRight, YVPosInt &pMid);
-  
-  friend class YaVecPolyline;
-  
-private:
-  // array with length 2 - 0 is forward arrow, 1 is backward arrow
-  // this makes internal code simpler (common functions which are just passed the index)
-  // TODO (CPUOPT): Cache angle
-  arrowInfo *elmArrows[2];
+  inline double YaVecArrow::forwardArrowWidth(void) {
+    return forwardArrow() ? elmArrows[0]->Width : -1.0;
+  }
 
-  string arrowString(int arrowIndex);
+  inline double YaVecArrow::backwardArrowWidth(void) {
+    return backwardArrow() ? elmArrows[1]->Width : -1.0;
+  }
 
-};
+  inline double YaVecArrow::forwardArrowHeight(void) {
+    return forwardArrow() ? elmArrows[0]->Height : -1.0;
+  }
 
-inline int YaVecArrow::forwardArrowType(void) {
-  return forwardArrow() ? elmArrows[0]->Type : -1;
+  inline double YaVecArrow::backwardArrowHeight(void) {
+    return backwardArrow() ? elmArrows[1]->Height : -1.0;
+  }
+
 }
-
-inline int YaVecArrow::backwardArrowType(void) {
-  return backwardArrow() ? elmArrows[1]->Type : -1;
-}
-
-inline int YaVecArrow::forwardArrowStyle(void) {
-  return forwardArrow() ? elmArrows[0]->Style : -1;
-}
-
-inline int YaVecArrow::backwardArrowStyle(void) {
-  return backwardArrow() ? elmArrows[1]->Style : -1;
-}
-
-inline double YaVecArrow::forwardArrowThickness(void) {
-  return forwardArrow() ? elmArrows[0]->Thickness : -1.0;
-}
-
-inline double YaVecArrow::backwardArrowThickness(void) {
-  return backwardArrow() ? elmArrows[1]->Thickness : -1.0;
-}
-
-inline double YaVecArrow::forwardArrowWidth(void) {
-  return forwardArrow() ? elmArrows[0]->Width : -1.0;
-}
-
-inline double YaVecArrow::backwardArrowWidth(void) {
-  return backwardArrow() ? elmArrows[1]->Width : -1.0;
-}
-
-inline double YaVecArrow::forwardArrowHeight(void) {
-  return forwardArrow() ? elmArrows[0]->Height : -1.0;
-}
-
-inline double YaVecArrow::backwardArrowHeight(void) {
-  return backwardArrow() ? elmArrows[1]->Height : -1.0;
-}
-
 
 #endif /* _YAVECARROW_H */

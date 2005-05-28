@@ -26,11 +26,15 @@
 #include "YaVecView.h"
 #include "YaVecFigure.h"
 
-YaVecView::YaVecView(YaVecFigure *picture) {
-  picture->registerView(this);
-  mypicture = picture;
-};
+namespace YaVec {
 
-YaVecView::~YaVecView() {
-  mypicture->unregisterView(this);
-};
+  FigView::FigView(FFigure *picture) {
+    picture->registerView(this);
+    mypicture = picture;
+  };
+
+  FigView::~FigView() {
+    mypicture->unregisterView(this);
+  };
+
+}

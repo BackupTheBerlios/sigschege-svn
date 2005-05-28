@@ -31,48 +31,50 @@
 #include "YaVecUtil.h"
 #include "YaVecView.h"
 
+namespace YaVec {
 
-/// An YaVec View class for the wxWidgets toolkit.
-class YaVecVwx : public wxWindow, public YaVecView {
-public:
-  YaVecVwx(YaVecFigure *picture, wxFrame *frame, int x=-1, int y=-1, int width=-1, int height=-1,
+  /// A YaVec View class for the wxWidgets toolkit.
+  class FigVwx : public wxWindow, public FigView {
+  public:
+    FigVwx(FFigure *picture, wxFrame *frame, int x=-1, int y=-1, int width=-1, int height=-1,
              long style=wxTE_MULTILINE);
-  virtual void drawLine(YVPosInt from, YVPosInt to, int width, YaVec::FArray<int, 3> &color, int lineStyle, double styleLength);
-  /// Draw an arc clockwise from phiStart to phiEnd.
-  /*!
-   * This draws an arc of a circle. The drawing is done clockwise (negative phi direction) from
-   * phiStart to phiEnd. Before calling this function setPaintBuffer() must be called to set
-   * up the pBuf (paint buffer) elements.
-   * \param xCenter The horizontal center of the arc circle.
-   * \param yCenter The vertical center of the arc circle.
-   * \param radius  The radius of the circle.
-   * \param phiStart The start angle of the circle, must be between 0 and 2*pi. 
-   * \param phiEnd The end angle of the circle, must be between 0 and 2*pi. 
-   * \param width The width of the line to be drawn.
-   */
-  virtual void drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width);
-  virtual void drawChar(YVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color);
-  /// Set up a paint buffer for functions which require it.
-  virtual void setPaintBuffer(int color, int thickness); 
-  /// Delete a previously allocated paint buffer.
-  virtual void clrPaintBuffer(void); 
-  virtual void refreshAll(void);
-  virtual void clear(void);
-  // draw a marker at this point
-  virtual void drawMarker(YVPosInt origin);
+    virtual void drawLine(PosInt from, PosInt to, int width, YaVec::Array<int, 3> &color, int lineStyle, double styleLength);
+    /// Draw an arc clockwise from phiStart to phiEnd.
+    /*!
+     * This draws an arc of a circle. The drawing is done clockwise (negative phi direction) from
+     * phiStart to phiEnd. Before calling this function setPaintBuffer() must be called to set
+     * up the pBuf (paint buffer) elements.
+     * \param xCenter The horizontal center of the arc circle.
+     * \param yCenter The vertical center of the arc circle.
+     * \param radius  The radius of the circle.
+     * \param phiStart The start angle of the circle, must be between 0 and 2*pi. 
+     * \param phiEnd The end angle of the circle, must be between 0 and 2*pi. 
+     * \param width The width of the line to be drawn.
+     */
+    virtual void drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width);
+    virtual void drawChar(PosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color);
+    /// Set up a paint buffer for functions which require it.
+    virtual void setPaintBuffer(int color, int thickness); 
+    /// Delete a previously allocated paint buffer.
+    virtual void clrPaintBuffer(void); 
+    virtual void refreshAll(void);
+    virtual void clear(void);
+    // draw a marker at this point
+    virtual void drawMarker(PosInt origin);
   
-  void OnPaint(wxPaintEvent& event);
-  void OnMouse(wxMouseEvent& event);
-private:
-  DECLARE_EVENT_TABLE();
-  // pointer to wxPaintDC object for current onPaint event
-  wxPaintDC *onPaintPaintDCp;
-  int maxDist;
-  wxPen *pBufPen;
-  wxColour *pBufColor;
-  wxWindowDC *pBufpaintPtr;
-};
+    void OnPaint(wxPaintEvent& event);
+    void OnMouse(wxMouseEvent& event);
+  private:
+    DECLARE_EVENT_TABLE();
+    // pointer to wxPaintDC object for current onPaint event
+    wxPaintDC *onPaintPaintDCp;
+    int maxDist;
+    wxPen *pBufPen;
+    wxColour *pBufColor;
+    wxWindowDC *pBufpaintPtr;
+  };
 
+}
 
 #endif /* _YAVECVWX_H */
 

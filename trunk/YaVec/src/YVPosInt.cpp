@@ -25,67 +25,71 @@
 #include "YVPosInt.h"
 #include <cmath>
 
-YVPosInt &YVPosInt::operator-(const YVPosInt &destination) const {
-    YVPosInt *rv = new YVPosInt;
+namespace YaVec {
+
+  PosInt &PosInt::operator-(const PosInt &destination) const {
+    PosInt *rv = new PosInt;
     *rv = *this;
     rv->cx -= destination.cx;
     rv->cy -= destination.cy;
     return *rv;
   };
 
-YVPosInt &YVPosInt::operator*(int mult) const {
-    YVPosInt *rv = new YVPosInt;
+  PosInt &PosInt::operator*(int mult) const {
+    PosInt *rv = new PosInt;
     *rv = *this;
     rv->cx *= mult;
     rv->cy *= mult;
     return *rv;
   
-}
+  }
 
-YVPosInt &YVPosInt::operator*(double mult) const {
-    YVPosInt *rv = new YVPosInt;
+  PosInt &PosInt::operator*(double mult) const {
+    PosInt *rv = new PosInt;
     *rv = *this;
     rv->cx = static_cast<int>(rv->cx * mult);
     rv->cy = static_cast<int>(rv->cy * mult);
     return *rv;
   
-}
-
-YVPosInt &YVPosInt::operator/=(double divisor) {
-  cx = static_cast<int>(cx / divisor);
-  cy = static_cast<int>(cy / divisor);
-  return *this;
-};
-
-YVPosInt &YVPosInt::operator/(double divisor) const {
-  YVPosInt *rv = new YVPosInt;
-  *rv /= divisor;
-  return *rv;
-};
-
-
-std::ostream& operator<<(std::ostream& ostr, const YVPosInt Place) {
-  ostr << "x=" << Place.xpos() << ",y=" << Place.ypos();
-  return ostr;
-}
-
-double YVPosInt::distance(const YVPosInt &dest) const {
-  int xdist, ydist;
-  xdist = cx - dest.cx;
-  ydist = cy - dest.cy;
-  if (xdist==0) {
-    return fabs(ydist);
-  } else if (ydist==0) {
-    return fabs(xdist);
-  } else {
-    return sqrt(static_cast<double>(xdist)*xdist+static_cast<double>(ydist)*ydist);
   }
-}
 
-double YVPosInt::angle(const YVPosInt &from) const {
-  double angl;
-  int xdiff = xpos()-from.xpos();
-  angl = atan(static_cast<double>(ypos()-from.ypos())/xdiff);
-  if (xdiff<0) angl += M_PI;
-  return angl;
+  PosInt &PosInt::operator/=(double divisor) {
+    cx = static_cast<int>(cx / divisor);
+    cy = static_cast<int>(cy / divisor);
+    return *this;
+  };
+
+  PosInt &PosInt::operator/(double divisor) const {
+    PosInt *rv = new PosInt;
+    *rv /= divisor;
+    return *rv;
+  };
+
+
+  std::ostream& operator<<(std::ostream& ostr, const PosInt Place) {
+    ostr << "x=" << Place.xpos() << ",y=" << Place.ypos();
+    return ostr;
+  }
+
+  double PosInt::distance(const PosInt &dest) const {
+    int xdist, ydist;
+    xdist = cx - dest.cx;
+    ydist = cy - dest.cy;
+    if (xdist==0) {
+      return fabs(ydist);
+    } else if (ydist==0) {
+      return fabs(xdist);
+    } else {
+      return sqrt(static_cast<double>(xdist)*xdist+static_cast<double>(ydist)*ydist);
+    }
+  }
+
+  double PosInt::angle(const PosInt &from) const {
+    double angl;
+    int xdiff = xpos()-from.xpos();
+    angl = atan(static_cast<double>(ypos()-from.ypos())/xdiff);
+    if (xdiff<0) angl += M_PI;
+    return angl;
+  }
+
 }

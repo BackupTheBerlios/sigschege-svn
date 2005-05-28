@@ -62,7 +62,7 @@ public:
   void exportAny(string file, string format);
   
 private:
-  YaVecFigure cYaVec;
+  YaVec::FFigure cYaVec;
 
 };
 #endif // _H_TIMING

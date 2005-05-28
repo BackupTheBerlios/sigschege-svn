@@ -33,14 +33,14 @@ namespace YaVec {
 
   /// A template class which can hold a fixed array of any type.
   template <class Type, int size>
-  class FArray {
+  class Array {
   public:
     /// The standard constructor, this will not initialize the array content.
-    FArray();
+    Array();
     /// A general constructor which initializes all array elements with initializer. 
-    FArray(Type initializer);
+    Array(Type initializer);
     /// The destructor.
-    ~FArray() {};
+    ~Array() {};
 
     /// Access element idx of the array.
     inline Type& operator[](int idx);  
@@ -50,17 +50,17 @@ namespace YaVec {
   };
 
   template <class Type, int size>
-    inline Type& FArray<Type,size>::operator[](int idx) {
+    inline Type& Array<Type,size>::operator[](int idx) {
     assert(idx>=0 && idx<size);
     return data[idx];
   }
 
   template <class Type, int size>
-  inline FArray<Type,size>::FArray<Type,size>() {
+  inline Array<Type,size>::Array<Type,size>() {
   }
 
   template <class Type, int size>
-  inline FArray<Type,size>::FArray<Type,size>(Type initializer) {
+  inline Array<Type,size>::Array<Type,size>(Type initializer) {
     for (int i=0; i<size; i++) {
       data[i] = initializer;
     }

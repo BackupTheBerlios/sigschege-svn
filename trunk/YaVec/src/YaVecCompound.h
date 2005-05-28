@@ -27,73 +27,78 @@
 #ifndef _YAVECCOMPOUND_H
 #define _YAVECCOMPOUND_H _YAVECCOMPOUND_H 
 
-class YaVecPolyline;
-class YaVecBox;
-class YaVecArc;
-class YaVecText;
+namespace YaVec {
+  class FPolyline;
+  class FBox;
+  class FArc;
+  class FText;
+}
 
 #include <vector>
 #include "YVPosInt.h"
 #include "YaVecElm.h"
-using namespace std;
 
-/// A class containing a fig compound
+namespace YaVec {
 
-/*
- * This class implements a compound, which can contain graphical objects, including
- * other compounds. This allows hierarchical structuring of figures.
- *
- * Note that this class is also used as a base class for YaVecFigure, which implements a
- * complete figure. The reason for this is that the functionality is very similar,
- * actually the figure itself is like an invisible compound as it can contain several
- * graphical objects.
- */
-class YaVecCompound : public YaVecElm {
-public:
-  /// Standard constructor - needed by derived YaVecFigure class
-  YaVecCompound() {};
-  /// General constructor which accepts the parent compound and the figure compound
-  YaVecCompound(YaVecCompound* parent_compound, YaVecFigure* figure_compound)
-    : YaVecElm(parent_compound, figure_compound) {};
+  /// A class containing a fig compound
 
-  ~YaVecCompound() { clear(); };
+  /*
+   * This class implements a compound, which can contain graphical objects, including
+   * other compounds. This allows hierarchical structuring of figures.
+   *
+   * Note that this class is also used as a base class for FFigure, which implements a
+   * complete figure. The reason for this is that the functionality is very similar,
+   * actually the figure itself is like an invisible compound as it can contain several
+   * graphical objects.
+   */
+  class FCompound : public YaVecElm {
+  public:
+    /// Standard constructor - needed by derived FFigure class
+    FCompound() {};
+    /// General constructor which accepts the parent compound and the figure compound
+    FCompound(FCompound* parent_compound, FFigure* figure_compound)
+      : YaVecElm(parent_compound, figure_compound) {};
+
+    ~FCompound() { clear(); };
   
-  /// Create a polyline (class YaVecPolyline), points must be added later
-  YaVecPolyline* polyline();
-  /// Create an arc (class YaVecArc), define it by 3 points on the arc.  
-  YaVecArc* arc(YVPosInt p1, YVPosInt p2, YVPosInt p3, bool isPieWedge=false);
-  /// Create an arc (class YaVecArc), define it by center, radius, direction and angles.
-  YaVecArc* arc(YVPosInt center, double radius, bool clockwise, double angle1, double angle3, bool isPieWedge=false);
-  /// Create a box (class YaVecBox)
-  YaVecBox* box(YVPosInt upper_left, YVPosInt lower_right);
-  /// Create a text element (class YaVecText)
-  YaVecText* text();
-  /// Create a compound (class YaVecCompound)
-  YaVecCompound* compound();
-  /// remove the figure element, return true if element was found and deleted.
-  bool remove(YaVecElm* elm);
-  /// Determine the region that is covered by this compound
-  virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right);
-  /// return all elements of this compound as a flat list
-  /// Collect all figure elements hierarchicallly as a flat list.
-  virtual vector<YaVecElm*> flatList();
-  /// Draw the content of this compound to the given view.
-  virtual void draw(YaVecView* view) {};
-  virtual void handleChange(YaVecElm*);
-  virtual void saveElm(ofstream &fig_file);
-  /// Print some (or some more) information about this figure element.
-  virtual void debugPrint(ostream &dest, bool verbose, int depth);
-  void save_content(ofstream &fig_file);
-  void copy_members(YaVecCompound& source);
-  void clear(void);
-  YaVecCompound& operator=(YaVecCompound& source);
+    /// Create a polyline (class FPolyline), points must be added later
+    FPolyline* polyline();
+    /// Create an arc (class FArc), define it by 3 points on the arc.  
+    FArc* arc(PosInt p1, PosInt p2, PosInt p3, bool isPieWedge=false);
+    /// Create an arc (class FArc), define it by center, radius, direction and angles.
+    FArc* arc(PosInt center, double radius, bool clockwise, double angle1, double angle3, bool isPieWedge=false);
+    /// Create a box (class FBox)
+    FBox* box(PosInt upper_left, PosInt lower_right);
+    /// Create a text element (class FText)
+    FText* text();
+    /// Create a compound (class FCompound)
+    FCompound* compound();
+    /// remove the figure element, return true if element was found and deleted.
+    bool remove(YaVecElm* elm);
+    /// Determine the region that is covered by this compound
+    virtual void getBoundingBox(PosInt &upper_left, PosInt &lower_right);
+    /// return all elements of this compound as a flat list
+    /// Collect all figure elements hierarchicallly as a flat list.
+    virtual std::vector<YaVecElm*> flatList();
+    /// Draw the content of this compound to the given view.
+    virtual void draw(FigView* view) {};
+    virtual void handleChange(YaVecElm*);
+    virtual void saveElm(std::ofstream &fig_file);
+    /// Print some (or some more) information about this figure element.
+    virtual void debugPrint(std::ostream &dest, bool verbose, int depth);
+    void save_content(std::ofstream &fig_file);
+    void copy_members(FCompound& source);
+    void clear(void);
+    FCompound& operator=(FCompound& source);
 
-  /// Return a list of significant points, which can be used for selection
-  virtual void getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds);
+    /// Return a list of significant points, which can be used for selection
+    virtual void getPoints(std::vector<PosInt> &points, bool hierarchical, bool withCompounds);
 
-protected:
-  vector<YaVecElm*> members;
-};
+  protected:
+    std::vector<YaVecElm*> members;
+  };
+
+}
 
 #endif /* _YAVECCOMPOUND_H */
 

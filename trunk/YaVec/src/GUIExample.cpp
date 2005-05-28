@@ -41,23 +41,24 @@
 #include <cstdio>
 
 using namespace std;
+using namespace YaVec;
 
 MyFrame   *frame = (MyFrame *) NULL;
 wxMenuBar *menu_bar = (wxMenuBar *) NULL;
-YaVecVwx *canvas;
+FigVwx *canvas;
 
 int state = 4;
 
 IMPLEMENT_APP(MyApp);
 
-YaVecPolyline* mainline;
-list<YaVecPolyline *> dlines;
-list<YaVecPolyline *> alines;
-list<YaVecArc *> arcs;
-list<YaVecText *> texts;
-list<YaVecBox *> tboxes;
-list<YaVecBox *> boxes;
-YaVecFigure *mainpic;
+FPolyline* mainline;
+list<FPolyline *> dlines;
+list<FPolyline *> alines;
+list<FArc *> arcs;
+list<FText *> texts;
+list<FBox *> tboxes;
+list<FBox *> boxes;
+FFigure *mainpic;
 
 MyApp::MyApp()
 {
@@ -67,8 +68,8 @@ MyApp::MyApp()
 bool MyApp::OnInit()
 {
 
-  YaVecFigure *ev_pic = new YaVecFigure();
-  YaVecPolyline *nline;
+  FFigure *ev_pic = new FFigure();
+  FPolyline *nline;
   nline = ev_pic->polyline();
   nline->addPoint(1500, 1500);
   nline->addPoint(300, 1500);
@@ -79,15 +80,15 @@ bool MyApp::OnInit()
   mainpic = ev_pic;
   
 
-  YaVecText *ntext;
+  FText *ntext;
   ntext = ev_pic->text();
   ntext->setText("This is a good YaVec Demo");
   ntext->penColor(2);
-  ntext->setOrigin(YVPosInt(300, 6000));
+  ntext->setOrigin(PosInt(300, 6000));
   ntext->setSize(30);
   ntext->depth(55);
 
-  YaVecPolyline *tline;
+  FPolyline *tline;
   tline = ev_pic->polyline();
   nline->addPoint(300, 4500);
   nline->addPoint(5000, 4500);
@@ -138,7 +139,7 @@ bool MyApp::OnInit()
   wxButton *btn4 = new wxButton(panel, BUTTON_ARCS, _T("Toggle arcs")) ;
   wxButton *btn5 = new wxButton(panel, BUTTON_TEXT, _T("Toggle text")) ;
 
-  canvas = new YaVecVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
+  canvas = new FigVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
   // Set constraints for canvas subwindow
   wxLayoutConstraints *c2 = new wxLayoutConstraints;
   c2->left.SameAs       (frame, wxLeft);
@@ -242,7 +243,7 @@ void MyFrame::toggleMarkers(wxCommandEvent& event) {
 void MyFrame::toggleDashedLines(wxCommandEvent& event) {
   mainpic->updating(false);
   if (dlines.empty()) {
-    YaVecPolyline *dline;
+    FPolyline *dline;
     for (int i=100; i<5000; i+=1000) {
       dline = mainpic->polyline();
       dline->addPoint(3000, 4000);
@@ -280,7 +281,7 @@ void MyFrame::toggleDashedLines(wxCommandEvent& event) {
       dlines.push_back(dline);
     }
   } else {
-    list<YaVecPolyline*>::iterator dlineIt;
+    list<FPolyline*>::iterator dlineIt;
     for ( dlineIt = dlines.begin(); dlineIt != dlines.end(); ++dlineIt ) {
       if (!mainpic->remove(*dlineIt)) cerr << "ERROR: DashedLine element did not exist!" << endl; 
     }
@@ -294,7 +295,7 @@ void MyFrame::toggleDashedLines(wxCommandEvent& event) {
 void MyFrame::toggleArrows(wxCommandEvent& event) {
   mainpic->updating(false);
   if (alines.empty()) {
-    YaVecPolyline *aline;
+    FPolyline *aline;
     for (int i=900; i<8000; i+=499) {
       aline = mainpic->polyline();
       aline->addPoint(i, 200);
@@ -313,7 +314,7 @@ void MyFrame::toggleArrows(wxCommandEvent& event) {
       alines.push_back(aline);
     }
   } else {
-    list<YaVecPolyline*>::iterator alineIt;
+    list<FPolyline*>::iterator alineIt;
     for ( alineIt = alines.begin(); alineIt != alines.end(); ++alineIt ) {
       if (!mainpic->remove(*alineIt)) cerr << "ERROR: DashedLine element did not exist!" << endl; 
     }
@@ -326,19 +327,19 @@ void MyFrame::toggleArrows(wxCommandEvent& event) {
 void MyFrame::toggleArcs(wxCommandEvent& event) {
   mainpic->updating(false);
   if (arcs.empty()) {
-    YaVecArc *arc;
+    FArc *arc;
     for (int i=0; i<8; i++) {
-      arc = mainpic->arc(YVPosInt(0+i*1000,4000), YVPosInt(600+i*1000,4600), YVPosInt(1200+i*1000,4000));
+      arc = mainpic->arc(PosInt(0+i*1000,4000), PosInt(600+i*1000,4600), PosInt(1200+i*1000,4000));
       arc->lineStyle(i&3);
       arc->penColor(i+8);
       arcs.push_back(arc);
-      arc = mainpic->arc(YVPosInt(400+i*800, 2000), 380, true, M_PI*2*7/8, M_PI*2*i/8, (i%2)==1);
+      arc = mainpic->arc(PosInt(400+i*800, 2000), 380, true, M_PI*2*7/8, M_PI*2*i/8, (i%2)==1);
       arc->penColor(i&15);
       arc->lineStyle(i&3);
       arcs.push_back(arc);
     }
   } else {
-    list<YaVecArc*>::iterator arcIt;
+    list<FArc*>::iterator arcIt;
     for ( arcIt = arcs.begin(); arcIt != arcs.end(); ++arcIt ) {
       if (!mainpic->remove(*arcIt)) cerr << "ERROR: ARC element did not exist!" << endl; 
     }
@@ -351,15 +352,15 @@ void MyFrame::toggleArcs(wxCommandEvent& event) {
 void MyFrame::toggleText(wxCommandEvent& event) {
   mainpic->updating(false);
   if (texts.empty()) {
-    YaVecText *atext;
+    FText *atext;
     double angle;
-    YaVecBox *nbox;
-    YVPosInt ul, lr;
+    FBox *nbox;
+    PosInt ul, lr;
     for (int i=1; i<7; i++) {
       angle = 60*i;
       atext = mainpic->text();
       atext->penColor(i+3);
-      atext->setOrigin(YVPosInt(4000, 4200));
+      atext->setOrigin(PosInt(4000, 4200));
       atext->setSize(30);
       atext->setAngle(angle);
       atext->setText("Text with angle AVA");
@@ -372,12 +373,12 @@ void MyFrame::toggleText(wxCommandEvent& event) {
       texts.push_back(atext);
   }
   } else {
-    list<YaVecText*>::iterator textIt;
+    list<FText*>::iterator textIt;
     for ( textIt = texts.begin(); textIt != texts.end(); ++textIt ) {
       if (!mainpic->remove(*textIt)) cerr << "ERROR: Text element did not exist!" << endl; 
     }
     texts.clear();
-    list<YaVecBox*>::iterator boxIt;
+    list<FBox*>::iterator boxIt;
     for ( boxIt = tboxes.begin(); boxIt != tboxes.end(); ++boxIt ) {
       if (!mainpic->remove(*boxIt)) cerr << "ERROR: Text box element did not exist!" << endl; 
     }
@@ -391,23 +392,23 @@ void MyFrame::toggleText(wxCommandEvent& event) {
 void MyFrame::toggleBoxes(wxCommandEvent& event) {
   mainpic->updating(false);
   if (boxes.empty()) {
-    YaVecBox *dbox;
+    FBox *dbox;
     int j = 3;
     for (int i=100; i<4000; i+=499) {
       j++;
-      dbox = mainpic->box(YVPosInt(i*2, 4200-i), YVPosInt((i+500)*2, 4200-i+500));
+      dbox = mainpic->box(PosInt(i*2, 4200-i), PosInt((i+500)*2, 4200-i+500));
       dbox->lineStyle(YaVecLine::dashed);
       dbox->styleValue(static_cast<double>(i&15));
       dbox->fillColor(j);
       dbox->areaFill(20);
       boxes.push_back(dbox);
 
-      dbox = mainpic->box(YVPosInt((i+200)*2, 4200-i+200), YVPosInt((i+500+200)*2, 4200-i+500+200));
+      dbox = mainpic->box(PosInt((i+200)*2, 4200-i+200), PosInt((i+500+200)*2, 4200-i+500+200));
       dbox->penColor(i&7);
       boxes.push_back(dbox);
     }
   } else {
-    list<YaVecBox*>::iterator boxIt;
+    list<FBox*>::iterator boxIt;
     for ( boxIt = boxes.begin(); boxIt != boxes.end(); ++boxIt ) {
       if (!mainpic->remove(*boxIt)) cerr << "ERROR: Box element did not exist!" << endl;
     }
@@ -419,7 +420,7 @@ void MyFrame::toggleBoxes(wxCommandEvent& event) {
 
 void MyFrame::OnMouse(wxMouseEvent& event)
 {
-  YVPosInt pos(event.m_x, event.m_y);
+  PosInt pos(event.m_x, event.m_y);
   cout << "MOUSE @ " << pos << endl;
 }
 

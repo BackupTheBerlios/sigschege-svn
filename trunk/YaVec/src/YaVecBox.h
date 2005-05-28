@@ -34,49 +34,50 @@
 #include "YaVecView.h"
 #include <vector>
 
-using namespace std;
+namespace YaVec {
 
-/// An YaVec box element - corresponds to fig element polyline:box and polyline:arcbox
-class YaVecBox : public YaVecElm, public YaVecLine  {
-public:
-  /// general constructor with no extra arguments
-  YaVecBox(YaVecCompound* parent_compound, YaVecFigure* figure_compound)
-    : YaVecElm(parent_compound, figure_compound) {};
-  /// general constructor accepting corner points
-  YaVecBox(YaVecCompound* parent_compound, YaVecFigure* figure_compound, YVPosInt upper_left, YVPosInt lower_right);
+  /// An YaVec box element - corresponds to fig element polyline:box and polyline:arcbox
+  class FBox : public YaVecElm, public YaVecLine  {
+  public:
+    /// general constructor with no extra arguments
+    FBox(FCompound* parent_compound, FFigure* figure_compound)
+      : YaVecElm(parent_compound, figure_compound) {};
+    /// general constructor accepting corner points
+    FBox(FCompound* parent_compound, FFigure* figure_compound, PosInt upper_left, PosInt lower_right);
 
-  /// Return the limits of this element
-  virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right) {
-    upper_left  = elm_upper_left;
-    lower_right = elm_lower_right;
-  }
-  /// set both corners of the box
-  void set_corners(YVPosInt upper_left, YVPosInt lower_right) {
-    upper_left  = elm_upper_left;
-    lower_right = elm_lower_right;
-  }
+    /// Return the limits of this element
+    virtual void getBoundingBox(PosInt &upper_left, PosInt &lower_right) {
+      upper_left  = elm_upper_left;
+      lower_right = elm_lower_right;
+    }
+    /// set both corners of the box
+    void set_corners(PosInt upper_left, PosInt lower_right) {
+      upper_left  = elm_upper_left;
+      lower_right = elm_lower_right;
+    }
   
-  /// Collect all figure elements hierarchicallly as a flat list (just return myself).
-  vector<YaVecElm*> flatList() { vector<YaVecElm*> res; res.push_back(this); return (res); };
+    /// Collect all figure elements hierarchicallly as a flat list (just return myself).
+    std::vector<YaVecElm*> flatList() { std::vector<YaVecElm*> res; res.push_back(this); return (res); };
 
-  /// Draw the box to the given view.
-  virtual void draw(YaVecView* view);
-  /// save element into a fig file
-  virtual void saveElm(ofstream &fig_file);
+    /// Draw the box to the given view.
+    virtual void draw(FigView* view);
+    /// save element into a fig file
+    virtual void saveElm(std::ofstream &fig_file);
 
-  /// Return a list of significant points, which can be used for selection
-  virtual void getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds);
-  /// find a figure element near the given position.
-  virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                             list<YaVecElmHit> &hits);
+    /// Return a list of significant points, which can be used for selection
+    virtual void getPoints(std::vector<PosInt> &points, bool hierarchical, bool withCompounds);
+    /// find a figure element near the given position.
+    virtual void getElmNearPos(PosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                               std::list<YaVecElmHit> &hits);
 
-  /// Print some (or some more) information about this figure element.
-  virtual void debugPrint(ostream &dest, bool verbose, int depth);
+    /// Print some (or some more) information about this figure element.
+    virtual void debugPrint(std::ostream &dest, bool verbose, int depth);
+    
+  private:
+    PosInt elm_upper_left, elm_lower_right;
+  };
 
-
-private:
-  YVPosInt elm_upper_left, elm_lower_right;
-};
-
+}
+  
 #endif /* _YAVECBOX_H */
 

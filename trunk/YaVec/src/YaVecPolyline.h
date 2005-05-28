@@ -35,37 +35,39 @@
 #include "YaVecView.h"
 #include <vector>
 
-using namespace std;
+namespace YaVec {
 
-/// An YaVecFigure polyline element - corresponds to fig element polyline (not box)
-class YaVecPolyline : public YaVecElm, public YaVecLine, public YaVecArrow {
-public:
-  /// General constructor with no extra arguments.
-  YaVecPolyline(YaVecCompound* parent_compound, YaVecFigure* figure_compound);
-  /// Get the bounding box of this polyline.
-  virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right);
-  /// Add this point (given as YVPosInt).
-  void addPoint(YVPosInt new_point);
-  /// Add this point (given as integers).
-  void addPoint(int x, int y) { this->addPoint(YVPosInt(x, y)); };
-  /// Add a complete vector of  points (given as YVPosInt).
-  void addPoints(vector<YVPosInt> new_points);
-  /// Sets points for a box at a random angle
-  void addAngleBox(YVPosInt corner1, YVPosInt corner2, double angle, bool clear=true);
-  /// Collect all figure elements hierarchicallly as a flat list (just return myself).
-  vector<YaVecElm*> flatList() { vector<YaVecElm*> res; res.push_back(this); return (res); };
-  /// Draw the polyline to the given view.
-  virtual void draw(YaVecView* view);
-  virtual void saveElm(ofstream &fig_file);
-  /// Print some (or some more) information about this figure element.
-  virtual void debugPrint(ostream &dest, bool verbose, int depth);
+  /// An FFigure polyline element - corresponds to fig element polyline (not box)
+  class FPolyline : public YaVecElm, public YaVecLine, public YaVecArrow {
+  public:
+    /// General constructor with no extra arguments.
+    FPolyline(FCompound* parent_compound, FFigure* figure_compound);
+    /// Get the bounding box of this polyline.
+    virtual void getBoundingBox(PosInt &upper_left, PosInt &lower_right);
+    /// Add this point (given as PosInt).
+    void addPoint(PosInt new_point);
+    /// Add this point (given as integers).
+    void addPoint(int x, int y) { this->addPoint(PosInt(x, y)); };
+    /// Add a complete vector of  points (given as PosInt).
+    void addPoints(std::vector<PosInt> new_points);
+    /// Sets points for a box at a random angle
+    void addAngleBox(PosInt corner1, PosInt corner2, double angle, bool clear=true);
+    /// Collect all figure elements hierarchicallly as a flat list (just return myself).
+    std::vector<YaVecElm*> flatList() { std::vector<YaVecElm*> res; res.push_back(this); return (res); };
+    /// Draw the polyline to the given view.
+    virtual void draw(FigView* view);
+    virtual void saveElm(std::ofstream &fig_file);
+    /// Print some (or some more) information about this figure element.
+    virtual void debugPrint(std::ostream &dest, bool verbose, int depth);
 
-  /// Return a list of significant points, which can be used for selection
-  virtual void getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds);
+    /// Return a list of significant points, which can be used for selection
+    virtual void getPoints(std::vector<PosInt> &points, bool hierarchical, bool withCompounds);
 
-private:
-  vector<YVPosInt> linePoints;
-};
+  private:
+    std::vector<PosInt> linePoints;
+  };
 
+}
+  
 #endif /* _YAVECELMPOLYLINE_H */
 

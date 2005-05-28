@@ -23,11 +23,12 @@
 //
 // $Id$
 
-using namespace std;
-
 #include "TimSignal.h"
 #include <YaVecText.h>
 #include <iostream>
+
+using namespace std;
+using namespace YaVec;
 
 /*!
  * Construct a Timing Diagram Signal Object
@@ -73,7 +74,7 @@ void TimSignal::setSigOffset(int sigOffset) {
  * Paint this Signal object
  */
 void TimSignal::paint(void) {
-  YaVecText *text;
+  FText *text;
 
   // check if a compound is available
   if (getCompound()==0) return;
@@ -89,10 +90,10 @@ void TimSignal::paint(void) {
   text->setText(cText);
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(LayoutObject::cOrigin+YVPosInt(cPadding, (LayoutObject::cSize.ypos()+text->getHeight())/2));
+  text->setOrigin(LayoutObject::cOrigin+PosInt(cPadding, (LayoutObject::cSize.ypos()+text->getHeight())/2));
   
-  EventList::setCompound(getCompound()->compound(), LayoutObject::cOrigin+YVPosInt(cPadding+cSigOffset,cPadding),
-                         LayoutObject::cSize-YVPosInt(cSigOffset+2*cPadding,2*cPadding), cStartTime, cEndTime);
+  EventList::setCompound(getCompound()->compound(), LayoutObject::cOrigin+PosInt(cPadding+cSigOffset,cPadding),
+                         LayoutObject::cSize-PosInt(cSigOffset+2*cPadding,2*cPadding), cStartTime, cEndTime);
   EventList::paint();
 
 }

@@ -27,7 +27,9 @@
 #include "TimList.h"
 #include "TimeMarker.h"
 #include "YaVecPolyline.h"
+
 using namespace std;
+using namespace YaVec;
 
 TimeMarker::TimeMarker(double time, Handle<LayoutObject> mainLayoutObject,
                        LayoutObject* topLayoutObject, LayoutObject* bottomLayoutObject,
@@ -68,7 +70,7 @@ TimeMarker::~TimeMarker() {
  * Paint this time marker
  */
 void TimeMarker::paint(void) {
-  YaVecPolyline *marker;
+  FPolyline *marker;
   double start, end;
   int xpos, yTop, yBottom;
   TimList* parent = dynamic_cast< TimList* >(cReference.Object());

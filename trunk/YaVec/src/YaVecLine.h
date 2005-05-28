@@ -24,62 +24,65 @@
 // $Id$
 
 
-#ifndef _YAVECELMLINE_H
-#define _YAVECELMLINE_H _YAVECELMLINE_H 
+#ifndef _YAVECLINE_H
+#define _YAVECLINE_H _YAVECLINE_H 
 
-/// An YaVecFigure line base class  - used for polyline and box
-class YaVecLine {
-public:
-  /// The standard constructor.
-  YaVecLine();
-  /// Set the line style for this polyline - allowed values are 0 - 5 
-  bool lineStyle(int newLineStyle);
-  /// Return the current line style.
-  int lineStyle(void) { return elmLineStyle; }
-  /// Set the style value for this polyline - multiples of 1/80 inch
-  bool styleValue(double newStyleValue);
-  /// Return the current style value.
-  double styleValue(void) { return elmStyleValue; }
-  /// Set the line thickness.
-  void lineThickness(int newThickness) { elmThickness=newThickness; }
-  /// Return the line thickness.
-  int lineThickness(void) { return elmThickness; }
+namespace YaVec {
 
-  /// The available line styles as defined in the fig format (3.2)
-  enum lineStyleType {
-    solid,
-    dashed,
-    dotted,
-    dash_dotted,
-    dash_double_dotted,
-    dash_triple_dotted
-  };
+  /// An FFigure line base class  - used for polyline and box
+  class YaVecLine {
+  public:
+    /// The standard constructor.
+    YaVecLine();
+    /// Set the line style for this polyline - allowed values are 0 - 5 
+    bool lineStyle(int newLineStyle);
+    /// Return the current line style.
+    int lineStyle(void) { return elmLineStyle; }
+    /// Set the style value for this polyline - multiples of 1/80 inch
+    bool styleValue(double newStyleValue);
+    /// Return the current style value.
+    double styleValue(void) { return elmStyleValue; }
+    /// Set the line thickness.
+    void lineThickness(int newThickness) { elmThickness=newThickness; }
+    /// Return the line thickness.
+    int lineThickness(void) { return elmThickness; }
+
+    /// The available line styles as defined in the fig format (3.2)
+    enum lineStyleType {
+      solid,
+      dashed,
+      dotted,
+      dash_dotted,
+      dash_double_dotted,
+      dash_triple_dotted
+    };
 
   
-protected:
-  int elmLineStyle;
-  double elmStyleValue;
-  int elmThickness;
-};
+  protected:
+    int elmLineStyle;
+    double elmStyleValue;
+    int elmThickness;
+  };
 
 
-inline bool YaVecLine::lineStyle(int newLineStyle) {
-  if (newLineStyle>=0 && newLineStyle<=5) {
-    elmLineStyle = newLineStyle;
-    return true;
-  } else {
-    return false;
+  inline bool YaVecLine::lineStyle(int newLineStyle) {
+    if (newLineStyle>=0 && newLineStyle<=5) {
+      elmLineStyle = newLineStyle;
+      return true;
+    } else {
+      return false;
+    }
   }
+
+  inline bool YaVecLine::styleValue(double newStyleValue) {
+    if (newStyleValue>0.0) {
+      elmStyleValue = newStyleValue;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }
 
-inline bool YaVecLine::styleValue(double newStyleValue) {
-  if (newStyleValue>0.0) {
-    elmStyleValue = newStyleValue;
-    return true;
-  } else {
-    return false;
-  }
-}
-
-
-#endif /* _YAVECELMLINE_H */
+#endif /* _YAVECLINE_H */

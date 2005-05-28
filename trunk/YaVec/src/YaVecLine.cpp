@@ -26,10 +26,12 @@
 
 #include "YaVecLine.h"
 
+namespace YaVec {
 
-YaVecLine::YaVecLine() {
-  elmLineStyle = 0;
-  elmStyleValue = 10.0;
-  elmThickness = 1;
+  YaVecLine::YaVecLine() {
+    elmLineStyle = 0;
+    elmStyleValue = 10.0;
+    elmThickness = 1;
+  }
+
 }
-

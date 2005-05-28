@@ -23,7 +23,6 @@
 //
 // $Id$
 
-using namespace std;
 
 #include <YaVecPolyline.h>
 #include <YaVecText.h>
@@ -31,6 +30,9 @@ using namespace std;
 #include "Handle.t"
 #include <algorithm>
 #include <iostream>
+
+using namespace std;
+using namespace YaVec;
 
 EventList::EventList(double defaultSlope)
   : events(), initialState(new Event), cDefaultSlope(defaultSlope)
@@ -114,7 +116,7 @@ void EventList::debugEvents(void) {
  * Set the compound
  * \param newCompound The new Compound
  */
-void EventList::setCompound(YaVecCompound *newCompound) {
+void EventList::setCompound(FCompound *newCompound) {
   evListCompound = newCompound;
 }
 
@@ -122,7 +124,7 @@ void EventList::setCompound(YaVecCompound *newCompound) {
  * Set the Origin
  * \param newOrigin The new Origin
  */
-void EventList::setOrigin(YVPosInt newOrigin) {
+void EventList::setOrigin(PosInt newOrigin) {
   cOrigin = newOrigin;
 }
 
@@ -140,7 +142,7 @@ void EventList::setOrigin(int xOffset, int yOffset) {
  * Set the Size
  * \param newSize The new Size
  */
-void EventList::setSize(YVPosInt newSize) {
+void EventList::setSize(PosInt newSize) {
   cSize = newSize;
 }
 
@@ -164,7 +166,7 @@ void EventList::setSize(int width, int height) {
  * \param timeStart The start time of the signal 
  * \param timeEnd   The end time of the signal 
  */
-void EventList::setCompound(YaVecCompound *newCompound, int xOffset, int yOffset,
+void EventList::setCompound(FCompound *newCompound, int xOffset, int yOffset,
                             int width, int height, double timeStart, double timeEnd) {
   evListCompound = newCompound;
   cOrigin.set(xOffset,yOffset);
@@ -185,7 +187,7 @@ void EventList::setCompound(YaVecCompound *newCompound, int xOffset, int yOffset
  * \param timeStart The start time of the signal 
  * \param timeEnd   The end time of the signal 
  */
-void EventList::setCompound(YaVecCompound *newCompound, YVPosInt newOrigin, YVPosInt newSize, double timeStart, double timeEnd) {
+void EventList::setCompound(FCompound *newCompound, PosInt newOrigin, PosInt newSize, double timeStart, double timeEnd) {
   evListCompound = newCompound;
   cOrigin = newOrigin;
 
@@ -225,9 +227,9 @@ int EventList::vertPosFromState(State::drawStateType state, State::drawStateType
 void EventList::paint(void) {
   if (evListCompound==0) return;
   sort(); // makes life easier... 
-  YaVecPolyline *sigline0 = 0;
-  YaVecPolyline *sigline1 = 0;
-  YaVecPolyline *sigline_tmp = 0;
+  FPolyline *sigline0 = 0;
+  FPolyline *sigline1 = 0;
+  FPolyline *sigline_tmp = 0;
 
   State currentState = initialState->getNewState();
   currentState = (currentState==State::Named? State::X : currentState); // map Named to X - drawn the same way
@@ -256,15 +258,15 @@ void EventList::paint(void) {
   if (events.size()==0) {
     if (currentState==State::Zero || currentState==State::X || currentState==State::Named) {
       sigline0 = evListCompound->polyline();
-      sigline0->addPoint(YVPosInt(cOrigin.xpos(), vertPosFromState(State::Zero)));
+      sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::Zero)));
     } else if (currentState==State::Z) {
       sigline0 = evListCompound->polyline();
-      sigline0->addPoint(YVPosInt(cOrigin.xpos(), vertPosFromState(State::Z)));
+      sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::Z)));
     }
     
     if (currentState==State::One || currentState==State::X || currentState==State::Named) {
       sigline1 = evListCompound->polyline();
-      sigline1->addPoint(YVPosInt(cOrigin.xpos(), vertPosFromState(State::One)));
+      sigline1->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::One)));
     }
   }
   
@@ -317,11 +319,11 @@ void EventList::paint(void) {
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
           if (where==before_visible) {
-            sigline1->addPoint(YVPosInt(cOrigin.xpos(), y1));
+            sigline1->addPoint(PosInt(cOrigin.xpos(), y1));
           }
         }
-        sigline1->addPoint(YVPosInt(startX, y1));
-        sigline1->addPoint(YVPosInt(endX, y1));
+        sigline1->addPoint(PosInt(startX, y1));
+        sigline1->addPoint(PosInt(endX, y1));
         if (newState.isDrawState("X")) {
           // 1->X, make sure top2bottom works on the right sigline
           sigline_tmp = sigline1;
@@ -336,11 +338,11 @@ void EventList::paint(void) {
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline1->addPoint(YVPosInt(cOrigin.xpos(), y1start));
+            sigline1->addPoint(PosInt(cOrigin.xpos(), y1start));
           }
         }
-        sigline1->addPoint(YVPosInt(startX, y1start));
-        sigline1->addPoint(YVPosInt(endX, y0end));
+        sigline1->addPoint(PosInt(startX, y1start));
+        sigline1->addPoint(PosInt(endX, y0end));
         swapSiglines = true;
       }
       
@@ -349,11 +351,11 @@ void EventList::paint(void) {
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
           if (where==before_visible) {
-            sigline0->addPoint(YVPosInt(cOrigin.xpos(), y0));
+            sigline0->addPoint(PosInt(cOrigin.xpos(), y0));
           }
         }
-        sigline0->addPoint(YVPosInt(startX, y0));
-        sigline0->addPoint(YVPosInt(endX, y0));
+        sigline0->addPoint(PosInt(startX, y0));
+        sigline0->addPoint(PosInt(endX, y0));
       }
       
       if ((currentState.isDrawState("0") || currentState.isDrawState("X"))
@@ -369,11 +371,11 @@ void EventList::paint(void) {
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline0->addPoint(YVPosInt(cOrigin.xpos(), y0start));
+            sigline0->addPoint(PosInt(cOrigin.xpos(), y0start));
           }
         }
-        sigline0->addPoint(YVPosInt(startX, y0start));
-        sigline0->addPoint(YVPosInt(endX, y1end));
+        sigline0->addPoint(PosInt(startX, y0start));
+        sigline0->addPoint(PosInt(endX, y1end));
       }
       
       if ((currentState.isDrawState("0") || currentState.isDrawState("X"))
@@ -382,11 +384,11 @@ void EventList::paint(void) {
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline0->addPoint(YVPosInt(cOrigin.xpos(), vertPosFromState(State::Zero, State::Z, percentageNewStart)));
+            sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::Zero, State::Z, percentageNewStart)));
           }
         }
-        sigline0->addPoint(YVPosInt(startX, vertPosFromState(State::Zero, State::Z, percentageNewStart)));
-        sigline0->addPoint(YVPosInt(endX, vertPosFromState(State::Zero, State::Z, percentageNewEnd)));
+        sigline0->addPoint(PosInt(startX, vertPosFromState(State::Zero, State::Z, percentageNewStart)));
+        sigline0->addPoint(PosInt(endX, vertPosFromState(State::Zero, State::Z, percentageNewEnd)));
       }
 
       if ((currentState.isDrawState("1") || currentState.isDrawState("X"))
@@ -395,11 +397,11 @@ void EventList::paint(void) {
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline1->addPoint(YVPosInt(cOrigin.xpos(), vertPosFromState(State::One, State::Z, percentageNewStart)));
+            sigline1->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::One, State::Z, percentageNewStart)));
           }
         }
-        sigline1->addPoint(YVPosInt(startX, vertPosFromState(State::One, State::Z, percentageNewStart)));
-        sigline1->addPoint(YVPosInt(endX, vertPosFromState(State::One, State::Z, percentageNewEnd)));
+        sigline1->addPoint(PosInt(startX, vertPosFromState(State::One, State::Z, percentageNewStart)));
+        sigline1->addPoint(PosInt(endX, vertPosFromState(State::One, State::Z, percentageNewEnd)));
       }
       
       if ((currentState.isDrawState("Z")) && (newState.isDrawState("0") || newState.isDrawState("X"))) {
@@ -407,11 +409,11 @@ void EventList::paint(void) {
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline0->addPoint(YVPosInt(cOrigin.xpos(), vertPosFromState(State::Z, State::Zero, percentageNewStart)));
+            sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::Z, State::Zero, percentageNewStart)));
           }
         }
-        sigline0->addPoint(YVPosInt(startX, vertPosFromState(State::Z, State::Zero, percentageNewStart)));
-        sigline0->addPoint(YVPosInt(endX, vertPosFromState(State::Z, State::Zero, percentageNewEnd)));
+        sigline0->addPoint(PosInt(startX, vertPosFromState(State::Z, State::Zero, percentageNewStart)));
+        sigline0->addPoint(PosInt(endX, vertPosFromState(State::Z, State::Zero, percentageNewEnd)));
         if (newState.isDrawState("X")) {
           // Z->X, make sure bottom2top works on the right sigline
           sigline_tmp = sigline1;
@@ -425,11 +427,11 @@ void EventList::paint(void) {
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline0->addPoint(YVPosInt(cOrigin.xpos(), vertPosFromState(State::Z, State::One, percentageNewStart)));
+            sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::Z, State::One, percentageNewStart)));
           }
         }
-        sigline0->addPoint(YVPosInt(startX, vertPosFromState(State::Z, State::One, percentageNewStart)));
-        sigline0->addPoint(YVPosInt(endX, vertPosFromState(State::Z, State::One, percentageNewEnd)));
+        sigline0->addPoint(PosInt(startX, vertPosFromState(State::Z, State::One, percentageNewStart)));
+        sigline0->addPoint(PosInt(endX, vertPosFromState(State::Z, State::One, percentageNewEnd)));
         swapSiglines = true;
       }
 
@@ -441,7 +443,7 @@ void EventList::paint(void) {
           if (sigline0==0) {
             sigline0 = evListCompound->polyline();
             if (where==before_visible && !partialStart) {
-              sigline0->addPoint(YVPosInt(cOrigin.xpos(), vertPosFromState(isX? State::Zero : currentState.getDrawState(), State::One, 0.0)));
+              sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(isX? State::Zero : currentState.getDrawState(), State::One, 0.0)));
             }
           }
         }
@@ -449,7 +451,7 @@ void EventList::paint(void) {
           if (sigline1==0) {
             sigline1 = evListCompound->polyline();
             if (where==before_visible && !partialStart) {
-              sigline1->addPoint(YVPosInt(cOrigin.xpos(), vertPosFromState(isX? State::One : currentState.getDrawState(), State::One, 0.0)));
+              sigline1->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(isX? State::One : currentState.getDrawState(), State::One, 0.0)));
             }
           }
         }
@@ -468,10 +470,10 @@ void EventList::paint(void) {
       if (namedEvents && (where==in_visible || eventEnd>compoundTimeEnd)) {
         string stateText = currentState.getStateName();
         if (stateText!="") {
-          YaVecText* label = evListCompound->text();
-          label->setOrigin(YVPosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/5));
+          FText* label = evListCompound->text();
+          label->setOrigin(PosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/5));
           label->setText(stateText);
-          label->setJustification(YaVecText::center);
+          label->setJustification(FText::center);
           label->setSize(10);
         }
       }
@@ -486,13 +488,13 @@ void EventList::paint(void) {
   // Add the last point of the signal
   if (sigline0!=0) {
     if (currentState==State::Z) {
-      sigline0->addPoint(YVPosInt(xMax, vertPosFromState(State::Z, State::Z, 1.0)));
+      sigline0->addPoint(PosInt(xMax, vertPosFromState(State::Z, State::Z, 1.0)));
     } else {
-      sigline0->addPoint(YVPosInt(xMax, y0end));
+      sigline0->addPoint(PosInt(xMax, y0end));
     }
   }
   if (sigline1!=0) {
-    sigline1->addPoint(YVPosInt(xMax, y1end));
+    sigline1->addPoint(PosInt(xMax, y1end));
   }
 }
 

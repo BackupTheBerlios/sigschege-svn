@@ -23,14 +23,14 @@
 //
 // $Id$
 
-using namespace std;
-
 #include "TimTime.h"
 #include <iostream>
 #include <sstream>
 #include <YaVecText.h>
 #include <YaVecPolyline.h>
 
+using namespace std;
+using namespace YaVec;
 
 
 /*!
@@ -95,7 +95,7 @@ void TimTime::setTicks(double newLabelDistance, double newFirstLabel, double new
  * Paint this text layout object
  */
 void TimTime::paint(void) {
-  YaVecText *text;
+  FText *text;
   int scaleWidth, xpos;
   double tickTime;
 
@@ -116,13 +116,13 @@ void TimTime::paint(void) {
   text->setText("Time");
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(cOrigin+YVPosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
+  text->setOrigin(cOrigin+PosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
 
   // draw the small ticks
   tickTime = firstLabel-tickDistance*floor((firstLabel-cStartTime)/tickDistance);
   while (tickTime<cEndTime) {
     xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime/(cEndTime-cStartTime)*scaleWidth);
-    YaVecPolyline *tick = getCompound()->polyline();
+    FPolyline *tick = getCompound()->polyline();
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/10 );
     
@@ -135,7 +135,7 @@ void TimTime::paint(void) {
     string timeStr;
     ostringstream strConv;
     xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime*scaleWidth/cEndTime-cStartTime);
-    YaVecPolyline *tick = getCompound()->polyline();
+    FPolyline *tick = getCompound()->polyline();
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/5 );
     // current time as text
@@ -145,8 +145,8 @@ void TimTime::paint(void) {
     text->setText(timeStr);
     text->setFont(cFontType);
     text->setSize(cFontSize/2);
-    text->setJustification(YaVecText::center);
-    text->setOrigin(YVPosInt(xpos, cOrigin.ypos()+cSize.ypos()-cPadding-cSize.ypos()*32/100));
+    text->setJustification(FText::center);
+    text->setOrigin(PosInt(xpos, cOrigin.ypos()+cSize.ypos()-cPadding-cSize.ypos()*32/100));
     
     tickTime += labelDistance;
   }

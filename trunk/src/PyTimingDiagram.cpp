@@ -476,6 +476,8 @@ static LayoutObject* getLayoutFromPyObject(PyObject* pyobj) {
     lptr = (((TimTimescaleObject *)pyobj)->timescale).Object();
   } else if (PyObject_IsInstance(pyobj, (PyObject*)&TimLabelType)) {
     lptr = (((TimLabelObject *)pyobj)->label).Object();
+  } else {
+    lptr = 0;
   }
   return lptr;
 }

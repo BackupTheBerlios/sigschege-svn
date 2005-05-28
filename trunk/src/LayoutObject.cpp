@@ -23,10 +23,12 @@
 //
 // $Id$
 
-using namespace std;
 
 #include "LayoutObject.h"
 #include <iostream>
+
+using namespace std;
+using namespace YaVec;
 
 LayoutObject::LayoutObject(): cReference(), cReferrers(), cCompound() {
   refCount = 0;
@@ -50,11 +52,11 @@ LayoutObject::~LayoutObject() {
  * Set the Compound which is used to draw this Event.
  * \param newCompound The Compound to use.
  */
-void LayoutObject::setCompound(YaVecCompound *newCompound) {
+void LayoutObject::setCompound(FCompound *newCompound) {
   cCompound = newCompound;
 }
 
-YaVecCompound* LayoutObject::getCompound() {
+FCompound* LayoutObject::getCompound() {
   return cCompound;
 }
 
@@ -76,7 +78,7 @@ void LayoutObject::paint(void) {
  * Set the Origin of this Layout Object
  * \param newOrigin The new Origin for this Layout Object
  */
-void LayoutObject::setOrigin(YVPosInt newOrigin) {
+void LayoutObject::setOrigin(PosInt newOrigin) {
   cOrigin = newOrigin;
 }
 
@@ -93,7 +95,7 @@ void LayoutObject::setOrigin(int x, int y) {
  * Get the Origin of this Layout Object
  * \return The current origin of this Laout Object
  */
-YVPosInt LayoutObject::getOrigin() {
+PosInt LayoutObject::getOrigin() {
   return(cOrigin);
 }
 
@@ -101,7 +103,7 @@ YVPosInt LayoutObject::getOrigin() {
  * Set the Size of this Layout Object
  * \param newSize The new Size for this Layout Object
  */
-void LayoutObject::setSize(YVPosInt newSize) {
+void LayoutObject::setSize(PosInt newSize) {
   cSize = newSize;
 }
 
@@ -118,7 +120,7 @@ void LayoutObject::setSize(int width, int height) {
  * Get the Size of this Layout Object
  * \return The current Size of this Laout Object
  */
-YVPosInt LayoutObject::getSize() {
+PosInt LayoutObject::getSize() {
   return(cSize);
 }
 

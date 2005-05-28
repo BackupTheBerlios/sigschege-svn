@@ -23,10 +23,12 @@
 //
 // $Id$
 
-using namespace std;
 
 #include "TimingDiagram.h"
 #include <stdio.h>
+
+using namespace std;
+using namespace YaVec;
 
 TimingDiagram::TimingDiagram(double startTime, double endTime) : TimList(), cYaVec() {
   setCompound(cYaVec.compound());

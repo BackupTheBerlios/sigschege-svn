@@ -207,11 +207,11 @@ YVPosInt YaVecText::drawOrCalc(YaVecView* view, bool noUpdate) {
       FArray <int, 3> color;
       getPenColorRGB(color);
 
-      view->drawLine(upperLeft*figure->scale(), lowerRight*figure->scale(), 1, color, 0, 8); 
-      view->drawLine(upperLeft*figure->scale(), YVPosInt(lowerRight.xpos(), upperLeft.ypos())*figure->scale(), 1, color, 0, 8); 
-      view->drawLine(YVPosInt(lowerRight.xpos(), upperLeft.ypos())*figure->scale(), lowerRight*figure->scale(), 1, color, 0, 8); 
-      view->drawLine(upperLeft*figure->scale(), YVPosInt(upperLeft.xpos(), lowerRight.ypos())*figure->scale(), 1, color, 0, 8); 
-      view->drawLine(YVPosInt(upperLeft.xpos(), lowerRight.ypos())*figure->scale(), lowerRight*figure->scale(), 1, color, 0, 8);
+      view->drawLine(upperLeft, lowerRight, 1, color, 0, 8); 
+      view->drawLine(upperLeft, YVPosInt(lowerRight.xpos(), upperLeft.ypos()), 1, color, 0, 8); 
+      view->drawLine(YVPosInt(lowerRight.xpos(), upperLeft.ypos()), lowerRight, 1, color, 0, 8); 
+      view->drawLine(upperLeft, YVPosInt(upperLeft.xpos(), lowerRight.ypos()), 1, color, 0, 8); 
+      view->drawLine(YVPosInt(upperLeft.xpos(), lowerRight.ypos()), lowerRight, 1, color, 0, 8);
     }
 #endif
     if (view) {
@@ -357,17 +357,9 @@ void YaVecText::saveElm(ofstream &fig_file) {
            << "\\001" << endl;
 }
 
-void YaVecText::getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                                    list<YaVecElmHit> &hits) {
+void YaVecText::getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds) {
   // TODO: add other corner points
-  int fuzzyRes;
-  if (checkProximity(pos, elmOrigin, fuzzyFact, fuzzyRes)) {
-    YaVecElmHit newHit;
-    newHit.elmP = this;
-    newHit.distance = fuzzyRes;
-    newHit.idx = 0;
-    hits.push_back(newHit);
-  }
+  points.push_back(elmOrigin);
 }
 
 

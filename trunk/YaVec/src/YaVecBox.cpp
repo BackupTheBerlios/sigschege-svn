@@ -57,23 +57,26 @@ void YaVecBox::draw(YaVecView* view) {
 
   getPenColorRGB(color);
   
-  view->drawLine(ul, ur, elmThickness, color, elmLineStyle, styleLength);
-  view->drawLine(ur, lr, elmThickness, color, elmLineStyle, styleLength);
-  view->drawLine(lr, ll, elmThickness, color, elmLineStyle, styleLength);
-  view->drawLine(ll, ul, elmThickness, color, elmLineStyle, styleLength);
+  view->drawLine(ul/scale(), ur/scale(), elmThickness, color, elmLineStyle, styleLength/scale());
+  view->drawLine(ur/scale(), lr/scale(), elmThickness, color, elmLineStyle, styleLength/scale());
+  view->drawLine(lr/scale(), ll/scale(), elmThickness, color, elmLineStyle, styleLength/scale());
+  view->drawLine(ll/scale(), ul/scale(), elmThickness, color, elmLineStyle, styleLength/scale());
 
   if (elmAreaFill>=0) {
     FArray<int, 3> fillCol;
     YVPosInt left;
     YVPosInt right;
-    left  = ul; left.incx();
-    right = ur; right.decx();
+    left  = ul/scale(); left.incx();  left.incy();
+
+    right = ur/scale(); right.decx(); right.incy();
+
+    cout << "BOXR=" << ur.xpos()/scale() << " from " << ur.xpos() << " FILLR=" << right.xpos() << endl; 
     
     fillCol = actualFillColor();
-    while (left.ypos() < ll.ypos()) {
+    while (left.ypos() < ll.ypos()/scale()) {
+      view->drawLine(left, right, elmThickness, fillCol, YaVecLine::solid, styleLength/scale());
       left.incy();
       right.incy();
-      view->drawLine(left, right, elmThickness, fillCol, YaVecLine::solid, styleLength);
     }
   }
   
@@ -95,15 +98,19 @@ void YaVecBox::saveElm(ofstream &fig_file) {
   fig_file << endl;
 }
 
+void YaVecBox::getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds) {
+  points.push_back(elm_upper_left);
+  points.push_back(YVPosInt(elm_lower_right.xpos(), elm_upper_left.ypos()));
+  points.push_back(YVPosInt(elm_upper_left.xpos(), elm_lower_right.ypos()));
+  points.push_back(elm_lower_right);
+}
+
 void YaVecBox::getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                                     list<YaVecElmHit> &hits) {
-  vector<YVPosInt> allCorners(4);
-  allCorners[0] = elm_upper_left;
-  allCorners[1] = YVPosInt(elm_lower_right.xpos(), elm_upper_left.ypos());
-  allCorners[2] = YVPosInt(elm_upper_left.xpos(), elm_lower_right.ypos());
-  allCorners[3] = elm_lower_right;
+  vector<YVPosInt> allCorners;
+  getPoints(allCorners, false, false);
   int fuzzyRes, i;
-  for (i=0; i<4; i++) {
+  for (i=0; i<allCorners.size(); i++) {
     if (checkProximity(pos, allCorners[i], fuzzyFact, fuzzyRes)) {
       YaVecElmHit newHit;
       newHit.elmP = this;

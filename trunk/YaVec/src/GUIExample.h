@@ -45,6 +45,7 @@ public:
 
     void add_pline_point(wxCommandEvent& event);
     void toggleScreenDpi(wxCommandEvent& event);
+    void toggleMarkers(wxCommandEvent& event);
     void toggleDashedLines(wxCommandEvent& event);
     void toggleBoxes(wxCommandEvent& event);
     void toggleArrows(wxCommandEvent& event);
@@ -75,6 +76,7 @@ private:
 #define BUTTON_ARCS 111
 #define BUTTON_TEXT 112
 #define MOUSE_RIGHT_DWN 121
+#define LAYOUT_TOGGLE_MARKERS    113
 
 #endif /* _DEMOGUI_H */
 

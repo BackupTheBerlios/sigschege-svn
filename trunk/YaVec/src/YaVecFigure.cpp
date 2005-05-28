@@ -43,6 +43,9 @@ YaVecFigure::YaVecFigure() : YaVecCompound() {
   file_dpi = 1200;
   setScreenDpi(80);
   figure = this;
+  showMarkers = false;
+  markersHierarchical = true;
+  markers4Compounds = false;
 }
 
 bool YaVecFigure::setScreenDpi(int newScreenDpi) {
@@ -78,6 +81,15 @@ void YaVecFigure::drawView(YaVecView* view) {
       //cout << "DRAWING: ";
       //(*members_iter)->debugPrint(cout, true, 10);
       (*members_iter)->draw(view);
+    }
+    if (showMarkers) {
+      vector<YVPosInt> points;
+      int i;
+      getPoints(points, markersHierarchical, markers4Compounds);
+      cout << "DRAWING MARKERS:" << points.size() << endl;
+      for (i=0; i<points.size(); i++) {
+        view->drawMarker(points[i]/scale_fact);
+      }
     }
     viewIsDirty = false;
   } else {
@@ -144,4 +156,13 @@ bool YaVecFigure::exportFig2dev(string language, string filename) {
 
 void YaVecFigure::sortMembersByDepth(void) {
   ::sort(members_flat.begin(), members_flat.end(), membersDepthCmp());
+}
+
+void YaVecFigure::setMarkers(bool shown, bool hierarchical, bool showCompounds) {
+
+  bool changed = shown!=showMarkers || hierarchical!=markersHierarchical || showCompounds!=markers4Compounds;
+  showMarkers = shown;
+  markersHierarchical = hierarchical;
+  markers4Compounds = showCompounds;
+  if (changed) buildViews();
 }

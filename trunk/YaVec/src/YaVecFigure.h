@@ -70,7 +70,7 @@ public:
   int getFileDPi(void) { return file_dpi; };
 
   /// Return the scaling factor file_dpi/screen_dpi
-  int scale(void) { return scale_fact; }
+  virtual int scale(void) { return scale_fact; }
 
   void buildViews(void);
   /// Save the figure in the fig file 'filename'.
@@ -81,6 +81,8 @@ public:
   YaVecFigure& operator=(YaVecFigure& source);
 
   void updating(bool newUpdateStatus) { noViewUpdate = !newUpdateStatus; }
+
+  void setMarkers(bool shown, bool hierarchical = true, bool showCompounds = true);
   
 private:
   /// A flat list to be passed to views
@@ -95,6 +97,10 @@ private:
   vector<YaVecView*> views;
   /// Resolution in fig file
 
+  bool showMarkers;
+  bool markersHierarchical;
+  bool markers4Compounds;
+  
   /*!
    * The default value of 1200 for file_dpi should not be changed, because that is what
    * xfig/transfig use in *.fig files.

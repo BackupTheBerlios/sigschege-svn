@@ -68,10 +68,6 @@ public:
   virtual void drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width) = 0;
   /// Draw the character given in buffer to the view.
   virtual void drawChar(YVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
-  /// Draw an arrow head (of a line).  
-  virtual void drawArrow(const YVPosInt &tip, double angle, int color, YaVecArrow::arrowInfo *arrow) = 0;
-  /// Draw an arrow head (of a line). This is just a convenience function which calculates the angle from the line.  
-  void drawArrow(const YVPosInt &tip, const YVPosInt &from, int color, YaVecArrow::arrowInfo *arrow);
   /// Set up a paint buffer to speed up multiple paint events (used by Arc)
   // if a view doesn't require buffering color or thickness, just store them separately.
   virtual void setPaintBuffer(int color, int thickness) = 0; 
@@ -80,7 +76,8 @@ public:
   virtual void refreshAll(void) = 0;
   /// Clear the figure area.
   virtual void clear(void) = 0;
-
+  // draw a marker at this point
+  virtual void drawMarker(YVPosInt origin) = 0;
 protected:
   YaVecFigure *mypicture;
 };

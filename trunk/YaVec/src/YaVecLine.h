@@ -30,6 +30,7 @@
 /// An YaVecFigure line base class  - used for polyline and box
 class YaVecLine {
 public:
+  /// The standard constructor.
   YaVecLine();
   /// Set the line style for this polyline - allowed values are 0 - 5 
   bool lineStyle(int newLineStyle);
@@ -41,6 +42,7 @@ public:
   double styleValue(void) { return elmStyleValue; }
   /// Set the line thickness.
   void lineThickness(int newThickness) { elmThickness=newThickness; }
+  /// Return the line thickness.
   int lineThickness(void) { return elmThickness; }
 
   /// The available line styles as defined in the fig format (3.2)

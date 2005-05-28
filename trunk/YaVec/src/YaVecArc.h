@@ -55,12 +55,16 @@ public:
   /// Set arc geometry by center, radius, direction and angles.
   void setArc(YVPosInt center, double radius, bool clockwise, double angle1, double angle3);
 
+  /// Collect all figure elements hierarchicallly as a flat list (just return myself).
   vector<YaVecElm*> flatList() { vector<YaVecElm*> res; res.push_back(this); return (res); };
+  /// Draw the arc to the given view.
   virtual void draw(YaVecView* view);
   virtual void saveElm(ofstream &fig_file);
   /// Print some (or some more) information about this figure element.
   virtual void debugPrint(ostream &dest, bool verbose, int depth);
 
+  /// Return a list of significant points, which can be used for selection
+  virtual void getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds);
   /// find a figure element near the given position.
   virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<YaVecElmHit> &hits);

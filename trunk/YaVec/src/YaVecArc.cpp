@@ -170,14 +170,18 @@ void YaVecArc::setArc(YVPosInt center, double radius, bool clockwise, double ang
 
 
 void YaVecArc::draw(YaVecView* view) {
-   double styleLength = elmStyleValue*15;
+  double styleLength = elmStyleValue*15;
+  double styleLengthScreen = styleLength/scale();
    view->setPaintBuffer(elmPenColor, elmThickness);
    debugPrint(cout, true, 4);
    FArray <int, 3> color;
    getPenColorRGB(color);
+   int xCenterScreen = static_cast<int>(elmXCenter/scale());
+   int yCenterScreen = static_cast<int>(elmYCenter/scale());
+   int radiusScreen = static_cast<int>(elmRadius/scale());
 
    if (elmLineStyle==YaVecLine::solid) {
-     view->drawArc(elmXCenter, elmYCenter, elmRadius, elmPhi1, elmPhi3, elmThickness);
+     view->drawArc(xCenterScreen, yCenterScreen, radiusScreen, elmPhi1, elmPhi3, elmThickness);
    } else {
      double gapPhi, dotPhi, diffPhi, phi1, phi2, phiEnd;
      int activeCnt = 0;
@@ -209,13 +213,13 @@ void YaVecArc::draw(YaVecView* view) {
          }
        }
        phi2 = phi1 + (elmClockwise? (-diffPhi) : diffPhi);
-       view->drawArc(elmXCenter, elmYCenter, elmRadius, phi1, phi2, elmThickness);
+       view->drawArc(xCenterScreen, yCenterScreen, radiusScreen, phi1, phi2, elmThickness);
        phi1 = phi2 + (elmClockwise? (-gapPhi) : gapPhi);;
      }
    }
    if (elmIsPieWedge) {
-     view->drawLine(YVPosInt(elmXCenter, elmYCenter), elmPoint1, elmThickness, color, elmLineStyle, styleLength);
-     view->drawLine(YVPosInt(elmXCenter, elmYCenter), elmPoint3, elmThickness, color, elmLineStyle, styleLength);
+     view->drawLine(YVPosInt(xCenterScreen, yCenterScreen), elmPoint1/scale(), elmThickness, color, elmLineStyle, styleLengthScreen);
+     view->drawLine(YVPosInt(xCenterScreen, yCenterScreen), elmPoint3/scale(), elmThickness, color, elmLineStyle, styleLengthScreen);
    }
    view->clrPaintBuffer();
 }
@@ -239,14 +243,19 @@ void YaVecArc::saveElm(ofstream &fig_file) {
   }
 }
 
+void YaVecArc::getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds) {
+  points.push_back(elmPoint1);
+  points.push_back(elmPoint2);
+  points.push_back(elmPoint3);
+}
+
 void YaVecArc::getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                                    list<YaVecElmHit> &hits) {
-  vector<YVPosInt> allPoints(3);
-  allPoints[0] = elmPoint1;
-  allPoints[1] = elmPoint2;
-  allPoints[2] = elmPoint3;
+                             list<YaVecElmHit> &hits) {
+  vector<YVPosInt> allPoints;
+  getPoints(allPoints, false, false);
+  
   int fuzzyRes, i;
-  for (i=0; i<3; i++) {
+  for (i=0; i<allPoints.size(); i++) {
     if (checkProximity(pos, allPoints[i], fuzzyFact, fuzzyRes)) {
       YaVecElmHit newHit;
       newHit.elmP = this;

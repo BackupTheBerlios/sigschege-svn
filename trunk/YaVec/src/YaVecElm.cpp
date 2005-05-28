@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of YaVec - Vector Figure Creation Library.
 // 
@@ -24,7 +24,7 @@
 // $Id$
 
 #include "YaVecElm.h"
-#include "YaVecCompound.h"
+#include "YaVecFigure.h"
 
 
 YaVecElm::YaVecElm(void) {
@@ -94,6 +94,28 @@ FArray<int,3> YaVecElm::actualFillColor(void) {
   return resultCol;
 }
 
+void YaVecElm::getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
+                                    list<YaVecElmHit> &hits) {
+  int fuzzyRes, i;
+  vector<YVPosInt> points;
+  getPoints(points, hierarchical, withCompounds);
+  
+  for (i=0; i<points.size(); i++) {
+    if (checkProximity(pos, points[i], fuzzyFact, fuzzyRes)) {
+      YaVecElmHit newHit;
+      newHit.elmP = this;
+      newHit.distance = fuzzyRes;
+      newHit.idx = 0;
+      hits.push_back(newHit);
+    }
+  }
+}
+
+
+// TODO: should be inline, but type of figure not known in header file
+int YaVecElm::scale(void) {
+  return figure->scale();
+}
 
 const int yavec_std_colors[][3] = {
   {0, 0, 0},          // 0 = black
@@ -129,3 +151,4 @@ const int yavec_std_colors[][3] = {
   {0xff, 0xe0, 0xe0}, // 30 = pink1
   {0xff, 0xd7, 0x00}  // 31 = gold
 };
+

@@ -28,9 +28,13 @@
 #define _YAVECARROW_H _YAVECARROW_H 
 
 #include <string>
+#include "YaVecUtil.h"
 #include "YVPosInt.h"
 
+class YaVecView;
+
 using namespace std;
+using namespace YaVec;
 
 /// An YaVecFigure arrow base class  - used for polyarrow and box
 class YaVecArrow {
@@ -107,6 +111,9 @@ public:
   /// Return the string to be inserted into fig file for a backward arrow.
   string backwardArrowString(void);
 
+  void drawArrow(const YVPosInt &tip, const YVPosInt &from, FArray<int, 3> color, int thickness,
+                 YaVecView* view, int scaleFactor, bool isBackward);
+  
   static void calcPoints(arrowInfo &arrow, const YVPosInt &tip, double tipAngle, 
                          YVPosInt &pLeft, YVPosInt &pRight, YVPosInt &pMid);
   
@@ -118,7 +125,6 @@ private:
   // TODO (CPUOPT): Cache angle
   arrowInfo *elmArrows[2];
 
-  
   string arrowString(int arrowIndex);
 
 };

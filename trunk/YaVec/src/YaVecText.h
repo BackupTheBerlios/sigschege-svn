@@ -53,7 +53,9 @@ public:
   int getWidth(void) { return textWidth; }
   /// Return the height of the text.
   int getHeight(void) { return textHeight; }
+  /// Collect all figure elements hierarchicallly as a flat list (just return myself).
   vector<YaVecElm*> flatList() { vector<YaVecElm*> res; res.push_back(this); return (res); };
+  /// Draw the text to the given view.
   virtual void draw(YaVecView* view);
   virtual void saveElm(ofstream &fig_file);
   /// Print some (or some more) information about this figure element.
@@ -99,9 +101,8 @@ public:
     right
   };
 
-  /// find a figure element near the given position.
-  virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                             list<YaVecElmHit> &hits);
+  /// Return a list of significant points, which can be used for selection
+  virtual void getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds);
 
   /// Set this variable to true to use kerning. This is not recommended as transfig does not support it
   static bool use_kerning;

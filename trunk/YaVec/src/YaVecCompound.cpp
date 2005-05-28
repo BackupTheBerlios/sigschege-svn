@@ -196,15 +196,24 @@ void YaVecCompound::save_content(ofstream &fig_file) {
   }  
 }
 
-void YaVecCompound::getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                                    list<YaVecElmHit> &hits) {
-  vector<YaVecElm*>::iterator membersIt;
-  for ( membersIt = members.begin(); membersIt != members.end(); ++membersIt ) {
-    if (hierarchical || (typeid(**membersIt) != typeid(YaVecCompound)))
-      (*membersIt)->getElmNearPos(pos, fuzzyFact, hierarchical, withCompounds, hits);
+void YaVecCompound::getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds) {
+  if (withCompounds) {
+    YVPosInt upper_left;
+    YVPosInt lower_right;
+    getBoundingBox(upper_left, lower_right);
+    points.push_back(upper_left);
+    points.push_back(YVPosInt(lower_right.xpos(), upper_left.ypos()));
+    points.push_back(YVPosInt(upper_left.xpos(), lower_right.ypos()));
+    points.push_back(lower_right);    
+  }
+  if (hierarchical) {
+    vector<YaVecElm*>::iterator membersIt;
+    for ( membersIt = members.begin(); membersIt != members.end(); ++membersIt ) {
+      //if (hierarchical || (typeid(**membersIt) != typeid(YaVecCompound)))
+      (*membersIt)->getPoints(points, hierarchical, withCompounds);
+    }
   }
 }
-
 
 void YaVecCompound::debugPrint(ostream &dest, bool verbose, int depth) {
   dest << string(depth, ' ') << "Compound with " << members.size() << " elements." << endl;

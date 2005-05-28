@@ -75,7 +75,9 @@ public:
   /// Determine the region that is covered by this compound
   virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right);
   /// return all elements of this compound as a flat list
+  /// Collect all figure elements hierarchicallly as a flat list.
   virtual vector<YaVecElm*> flatList();
+  /// Draw the content of this compound to the given view.
   virtual void draw(YaVecView* view) {};
   virtual void handleChange(YaVecElm*);
   virtual void saveElm(ofstream &fig_file);
@@ -86,9 +88,8 @@ public:
   void clear(void);
   YaVecCompound& operator=(YaVecCompound& source);
 
-  /// find a figure element near the given position.
-  virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                             list<YaVecElmHit> &hits);
+  /// Return a list of significant points, which can be used for selection
+  virtual void getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds);
 
 protected:
   vector<YaVecElm*> members;

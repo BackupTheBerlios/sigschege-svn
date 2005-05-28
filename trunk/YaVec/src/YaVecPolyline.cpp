@@ -37,13 +37,13 @@ YaVecPolyline::YaVecPolyline(YaVecCompound* parent_compound, YaVecFigure* figure
 
 
 void YaVecPolyline::getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right) {
-  vector<YVPosInt>::iterator points_iter = points.begin();
-  if (points_iter==points.end()) {
+  vector<YVPosInt>::iterator points_iter = linePoints.begin();
+  if (points_iter==linePoints.end()) {
     upper_left = YVPosInt(0,0); // no points! how should we behave???
     lower_right = YVPosInt(0,0);
   } else {
     lower_right = upper_left = *points_iter;
-    while (++points_iter!=points.end()) {
+    while (++points_iter!=linePoints.end()) {
       upper_left.minValues(*points_iter);
       lower_right.maxValues(*points_iter);
     }
@@ -51,7 +51,7 @@ void YaVecPolyline::getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right) 
 }
 
 void YaVecPolyline::addPoint(YVPosInt new_point) {
-  points.push_back(new_point);
+  linePoints.push_back(new_point);
 //  cout << "Adding point " << new_point.xpos() << ":" << new_point.ypos() << endl;
   parent->handleChange(this);
 }
@@ -59,7 +59,7 @@ void YaVecPolyline::addPoint(YVPosInt new_point) {
 void YaVecPolyline::addPoints(vector<YVPosInt> new_points) {
   vector<YVPosInt>::iterator npoints_iter;
   for ( npoints_iter = new_points.begin(); npoints_iter != new_points.end(); ++npoints_iter ) {
-    points.push_back(*npoints_iter);
+    linePoints.push_back(*npoints_iter);
   }
 }
 
@@ -75,34 +75,34 @@ void YaVecPolyline::draw(YaVecView* view) {
   YVPosInt oldPoint;
   FArray <int, 3> color;
 
-  points_iter1 = points.begin();
-  if (points_iter1==points.end()) return;
+  points_iter1 = linePoints.begin();
+  if (points_iter1==linePoints.end()) return;
   points_iter2 = points_iter1;
   points_iter2++;
 
   getPenColorRGB(color);
   
-  if (backwardArrow() && points_iter2 != points.end()) 
-    view->drawArrow((*points_iter1), (*points_iter2), elmPenColor, elmArrows[1]);
-  while (points_iter2 != points.end()) {
-    view->drawLine((*points_iter1), (*points_iter2), elmThickness, color, elmLineStyle, styleLength);
+  if (backwardArrow() && points_iter2 != linePoints.end()) 
+    drawArrow((*points_iter1), (*points_iter2), color, elmThickness, view, scale(), true);
+  while (points_iter2 != linePoints.end()) {
+    view->drawLine((*points_iter1)/scale(), (*points_iter2)/scale(), elmThickness, color, elmLineStyle, styleLength/scale());
     oldPoint = *points_iter1;
     points_iter1 = points_iter2;
     ++points_iter2;
   }
-  if (forwardArrow() && points.size()>1) 
-    view->drawArrow((*points_iter1), oldPoint, elmPenColor, elmArrows[0]);
+  if (forwardArrow() && linePoints.size()>1) 
+    drawArrow((*points_iter1), oldPoint, color, elmThickness, view, scale(), false);
 }
 
 
 void YaVecPolyline::saveElm(ofstream &fig_file) {
   vector<YVPosInt>::iterator points_iter;
 
-  if (points.size()==0) return; // polyline without points not allowed
+  if (linePoints.size()==0) return; // polyline without points not allowed
   
   fig_file << "2 1 " << elmLineStyle << " " << elmThickness << " " << elmPenColor << " " << elmFillColor << " " << elmDepth
            << " 0 " << elmAreaFill << " " << elmStyleValue << " 0 0 0 " << (forwardArrow()? 1 : 0) << " "
-           << (backwardArrow()? 1 : 0) << " " << points.size() << endl;
+           << (backwardArrow()? 1 : 0) << " " << linePoints.size() << endl;
   if (forwardArrow()) {
     fig_file << forwardArrowString() << endl;
   }
@@ -112,33 +112,25 @@ void YaVecPolyline::saveElm(ofstream &fig_file) {
   
   fig_file << " ";
 
-  for ( points_iter = points.begin(); points_iter != points.end(); ++points_iter ) {
+  for ( points_iter = linePoints.begin(); points_iter != linePoints.end(); ++points_iter ) {
     fig_file << (*points_iter).xpos() << " " << (*points_iter).ypos() << " " ;
   }
   fig_file << endl;
 }
 
-void YaVecPolyline::getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                                    list<YaVecElmHit> &hits) {
+void YaVecPolyline::getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds) {
   vector<YVPosInt>::iterator pointsIt;
-  int fuzzyRes;
-  int i = 0;
-  for ( pointsIt = points.begin(); pointsIt != points.end(); ++pointsIt, ++i ) {
-    if (checkProximity(pos, (*pointsIt), fuzzyFact, fuzzyRes)) {
-      YaVecElmHit newHit;
-      newHit.elmP = this;
-      newHit.distance = fuzzyRes;
-      newHit.idx = i;
-      hits.push_back(newHit);
-    }
+  for ( pointsIt = linePoints.begin(); pointsIt != linePoints.end(); ++pointsIt ) {
+    points.push_back((*pointsIt));
   }
 }
 
+
 void YaVecPolyline::debugPrint(ostream &dest, bool verbose, int depth) {
-  dest << string(depth, ' ') << "Polyline " << points.size() << " points." << endl;
+  dest << string(depth, ' ') << "Polyline " << linePoints.size() << " linePoints." << endl;
   if (verbose) {
     vector<YVPosInt>::iterator pointsIt;
-    for ( pointsIt = points.begin(); pointsIt != points.end(); ++pointsIt ) {
+    for ( pointsIt = linePoints.begin(); pointsIt != linePoints.end(); ++pointsIt ) {
       dest << string(depth+4, ' ') << (*pointsIt) << " -> " << endl;
     }
   }

@@ -52,13 +52,14 @@ public:
    */
   virtual void drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width);
   virtual void drawChar(YVPosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color);
-  virtual void drawArrow(const YVPosInt &tip, double angle, int color, YaVecArrow::arrowInfo *arrow);
   /// Set up a paint buffer for functions which require it.
   virtual void setPaintBuffer(int color, int thickness); 
   /// Delete a previously allocated paint buffer.
   virtual void clrPaintBuffer(void); 
   virtual void refreshAll(void);
   virtual void clear(void);
+  // draw a marker at this point
+  virtual void drawMarker(YVPosInt origin);
   
   void OnPaint(wxPaintEvent& event);
   void OnMouse(wxMouseEvent& event);

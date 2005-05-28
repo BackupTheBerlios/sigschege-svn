@@ -46,6 +46,7 @@ MyFrame   *frame = (MyFrame *) NULL;
 wxMenuBar *menu_bar = (wxMenuBar *) NULL;
 YaVecVwx *canvas;
 
+int state = 4;
 
 IMPLEMENT_APP(MyApp);
 
@@ -54,6 +55,7 @@ list<YaVecPolyline *> dlines;
 list<YaVecPolyline *> alines;
 list<YaVecArc *> arcs;
 list<YaVecText *> texts;
+list<YaVecBox *> tboxes;
 list<YaVecBox *> boxes;
 YaVecFigure *mainpic;
 
@@ -81,7 +83,7 @@ bool MyApp::OnInit()
   ntext = ev_pic->text();
   ntext->setText("This is a good YaVec Demo");
   ntext->penColor(2);
-  ntext->setOrigin(YVPosInt(300, 4500));
+  ntext->setOrigin(YVPosInt(300, 6000));
   ntext->setSize(30);
   ntext->depth(55);
 
@@ -100,6 +102,7 @@ bool MyApp::OnInit()
 
   file_menu->Append(LAYOUT_ADD_PLINE_POINT, _T("&Add point"),      _T("Add point"));
   file_menu->Append(LAYOUT_TOGGLE_SCREENDPI, _T("&Toggle screen dpi"),      _T("Toggle screen dpi"));
+  file_menu->Append(LAYOUT_TOGGLE_MARKERS, _T("&Toggle Markers"),      _T("Toggle Markers"));
   file_menu->Append(LAYOUT_TOGGLE_DASHY, _T("&Toggle dashed lines"),      _T("Toggle dashed lines"));
   file_menu->Append(LAYOUT_SAVE, _T("&Save"),      _T("Save"));
 
@@ -203,6 +206,7 @@ BEGIN_EVENT_TABLE(MyFrame, wxFrame)
   EVT_MENU(LAYOUT_QUIT, MyFrame::OnQuit)
   EVT_MENU(LAYOUT_ADD_PLINE_POINT, MyFrame::add_pline_point)
   EVT_MENU(LAYOUT_TOGGLE_SCREENDPI, MyFrame::toggleScreenDpi)
+  EVT_MENU(LAYOUT_TOGGLE_MARKERS, MyFrame::toggleMarkers)
   EVT_MENU(LAYOUT_TOGGLE_DASHY, MyFrame::toggleDashedLines)
   EVT_MENU(LAYOUT_SAVE, MyFrame::save)
   EVT_BUTTON(BUTTON_DASHY, MyFrame::toggleDashedLines)
@@ -221,6 +225,17 @@ void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event) )
 void MyFrame::toggleScreenDpi(wxCommandEvent& event) {
   if (mainpic->getScreenDpi()==80) mainpic->setScreenDpi(160);
   else  mainpic->setScreenDpi(80);
+  canvas->refreshAll();
+}
+
+void MyFrame::toggleMarkers(wxCommandEvent& event) {
+  if (++state>5) state=0;
+  bool marker = (state&4)!=4;
+  bool hier = (state&2)==2;
+  bool comp = (state&1)==1;
+  cout << "MARKERS=" << marker << " hier=" << hier << " comp=" << comp << " state=" << state <<endl;
+  //mainpic->setMarkers(marker, hier, comp);
+  mainpic->setMarkers(true, true, true);
   canvas->refreshAll();
 }
 
@@ -353,6 +368,7 @@ void MyFrame::toggleText(wxCommandEvent& event) {
       cout << "BBOX=" << ul << lr << endl;
       nbox = mainpic->box(ul, lr);
       nbox->depth(1);
+      tboxes.push_back(nbox);
       texts.push_back(atext);
   }
   } else {
@@ -361,6 +377,11 @@ void MyFrame::toggleText(wxCommandEvent& event) {
       if (!mainpic->remove(*textIt)) cerr << "ERROR: Text element did not exist!" << endl; 
     }
     texts.clear();
+    list<YaVecBox*>::iterator boxIt;
+    for ( boxIt = tboxes.begin(); boxIt != tboxes.end(); ++boxIt ) {
+      if (!mainpic->remove(*boxIt)) cerr << "ERROR: Text box element did not exist!" << endl; 
+    }
+    tboxes.clear();
   }
   mainpic->updating(true);
   canvas->refreshAll();

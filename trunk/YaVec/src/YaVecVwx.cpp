@@ -51,16 +51,11 @@ void YaVecVwx::drawLine(YVPosInt from, YVPosInt to, int width, FArray<int, 3> &c
   wxColour wxMyColour(color[0], color[1], color[2]);
   wxPen wxMyPen(wxMyColour, width, 1);
   wxWindowDC *paintPtr;
-  int xscale = mypicture->scale();
   if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
   else paintPtr = new wxClientDC;
   
   paintPtr->SetPen(wxMyPen);
 
-  from /= xscale;
-  to   /= xscale;
-  styleLength /= xscale;
-  
   if (lineStyle==YaVecLine::solid) {
     paintPtr->DrawLine(from.xpos(), from.ypos(), to.xpos(), to.ypos());
   } else {
@@ -109,11 +104,7 @@ void YaVecVwx::drawLine(YVPosInt from, YVPosInt to, int width, FArray<int, 3> &c
 
 void YaVecVwx::drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width) {
   
-  int xscale = mypicture->scale();
   double phi, phiDiff;
-  xCenter /= xscale;
-  yCenter /= xscale;
-  radius /= xscale;
   phiDiff = 2*1.0/(radius*2*M_PI);
 
   phi = phiStart;
@@ -154,34 +145,6 @@ void YaVecVwx::drawChar(YVPosInt origin, int rows, int width, int pitch, unsigne
   if (onPaintPaintDCp==0) delete paintPtr;
 }
 
-
-void YaVecVwx::drawArrow(const YVPosInt &tip, double angle, int color, YaVecArrow::arrowInfo *arrow) {
-  wxColour wxMyColour(yavec_std_colors[color][0], yavec_std_colors[color][1], yavec_std_colors[color][2]);
-  wxPen wxMyPen(wxMyColour, 1, 1);
-  wxWindowDC *paintPtr;
-
-  if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
-  else paintPtr = new wxClientDC;
-
-  paintPtr->SetPen(wxMyPen);
-  int xscale = mypicture->scale();
-  YVPosInt tipVres = tip/xscale;
-  YVPosInt pL, pR, pM;
-  YaVecArrow::calcPoints(*arrow, tip, angle, pL, pR, pM);
-  pL /= xscale;
-  pR /= xscale;
-  pM /= xscale;
-  
-  paintPtr->DrawLine(pL.xpos(), pL.ypos(), tipVres.xpos(), tipVres.ypos());
-  paintPtr->DrawLine(pR.xpos(), pR.ypos(), tipVres.xpos(), tipVres.ypos());
-  if (arrow->Type==YaVecArrow::closed_indented_butt || arrow->Type==YaVecArrow::closed_pointed_butt) {
-    paintPtr->DrawLine(pR.xpos(), pR.ypos(), pM.xpos(), pM.ypos());
-    paintPtr->DrawLine(pL.xpos(), pL.ypos(), pM.xpos(), pM.ypos());
-  }
-  
-  if (onPaintPaintDCp==0) delete paintPtr;
-}
-
 void YaVecVwx::setPaintBuffer(int color, int thickness) {
   if (onPaintPaintDCp!=0) pBufpaintPtr = onPaintPaintDCp;
   else   pBufpaintPtr = new wxClientDC;
@@ -206,6 +169,24 @@ void YaVecVwx::clear(void) {
   cout << "Clear" << endl;
   Clear();
 }
+
+void YaVecVwx::drawMarker(YVPosInt origin) {
+  wxColour wxMyColour(255, 255, 255);
+  wxPen wxMyPen(wxMyColour, 1, 1);
+  wxWindowDC *paintPtr;
+  if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
+  else paintPtr = new wxClientDC;
+  
+  paintPtr->SetPen(wxMyPen);
+
+  paintPtr->SetLogicalFunction(wxXOR);
+  paintPtr->DrawLine(origin.xpos()-2, origin.ypos()-2, origin.xpos()+3, origin.ypos()+3);  
+  paintPtr->DrawLine(origin.xpos()+2, origin.ypos()-2, origin.xpos()-3, origin.ypos()+3);  
+  paintPtr->SetLogicalFunction(wxCOPY);
+
+  if (onPaintPaintDCp==0) delete paintPtr;
+}
+
 
 void YaVecVwx::refreshAll(void) {
   int width, height;

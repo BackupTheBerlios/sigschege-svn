@@ -28,6 +28,7 @@
 #define _YAVECELM_H _YAVECELM_H
 
 class YaVecCompound;
+class YaVecFigure;
 
 #include <vector>
 #include <list>
@@ -63,6 +64,7 @@ public:
    * lower_right that is covered by the content of the object.
    */
   virtual void getBoundingBox(YVPosInt &upper_left, YVPosInt &lower_right)=0;
+  /// Collect all figure elements hierarchicallly as a flat list.
   virtual vector<YaVecElm*> flatList() = 0;
   /// Draw this object in the given view.
   virtual void draw(YaVecView* view) = 0;
@@ -92,14 +94,19 @@ public:
   void getPenColorRGB(FArray<int,3> &colorRGB);
   /// Return the actual fill color as vector of 3 ints.
   FArray<int,3> actualFillColor(void);
+
+  /// Return a list of significant points, which can be used for selection
+  virtual void getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds) = 0;
   
   /// find a figure element near the given position.
   virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
-                             list<YaVecElmHit> &hits) = 0;
+                             list<YaVecElmHit> &hits);
 
   /// Check if the selected position is near the point.
   static bool checkProximity(YVPosInt selPos, YVPosInt point, int fuzzyFact, int &fuzzyRes);
-  
+  // Return the scale factor (file res/screen res) for this figure.
+  virtual int scale(void);
+ 
 protected:
   YaVecCompound *parent; // needed to inform the owner about change events
   YaVecFigure *figure; // needed to access global picture states

@@ -25,6 +25,8 @@
 
 
 #include "YaVecArrow.h"
+#include "YaVecLine.h"
+#include "YaVecView.h"
 #include <sstream>
 
 YaVecArrow::YaVecArrow() {
@@ -131,6 +133,21 @@ bool YaVecArrow::backwardArrowSize(double newThickness, double newWidth, double 
   elmArrows[1]->Height = fabs(newHeight);  
   return true;
 }
+
+void YaVecArrow::drawArrow(const YVPosInt &tip, const YVPosInt &from, FArray<int, 3> color, int thickness,
+                           YaVecView* view, int scaleFactor, bool isBackward) {
+  double angle = tip.angle(from);
+  arrowInfo *arrow = elmArrows[isBackward? 1 : 0 ];
+  YVPosInt pL, pR, pM;
+  YaVecArrow::calcPoints(*arrow, tip, angle, pL, pR, pM);
+  view->drawLine(pL/scaleFactor, tip/scaleFactor, thickness, color, YaVecLine::solid, 0);
+  view->drawLine(pR/scaleFactor, tip/scaleFactor, thickness, color, YaVecLine::solid, 0);
+  if (arrow->Type==YaVecArrow::closed_indented_butt || arrow->Type==YaVecArrow::closed_pointed_butt) {
+    view->drawLine(pL/scaleFactor, pM/scaleFactor, thickness, color, YaVecLine::solid, 0);
+    view->drawLine(pR/scaleFactor, pM/scaleFactor, thickness, color, YaVecLine::solid, 0);
+  }
+}
+
 
 void YaVecArrow::calcPoints(arrowInfo &arrow, const YVPosInt &tip, double tipAngle,
                                      YVPosInt &pLeft, YVPosInt &pRight, YVPosInt &pMid) {

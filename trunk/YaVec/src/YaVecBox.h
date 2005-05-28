@@ -56,13 +56,16 @@ public:
     lower_right = elm_lower_right;
   }
   
+  /// Collect all figure elements hierarchicallly as a flat list (just return myself).
   vector<YaVecElm*> flatList() { vector<YaVecElm*> res; res.push_back(this); return (res); };
 
-  /// send draw commands to the given view
+  /// Draw the box to the given view.
   virtual void draw(YaVecView* view);
   /// save element into a fig file
   virtual void saveElm(ofstream &fig_file);
 
+  /// Return a list of significant points, which can be used for selection
+  virtual void getPoints(vector<YVPosInt> &points, bool hierarchical, bool withCompounds);
   /// find a figure element near the given position.
   virtual void getElmNearPos(YVPosInt pos, int fuzzyFact, bool hierarchical, bool withCompounds,
                              list<YaVecElmHit> &hits);

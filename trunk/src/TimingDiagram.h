@@ -44,6 +44,7 @@ using namespace std;
  * This class represents a timing diagram comprised layout objects,timing diagram objects like signal or floating objects.
  * Also all used event will be administered by this class.
  */
+
 class TimingDiagram : public TimList {
 public:
   //! The standard constructor

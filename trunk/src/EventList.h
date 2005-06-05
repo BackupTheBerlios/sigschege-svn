@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -55,9 +55,11 @@ class EventList {
    * This function will return a Pointer to the first event that happens at or after
    * the given time.
    * \param evTime The point in time from which the first event is returned. 
+   * \param percentageLevel The level to which the event must have been completed.
+   * Default is 0, which means the event can just have started.
    * \return Return a pointer to the event, NULL if no event occured after evTime.
    */
-  Handle<Event> getEventAfter(double evTime); 
+  Handle<Event> getEventAfter(double evTime, int percentageLevel=0); 
 
   //! Create a new Event
   /*!
@@ -85,7 +87,7 @@ class EventList {
    * \param obsoleteEvent A pointer to the Event.
    * \return False if Event did not exist in that list.
    */
-  bool   deleteEvent(Handle<Event> obsoleteEvent);
+  bool deleteEvent(Handle<Event> obsoleteEvent);
 
   //! Delete all Events in the list.
   void clear(void);

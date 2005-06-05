@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -88,11 +88,11 @@ void EventList::sort() {
   ::sort(events.begin(), events.end(), EventList::evTimeCmp());
 }
 
-Handle<Event> EventList::getEventAfter(double evTime) {
+Handle<Event> EventList::getEventAfter(double evTime, int percentageLevel) {
   vector< Handle<Event> >::iterator eventsIter;
   sort(); // makes life easier... 
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
-    if (eventsIter->Object()->getTime()>=evTime) {
+    if (eventsIter->Object()->getTime(percentageLevel)>=evTime) {
       return *eventsIter;
     }
   }

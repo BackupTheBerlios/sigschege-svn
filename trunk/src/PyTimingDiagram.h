@@ -48,6 +48,11 @@ typedef struct {
 
 typedef struct {
   PyObject_HEAD
+  Handle<Event> event;
+} TimEventObject;
+
+typedef struct {
+  PyObject_HEAD
   Handle<TimLabel> label;
 } TimLabelObject;
 

@@ -64,6 +64,12 @@ private:
   int yTop, yBottom;
   int cColor;
   double markedTime;
+
+  bool showTimLabel;
+  double timLabelPos;
+  bool timLabelLeft;
+  Handle<LayoutObject> timLabelPlace;
+  
 };
 
 

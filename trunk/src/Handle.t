@@ -39,7 +39,7 @@ using namespace std;
  */
 template<class T> class Handle {
 
-  public:
+public:
   //! The standard constructor
   /*!
    * This constructor will create a handle that does not point to an object.
@@ -97,6 +97,15 @@ template<class T> class Handle {
     }
   }
 
+  //! Check if we have an object (or just a 0 pointer).
+  /*!
+   * This function is just a shortcut which allows to check if a valid object is stored in this object.
+   * \return \c true if the \c Handle points to a valid object.
+   */
+  bool valid(void) {
+    return myObject!=0;
+  }
+  
   //! Returns a pointer to the object.
   /*!
    * This will return a pointer to the object allowing its member functions to be called.
@@ -109,6 +118,7 @@ template<class T> class Handle {
   
 private:
   T* myObject;
+
 };
 
 #endif // _T_HANDLE

@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2005 by Ulf Klaperski, Ingo Hinrichs
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -23,10 +23,11 @@
 //
 // $Id$
 
-
+#include "sstream"
 #include "TimList.h"
 #include "TimeMarker.h"
 #include "YaVecPolyline.h"
+#include "YaVecText.h"
 
 using namespace std;
 using namespace YaVec;
@@ -54,6 +55,10 @@ TimeMarker::TimeMarker(double time, Handle<LayoutObject> mainLayoutObject,
   }
   markedTime = time;
   cColor = 0;
+  timLabelPlace = bottomReference;
+  showTimLabel = true;
+  timLabelLeft = false;
+  timLabelPos = 0.3;
 }
 
 TimeMarker::~TimeMarker() {
@@ -96,5 +101,19 @@ void TimeMarker::paint(void) {
   cout << "TIMEMARKER: line "  << xpos << ", " << yTop << "->" << yBottom << endl;
   //  * parent->cSliceWidth;
 
+  if (showTimLabel) {
+    FText *timLabel;
+    std::ostringstream markedTimeStr;
+    
+    timLabel = getCompound()->text();
+    timLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos)));
+    timLabel->setSize(10);
+    timLabel->setFont(3);
+    timLabel->penColor(cColor);
+    markedTimeStr << markedTime << endl;
+    timLabel->setText(markedTimeStr.str());
+    timLabel->setJustification(timLabelLeft? 2 : 0);
+  }
+  
 }
 

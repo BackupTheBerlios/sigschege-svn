@@ -62,7 +62,7 @@ public:
 
   //! Unregister a layout object which references this layout object.  
   /*!
-   * Remove an layout object from the referrers list. This is used if either the referring layout object is
+   * Remove a layout object from the referrers list. This is used if either the referring layout object is
    * deleted another layout object.
    * \return False if the layout object did not exist, true otherwise.
    * \param newReferrer pointer to the layout object that should be added to the referrers list

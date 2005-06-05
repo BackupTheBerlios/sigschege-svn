@@ -17,5 +17,6 @@ $Id$
 
 * add label to time marker (time label and optional text label)
 
-* datatrans.ssg: why no text at signals?
+* Python interface: fix all those Py_INCREF's
+
 

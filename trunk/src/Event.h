@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -33,9 +33,9 @@ using namespace std;
 #include <vector>
 #include <string>
 
-//! An Event Class stores the delay, the time and the dependencies to other events
+//! An \c Event Class stores the delay, the time and the dependencies to other events.
 /*!
- * An Event Class consists of two time values (delay and absolute time).
+ * An \c Event Class consists of two time values (delay and absolute time).
  * The delay time is the relative time to a parent event whereas the absolute time is the time measured against null.
  * Every Event can have several referring events, but only one or no reference event.
  * If an event has no reference event, the delay and the absolute time are equal.
@@ -61,11 +61,12 @@ public:
   
   //! Set a new Delay value
   /*!
-   * Set a new Delay for this Event. If the delay differ from the old one the updateTime function of this event and his child events will be called.
-   * \param delay New Delay for this event
+   * Set a new Delay for this Event. If the delay differ from the old one the \c updateTime
+   * function of this event and his child events will be called.
+   * \param delay New delay for this event
    * \sa getDelay getTime updateTime
    */
-  void setDelay(const double delay);
+  void setDelay(double delay);
   
   //! Return the event delay.
   /*!
@@ -99,7 +100,7 @@ public:
    * \param rlevel New reference level for this event
    * \sa getRefLevel getTime updateTime
    */
-  void setRefLevel(const int rlevel);
+  void setRefLevel(int rlevel);
   
   //! Return the reference level.
   /*!

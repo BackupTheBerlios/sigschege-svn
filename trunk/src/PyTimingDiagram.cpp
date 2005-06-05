@@ -29,6 +29,91 @@
 using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////
+// add Event class to TimingDiagram Module
+////////////////////////////////////////////////////////////////////////////////
+
+static PyObject* TimEvent_new(PyTypeObject *type, PyObject *argc, PyObject *kwds) {
+  TimEventObject *self;
+  self = (TimEventObject *)type->tp_alloc(type, 0);
+  return(PyObject *) self;
+}
+
+static int TimEvent_init(TimEventObject *self,PyObject *args, PyObject *kwds) {
+  return 0;
+}
+
+static void TimEvent_dealloc(TimEventObject *self) {
+  self->ob_type->tp_free((PyObject *)self);
+}
+
+static int TimEvent_print(TimEventObject *obj, FILE *fp, int flags)
+{
+  fprintf(fp, "\"<Event: >\"");
+  return 0;
+}
+
+static PyObject * TimEvent_getTime(TimEventObject *self, PyObject *args, PyObject *kwds) {
+  int percentageLevel = 50;
+  PyObject *result;
+  
+  static char *kwlist[] = {"percentageLevel", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "i", kwlist, &percentageLevel))
+    return NULL;
+
+  result = Py_BuildValue("d", self->event->getTime(percentageLevel));
+
+  return (result);
+}
+
+static PyMethodDef TimEvent_methods[] = {
+  {"getTime", (PyCFunction)TimEvent_getTime, METH_VARARGS|METH_KEYWORDS, "Get the time of this event."},
+  {NULL}  /* Sentinel */
+};
+
+static  PyTypeObject TimEventType = {
+  PyObject_HEAD_INIT(NULL)
+  0,                         /*ob_size*/
+  "Event",               /*tp_name*/
+  sizeof(TimEventObject),   /*tp_basicsize*/
+  0,                         /*tp_itemsize*/
+  (destructor)TimEvent_dealloc,                         /*tp_dealloc*/
+  (printfunc)TimEvent_print,            /*tp_print*/
+  0,                         /*tp_getattr*/
+  0,                         /*tp_setattr*/
+  0,                         /*tp_compare*/
+  0,                         /*tp_repr*/
+  0,                         /*tp_as_number*/
+  0,                         /*tp_as_sequence*/
+  0,                         /*tp_as_mapping*/
+  0,                         /*tp_hash */
+  0,                         /*tp_call*/
+  0,                         /*tp_str*/
+  0,                         /*tp_getattro*/
+  0,                         /*tp_setattro*/
+  0,                         /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,        /*tp_flags*/
+  "Event Object",            /*tp_doc */
+  0,                         /* tp_traverse */
+  0,                         /* tp_clear */
+  0,                         /* tp_richcompare */
+  0,                         /* tp_weaklistoffset */
+  0,                         /* tp_iter */
+  0,                         /* tp_iternext */
+  TimEvent_methods,          /* tp_methods */
+  0,                         /* tp_members */
+  0,                         /* tp_getset */
+  0,                         /* tp_base */
+  0,                         /* tp_dict */
+  0,                         /* tp_descr_get */
+  0,                         /* tp_descr_set */
+  0,                         /* tp_dictoffset */
+  (initproc)TimEvent_init,   /* tp_init */
+  0,                         /* tp_alloc */
+  TimEvent_new,              /* tp_new */
+};
+
+////////////////////////////////////////////////////////////////////////////////
 // add Label class to TimingDiagram Module
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -39,7 +124,7 @@ static PyObject* TimLabel_new(PyTypeObject *type, PyObject *argc, PyObject *kwds
 }
 
 static int TimLabel_init(TimLabelObject *self,PyObject *args, PyObject *kwds) {
- return (0);
+  return (0);
 }
 
 static void TimLabel_dealloc(TimLabelObject *self) {
@@ -206,7 +291,18 @@ static void TimSignal_dealloc(TimSignalObject *self) {
   self->ob_type->tp_free((PyObject *)self);
 }
 
-static PyObject * TimSignal_addEvent(TimSignalObject *self, PyObject *args, PyObject *kwds) {
+/// Wrap a python object around the real \c Event object
+static PyObject *WrapPythonEvent(Handle<Event> event) {
+  TimEventObject *newPEvent;
+  
+  newPEvent = (TimEventObject *)(TimEvent_new(&TimEventType, 0, 0));
+  TimEvent_init(newPEvent, 0, 0);
+  newPEvent->event = event;
+  Py_INCREF((PyObject *)newPEvent);
+  return ((PyObject *)newPEvent);
+}
+
+static PyObject *TimSignal_addEvent(TimSignalObject *self, PyObject *args, PyObject *kwds) {
   char *state1 = "1";
   char *state2 = "";
   double time = 0.0;
@@ -217,9 +313,30 @@ static PyObject * TimSignal_addEvent(TimSignalObject *self, PyObject *args, PyOb
   string state1_s = state1;
   string state2_s = state2;
 
-  self->signal->createEvent(State(state1_s, state2_s), time);
-  Py_INCREF(Py_None);
-  return (Py_None);
+  Handle<Event> event;
+  event = self->signal->createEvent(State(state1_s, state2_s), time);
+  return WrapPythonEvent(event);
+}
+
+static PyObject *TimSignal_getEvent(TimSignalObject *self, PyObject *args, PyObject *kwds) {
+  double after = 0.0;
+  int percentageLevel = 50;
+  static char *kwlist[] = {"after", "percentageLevel", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "d|i", kwlist, &after, &percentageLevel))
+    return NULL;
+
+  Handle<Event> event;
+
+  event = self->signal->getEventAfter(after, percentageLevel);
+  
+  if (!event.valid()) {
+    return (Py_None);
+  }
+
+  return WrapPythonEvent(event);
+  
+  
 }
 
 static PyObject * TimSignal_setLabel(TimSignalObject *self, PyObject *args, PyObject *kwds) {
@@ -237,6 +354,7 @@ static PyObject * TimSignal_setLabel(TimSignalObject *self, PyObject *args, PyOb
 
 static PyMethodDef TimSignal_methods[] = {
   {"addEvent", (PyCFunction)TimSignal_addEvent, METH_VARARGS|METH_KEYWORDS, "Add an event to a signal."},
+  {"getEvent", (PyCFunction)TimSignal_getEvent, METH_VARARGS|METH_KEYWORDS, "Get an event of a signal that fulfills certain conditions."},
   {"setLabel", (PyCFunction)TimSignal_setLabel, METH_VARARGS|METH_KEYWORDS, "Set the label text for this signal."},
   {NULL}  /* Sentinel */
 };
@@ -457,15 +575,15 @@ static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject
   self->tim->addLast(newSignal.Object());
   newSignal->setDefaultSlope(defaultSlope);
   // create a Python signal object to return to user 
-  PyObject *newPSignalObj;
-  TimSignalObject *newPSignal;
-  newPSignalObj = TimSignal_new(&TimSignalType, 0, 0);
-  newPSignal = (TimSignalObject *)newPSignalObj;
-  TimSignal_init(newPSignal, 0, 0);
+  PyObject *newPySignal;
+  TimSignalObject *newTimSignal;
+  newPySignal = TimSignal_new(&TimSignalType, 0, 0);
+  newTimSignal = (TimSignalObject *)newPySignal;
+  TimSignal_init(newTimSignal, 0, 0);
   // attach C++ signal to Python signal
-  newPSignal->signal = newSignal;
-  Py_INCREF(newPSignalObj);
-  return (newPSignalObj);
+  newTimSignal->signal = newSignal;
+  Py_INCREF(newPySignal);
+  return (newPySignal);
 }
 
 static LayoutObject* getLayoutFromPyObject(PyObject* pyobj) {
@@ -665,6 +783,8 @@ initTimingDiagram(void)
 
   //TimTimescaleType.tp_new = PyType_GenericNew;
   if (PyType_Ready(&TimLabelType) < 0) return;
+
+  if (PyType_Ready(&TimEventType) < 0) return;
     
   if (PyType_Ready(&TimeMarkerType) < 0) return;
     
@@ -682,6 +802,9 @@ initTimingDiagram(void)
 
   Py_INCREF(&TimLabelType);
   PyModule_AddObject(m, "Label", (PyObject *)&TimLabelType);
+
+  Py_INCREF(&TimEventType);
+  PyModule_AddObject(m, "Event", (PyObject *)&TimEventType);
 
   Py_INCREF(&TimeMarkerType);
   PyModule_AddObject(m, "Timemarker", (PyObject *)&TimeMarkerType);

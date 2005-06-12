@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -49,7 +49,7 @@ State::drawStateType State::string2state(const string stateString) {
   ("Named" for the Named state, actually every unknown string is mapped to Named now)
   and the second contains the name.
  */
-bool State::setStateByString(string stateString1, string stateString2) {
+bool State::setStateByString(const string &stateString1, const string &stateString2) {
   drawStateType newDrawState = string2state(stateString1);
   string newStateName;
   
@@ -71,7 +71,30 @@ bool State::setStateByString(string stateString1, string stateString2) {
   return true;
 }
 
-bool State::isDrawState(string drawStateString) {
+bool State::isDrawState(const string &drawStateString) {
   return string2state(drawStateString)==drawState;
 }
 
+bool State::isRealDrawState(char drawStateChar) {
+  switch (drawStateChar) {
+  case '1': return drawState==One;
+  case '0': return drawState==Zero;
+  case 'X': return drawState==X || drawState==Named;
+  case 'Z': return drawState==Z;
+  default: return false;
+  }
+}
+
+
+string State::getStateName(void) {
+  if (stateName.length()>0)  return stateName;
+  else {
+    switch (drawState) {
+    case Zero: return string("0");
+    case One: return string("1");
+    case X: return string("X");
+    case Z: return string("Z");
+    default: return string("?");
+    }
+  }
+}

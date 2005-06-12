@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -68,19 +68,39 @@ class State {
   };
 
   //! Set the new state by two strings.
-  bool setStateByString(string stateString1, string stateString2);
+  bool setStateByString(const string &stateString1, const string &stateString2);
 
   //! Return the state to be drawn, will be Zero, One or X.
   drawStateType getDrawState(void);
 
   //! Return just the state name.
-  string getStateName(void) {
-    return stateName;
-  }
+  string getStateName(void);
   
-  //! Check if drawState is the draw state from this object.
-  bool isDrawState(string drawStateString);
+  //! Check if drawStateString is the draw state from this object.
+  bool isDrawState(const string &drawStateString);
 
+  //! Check if this state requires a top line to be drawn.
+  bool hasTopLine(void) { return drawState==X || drawState==1 ||drawState == Named; }
+  
+  //! Check if this state requires a middle line to be drawn.
+  bool hasMiddleLine(void) { return drawState==Z; }
+
+  //! Check if this state requires a bottom line to be drawn.
+  bool hasBottomLine(void) { return drawState==X || drawState==0 ||drawState == Named; }
+
+  //! Check if drawStateChar is the draw state from this object.
+  /*!
+   * This function maps \c Named to \c X, since both are represented by top and bottom line.
+   */
+  bool isRealDrawState(char drawStateChar);
+
+
+  //! Comparison for equality  between two states.
+  bool operator==(const State otherState);
+  
+  //! Comparison for unequality  between two states.
+  bool operator!=(const State otherState);
+  
   //! Check if the draw state of this object is identical to the given one.
   bool operator==(const State::drawStateType state); 
   
@@ -102,8 +122,17 @@ inline State::drawStateType State::getDrawState(void) {
   return drawState;
 }
 
+inline bool State::operator==(const State otherState) {
+  return drawState==otherState.drawState && stateName==otherState.stateName;
+}
+
+inline bool State::operator!=(const State otherState) {
+  return ! (*this==otherState);
+}
+
 inline bool State::operator==(const State::drawStateType state) {
   return state==drawState;
 }
+
 
 #endif /* _H_EVENTLIST */

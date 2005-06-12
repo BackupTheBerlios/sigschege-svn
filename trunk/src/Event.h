@@ -74,7 +74,7 @@ public:
    * \return Return the Delay of this Event
    * \sa setDelay getTime updateTime
    */
-  const double getDelay();
+  double getDelay();
 
   //! Set a new Slope value
   /*!
@@ -82,7 +82,7 @@ public:
    * \param slope New Slope for this event
    * \sa getSlope getTime updateTime
    */
-  void setSlope(const double slope);
+  void setSlope(double slope);
   
   //! Return the event slope.
   /*!
@@ -90,7 +90,7 @@ public:
    * \return Return the Slope of this Event
    * \sa setSlope getTime updateTime
    */
-  const double getSlope();
+  double getSlope();
 
   //! Set a new reference level.
   /*!
@@ -108,7 +108,7 @@ public:
    * \return Return the reference level of this Event
    * \sa setRefLevel getTime updateTime
    */
-  const int getRefLevel();
+  int getRefLevel();
 
 
   
@@ -121,7 +121,7 @@ public:
    * \return Return the absolute event time.
    * \sa setDelay getDelay updateTime
    */
-  const double getTime(int levelPercent = 50);
+  double getTime(int levelPercent = 50);
 
   //! update the absolute event time
   /*!
@@ -140,7 +140,7 @@ public:
    * \param newReferrer pointer to the event that should be added to the referrers list
    * \sa 
    */
-  bool registerReferrer(Handle<Event> newReferrer);
+  bool registerReferrer(Handle<Event> &newReferrer);
 
   //! Unregister an event which references this event.  
   /*!
@@ -150,7 +150,7 @@ public:
    * \param newReferrer pointer to the event that should be added to the referrers list
    * \sa unregisterReferrer
    */
-  bool unregisterReferrer(Handle<Event> newReferrer);
+  bool unregisterReferrer(Handle<Event> &newReferrer);
 
   //! Get the pointer of the reference event.
   /*!
@@ -168,7 +168,7 @@ public:
    * \return True if successful.
    * \sa hasreference getreference delreference
    */
-  bool setReference(Handle<Event> new_reference);
+  bool setReference(Handle<Event> &new_reference);
 
   //! Delete the reference of this event
   /*!

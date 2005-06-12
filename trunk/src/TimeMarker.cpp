@@ -98,6 +98,8 @@ void TimeMarker::paint(void) {
 
   marker->addPoint(xpos, yTop);
   marker->addPoint(xpos, yBottom);
+  cout << "TMDEBUG: sigoffset= "  << parent->getDefaultSigOffset() << ", cSize.xpos()=" << cSize.xpos() <<
+    ", timpercent=" << (markedTime-start)/(end-start) << endl;
   cout << "TIMEMARKER: line "  << xpos << ", " << yTop << "->" << yBottom << endl;
   //  * parent->cSliceWidth;
 

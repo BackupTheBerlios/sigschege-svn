@@ -59,7 +59,7 @@ class EventList {
    * Default is 0, which means the event can just have started.
    * \return Return a pointer to the event, NULL if no event occured after evTime.
    */
-  Handle<Event> getEventAfter(double evTime, int percentageLevel=0); 
+  Handle<Event> getEventAfter(double evTime, int percentageLevel=0, State newState=State(State::Illegal)); 
 
   //! Create a new Event
   /*!
@@ -78,7 +78,7 @@ class EventList {
    * \return A pointer to the new event.
    * \sa deleteEvent 
    */
-  Handle<Event> createEvent(const State &eventNewState, double eventDelay, const Handle<Event> *refEvent = 0);
+  Handle<Event> createEvent(const State &eventNewState, double eventDelay, Handle<Event> *refEvent = 0);
   
 
   //! Delete an Events

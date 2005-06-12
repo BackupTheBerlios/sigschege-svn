@@ -61,7 +61,7 @@ Handle<Event> EventList::createEvent() {
   return new_handle;
 }
 
-Handle<Event> EventList::createEvent(const State &eventNewState, double eventDelay, const Handle<Event> *refEvent_p) {
+Handle<Event> EventList::createEvent(const State &eventNewState, double eventDelay, Handle<Event> *refEvent_p) {
   Handle<Event> new_event = createEvent();
   if (refEvent_p!=0) {
     new_event->setReference(*refEvent_p);
@@ -88,11 +88,12 @@ void EventList::sort() {
   ::sort(events.begin(), events.end(), EventList::evTimeCmp());
 }
 
-Handle<Event> EventList::getEventAfter(double evTime, int percentageLevel) {
+Handle<Event> EventList::getEventAfter(double evTime, int percentageLevel, State newState) {
   vector< Handle<Event> >::iterator eventsIter;
   sort(); // makes life easier... 
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
-    if (eventsIter->Object()->getTime(percentageLevel)>=evTime) {
+    if (eventsIter->Object()->getTime(percentageLevel)>=evTime &&
+        (newState==State(State::Illegal) || newState==eventsIter->Object()->getNewState())) {
       return *eventsIter;
     }
   }
@@ -108,6 +109,7 @@ void EventList::debugEvents(void) {
     cout << " Time Start:  " << eventsIter->Object()->getTime(0) << endl;
     cout << " Time End:  " << eventsIter->Object()->getTime(100) << endl;
     cout << " New State:  " << eventsIter->Object()->getNewState() << endl;
+    cout << " Refcount:  " << eventsIter->Object()->objRefCount() << endl;
   }
   cout << "===== EVENT LIST STOP" << endl;
 }
@@ -232,7 +234,6 @@ void EventList::paint(void) {
   FPolyline *sigline_tmp = 0;
 
   State currentState = initialState->getNewState();
-  currentState = (currentState==State::Named? State::X : currentState); // map Named to X - drawn the same way
   State newState;
   int xMax = cOrigin.xpos()+cSize.xpos();
   vector< Handle<Event> >::iterator eventsIter;
@@ -263,7 +264,6 @@ void EventList::paint(void) {
       sigline0 = evListCompound->polyline();
       sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::Z)));
     }
-    
     if (currentState==State::One || currentState==State::X || currentState==State::Named) {
       sigline1 = evListCompound->polyline();
       sigline1->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::One)));
@@ -274,7 +274,6 @@ void EventList::paint(void) {
 
     bool swapSiglines = false;
     newState = eventsIter->Object()->getNewState();
-    newState = (newState==State::Named? State::X : newState); // map Named to X - drawn the same way
     eventStart = eventsIter->Object()->getTime(0);
     eventEnd = eventsIter->Object()->getTime(100);
 
@@ -313,8 +312,8 @@ void EventList::paint(void) {
         y1end=y1;
       }
 
-      if ((currentState.isDrawState("1") && newState.isDrawState("X")) ||
-          (currentState.isDrawState("X") && newState.isDrawState("1"))) {
+      if ((currentState.isRealDrawState('1') && newState.isRealDrawState('X')) ||
+          (currentState.isRealDrawState('X') && newState.isRealDrawState('1'))) {
         // 1->X and X->1 need a top2top line
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
@@ -324,7 +323,7 @@ void EventList::paint(void) {
         }
         sigline1->addPoint(PosInt(startX, y1));
         sigline1->addPoint(PosInt(endX, y1));
-        if (newState.isDrawState("X")) {
+        if (newState.isRealDrawState('X')) {
           // 1->X, make sure top2bottom works on the right sigline
           sigline_tmp = sigline1;
           sigline1 = sigline0;
@@ -332,8 +331,8 @@ void EventList::paint(void) {
         }
       }
       
-      if ((currentState.isDrawState("1") || currentState.isDrawState("X")) &&
-          (newState.isDrawState("0") || newState.isDrawState("X"))) {
+      if ((currentState.isRealDrawState('1') || currentState.isRealDrawState('X')) &&
+          (newState.isRealDrawState('0') || newState.isRealDrawState('X'))) {
         // 1->0, 1->X, X->X, X->0 need a top2bottom line
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
@@ -346,7 +345,7 @@ void EventList::paint(void) {
         swapSiglines = true;
       }
       
-      if ((currentState.isDrawState("0") && newState.isDrawState("X")) || (currentState.isDrawState("X") && newState.isDrawState("0"))) {
+      if ((currentState.isRealDrawState('0') && newState.isRealDrawState('X')) || (currentState.isRealDrawState('X') && newState.isRealDrawState('0'))) {
         // 0->X and X->0 need a bottom2bottom line
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
@@ -358,10 +357,10 @@ void EventList::paint(void) {
         sigline0->addPoint(PosInt(endX, y0));
       }
       
-      if ((currentState.isDrawState("0") || currentState.isDrawState("X"))
-          && (newState.isDrawState("1") || newState.isDrawState("X"))) {
+      if ((currentState.isRealDrawState('0') || currentState.isRealDrawState('X'))
+          && (newState.isRealDrawState('1') || newState.isRealDrawState('X'))) {
         // 0->1, 0->X, X->X and X->1 need a bottom2top line
-        if (currentState.isDrawState("0") && newState.isDrawState("X")) {
+        if (currentState.isRealDrawState('0') && newState.isRealDrawState('X')) {
           // Z->X, make sure bottom2top works on the right sigline
           sigline_tmp = sigline1;
           sigline1 = sigline0;
@@ -378,8 +377,8 @@ void EventList::paint(void) {
         sigline0->addPoint(PosInt(endX, y1end));
       }
       
-      if ((currentState.isDrawState("0") || currentState.isDrawState("X"))
-          && (newState.isDrawState("Z"))) {
+      if ((currentState.isRealDrawState('0') || currentState.isRealDrawState('X'))
+          && (newState.isRealDrawState('Z'))) {
         // 0->Z, X->Z need a bottom2medium line
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
@@ -391,8 +390,8 @@ void EventList::paint(void) {
         sigline0->addPoint(PosInt(endX, vertPosFromState(State::Zero, State::Z, percentageNewEnd)));
       }
 
-      if ((currentState.isDrawState("1") || currentState.isDrawState("X"))
-          && (newState.isDrawState("Z"))) {
+      if ((currentState.isRealDrawState('1') || currentState.isRealDrawState('X'))
+          && (newState.isRealDrawState('Z'))) {
         // 1->Z, X->Z need a top2medium line
         if (sigline1==0) {
           sigline1 = evListCompound->polyline();
@@ -404,7 +403,7 @@ void EventList::paint(void) {
         sigline1->addPoint(PosInt(endX, vertPosFromState(State::One, State::Z, percentageNewEnd)));
       }
       
-      if ((currentState.isDrawState("Z")) && (newState.isDrawState("0") || newState.isDrawState("X"))) {
+      if ((currentState.isRealDrawState('Z')) && (newState.isRealDrawState('0') || newState.isRealDrawState('X'))) {
         // Z->0, Z->X need a medium2bottom line
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
@@ -414,7 +413,7 @@ void EventList::paint(void) {
         }
         sigline0->addPoint(PosInt(startX, vertPosFromState(State::Z, State::Zero, percentageNewStart)));
         sigline0->addPoint(PosInt(endX, vertPosFromState(State::Z, State::Zero, percentageNewEnd)));
-        if (newState.isDrawState("X")) {
+        if (newState.isRealDrawState('X')) {
           // Z->X, make sure bottom2top works on the right sigline
           sigline_tmp = sigline1;
           sigline1 = sigline0;
@@ -422,7 +421,7 @@ void EventList::paint(void) {
         }
       }
 
-      if ((currentState.isDrawState("Z")) && (newState.isDrawState("1") || newState.isDrawState("X"))) {
+      if ((currentState.isRealDrawState('Z')) && (newState.isRealDrawState('1') || newState.isRealDrawState('X'))) {
         // Z->1, Z->X need a medium2top line
         if (sigline0==0) {
           sigline0 = evListCompound->polyline();
@@ -438,8 +437,8 @@ void EventList::paint(void) {
       // handle the case that an event doesn't change the state - required
       // if it's the first event in the visible area
       if (currentState.getDrawState()==newState.getDrawState()) {
-        bool isX = (newState.isDrawState("X") || newState.isDrawState("Named"));
-        if (newState.isDrawState("0") || newState.isDrawState("Z") || isX ) {
+        bool isX = (newState.isRealDrawState('X') || newState.isDrawState("Named"));
+        if (newState.isRealDrawState('0') || newState.isRealDrawState('Z') || isX ) {
           if (sigline0==0) {
             sigline0 = evListCompound->polyline();
             if (where==before_visible && !partialStart) {
@@ -447,7 +446,7 @@ void EventList::paint(void) {
             }
           }
         }
-        if (newState.isDrawState("1") || isX) {
+        if (newState.isRealDrawState('1') || isX) {
           if (sigline1==0) {
             sigline1 = evListCompound->polyline();
             if (where==before_visible && !partialStart) {
@@ -456,22 +455,21 @@ void EventList::paint(void) {
           }
         }
       }
-      
-      
+            
       if (swapSiglines) {
         sigline_tmp = sigline1;
         sigline1 = sigline0;
         sigline0 = sigline_tmp;
       }
-      if (currentState.isDrawState("X") && (newState.isDrawState("1") || newState.isDrawState("0") || newState.isDrawState("Z"))) {
-        if (newState.isDrawState("0") || newState.isDrawState("Z")) sigline1 = 0;
+      if (currentState.isRealDrawState('X') && (newState.isRealDrawState('1') || newState.isRealDrawState('0') || newState.isRealDrawState('Z'))) {
+        if (newState.isRealDrawState('0') || newState.isRealDrawState('Z')) sigline1 = 0;
         else sigline0 = 0;
       }
-      if (namedEvents && (where==in_visible || eventEnd>compoundTimeEnd)) {
+      if (namedEvents) { //  && (where==in_visible || eventEnd>compoundTimeEnd ???
         string stateText = currentState.getStateName();
         if (stateText!="") {
           FText* label = evListCompound->text();
-          label->setOrigin(PosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/5));
+          label->setOrigin(PosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/4));
           label->setText(stateText);
           label->setJustification(FText::center);
           label->setSize(10);
@@ -496,5 +494,16 @@ void EventList::paint(void) {
   if (sigline1!=0) {
     sigline1->addPoint(PosInt(xMax, y1end));
   }
+  if (namedEvents) { //  && (where==in_visible || eventEnd>compoundTimeEnd ???
+    string stateText = currentState.getStateName();
+    if (stateText!="") {
+      FText* label = evListCompound->text();
+      label->setOrigin(PosInt(static_cast<int>((xMax+oldEndX)/2), y0+(y1-y0)/4));
+      label->setText(stateText);
+      label->setJustification(FText::center);
+      label->setSize(10);
+    }
+  }
+
 }
 

@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -128,13 +128,14 @@ void layout (void) {
   tim.addLast(Signal2.Object());
   tim.addLast(Time1.Object());
 
+
+  tim.setWidth(10000);
+  tim.setSliceSpace(50);
+
   Handle<TimeMarker> tm0;
   tm0 = tim.createTimeMarker(100.0, Signal1.Object(), Signal2.Object() );
   tm0->setColor(3);
   tim.addOverlay(tm0.Object());
-
-  tim.setWidth(10000);
-  tim.setSliceSpace(50);
 
   tim.exportFig("test.fig");
   tim.exportEPS("test.eps");

@@ -1,3 +1,4 @@
+ -*- outline -*-
 
 $Id$
 
@@ -14,6 +15,10 @@ $Id$
   b> all components get values by a common call
      -> deriving from same base class with polymorphism
         (LayoutObject does not seem appropriate)
+
+* Rework LayoutObject handling
+  How to handle propagation of geometry?
+  Add hierarchy of layout objects?
 
 * add label to time marker (time label and optional text label)
 

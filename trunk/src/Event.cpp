@@ -30,7 +30,7 @@ using namespace std;
 
 
 Event::Event(const State &setNewState, double setEventDelay, const Handle<Event> *setReference_p,
-             double setSlopeTime) {
+             double setSlopeTime) : refCount(0) {
   eventDelay = setEventDelay;
   newState = setNewState;
   refLevel = 50;
@@ -51,17 +51,16 @@ void Event::decrementRefcount() {
   refCount--;
 }
 
-bool Event::registerReferrer(Handle<Event> newReferrer) {
+bool Event::registerReferrer(Handle<Event> &newReferrer) {
   vector< Handle<Event> >::iterator referrersIter;
     for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
       if (referrersIter->Object()==newReferrer.Object()) return false;
     }
     referrers.push_back(newReferrer);
-    refCount++;
     return true;
 }
 
-bool Event::unregisterReferrer(Handle<Event> obsoleteReferrer) {
+bool Event::unregisterReferrer(Handle<Event> &obsoleteReferrer) {
   vector< Handle<Event> >::iterator referrersIter;
     for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
       if (referrersIter->Object()==obsoleteReferrer.Object()) {
@@ -69,7 +68,6 @@ bool Event::unregisterReferrer(Handle<Event> obsoleteReferrer) {
         return true;
       }
     }
-    refCount--;
     return false;
 }
 
@@ -79,7 +77,7 @@ Handle<Event> Event::getReference() {
 }
 
 
-bool Event::setReference(Handle<Event> new_reference) {
+bool Event::setReference(Handle<Event> &new_reference) {
   Event* referenceWalk = new_reference.Object();
   // make sure that no circle of events is created which would lead to an infinite loop
   if (referenceWalk!=0) {
@@ -90,36 +88,37 @@ bool Event::setReference(Handle<Event> new_reference) {
       referenceWalk = referenceWalk->reference.Object();
     } while (referenceWalk);
   }
-  
+  Handle<Event> thisEvent(this);
   if (reference.Object()!=0) { // unregister from an old reference, if one existed
-    reference.Object()->unregisterReferrer(this);
+    reference.Object()->unregisterReferrer(thisEvent);
   }
   reference = new_reference;
   if (reference.Object()!=0) { // make sure the event this refers to knows, unless it's a NULL pointer
-    reference.Object()->registerReferrer(this); 
+    reference.Object()->registerReferrer(thisEvent); 
   }
   updateTime();
   return true;
 }
 
 void Event::delReference() {
-  setReference(NULL);
+  Handle<Event> event;
+  setReference(event);
 }
 
 
-void Event::setDelay(const double delay) {
+void Event::setDelay(double delay) {
   if(eventDelay != delay){
     eventDelay = delay;
   }
   updateTime();
 }
 
-const double Event::getDelay() {
+double Event::getDelay() {
   return(eventDelay);
 }
 
 
-void Event::setSlope(const double slope) {
+void Event::setSlope(double slope) {
   if(slopeTime != slope){
     slopeTime = slope;
   }
@@ -127,11 +126,11 @@ void Event::setSlope(const double slope) {
 }
 
 
-const double Event::getSlope() {
+double Event::getSlope() {
   return(slopeTime);
 }
 
-void Event::setRefLevel(const int rlevel) {
+void Event::setRefLevel(int rlevel) {
   if(refLevel != rlevel){
     refLevel = rlevel;
   }
@@ -139,7 +138,7 @@ void Event::setRefLevel(const int rlevel) {
 }
 
 
-const int Event::getRefLevel() {
+int Event::getRefLevel() {
   return(refLevel);
 }
 
@@ -164,7 +163,7 @@ void  Event::updateTime() {
   }
 }
 
-const double Event::getTime(int level_percent) {
+double Event::getTime(int level_percent) {
   return(eventTime+slopeTime/100.0*level_percent);
 }
 

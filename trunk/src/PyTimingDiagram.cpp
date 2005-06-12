@@ -63,6 +63,7 @@ static PyObject * TimEvent_getTime(TimEventObject *self, PyObject *args, PyObjec
 
   result = Py_BuildValue("d", self->event->getTime(percentageLevel));
 
+  Py_INCREF(result);
   return (result);
 }
 
@@ -321,22 +322,45 @@ static PyObject *TimSignal_addEvent(TimSignalObject *self, PyObject *args, PyObj
 static PyObject *TimSignal_getEvent(TimSignalObject *self, PyObject *args, PyObject *kwds) {
   double after = 0.0;
   int percentageLevel = 50;
-  static char *kwlist[] = {"after", "percentageLevel", NULL};
-
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "d|i", kwlist, &after, &percentageLevel))
+  static char *kwlist[] = {"after", "percentageLevel", "newState", NULL};
+  string newState = "";
+  
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "d|is", kwlist, &after, &percentageLevel, &newState))
     return NULL;
+    
 
   Handle<Event> event;
 
-  event = self->signal->getEventAfter(after, percentageLevel);
+  if (newState=="X" || newState=="0" || newState=="1" || newState=="Z") {
+    event = self->signal->getEventAfter(after, percentageLevel, State(newState));
+    self->signal->debugEvents();
+  } else {
+    event = self->signal->getEventAfter(after, percentageLevel);
+  }
   
   if (!event.valid()) {
+    Py_INCREF(Py_None);
     return (Py_None);
   }
 
   return WrapPythonEvent(event);
   
   
+}
+
+static PyObject *TimSignal_setNamedEvents(TimSignalObject *self, PyObject *args, PyObject *kwds) {
+  char isNamed_char=1;
+  int percentageLevel = 50;
+  static char *kwlist[] = {"isNamed", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "b", kwlist, &isNamed_char))
+    return NULL;
+  bool isNamed = (isNamed_char>0);
+
+  self->signal->setNamedEvents(isNamed);
+  
+  Py_INCREF(Py_None);
+  return (Py_None);
 }
 
 static PyObject * TimSignal_setLabel(TimSignalObject *self, PyObject *args, PyObject *kwds) {
@@ -355,6 +379,7 @@ static PyObject * TimSignal_setLabel(TimSignalObject *self, PyObject *args, PyOb
 static PyMethodDef TimSignal_methods[] = {
   {"addEvent", (PyCFunction)TimSignal_addEvent, METH_VARARGS|METH_KEYWORDS, "Add an event to a signal."},
   {"getEvent", (PyCFunction)TimSignal_getEvent, METH_VARARGS|METH_KEYWORDS, "Get an event of a signal that fulfills certain conditions."},
+  {"setNamedEvents", (PyCFunction)TimSignal_setNamedEvents, METH_VARARGS|METH_KEYWORDS, "Declare that this signal uses named events."},
   {"setLabel", (PyCFunction)TimSignal_setLabel, METH_VARARGS|METH_KEYWORDS, "Set the label text for this signal."},
   {NULL}  /* Sentinel */
 };

@@ -26,8 +26,6 @@
 #ifndef _H_EVENTLIST
 #define _H_EVENTLIST
 
-using namespace std;
-
 #include <vector>
 #include <string>
 #include "Event.h"
@@ -146,7 +144,7 @@ class EventList {
   void paint(void);
   
 private:
-  vector< Handle<Event> > events;
+  std::vector< Handle<Event> > events;
   // pseudo event to define initial state - no reference event, no time/delay (time is "-infinity")
   Handle<Event> initialState; 
   YaVec::FCompound *evListCompound;

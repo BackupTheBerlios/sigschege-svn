@@ -323,16 +323,17 @@ static PyObject *TimSignal_getEvent(TimSignalObject *self, PyObject *args, PyObj
   double after = 0.0;
   int percentageLevel = 50;
   static char *kwlist[] = {"after", "percentageLevel", "newState", NULL};
-  string newState = "";
+  char *newState = "";
   
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "d|is", kwlist, &after, &percentageLevel, &newState))
     return NULL;
-    
+
+  string newStateS(newState);
 
   Handle<Event> event;
 
-  if (newState=="X" || newState=="0" || newState=="1" || newState=="Z") {
-    event = self->signal->getEventAfter(after, percentageLevel, State(newState));
+  if (newStateS=="X" || newStateS=="0" || newStateS=="1" || newStateS=="Z") {
+    event = self->signal->getEventAfter(after, percentageLevel, State(newStateS));
     self->signal->debugEvents();
   } else {
     event = self->signal->getEventAfter(after, percentageLevel);

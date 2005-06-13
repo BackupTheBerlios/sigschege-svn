@@ -26,8 +26,6 @@
 #ifndef _H_EVENT
 #define _H_EVENT
 
-using namespace std;
-
 #include "Handle.t"
 #include "State.h"
 #include <vector>
@@ -221,7 +219,7 @@ private:
   State newState;
   int refCount;
   Handle<Event> reference;
-  vector< Handle<Event> > referrers;
+  std::vector< Handle<Event> > referrers;
 
   //! Increment the reference count - only for use by Handle class!
   void incrementRefcount();

@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -25,8 +25,6 @@
 
 #ifndef _H_LAYOUTOBJECT
 #define _H_LAYOUTOBJECT
-
-using namespace std;
 
 #include "Handle.t"
 #include <vector>
@@ -149,7 +147,7 @@ protected:
   int refCount;
   Handle<LayoutObject> cReference;
   bool cDrawBorder;
-  vector< Handle<LayoutObject> > cReferrers;
+  std::vector< Handle<LayoutObject> > cReferrers;
   YaVec::FCompound *cCompound;
 };
 

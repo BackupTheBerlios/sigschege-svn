@@ -26,8 +26,6 @@
 #ifndef _H_STATE
 #define _H_STATE
 
-using namespace std;
-
 #include <string>
 
 //! Class that holds the state of a signal and maps it to drawing functions.
@@ -50,34 +48,34 @@ class State {
   };
 
   //! General and standard constructor.
-  State(drawStateType newDrawState=Zero, string newStateName="") {
+  State(drawStateType newDrawState=Zero, std::string newStateName="") {
     drawState = newDrawState;
     stateName = newStateName;
   };
 
   //! General constructor from string
-  State(string stateString1, string stateString2="") {
+  State(std::string stateString1, std::string stateString2="") {
     setStateByString(stateString1, stateString2);
   };
 
   
   //! Set the new state
-  void setState(const drawStateType newDrawState=Zero, const string newStateName="") {
+  void setState(const drawStateType newDrawState=Zero, const std::string newStateName="") {
     drawState = newDrawState;
     stateName = newStateName;
   };
 
   //! Set the new state by two strings.
-  bool setStateByString(const string &stateString1, const string &stateString2);
+  bool setStateByString(const std::string &stateString1, const std::string &stateString2);
 
   //! Return the state to be drawn, will be Zero, One or X.
   drawStateType getDrawState(void);
 
   //! Return just the state name.
-  string getStateName(void);
+  std::string getStateName(void);
   
   //! Check if drawStateString is the draw state from this object.
-  bool isDrawState(const string &drawStateString);
+  bool isDrawState(const std::string &drawStateString);
 
   //! Check if this state requires a top line to be drawn.
   bool hasTopLine(void) { return drawState==X || drawState==1 ||drawState == Named; }
@@ -105,15 +103,15 @@ class State {
   bool operator==(const State::drawStateType state); 
   
  private:
-  string stateName;
+  std::string stateName;
   drawStateType  drawState;
 
-  drawStateType string2state(const string stateString);
+  drawStateType string2state(const std::string stateString);
   
 
 };
 
-inline ostream &operator<<(ostream& ostr, State outState) {
+inline std::ostream &operator<<(std::ostream& ostr, State outState) {
   //  ostr << outState.getstate();
   return ostr;
 }

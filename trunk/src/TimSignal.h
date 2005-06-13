@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -26,8 +26,6 @@
 #ifndef _H_TIMSIGNAL
 #define _H_TIMSIGNAL
 
-using namespace std;
-
 #include "LayoutObject.h"
 #include "EventList.h"
 #include <string>
@@ -39,7 +37,7 @@ public:
   TimSignal(double defaultSlope=0.0);
 
   //! Create a Signal with Text
-  TimSignal(string signalLabel, double startTime, double endTime, double defaultSlope=0.0);
+  TimSignal(std::string signalLabel, double startTime, double endTime, double defaultSlope=0.0);
 
   //! The standard destructor
   ~TimSignal();
@@ -48,10 +46,10 @@ public:
   void setSigOffset(int sigOffset);
 
   //! Set a new Text.
-  void setText(string newText);
+  void setText(std::string newText);
 
   //! Get the Text.
-  string getText(void) { return cText; };
+  std::string getText(void) { return cText; };
   
   //! Paint the Signal.
   void paint(void);
@@ -59,7 +57,7 @@ public:
   LayoutObject::setCompound;
 
 private:
-  string    cText;
+  std::string    cText;
   int       cFontType;
   int       cFontSize;
   int       cSigOffset;

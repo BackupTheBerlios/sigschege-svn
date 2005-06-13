@@ -26,7 +26,7 @@
 #ifndef _T_HANDLE
 #define _T_HANDLE
 
-using namespace std;
+#include <iostream>
 
 //! The Handle class allows safer handling of objects which are accessed with pointers.
 /*!
@@ -91,7 +91,8 @@ public:
   ~Handle() {
     if (myObject != 0) {
       myObject->decrementRefcount();
-      if (myObject->objRefCount()==0) {
+      int newref = myObject->objRefCount();
+      if (newref==0) {
         delete myObject;
       }
     }

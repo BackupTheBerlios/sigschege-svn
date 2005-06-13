@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -26,8 +26,6 @@
 
 #ifndef _H_TIMLIST
 #define _H_TIMLIST
-
-using namespace std;
 
 #include "LayoutObject.h"
 #include "TimLabel.h"

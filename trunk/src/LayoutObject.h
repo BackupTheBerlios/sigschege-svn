@@ -113,16 +113,19 @@ public:
   void setSize(int width, int height);
 
   //! Set the width
-  void setWidth(int width);
+  virtual void setWidth(int width);
 
   //! Set the height
-  void setHeight(int height);
+  virtual void setHeight(int height);
 
   //! Get the Size of this Layout Object
   virtual YaVec::PosInt getSize();
 
   //! Get the height of this Layout Object
   virtual int getHeight();
+
+  //! Get the width of this Layout Object
+  virtual int getWidth();
 
   //! Set the Origin of this Layout Object
   void setOrigin(YaVec::PosInt newOrigin);

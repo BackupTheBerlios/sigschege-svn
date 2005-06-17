@@ -109,21 +109,6 @@ class EventList {
     initialState->setNewState(newInitialState);
   }
 
-  //! Set the compound
-  void setCompound(YaVec::FCompound *newCompound);
-
-  //! Set the Origin
-  void setOrigin(YaVec::PosInt newOrigin);
-
-  //! Set the Origin
-  void setOrigin(int xOffset, int yOffset);
-
-  //! Set the Size
-  void setSize(YaVec::PosInt newSize);
-
-  //! Set the Size
-  void setSize(int width, int height);
-
   //! Set the type of events (binary or named).
   void setNamedEvents(bool named) {
     namedEvents = named;
@@ -132,31 +117,15 @@ class EventList {
   //! Set the default slope, which is give to all new events.
   void setDefaultSlope(double defaultSlope) { cDefaultSlope = defaultSlope; }
   
-  //! Set the compound to which the signal is drawn.
-  void setCompound(YaVec::FCompound *newCompound, int xOffset, int yOffset, int width, int height,
-                   double timeStart, double timeEnd);
-
-  //! Set the compound to which the signal is drawn.
-  void setCompound(YaVec::FCompound *newCompound, YaVec::PosInt newOrigin, YaVec::PosInt newSize,
-                   double timeStart, double timeEnd);
-
   //! Paint the signal into the compound
   void paint(void);
   
-private:
+protected:
   std::vector< Handle<Event> > events;
   // pseudo event to define initial state - no reference event, no time/delay (time is "-infinity")
   Handle<Event> initialState; 
-  YaVec::FCompound *evListCompound;
-  int compoundXOffset, compoundYOffset;
-  int compoundWidth, compoundHeight;
-  double compoundTimeStart, compoundTimeEnd;
-  YaVec::PosInt cOrigin, cSize;
   bool namedEvents;
   double cDefaultSlope;
-
-  // internal helper function: calculate the position from the state (0, 1, Z)
-  int vertPosFromState(State::drawStateType state, State::drawStateType newState=State::Illegal, double percentageNew=0.0);
 
 };
 

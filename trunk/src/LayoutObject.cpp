@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -88,7 +88,7 @@ void LayoutObject::setOrigin(PosInt newOrigin) {
  * \param y The new vertical Origin for this Layout Object
  */
 void LayoutObject::setOrigin(int x, int y) {
-  cOrigin.set(x,y);
+  cOrigin.set(x, y);
 }
 
 /*!
@@ -134,7 +134,7 @@ void LayoutObject::setHeight(int height) {
 
 /*!
  * Get the height of this Layout Object
- * This is importent for all container objects like lists
+ * This is important for all container objects like lists
  * For these container objects the height of all sub objects
  * should be accumulated.
  * \return The total height of this Layout Object
@@ -143,6 +143,9 @@ int LayoutObject::getHeight() {
   return(cSize.ypos());
 }
 
+int LayoutObject::getWidth() {
+  return(cSize.xpos());
+}
 
 int LayoutObject::getUpperPos() {
   return cOrigin.ypos();
@@ -176,7 +179,6 @@ bool LayoutObject::registerReferrer(Handle<LayoutObject> newReferrer) {
       if (referrersIter->Object()==newReferrer.Object()) return false;
     }
     cReferrers.push_back(newReferrer);
-    refCount++;
     return true;
 }
 
@@ -188,7 +190,6 @@ bool LayoutObject::unregisterReferrer(Handle<LayoutObject> obsoleteReferrer) {
         return true;
       }
     }
-    refCount--;
     return false;
 }
 

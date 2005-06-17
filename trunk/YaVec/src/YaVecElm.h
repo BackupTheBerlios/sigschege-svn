@@ -168,7 +168,8 @@ namespace YaVec {
     colorRGB[2] = yavec_std_colors[elmPenColor][2];
   }
 
-}
+  
+} // namespace
   
 #endif /* _YAVECELM_H */
 

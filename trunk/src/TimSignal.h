@@ -54,7 +54,9 @@ public:
   //! Paint the Signal.
   void paint(void);
 
-  LayoutObject::setCompound;
+  // internal helper function: calculate the position from the state (0, 1, Z)
+  int vertPosFromState(State::drawStateType state, State::drawStateType newState=State::Illegal, double percentageNew=0.0);
+
 
 private:
   std::string    cText;

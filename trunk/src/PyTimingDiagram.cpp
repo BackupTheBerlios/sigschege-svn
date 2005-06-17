@@ -563,8 +563,15 @@ static void TimingDiagram_dealloc(TimingDiagramObject *self) {
   self->ob_type->tp_free((PyObject *)self);
 }
 
-static PyObject * TimingDiagram_exportFig(TimingDiagramObject *self) {
-  self->tim->exportFig("demo.fig");
+static PyObject * TimingDiagram_exportFig(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
+  char *filename = "demo.fig";
+
+  static char *kwlist[] = {"filename", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist, &filename))
+    return NULL;
+  
+  self->tim->exportFig(filename);
   Py_INCREF(Py_None);
   return (Py_None);
 }
@@ -737,7 +744,7 @@ static PyMethodDef TimingDiagram_methods[] = {
    "Create a Label in the Timing Diagram."
   },
   {
-    "exportFig", (PyCFunction)TimingDiagram_exportFig, METH_VARARGS,
+    "exportFig", (PyCFunction)TimingDiagram_exportFig, METH_VARARGS|METH_KEYWORDS,
     "Export the Timing Diagram as Fig format."
   },
   {

@@ -143,7 +143,7 @@ void layout (void) {
 }
 
 void event(void) {
-  EventList mainList;
+  TimSignal mainList;
   bool never_true = false;
   bool always_true = true;
   Handle<Event> ev1 = mainList.createEvent(State("1"), 80);
@@ -183,10 +183,8 @@ void event(void) {
 
   FFigure myDiag;
 
-  FCompound *sig1cmp =  myDiag.compound();
 
-  mainList.setCompound(sig1cmp, 1000, 1000, 5000, 1000, 0.0, 300.0);
-  mainList.paint();
+  //mainList.setCompound(sig1cmp, 1000, 1000, 5000, 1000, 0.0, 300.0);
   myDiag.exportFig2dev("eps", "example_signal.eps");
   
   return;

@@ -107,7 +107,7 @@ void TimTime::paint(void) {
 
   scaleWidth = cSize.xpos()-cSigOffset-2*cPadding;
 
-  // and then we can draw out new stuff
+  // and then we can draw new stuff
   // Draw the border
   LayoutObject::paint();
 

@@ -41,7 +41,8 @@ using namespace std;
 
 //! The TimingDiagram Class is the toplevel class that contains the layout and the objects of a timing diagram.
 /*!
- * This class represents a timing diagram comprised layout objects,timing diagram objects like signal or floating objects.
+ * This class represents a timing diagram comprised layout objects,timing diagram objects
+ * like signal or floating objects.
  * Also all used event will be administered by this class.
  */
 

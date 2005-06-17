@@ -111,6 +111,13 @@ protected:
   // NOTE: all "time aware" children (signal, time scale, time marker) must
   // have their sigOffset consistent with the default
   int  cDefaultSigOffset;
+
+private:
+    //! Disable setting the height - it is calculated by the height of the elements.
+  virtual void setHeight(int height) {};
+
+
+
 };
 
 #endif

@@ -37,12 +37,10 @@ LayoutObject::LayoutObject(): cReference(), cReferrers(), cCompound() {
   cOrigin.set(0,0);
 }
 
-LayoutObject::LayoutObject( Handle<LayoutObject> newReference ) {
-  refCount = 0;
+LayoutObject::LayoutObject(LayoutObject *newReference, YaVec::PosInt origin, YaVec::PosInt size):
+  cOrigin(origin), cSize(size), cReference(newReference) {
   cDrawBorder = false;
   cPadding    = 50;
-  cOrigin.set(0,0);
-  setReference(newReference);
 }
 
 LayoutObject::~LayoutObject() {

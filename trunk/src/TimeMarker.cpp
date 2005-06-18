@@ -34,7 +34,7 @@ using namespace YaVec;
 
 TimeMarker::TimeMarker(double time, Handle<LayoutObject> mainLayoutObject,
                        LayoutObject* topLayoutObject, LayoutObject* bottomLayoutObject,
-                       int topPercentage, int bottomPercentage) : LayoutObject(mainLayoutObject) {
+                       int topPercentage, int bottomPercentage) : LayoutObject(mainLayoutObject.Object()) {
   topReference = topLayoutObject;
   topReference->registerReferrer(this);
   bottomReference = bottomLayoutObject;

@@ -35,8 +35,8 @@ public:
   //! The standard constructor
   LayoutObject();
 
-  //! General constructor setting the reference.
-  LayoutObject( Handle<LayoutObject> newReference );
+  //! General constructor setting the reference and geometry.
+  LayoutObject(LayoutObject *newReference, YaVec::PosInt origin = YaVec::PosInt(0,0), YaVec::PosInt size = YaVec::PosInt(0,0));
 
   
   //! The standard destructor

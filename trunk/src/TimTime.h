@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -26,17 +26,14 @@
 #ifndef _H_TIMTIME
 #define _H_TIMTIME
 
-using namespace std;
-
-#include "LayoutObject.h"
-#include <string>
+#include "TimingObject.h"
 
 /// Layout Time Scale Class
 /*!
  * This Time Scale Layout Class can be used once or more to show the time
- * as horizontal axis.
+ * as a horizontal axis.
  */
-class TimTime : public LayoutObject {
+class TimTime : public TimingObject {
 public:
   /// General constructor
   TimTime(double newStartTime, double newEndTime,
@@ -66,17 +63,13 @@ public:
   /// paint the layout object
   void paint(void);
 
-  //! Set the horizontal offset for the time scale
-  void setSigOffset(int sigOffset);
   
 private:
   double labelDistance;
   double firstLabel;
   double tickDistance;
-  double cStartTime, cEndTime;
   int cFontType;
   int cFontSize;
-  int cSigOffset;
   bool autoCalc;
 };
 

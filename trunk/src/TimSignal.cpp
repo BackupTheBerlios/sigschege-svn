@@ -34,7 +34,7 @@ using namespace YaVec;
 /*!
  * Construct a Timing Diagram Signal Object
  */
-TimSignal::TimSignal(double defaultSlope):LayoutObject(), EventList(defaultSlope) {
+TimSignal::TimSignal(double defaultSlope): TimingObject(), EventList(defaultSlope) {
   cFontType  = 14;
   cFontSize  = 20;
   cSigOffset = 0;
@@ -42,10 +42,11 @@ TimSignal::TimSignal(double defaultSlope):LayoutObject(), EventList(defaultSlope
 
 /*!
  * Construct a Timing Diagram Signal Object with a Text Label
- * \param signalLabel Signal Label
+ * \param signalLabel Signal label.
  */
-TimSignal::TimSignal(string signalLabel, double startTime, double endTime, double defaultSlope)
-  : LayoutObject(), EventList(defaultSlope) {
+TimSignal::TimSignal(string signalLabel, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size,
+                     int sigOffset, double defaultSlope)
+  : TimingObject(0, origin, size, sigOffset), EventList(defaultSlope) {
   cText      = signalLabel;
   cFontType  = 14;
   cFontSize  = 20;
@@ -55,7 +56,6 @@ TimSignal::TimSignal(string signalLabel, double startTime, double endTime, doubl
 }
 
 TimSignal::~TimSignal() {
-
 }
 
 /*!
@@ -65,12 +65,6 @@ TimSignal::~TimSignal() {
 void TimSignal::setText(string newText) {
   cText = newText;
 }
-
-//! Set the xoffset for the signal
-void TimSignal::setSigOffset(int sigOffset) {
-  cSigOffset = sigOffset;
-}
-
 
 int TimSignal::vertPosFromState(State::drawStateType state, State::drawStateType newState, double percentageNew) {
   int pos = cOrigin.ypos();
@@ -118,7 +112,7 @@ void TimSignal::paint(void) {
   bool partialStart;
 
 
-  LayoutObject::paint(); // draw the border
+  TimingObject::paint(); // draw the border
 
 
   // Draw the Text

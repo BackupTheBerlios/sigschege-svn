@@ -117,12 +117,12 @@ Handle <TimLabel> TimList::createLabel() {
  * This Function will return a Handle to a Timing Diagram Signal Object
  */
 Handle <TimSignal> TimList::createSignal(string label, double defaultSlope) {
-  Handle<TimSignal> newTimSignal = new TimSignal(label, cStartTime, cEndTime, defaultSlope);
+  Handle<TimSignal> newTimSignal = new TimSignal(label, cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultHeight),
+                                                 cDefaultSigOffset, defaultSlope);
   newTimSignal->setCompound(getCompound()->compound());
   newTimSignal->setHeight(cDefaultHeight);
   newTimSignal->enableBorder(cDefaultBorder);
   newTimSignal->setPadding(cDefaultPadding);
-  newTimSignal->setSigOffset(cDefaultSigOffset);
   return newTimSignal;
 }
 

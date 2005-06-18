@@ -26,24 +26,22 @@
 #ifndef _H_TIMSIGNAL
 #define _H_TIMSIGNAL
 
-#include "LayoutObject.h"
+#include "TimingObject.h"
 #include "EventList.h"
 #include <string>
 
 //! Signal Call
-class TimSignal : public LayoutObject, public EventList {
+class TimSignal : public TimingObject, public EventList {
 public:
   //! The standard constructor
   TimSignal(double defaultSlope=0.0);
 
   //! Create a Signal with Text
-  TimSignal(std::string signalLabel, double startTime, double endTime, double defaultSlope=0.0);
+  TimSignal(std::string signalLabel, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size,
+            int sigOffset = 0, double defaultSlope=0.0);
 
   //! The standard destructor
   ~TimSignal();
-
-  //! Set the xoffset for the signal
-  void setSigOffset(int sigOffset);
 
   //! Set a new Text.
   void setText(std::string newText);
@@ -62,8 +60,6 @@ private:
   std::string    cText;
   int       cFontType;
   int       cFontSize;
-  int       cSigOffset;
-  double    cStartTime, cEndTime;
 };
 
 #endif

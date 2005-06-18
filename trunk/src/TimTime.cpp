@@ -37,7 +37,7 @@ using namespace YaVec;
  * This constructor will create an Timing Diagram Label Object
  */
 TimTime::TimTime(double newStartTime, double newEndTime,
-                 double newLabelDistance, double newFirstLabel, double newTickDistance) : LayoutObject() {
+                 double newLabelDistance, double newFirstLabel, double newTickDistance) : TimingObject() {
   cFontType = 14;
   cFontSize = 20;
   cStartTime = newStartTime;
@@ -84,6 +84,7 @@ void TimTime::setTicks(double newLabelDistance, double newFirstLabel, double new
     autoCalc = true;
     calcTicks();
   } else {
+    autoCalc = false;
     labelDistance = newLabelDistance;
     firstLabel = newFirstLabel;
     tickDistance = newTickDistance;
@@ -162,8 +163,4 @@ void TimTime::setFontType(int new_font) {
 /// Set the Font Size
 void TimTime::setFontSize(int new_size) {
   cFontSize = new_size;
-}
-
-void TimTime::setSigOffset(int sigOffset) {
-  cSigOffset = sigOffset;
 }

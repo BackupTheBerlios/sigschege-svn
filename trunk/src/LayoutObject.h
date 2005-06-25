@@ -107,15 +107,12 @@ public:
   int getRightPos();
   
   //! Set the Size of this Layout Object
-  void setSize(YaVec::PosInt newSize);
+  virtual void setSize(YaVec::PosInt newSize);
 
-  //! Set the Size of this Layout Object
-  void setSize(int width, int height);
-
-  //! Set the width
+  //! Set the width.
   virtual void setWidth(int width);
 
-  //! Set the height
+  //! Set the height.
   virtual void setHeight(int height);
 
   //! Get the Size of this Layout Object
@@ -128,18 +125,15 @@ public:
   virtual int getWidth();
 
   //! Set the Origin of this Layout Object
-  void setOrigin(YaVec::PosInt newOrigin);
-
-  //! Set the Origin of this Layout Object
-  void setOrigin(int x, int y);
+  virtual void setOrigin(YaVec::PosInt newOrigin);
 
   //! Get the Origin of this Layout Object
-  YaVec::PosInt getOrigin();
+  virtual YaVec::PosInt getOrigin();
 
   //! Enable/Disable drawing of the Border
-  void enableBorder(bool enable);
+  virtual void enableBorder(bool enable);
 
-  void setPadding(int newPadding);
+  virtual void setPadding(int newPadding);
 
 protected:
   // the padding of this layout object 

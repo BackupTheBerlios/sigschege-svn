@@ -26,7 +26,7 @@
 #ifndef _H_TIMMARKER
 #define _H_TIMMARKER
 
-#include "LayoutObject.h"
+#include "TimingObject.h"
 #include "Handle.t"
 #include <iostream>
 
@@ -35,10 +35,11 @@
  * This Time Scale Layout Class can be used once or more to show the time
  * as horizontal axis.
  */
-class TimeMarker : public LayoutObject {
+class TimeMarker : public TimingObject {
 public:
   //! General constructor
-  TimeMarker(double time, Handle<LayoutObject> mainLayoutObject,
+  TimeMarker(double time, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
+             Handle<LayoutObject> mainLayoutObject,
              LayoutObject* topLayoutObject = 0,
              LayoutObject* bottomLayoutObject = 0,
              int topPercentage=100, int bottomPercentage=100);

@@ -41,14 +41,46 @@ class TimingObject : public LayoutObject {
   TimingObject(LayoutObject *newReference, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset = 0);
     
   //! Set the horizontal offset for the signal part.
-  void setSigOffset(int sigOffset) { cSigOffset = sigOffset; }
+  virtual void setSigOffset(int sigOffset);
 
+  //! Set the size of this timing object.
+  virtual void setSize(YaVec::PosInt newSize);
+
+  //! Set the width.
+  virtual void setWidth(int width);
+
+  //! Set the height.
+  virtual void setHeight(int height);
+  
+  //! Set the Origin of this timing object
+  virtual void setOrigin(YaVec::PosInt newOrigin);
+
+  virtual void setPadding(int newPadding);
+
+  void setTimeRange(double startTime, double endTime);
+  
  protected:
   double cStartTime, cEndTime;
   int cSigOffset;
+  /// Horizontal geometry information for the timing area.
+  int timXLeft, timXRight, timWidth;
+  /// Vertical geometry information for the timing area.
+  int timYTop, timYBottom, timHeight;
+  /// Horizontal geometry information for the label area.
+  int labelXLeft, labelXRight;
+
+private:
+  //! Update the geometry information for the timing area.
+  void updatetimArea(void);
 };
 
 inline TimingObject::TimingObject():
   LayoutObject(), cSigOffset(0) {}
+
+inline void TimingObject::setTimeRange(double startTime, double endTime) {
+  cStartTime = startTime;
+  cEndTime = endTime;
+}
+
 
 #endif // _H_TIMINGOBJECT

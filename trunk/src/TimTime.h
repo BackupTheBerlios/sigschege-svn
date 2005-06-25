@@ -27,16 +27,17 @@
 #define _H_TIMTIME
 
 #include "TimingObject.h"
+#include "TimText.h"
 
 /// Layout Time Scale Class
 /*!
  * This Time Scale Layout Class can be used once or more to show the time
  * as a horizontal axis.
  */
-class TimTime : public TimingObject {
+class TimTime : public TimingObject, public TimText {
 public:
   /// General constructor
-  TimTime(double newStartTime, double newEndTime,
+  TimTime(double newStartTime, double newEndTime, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
           double newLabelDistance = 0.0, double newFirstLabel = 0.0, double newTickDistance = 0.0);
   
   /// The standard destructor
@@ -51,15 +52,11 @@ public:
    */
   void setTicks(double newLabelDistance = 0.0, double newFirstLabel = 0.0, double newTickDistance = 0.0);
 
-  /// Set the Font Type
-  void setFontType(int new_font);
-
-  /// Set the Font Size
-  void setFontSize(int new_size);
-
   /// automatically calculate the position of ticks and labels
   void calcTicks(void);
   
+  virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight);
+
   /// paint the layout object
   void paint(void);
 
@@ -68,8 +65,6 @@ private:
   double labelDistance;
   double firstLabel;
   double tickDistance;
-  int cFontType;
-  int cFontSize;
   bool autoCalc;
 };
 

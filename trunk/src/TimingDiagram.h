@@ -26,9 +26,6 @@
 #ifndef _H_TIMING
 #define _H_TIMING
 
-using namespace std;
-
-#include "LayoutObject.h"
 #include "TimList.h"
 #include "TimLabel.h"
 #include "TimSignal.h"
@@ -41,9 +38,9 @@ using namespace std;
 
 //! The TimingDiagram Class is the toplevel class that contains the layout and the objects of a timing diagram.
 /*!
- * This class represents a timing diagram comprised layout objects,timing diagram objects
- * like signal or floating objects.
- * Also all used event will be administered by this class.
+ * This class implements a timing diagram. It is derived from the \c TimList class which
+ * implements a vertical list of elements (like signal, time scale, ...).
+ * This class additionally holds the \c FFigure object and implements functions for saving and exporting.
  */
 
 class TimingDiagram : public TimList {
@@ -55,13 +52,13 @@ public:
   ~TimingDiagram();
 
   //! Export the Timing Diagram to an xfig file
-  void exportFig(string file);
+  void exportFig(std::string file);
 
   //! Export the Timing Diagram to an encapsulated postscript (EPS)
-  void exportEPS(string file);
+  void exportEPS(std::string file);
 
   //! Export the Timing Diagram to any picture format (supported by fig2dev)
-  void exportAny(string file, string format);
+  void exportAny(std::string file, string format);
   
 private:
   YaVec::FFigure cYaVec;

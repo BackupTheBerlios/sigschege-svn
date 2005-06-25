@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004 by Ulf Klaperski
+// Copyright 2004, 2005 by Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -32,19 +32,23 @@
 using namespace std;
 using namespace YaVec;
 
+void TimTime::getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight) {
+  upperLeft.set(labelXLeft, timYTop);
+  lowerRight.set(labelXRight, timYBottom);
+}
+
 
 /*!
  * This constructor will create an Timing Diagram Label Object
  */
-TimTime::TimTime(double newStartTime, double newEndTime,
-                 double newLabelDistance, double newFirstLabel, double newTickDistance) : TimingObject() {
-  cFontType = 14;
-  cFontSize = 20;
-  cStartTime = newStartTime;
-  cEndTime = newEndTime;
+TimTime::TimTime(double newStartTime, double newEndTime, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
+                 double newLabelDistance, double newFirstLabel, double newTickDistance):
+  TimingObject(),
+  TimText("Time")
+{
+  setTimeRange(newStartTime, newEndTime);
   setTicks(newLabelDistance, newFirstLabel, newTickDistance);
 }
-
 
 TimTime::~TimTime(){
 }
@@ -97,7 +101,7 @@ void TimTime::setTicks(double newLabelDistance, double newFirstLabel, double new
  */
 void TimTime::paint(void) {
   FText *text;
-  int scaleWidth, xpos;
+  int xpos;
   double tickTime;
 
   // check if a compound is available
@@ -106,23 +110,15 @@ void TimTime::paint(void) {
   // first we have to clear out compound
   getCompound()->clear();
 
-  scaleWidth = cSize.xpos()-cSigOffset-2*cPadding;
-
   // and then we can draw new stuff
   // Draw the border
   LayoutObject::paint();
-
-  // Draw the Text
-  text = getCompound()->text();
-  text->setText("Time");
-  text->setFont(cFontType);
-  text->setSize(cFontSize);
-  text->setOrigin(cOrigin+PosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
+  TimText::paint(cCompound); // draw the text
 
   // draw the small ticks
   tickTime = firstLabel-tickDistance*floor((firstLabel-cStartTime)/tickDistance);
   while (tickTime<cEndTime) {
-    xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime/(cEndTime-cStartTime)*scaleWidth);
+    xpos = static_cast<int>(timXLeft+tickTime/(cEndTime-cStartTime)*timWidth);
     FPolyline *tick = getCompound()->polyline();
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/10 );
@@ -135,7 +131,7 @@ void TimTime::paint(void) {
   while (tickTime<cEndTime) {
     string timeStr;
     ostringstream strConv;
-    xpos = static_cast<int>(getLeftPos()+cSigOffset+cPadding+tickTime*scaleWidth/cEndTime-cStartTime);
+    xpos = static_cast<int>(timXLeft+tickTime*timWidth/cEndTime-cStartTime);
     FPolyline *tick = getCompound()->polyline();
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
     tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/5 );
@@ -151,16 +147,6 @@ void TimTime::paint(void) {
     
     tickTime += labelDistance;
   }
-  
-  
+    
 }
 
-/// Set the Font Type
-void TimTime::setFontType(int new_font) {
-  cFontType = new_font;
-}
-
-/// Set the Font Size
-void TimTime::setFontSize(int new_size) {
-  cFontSize = new_size;
-}

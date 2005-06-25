@@ -81,15 +81,6 @@ void LayoutObject::setOrigin(PosInt newOrigin) {
 }
 
 /*!
- * Set the Origin of this Layout Object
- * \param x The new horizontal Origin for this Layout Object
- * \param y The new vertical Origin for this Layout Object
- */
-void LayoutObject::setOrigin(int x, int y) {
-  cOrigin.set(x, y);
-}
-
-/*!
  * Get the Origin of this Layout Object
  * \return The current origin of this Laout Object
  */
@@ -103,15 +94,6 @@ PosInt LayoutObject::getOrigin() {
  */
 void LayoutObject::setSize(PosInt newSize) {
   cSize = newSize;
-}
-
-/*!
- * Set the Size of this Layout Object
- * \param width The new width for this Layout Object
- * \param height The new height for this Layout Object
- */
-void LayoutObject::setSize(int width, int height) {
-  cSize.set(width,height);
 }
 
 /*!

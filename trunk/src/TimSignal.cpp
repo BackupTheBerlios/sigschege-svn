@@ -31,12 +31,16 @@
 using namespace std;
 using namespace YaVec;
 
+void TimSignal::getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight) {
+  upperLeft.set(labelXLeft, timYTop);
+  lowerRight.set(labelXRight, timYBottom);
+}
+
+
 /*!
  * Construct a Timing Diagram Signal Object
  */
 TimSignal::TimSignal(double defaultSlope): TimingObject(), EventList(defaultSlope) {
-  cFontType  = 14;
-  cFontSize  = 20;
   cSigOffset = 0;
 }
 
@@ -46,48 +50,35 @@ TimSignal::TimSignal(double defaultSlope): TimingObject(), EventList(defaultSlop
  */
 TimSignal::TimSignal(string signalLabel, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size,
                      int sigOffset, double defaultSlope)
-  : TimingObject(0, origin, size, sigOffset), EventList(defaultSlope) {
-  cText      = signalLabel;
-  cFontType  = 14;
-  cFontSize  = 20;
-  cSigOffset = 0;
-  cStartTime = startTime;
-  cEndTime = endTime;
+  : TimingObject(0, origin, size, sigOffset), EventList(defaultSlope),
+    TimText(signalLabel) {
+  setTimeRange(startTime, endTime);
 }
 
 TimSignal::~TimSignal() {
 }
 
-/*!
- * Set a new Text
- * \param newText the new text
- */
-void TimSignal::setText(string newText) {
-  cText = newText;
-}
-
 int TimSignal::vertPosFromState(State::drawStateType state, State::drawStateType newState, double percentageNew) {
-  int pos = cOrigin.ypos();
-  int height = cSize.ypos();
+  int pos = timYTop;
   if (state==State::Zero) {
-    pos += height;
+    pos += timHeight;
     if (newState==State::One) {
-      pos -= static_cast<int>(percentageNew*height);
+      pos -= static_cast<int>(percentageNew*timHeight);
     } else if (newState==State::Z) {
-      pos -= static_cast<int>(0.5*percentageNew*height);
+      pos -= static_cast<int>(0.5*percentageNew*timHeight);
     }
   } else if  (state==State::One) {
     if (newState==State::Zero) {
-      pos += static_cast<int>(percentageNew*height);
+      pos += static_cast<int>(percentageNew*timHeight);
     } else if (newState==State::Z) {
-      pos += static_cast<int>(0.5*percentageNew*height);
+      pos += static_cast<int>(0.5*percentageNew*timHeight);
     }
   } else {
-    pos += static_cast<int>(0.5*height);
+    pos += static_cast<int>(0.5*timHeight);
     if (newState==State::Zero) {
-      pos += static_cast<int>(0.5*percentageNew*height);
+      pos += static_cast<int>(0.5*percentageNew*timHeight);
     } else if (newState==State::One) {
-      pos -= static_cast<int>(0.5*percentageNew*height);
+      pos -= static_cast<int>(0.5*percentageNew*timHeight);
     }
   }
   return pos;
@@ -99,11 +90,9 @@ void TimSignal::paint(void) {
   FPolyline *sigline0 = 0;
   FPolyline *sigline1 = 0;
   FPolyline *sigline_tmp = 0;
-  FText *text;
 
   State currentState = initialState->getNewState();
   State newState;
-  int xMax = cOrigin.xpos()+cSize.xpos();
   vector< Handle<Event> >::iterator eventsIter;
   double eventStart, eventEnd;
   enum { before_visible, in_visible, after_visible } where;
@@ -113,14 +102,7 @@ void TimSignal::paint(void) {
 
 
   TimingObject::paint(); // draw the border
-
-
-  // Draw the Text
-  text = getCompound()->text();
-  text->setText(cText);
-  text->setFont(cFontType);
-  text->setSize(cFontSize);
-  text->setOrigin(cOrigin+PosInt(cPadding, (cSize.ypos()+text->getHeight())/2));
+  TimText::paint(cCompound); // draw the text
   
   int y0 = vertPosFromState(State::Zero);
   int y1 = vertPosFromState(State::One);    
@@ -156,9 +138,9 @@ void TimSignal::paint(void) {
     eventStart = eventsIter->Object()->getTime(0);
     eventEnd = eventsIter->Object()->getTime(100);
 
-    startX = cOrigin.xpos()+static_cast<int>(static_cast<double>(cSize.xpos())
+    startX = timXLeft+static_cast<int>(static_cast<double>(timWidth)
                                              * (eventStart-cStartTime)/(compoundTimeDiff));
-    endX = cOrigin.xpos()+static_cast<int>(static_cast<double>(cSize.xpos())
+    endX = timXLeft+static_cast<int>(static_cast<double>(timWidth)
                                            * (eventEnd-cStartTime)/(compoundTimeDiff));
     
     if (where==in_visible || (where==before_visible && eventEnd>cStartTime)) {
@@ -166,7 +148,7 @@ void TimSignal::paint(void) {
 
       if (eventStart<cStartTime) {
         // event crosses start of visible area
-        startX = cOrigin.xpos();
+        startX = timXLeft;
         percentageNewStart = (cStartTime-eventStart)/(eventEnd-eventStart);
         y1start = vertPosFromState(State::One, State::Zero, percentageNewStart);
         y0start = vertPosFromState(State::Zero, State::One, percentageNewStart);
@@ -180,10 +162,10 @@ void TimSignal::paint(void) {
 
       if (eventEnd>cEndTime) {
         // event crosses end of visible area
-        endX = cOrigin.xpos()+cSize.xpos();
+        endX = timXRight;
         percentageNewEnd = (cEndTime-eventStart)/(eventEnd-eventStart);
-        y1end = static_cast<int>(cOrigin.ypos()+cSize.ypos()*(1.0-percentageNewEnd));
-        y0end = static_cast<int>(cOrigin.ypos()+cSize.ypos()*percentageNewEnd);
+        y1end = static_cast<int>(timYTop+timHeight*(1.0-percentageNewEnd));
+        y0end = static_cast<int>(timYTop+timHeight*percentageNewEnd);
         where = after_visible;
       } else {
         percentageNewEnd = 1.0;
@@ -197,7 +179,7 @@ void TimSignal::paint(void) {
         if (sigline1==0) {
           sigline1 = cCompound->polyline();
           if (where==before_visible) {
-            sigline1->addPoint(PosInt(cOrigin.xpos(), y1));
+            sigline1->addPoint(PosInt(timXLeft, y1));
           }
         }
         sigline1->addPoint(PosInt(startX, y1));
@@ -216,7 +198,7 @@ void TimSignal::paint(void) {
         if (sigline1==0) {
           sigline1 = cCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline1->addPoint(PosInt(cOrigin.xpos(), y1start));
+            sigline1->addPoint(PosInt(timXLeft, y1start));
           }
         }
         sigline1->addPoint(PosInt(startX, y1start));
@@ -229,7 +211,7 @@ void TimSignal::paint(void) {
         if (sigline0==0) {
           sigline0 = cCompound->polyline();
           if (where==before_visible) {
-            sigline0->addPoint(PosInt(cOrigin.xpos(), y0));
+            sigline0->addPoint(PosInt(timXLeft, y0));
           }
         }
         sigline0->addPoint(PosInt(startX, y0));
@@ -249,7 +231,7 @@ void TimSignal::paint(void) {
         if (sigline0==0) {
           sigline0 = cCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline0->addPoint(PosInt(cOrigin.xpos(), y0start));
+            sigline0->addPoint(PosInt(timXLeft, y0start));
           }
         }
         sigline0->addPoint(PosInt(startX, y0start));
@@ -262,7 +244,7 @@ void TimSignal::paint(void) {
         if (sigline0==0) {
           sigline0 = cCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::Zero, State::Z, percentageNewStart)));
+            sigline0->addPoint(PosInt(timXLeft, vertPosFromState(State::Zero, State::Z, percentageNewStart)));
           }
         }
         sigline0->addPoint(PosInt(startX, vertPosFromState(State::Zero, State::Z, percentageNewStart)));
@@ -275,7 +257,7 @@ void TimSignal::paint(void) {
         if (sigline1==0) {
           sigline1 = cCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline1->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::One, State::Z, percentageNewStart)));
+            sigline1->addPoint(PosInt(timXLeft, vertPosFromState(State::One, State::Z, percentageNewStart)));
           }
         }
         sigline1->addPoint(PosInt(startX, vertPosFromState(State::One, State::Z, percentageNewStart)));
@@ -287,7 +269,7 @@ void TimSignal::paint(void) {
         if (sigline0==0) {
           sigline0 = cCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::Z, State::Zero, percentageNewStart)));
+            sigline0->addPoint(PosInt(timXLeft, vertPosFromState(State::Z, State::Zero, percentageNewStart)));
           }
         }
         sigline0->addPoint(PosInt(startX, vertPosFromState(State::Z, State::Zero, percentageNewStart)));
@@ -305,7 +287,7 @@ void TimSignal::paint(void) {
         if (sigline0==0) {
           sigline0 = cCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::Z, State::One, percentageNewStart)));
+            sigline0->addPoint(PosInt(timXLeft, vertPosFromState(State::Z, State::One, percentageNewStart)));
           }
         }
         sigline0->addPoint(PosInt(startX, vertPosFromState(State::Z, State::One, percentageNewStart)));
@@ -321,7 +303,7 @@ void TimSignal::paint(void) {
           if (sigline0==0) {
             sigline0 = cCompound->polyline();
             if (where==before_visible && !partialStart) {
-              sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(isX? State::Zero : currentState.getDrawState(), State::One, 0.0)));
+              sigline0->addPoint(PosInt(timXLeft, vertPosFromState(isX? State::Zero : currentState.getDrawState(), State::One, 0.0)));
             }
           }
         }
@@ -329,7 +311,7 @@ void TimSignal::paint(void) {
           if (sigline1==0) {
             sigline1 = cCompound->polyline();
             if (where==before_visible && !partialStart) {
-              sigline1->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(isX? State::One : currentState.getDrawState(), State::One, 0.0)));
+              sigline1->addPoint(PosInt(timXLeft, vertPosFromState(isX? State::One : currentState.getDrawState(), State::One, 0.0)));
             }
           }
         }
@@ -365,19 +347,19 @@ void TimSignal::paint(void) {
   // Add the last point of the signal
   if (sigline0!=0) {
     if (currentState==State::Z) {
-      sigline0->addPoint(PosInt(xMax, vertPosFromState(State::Z, State::Z, 1.0)));
+      sigline0->addPoint(PosInt(timXRight, vertPosFromState(State::Z, State::Z, 1.0)));
     } else {
-      sigline0->addPoint(PosInt(xMax, y0end));
+      sigline0->addPoint(PosInt(timXRight, y0end));
     }
   }
   if (sigline1!=0) {
-    sigline1->addPoint(PosInt(xMax, y1end));
+    sigline1->addPoint(PosInt(timXRight, y1end));
   }
   if (namedEvents) { //  && (where==in_visible || eventEnd>cEndTime ???
     string stateText = currentState.getStateName();
     if (stateText!="") {
       FText* label = cCompound->text();
-      label->setOrigin(PosInt(static_cast<int>((xMax+oldEndX)/2), y0+(y1-y0)/4));
+      label->setOrigin(PosInt(static_cast<int>((timXRight+oldEndX)/2), y0+(y1-y0)/4));
       label->setText(stateText);
       label->setJustification(FText::center);
       label->setSize(10);

@@ -44,7 +44,6 @@ TimList::TimList():LayoutObject(), cLayoutList() {
 }
 
 TimList::~TimList() {
-
 }
 
 /*!
@@ -130,8 +129,8 @@ Handle <TimSignal> TimList::createSignal(string label, double defaultSlope) {
  * This Function will return a Handle to a time scale object
  */
 Handle<TimTime> TimList::createTime(double newLabelDistance, double newFirstLabel, double newTickDistance) {
-  Handle<TimTime> newTimTime = new TimTime(cStartTime, cEndTime, newLabelDistance,
-                                           newFirstLabel, newTickDistance);
+  Handle<TimTime> newTimTime = new TimTime(cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultHeight),
+                                           cDefaultSigOffset, newLabelDistance, newFirstLabel, newTickDistance);
   newTimTime->setCompound(getCompound()->compound());
   newTimTime->setHeight(cDefaultHeight);
   newTimTime->enableBorder(cDefaultBorder);
@@ -143,8 +142,9 @@ Handle<TimTime> TimList::createTime(double newLabelDistance, double newFirstLabe
 
 Handle<TimeMarker> TimList::createTimeMarker(double time, LayoutObject* topLayoutObject,
                                              LayoutObject* bottomLayoutObject) {
-  Handle<TimeMarker> newTimeMarker = new TimeMarker(time, this, topLayoutObject, bottomLayoutObject);
-  
+  Handle<TimeMarker> newTimeMarker = new TimeMarker(time, cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultHeight),
+                                                    cDefaultSigOffset, this, topLayoutObject, bottomLayoutObject);
+  newTimeMarker->setPadding(cDefaultPadding);
   return newTimeMarker;
 }
 

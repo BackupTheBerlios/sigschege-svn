@@ -27,11 +27,12 @@
 #define _H_TIMSIGNAL
 
 #include "TimingObject.h"
+#include "TimText.h"
 #include "EventList.h"
 #include <string>
 
 //! Signal Call
-class TimSignal : public TimingObject, public EventList {
+class TimSignal : public TimingObject, public EventList, public TimText {
 public:
   //! The standard constructor
   TimSignal(double defaultSlope=0.0);
@@ -43,23 +44,14 @@ public:
   //! The standard destructor
   ~TimSignal();
 
-  //! Set a new Text.
-  void setText(std::string newText);
-
-  //! Get the Text.
-  std::string getText(void) { return cText; };
-  
   //! Paint the Signal.
   void paint(void);
+
+  virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight);
 
   // internal helper function: calculate the position from the state (0, 1, Z)
   int vertPosFromState(State::drawStateType state, State::drawStateType newState=State::Illegal, double percentageNew=0.0);
 
-
-private:
-  std::string    cText;
-  int       cFontType;
-  int       cFontSize;
 };
 
 #endif

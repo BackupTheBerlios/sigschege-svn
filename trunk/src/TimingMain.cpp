@@ -40,6 +40,9 @@ void layout (void) {
   Handle<TimSignal> Signal1 = tim.createSignal("O");
   Handle<TimTime> Time1 = tim.createTime(0.0, 0.0, 0.0);
 
+  Time1->setText1("Time");
+  Time1->setText2("ns");
+
   Handle<TimList> List1 = tim.createList();
 
   Label1->setText("Hello World! This is a demo timing diagram from Sigschege!");

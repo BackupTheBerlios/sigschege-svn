@@ -32,17 +32,17 @@
 using namespace std;
 using namespace YaVec;
 
-TimeMarker::TimeMarker(double time, Handle<LayoutObject> mainLayoutObject,
-                       LayoutObject* topLayoutObject, LayoutObject* bottomLayoutObject,
-                       int topPercentage, int bottomPercentage) : LayoutObject(mainLayoutObject.Object()) {
+TimeMarker::TimeMarker(double time, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
+                       Handle<LayoutObject> mainLayoutObject, LayoutObject* topLayoutObject,
+                       LayoutObject* bottomLayoutObject, int topPercentage, int bottomPercentage):
+  TimingObject(mainLayoutObject.Object(), origin, size, sigOffset) {
+  setTimeRange(startTime, endTime);
   topReference = topLayoutObject;
   topReference->registerReferrer(this);
   bottomReference = bottomLayoutObject;
   bottomReference->registerReferrer(this);
   // origin and size of a time marker overlay are identical to the parent TimList object
   // TODO: we don't use our setSize/setOrigin functions as they should be disabled
-  cOrigin = cReference->getOrigin();
-  cSize = cReference->getSize();
   if (topReference.Object()!=0) {
     yTop = topReference->getUpperPos();
   } else {
@@ -76,11 +76,8 @@ TimeMarker::~TimeMarker() {
  */
 void TimeMarker::paint(void) {
   FPolyline *marker;
-  double start, end;
   int xpos, yTop, yBottom;
   TimList* parent = dynamic_cast< TimList* >(cReference.Object());
-  start = parent->startTime();
-  end = parent->endTime();
 
   // check if a compound is available
   if (getCompound()==0) return;
@@ -89,8 +86,8 @@ void TimeMarker::paint(void) {
   getCompound()->clear();
 
   marker = getCompound()->polyline();
-  xpos = 2*cPadding+parent->getDefaultSigOffset()
-    +static_cast<int>((markedTime-start)/(end-start)*(cSize.xpos()-2*cPadding-parent->getDefaultSigOffset()));
+  xpos = timXLeft + 
+    +static_cast<int>((markedTime-cStartTime)/(cEndTime-cStartTime)*timWidth);
   yTop = topReference->getUpperPos();
   yBottom = bottomReference->getBottomPos();
   marker->lineStyle(YaVecLine::dashed);
@@ -99,7 +96,7 @@ void TimeMarker::paint(void) {
   marker->addPoint(xpos, yTop);
   marker->addPoint(xpos, yBottom);
 //   cout << "TMDEBUG: sigoffset= "  << parent->getDefaultSigOffset() << ", cSize.xpos()=" << cSize.xpos() <<
-//     ", timpercent=" << (markedTime-start)/(end-start) << endl;
+//     ", timpercent=" << (markedTime-cStartTime)/(cEndTime-cStartTime) << cEndTimel;
 //   cout << "TIMEMARKER: line "  << xpos << ", " << yTop << "->" << yBottom << endl;
   //  * parent->cSliceWidth;
 

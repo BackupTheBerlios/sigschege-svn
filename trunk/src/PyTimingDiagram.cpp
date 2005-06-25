@@ -225,8 +225,37 @@ static int TimTimescale_print(TimTimescaleObject *obj, FILE *fp, int flags)
   return 0;
 }
 
+static PyObject * TimTimescale_setLabel(TimTimescaleObject *self, PyObject *args, PyObject *kwds) {
+  char *text1 = "Time";
+  char *text2 = "";
+  static char *kwlist[] = {"text1", "text2", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|ss", kwlist, &text1, &text2))
+    return NULL;
+
+  self->timescale->setText1(text1);
+  self->timescale->setText2(text2);
+  Py_INCREF(Py_None);
+  return (Py_None);
+}
+
+static PyObject * TimTimescale_setFont(TimTimescaleObject *self, PyObject *args, PyObject *kwds) {
+  int size = 10;
+  static char *kwlist[] = {"size", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "i", kwlist, &size))
+    return NULL;
+
+  self->timescale->setFontSize(size);
+  Py_INCREF(Py_None);
+  return (Py_None);
+}
+
+
 static PyMethodDef TimTimescale_methods[] = {
-  {NULL}  /* Sentinel */
+  {"setLabel", (PyCFunction)TimTimescale_setLabel, METH_VARARGS|METH_KEYWORDS, "Set the label text(s) for this time scale."},
+  {"setFont", (PyCFunction)TimTimescale_setFont, METH_VARARGS|METH_KEYWORDS, "Set the font parameters for this time scale."},
+  {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
 static  PyTypeObject TimTimescaleType = {

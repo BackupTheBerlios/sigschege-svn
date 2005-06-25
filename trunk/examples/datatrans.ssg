@@ -13,6 +13,9 @@ mdt = md.createSignal("Data", 0.4)
 mdt.setNamedEvents(1);
 mts = md.createTimescale();
 
+mts.setLabel('Time', '[ns]')
+mts.setFont(18)
+
 for i in range(-10,40,4):
    mclk.addEvent(i, "1")
    mclk.addEvent(state1="0", time=i+2)

@@ -81,10 +81,13 @@ void TimeMarker::paint(void) {
 
   // check if a compound is available
   if (getCompound()==0) return;
-
+  
   // first we have to clear compound
   getCompound()->clear();
 
+  // outside of visible area... nothing to do
+  if (markedTime<cStartTime || markedTime>cEndTime) return;
+  
   marker = getCompound()->polyline();
   xpos = timXLeft + 
     +static_cast<int>((markedTime-cStartTime)/(cEndTime-cStartTime)*timWidth);

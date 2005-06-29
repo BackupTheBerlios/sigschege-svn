@@ -748,6 +748,22 @@ static PyObject * TimingDiagram_createLabel(TimingDiagramObject *self, PyObject 
   return (newPLabelObj);
 }
 
+static PyObject *TimingDiagram_setTimeRange(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
+
+  double startTime;
+  double endTime;
+  static char *kwlist[] = {"startTime", "endTime", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "dd", kwlist, &startTime, &endTime))
+    return NULL;
+
+  self->tim->setTimeRange(startTime, endTime);
+
+  Py_INCREF(Py_None);
+  return (Py_None);  
+}
+
+
 static int TimingDiagram_print(TimSignalObject *obj, FILE *fp, int flags)
 {
   
@@ -771,6 +787,9 @@ static PyMethodDef TimingDiagram_methods[] = {
   },
   {"createLabel", (PyCFunction)TimingDiagram_createLabel, METH_VARARGS|METH_KEYWORDS,
    "Create a Label in the Timing Diagram."
+  },
+  {"setTimeRange", (PyCFunction)TimingDiagram_setTimeRange, METH_VARARGS|METH_KEYWORDS,
+   "Set the visible time range of this Timing Diagram."
   },
   {
     "exportFig", (PyCFunction)TimingDiagram_exportFig, METH_VARARGS|METH_KEYWORDS,

@@ -58,7 +58,7 @@ class TimingObject : public LayoutObject {
   virtual void setPadding(int newPadding);
 
   void setTimeRange(double startTime, double endTime);
-  
+
  protected:
   double cStartTime, cEndTime;
   int cSigOffset;

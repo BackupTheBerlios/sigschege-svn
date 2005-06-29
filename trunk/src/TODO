@@ -8,13 +8,8 @@ $Id$
 * Event class: constructor with arguments, 
   absolutify function (remove reference but keep absolute time)
 
-* TimList components (TimSignal, TimeMarker, ...)
-  How to handle change of startTime, etc?
-  a> components get current values when needed via callback 
-     -> must actively watch for changes (on paint)
-  b> all components get values by a common call
-     -> deriving from same base class with polymorphism
-        (LayoutObject does not seem appropriate)
+* Derive TimLabel class from TimingObject
+  => all TimList elements are derived from TimingObject, no need to query it
 
 * Rework LayoutObject handling
   How to handle propagation of geometry?

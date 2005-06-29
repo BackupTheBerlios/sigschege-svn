@@ -44,3 +44,8 @@ md.exportFig("datatrans.fig")
 md.exportPic("datatrans.png", "png")
 
 show(md)
+
+md.setTimeRange(0, 25)
+
+show(md)
+

@@ -57,7 +57,6 @@ public:
   //! The time range for all elements of this TimList.
   void setTimeRange(double startTime, double endTime);
   
-  
   //! Create an empty Timing Diagram Label Object.
   Handle<TimLabel> createLabel();
 

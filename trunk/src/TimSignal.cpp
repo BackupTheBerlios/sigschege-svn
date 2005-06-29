@@ -143,7 +143,7 @@ void TimSignal::paint(void) {
     endX = timXLeft+static_cast<int>(static_cast<double>(timWidth)
                                            * (eventEnd-cStartTime)/(compoundTimeDiff));
     
-    if (where==in_visible || (where==before_visible && eventEnd>cStartTime)) {
+    if ((where==in_visible || (where==before_visible && eventEnd>cStartTime)) && eventStart<cEndTime) {
       // we are in the visible area (2nd condition means we just entered)
 
       if (eventStart<cStartTime) {

@@ -81,8 +81,23 @@ void TimList::paint(void) {
 }
 
 void TimList::setTimeRange(double start, double end) {
+  vector< Handle<LayoutObject> >::iterator LayoutObjectIter;
+
   cStartTime = start;
   cEndTime = end;
+  LayoutObject *tobject;
+  for (LayoutObjectIter = cLayoutList.begin(); LayoutObjectIter != cLayoutList.end(); LayoutObjectIter++){
+    tobject = LayoutObjectIter->Object();
+    if ( typeid(*tobject) == typeid(TimSignal) || typeid(*tobject) == typeid(TimTime)) {
+      dynamic_cast<TimingObject*>(tobject)->setTimeRange(start, end);
+    }
+  }
+  for (LayoutObjectIter = cOverlayList.begin(); LayoutObjectIter != cOverlayList.end(); LayoutObjectIter++){
+    tobject = LayoutObjectIter->Object();
+    if ( typeid(*tobject) == typeid(TimeMarker)) {
+      dynamic_cast<TimingObject*>(tobject)->setTimeRange(start, end);
+    }
+  }  
 }
 
 /*!

@@ -50,7 +50,7 @@ TimList::~TimList() {
  * Paint the List
  */
 void TimList::paint(void) {
-  vector< Handle<LayoutObject> >::iterator LayoutObjectIter;
+  vector< Handle<TimingObject> >::iterator TimingObjectIter;
   int current_pos = cPadding;
 
   // check if a compound is available
@@ -64,36 +64,36 @@ void TimList::paint(void) {
   cSize.sety(getHeight());
   LayoutObject::paint();
   
-  for (LayoutObjectIter = cLayoutList.begin(); LayoutObjectIter != cLayoutList.end(); LayoutObjectIter++){
-    LayoutObjectIter->Object()->setCompound(getCompound()->compound());
-    LayoutObjectIter->Object()->setOrigin(cOrigin+PosInt(cPadding,current_pos));
-    LayoutObjectIter->Object()->setWidth(cSize.xpos()-2*cPadding);
-    LayoutObjectIter->Object()->paint();
-    current_pos+=LayoutObjectIter->Object()->getHeight()+cSliceSpace;
+  for (TimingObjectIter = cLayoutList.begin(); TimingObjectIter != cLayoutList.end(); TimingObjectIter++){
+    TimingObjectIter->Object()->setCompound(getCompound()->compound());
+    TimingObjectIter->Object()->setOrigin(cOrigin+PosInt(cPadding,current_pos));
+    TimingObjectIter->Object()->setWidth(cSize.xpos()-2*cPadding);
+    TimingObjectIter->Object()->paint();
+    current_pos+=TimingObjectIter->Object()->getHeight()+cSliceSpace;
   }
 
-  for (LayoutObjectIter = cOverlayList.begin(); LayoutObjectIter != cOverlayList.end(); LayoutObjectIter++){
-    LayoutObjectIter->Object()->setCompound(getCompound()->compound());
-    LayoutObjectIter->Object()->paint();
-    current_pos+=LayoutObjectIter->Object()->getHeight()+cSliceSpace;
+  for (TimingObjectIter = cOverlayList.begin(); TimingObjectIter != cOverlayList.end(); TimingObjectIter++){
+    TimingObjectIter->Object()->setCompound(getCompound()->compound());
+    TimingObjectIter->Object()->paint();
+    current_pos+=TimingObjectIter->Object()->getHeight()+cSliceSpace;
   }
 
 }
 
 void TimList::setTimeRange(double start, double end) {
-  vector< Handle<LayoutObject> >::iterator LayoutObjectIter;
+  vector< Handle<TimingObject> >::iterator TimingObjectIter;
 
   cStartTime = start;
   cEndTime = end;
-  LayoutObject *tobject;
-  for (LayoutObjectIter = cLayoutList.begin(); LayoutObjectIter != cLayoutList.end(); LayoutObjectIter++){
-    tobject = LayoutObjectIter->Object();
+  TimingObject *tobject;
+  for (TimingObjectIter = cLayoutList.begin(); TimingObjectIter != cLayoutList.end(); TimingObjectIter++){
+    tobject = TimingObjectIter->Object();
     if ( typeid(*tobject) == typeid(TimSignal) || typeid(*tobject) == typeid(TimTime)) {
       dynamic_cast<TimingObject*>(tobject)->setTimeRange(start, end);
     }
   }
-  for (LayoutObjectIter = cOverlayList.begin(); LayoutObjectIter != cOverlayList.end(); LayoutObjectIter++){
-    tobject = LayoutObjectIter->Object();
+  for (TimingObjectIter = cOverlayList.begin(); TimingObjectIter != cOverlayList.end(); TimingObjectIter++){
+    tobject = TimingObjectIter->Object();
     if ( typeid(*tobject) == typeid(TimeMarker)) {
       dynamic_cast<TimingObject*>(tobject)->setTimeRange(start, end);
     }
@@ -101,19 +101,19 @@ void TimList::setTimeRange(double start, double end) {
 }
 
 /*!
- * Add a LayoutObject to the end of the list
- * \param newLayoutObject Handel to the Layoutobject that should be added
+ * Add a TimingObject to the end of the list
+ * \param newTimingObject Handel to the Layoutobject that should be added
  */
-void TimList::addLast(Handle<LayoutObject> newLayoutObject) {
-  cLayoutList.push_back(newLayoutObject);
+void TimList::addLast(Handle<TimingObject> newTimingObject) {
+  cLayoutList.push_back(newTimingObject);
 }
 
 /*!
- * Add a LayoutObject to the end of the overlay list
- * \param newLayoutObject Handel to the Layoutobject that should be added
+ * Add a TimingObject to the end of the overlay list
+ * \param newTimingObject Handel to the Layoutobject that should be added
  */
-void TimList::addOverlay(Handle<LayoutObject> newLayoutObject) {
-  cOverlayList.push_back(newLayoutObject);
+void TimList::addOverlay(Handle<TimingObject> newTimingObject) {
+  cOverlayList.push_back(newTimingObject);
 }
 
 /*!
@@ -155,10 +155,10 @@ Handle<TimTime> TimList::createTime(double newLabelDistance, double newFirstLabe
 }
 
 
-Handle<TimeMarker> TimList::createTimeMarker(double time, LayoutObject* topLayoutObject,
-                                             LayoutObject* bottomLayoutObject) {
+Handle<TimeMarker> TimList::createTimeMarker(double time, TimingObject* topTimingObject,
+                                             TimingObject* bottomTimingObject) {
   Handle<TimeMarker> newTimeMarker = new TimeMarker(time, cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultHeight),
-                                                    cDefaultSigOffset, this, topLayoutObject, bottomLayoutObject);
+                                                    cDefaultSigOffset, this, topTimingObject, bottomTimingObject);
   newTimeMarker->setPadding(cDefaultPadding);
   return newTimeMarker;
 }
@@ -197,10 +197,10 @@ void TimList::setSliceSpace(int space) {
  * \return The height of the whole list
  */
 int TimList::getHeight() {
-  vector< Handle<LayoutObject> >::iterator LayoutObjectIter;
+  vector< Handle<TimingObject> >::iterator TimingObjectIter;
   int current_pos = 2*cPadding;
-  for (LayoutObjectIter = cLayoutList.begin(); LayoutObjectIter != cLayoutList.end(); LayoutObjectIter++){
-    current_pos+=LayoutObjectIter->Object()->getHeight()+cSliceSpace;
+  for (TimingObjectIter = cLayoutList.begin(); TimingObjectIter != cLayoutList.end(); TimingObjectIter++){
+    current_pos+=TimingObjectIter->Object()->getHeight()+cSliceSpace;
   }
   return(current_pos);
 }

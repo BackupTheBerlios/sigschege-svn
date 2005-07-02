@@ -126,7 +126,7 @@ void layout (void) {
   
   tim.addLast(Label1.Object());
   tim.addLast(Signal0.Object());
-  tim.addLast(List1.Object());
+  //tim.addLast(List1.Object());
   tim.addLast(Signal1.Object());
   tim.addLast(Signal2.Object());
   tim.addLast(Time1.Object());
@@ -142,6 +142,11 @@ void layout (void) {
 
   tim.exportFig("test.fig");
   tim.exportEPS("test.eps");
+
+  Label1->setFontSize2(12);
+  Label1->setText2(" (Created without the Python interface");
+  tim.exportEPS("test2.eps");
+
   return;
 }
 

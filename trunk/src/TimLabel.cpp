@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -27,6 +27,7 @@
 #include "TimLabel.h"
 #include <iostream>
 #include <YaVecText.h>
+#include <YVPosInt.h>
 
 using namespace std;
 using namespace YaVec;
@@ -34,39 +35,31 @@ using namespace YaVec;
 /*!
  * This constructor will create an Timing Diagram Label Object
  */
-TimLabel::TimLabel():LayoutObject(){
-  cFontType = 14;
-  cFontSize = 20;
+TimLabel::TimLabel(): TimingObject(), TimText() {
+  cSigOffset = 0;
 }
 
 /*!
  * This constructor will create an Timing Diagram Label Object
  * newText will be set as Text
  */
-TimLabel::TimLabel(string newText):LayoutObject(){
-  cText = newText;
-  cFontType = 14;
-  cFontSize = 20;
+TimLabel::TimLabel(string newText): TimingObject(), TimText(newText) {
+  cSigOffset = 0;
 }
 
 
-TimLabel::~TimLabel(){
+TimLabel::~TimLabel() {
 }
 
-
-/*!
- * Set a new Text
- * \param newText the new text
- */
-void TimLabel::setText(string newText) {
-  cText = newText;
+void TimLabel::getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight) {
+  upperLeft.set(timXLeft, timYTop);
+  lowerRight.set(timXRight, timYBottom);
 }
 
 /*!
  * Paint this text layout object
  */
 void TimLabel::paint(void) {
-  FText *text;
 
   // check if a compound is available
   if(getCompound()==0) return;
@@ -74,24 +67,11 @@ void TimLabel::paint(void) {
   // first we have to clear out compound
   getCompound()->clear();
 
-  // and then we can draw out new stuff
+  // and then we can draw new stuff
   // Draw the border
   LayoutObject::paint();
 
   // Draw the Text
-  text = getCompound()->text();
-  text->setText(cText);
-  text->setFont(cFontType);
-  text->setSize(cFontSize);
-  text->setOrigin(cOrigin+PosInt(cPadding,(cSize.ypos()+text->getHeight())/2));
+  TimText::paint(getCompound()); // draw the text
 }
 
-/// Set the Font Type
-void TimLabel::setFontType(int new_font) {
-  cFontType = new_font;
-}
-
-/// Set the Font Size
-void TimLabel::setFontSize(int new_size) {
-  cFontSize = new_size;
-}

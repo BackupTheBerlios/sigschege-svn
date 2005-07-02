@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 by Ingo Hinrichs
+// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -28,14 +28,15 @@
 
 using namespace std;
 
-#include "LayoutObject.h"
+#include "TimingObject.h"
+#include "TimText.h"
 #include <string>
 
 /// Layout Text Class
 /*!
  * This Text Layout Class can be used as header or footer
  */
-class TimLabel : public LayoutObject {
+class TimLabel : public TimingObject, public TimText {
 public:
   /// The standard constructor
   TimLabel();
@@ -46,23 +47,14 @@ public:
   /// The standard destructor
   ~TimLabel();
   
-  /// Set a new Text
-  void setText(string newText);
-
-  /// Set the Font Type
-  void setFontType(int new_font);
-
-  /// Set the Font Size
-  void setFontSize(int new_size);
-
   /// paint the layout object
   void paint(void);
 
+  /// Function needed by the TimText base class to query the text area.
+  virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight);
   
 private:
-  string cText;
-  int cFontType;
-  int cFontSize;
+
 };
 
 #endif // _H_LAYOUT_TEXT

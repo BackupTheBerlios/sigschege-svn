@@ -27,7 +27,7 @@
 #ifndef _H_TIMLIST
 #define _H_TIMLIST
 
-#include "LayoutObject.h"
+#include "TimingObject.h"
 #include "TimLabel.h"
 #include "TimTime.h"
 #include "TimSignal.h"
@@ -45,11 +45,11 @@ public:
   //! Paint the List.
   void paint(void);
 
-  //! Add a LayoutObject to the Objectlist.
-  void addLast(Handle<LayoutObject> newLayoutObject);
+  //! Add a TimingObject to the Objectlist.
+  void addLast(Handle<TimingObject> newTimingObject);
 
-  //! Add a LayoutObject to the Overlay list.
-  void addOverlay(Handle<LayoutObject> newLayoutObject);
+  //! Add a TimingObject to the Overlay list.
+  void addOverlay(Handle<TimingObject> newTimingObject);
 
   //! Get the height of the whole list.
   int getHeight();
@@ -67,7 +67,7 @@ public:
   Handle<TimTime> createTime(double newLabelDistance, double newFirstLabel, double newTickDistance);
 
   //! Create a time marker.
-  Handle<TimeMarker> createTimeMarker(double time, LayoutObject* topLayoutObject, LayoutObject* bottomLayoutObject);
+  Handle<TimeMarker> createTimeMarker(double time, TimingObject* topTimingObject, TimingObject* bottomTimingObject);
 
   //! Create an empty Timing Diagram List Object.
   Handle<TimList> createList();
@@ -96,8 +96,8 @@ public:
   
 
 protected:
-  vector< Handle<LayoutObject> > cLayoutList;
-  vector< Handle<LayoutObject> > cOverlayList;
+  vector< Handle<TimingObject> > cLayoutList;
+  vector< Handle<TimingObject> > cOverlayList;
   int cSliceHeight;
   int cSliceWidth;
   // the vertical space between two slices

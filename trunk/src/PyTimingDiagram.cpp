@@ -374,8 +374,36 @@ static PyObject *TimSignal_getEvent(TimSignalObject *self, PyObject *args, PyObj
   }
 
   return WrapPythonEvent(event);
+}
+
+static PyObject *TimSignal_deleteEvent(TimSignalObject *self, PyObject *args, PyObject *kwds) {
+  double after = 0.0;
+  int percentageLevel = 50;
+  static char *kwlist[] = {"after", "percentageLevel", "newState", NULL};
+  char *newState = "";
   
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "d|is", kwlist, &after, &percentageLevel, &newState))
+    return NULL;
+
+  string newStateS(newState);
+
+  Handle<Event> event;
+
+  if (newStateS=="X" || newStateS=="0" || newStateS=="1" || newStateS=="Z") {
+    event = self->signal->getEventAfter(after, percentageLevel, State(newStateS));
+    self->signal->debugEvents();
+  } else {
+    event = self->signal->getEventAfter(after, percentageLevel);
+  }
   
+  if (!event.valid()) {
+    Py_INCREF(Py_None);
+    return (Py_None);
+  }
+  self->signal->deleteEvent(event);
+
+  Py_INCREF(Py_None);
+  return (Py_None);
 }
 
 static PyObject *TimSignal_setNamedEvents(TimSignalObject *self, PyObject *args, PyObject *kwds) {
@@ -409,6 +437,7 @@ static PyObject * TimSignal_setLabel(TimSignalObject *self, PyObject *args, PyOb
 static PyMethodDef TimSignal_methods[] = {
   {"addEvent", (PyCFunction)TimSignal_addEvent, METH_VARARGS|METH_KEYWORDS, "Add an event to a signal."},
   {"getEvent", (PyCFunction)TimSignal_getEvent, METH_VARARGS|METH_KEYWORDS, "Get an event of a signal that fulfills certain conditions."},
+  {"deleteEvent", (PyCFunction)TimSignal_deleteEvent, METH_VARARGS|METH_KEYWORDS, "Delete an event of a signal that fulfills certain conditions."},
   {"setNamedEvents", (PyCFunction)TimSignal_setNamedEvents, METH_VARARGS|METH_KEYWORDS, "Declare that this signal uses named events."},
   {"setLabel", (PyCFunction)TimSignal_setLabel, METH_VARARGS|METH_KEYWORDS, "Set the label text for this signal."},
   {NULL}  /* Sentinel */
@@ -648,8 +677,8 @@ static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject
   return (newPySignal);
 }
 
-static LayoutObject* getLayoutFromPyObject(PyObject* pyobj) {
-  LayoutObject* lptr;
+static TimingObject* getLayoutFromPyObject(PyObject* pyobj) {
+  TimingObject* lptr;
   if (PyObject_IsInstance(pyobj, (PyObject*)&TimSignalType)) {
     lptr = (((TimSignalObject *)pyobj)->signal).Object();
   } else if (PyObject_IsInstance(pyobj, (PyObject*)&TimTimescaleType)) {
@@ -667,8 +696,8 @@ static PyObject * TimingDiagram_createTimemarker(TimingDiagramObject *self, PyOb
   double time = 0.0;
   PyObject *topRef = 0;
   PyObject *bottomRef = 0;
-  LayoutObject *topRefL = 0;
-  LayoutObject *bottomRefL = 0;
+  TimingObject *topRefL = 0;
+  TimingObject *bottomRefL = 0;
   static char *kwlist[] = {"time", "topRef", "bottomRef", NULL};
 
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "dOO", kwlist, &time, &topRef, &bottomRef))

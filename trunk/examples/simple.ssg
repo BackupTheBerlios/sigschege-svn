@@ -39,5 +39,15 @@ tm2 = md.createTimemarker(100.0, mdi, mdo)
 tm2.setColor(4)
 
 print mclk
+
+mdo.addEvent(30, "0")
+mdo.addEvent(40, "1")
+
 md.exportFig("Simple.fig")
-md.exportPic("Simple.png", "png")
+md.exportPic("Simple1.png", "png")
+
+mdo.deleteEvent(25, 0, "0")
+mdo.deleteEvent(25, 0, "1")
+
+md.exportPic("Simple2.png", "png")
+

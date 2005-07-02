@@ -47,6 +47,7 @@ public:
   //! Paint the Signal.
   void paint(void);
 
+  /// Function needed by the TimText base class to query the text area.
   virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight);
 
   // internal helper function: calculate the position from the state (0, 1, Z)

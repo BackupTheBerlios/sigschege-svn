@@ -11,10 +11,6 @@ $Id$
 * Derive TimLabel class from TimingObject
   => all TimList elements are derived from TimingObject, no need to query it
 
-* Rework LayoutObject handling
-  How to handle propagation of geometry?
-  Add hierarchy of layout objects?
-
 * add label to time marker (time label and optional text label)
 
 * Python interface: fix all those Py_INCREF's

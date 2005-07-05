@@ -32,6 +32,15 @@
 using namespace std;
 using namespace YaVec;
 
+void TimeMarker::setTimeLabel(bool shown) {
+  showTimLabel = shown;
+}
+
+bool TimeMarker::getTimeLabel(void) {
+  return showTimLabel;
+}
+
+
 TimeMarker::TimeMarker(double time, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
                        Handle<LayoutObject> mainLayoutObject, LayoutObject* topLayoutObject,
                        LayoutObject* bottomLayoutObject, int topPercentage, int bottomPercentage):
@@ -77,7 +86,7 @@ TimeMarker::~TimeMarker() {
 void TimeMarker::paint(void) {
   FPolyline *marker;
   int xpos, yTop, yBottom;
-  TimList* parent = dynamic_cast< TimList* >(cReference.Object());
+  //TimList* parent = dynamic_cast< TimList* >(cReference.Object());
 
   // check if a compound is available
   if (getCompound()==0) return;
@@ -103,19 +112,37 @@ void TimeMarker::paint(void) {
 //   cout << "TIMEMARKER: line "  << xpos << ", " << yTop << "->" << yBottom << endl;
   //  * parent->cSliceWidth;
 
-  if (showTimLabel) {
-    FText *timLabel;
-    std::ostringstream markedTimeStr;
-    
-    timLabel = getCompound()->text();
-    timLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos)));
-    timLabel->setSize(10);
-    timLabel->setFont(3);
-    timLabel->penColor(cColor);
-    markedTimeStr << markedTime << endl;
-    timLabel->setText(markedTimeStr.str());
-    timLabel->setJustification(timLabelLeft? 2 : 0);
-  }
+  bool showText = cText.length()>0;
   
+  if (showTimLabel || showText) {
+    FText *timLabel;
+    FText *textLabel;
+
+    if (showText) {
+      textLabel = getCompound()->text();
+      textLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos)));
+      textLabel->setSize(12);
+      textLabel->setFont(3);
+      textLabel->penColor(cColor);
+      textLabel->setText(cText);
+      textLabel->setJustification(timLabelLeft? 2 : 0);
+    }
+
+    if (showTimLabel) {
+      std::ostringstream markedTimeStr;
+      int ypos = static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos);
+
+      if (showText) ypos += textLabel->getHeight()+30;
+      timLabel = getCompound()->text();
+      timLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), ypos));
+      timLabel->setSize(12);
+      timLabel->setFont(3);
+      timLabel->penColor(cColor);
+      markedTimeStr << markedTime << endl;
+      timLabel->setText(markedTimeStr.str());
+      timLabel->setJustification(timLabelLeft? 2 : 0);
+    }
+
+  }
 }
 

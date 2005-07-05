@@ -50,6 +50,18 @@ public:
   //! Set the color for this time marker.
   void setColor(int color) { cColor = color; };
 
+  //! Set the optional text string. It will be shown unless it is an empty string.
+  void setText(const std::string &text) { cText = text; }
+  
+  //! Return the optional text string. 
+  std::string getText(void) { return cText; }
+
+  //! Set if the time label is shown.
+  void setTimeLabel(bool shown);
+  
+  //! Return if the time label is shown.
+  bool getTimeLabel(void);
+
   //! Set the time at which to paint the time marker.
   void setTime(double time) { markedTime = time; };
 
@@ -71,8 +83,9 @@ private:
   double timLabelPos;
   bool timLabelLeft;
   Handle<LayoutObject> timLabelPlace;
+
+  std::string cText;
   
 };
-
 
 #endif

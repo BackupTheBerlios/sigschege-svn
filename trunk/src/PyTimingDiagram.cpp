@@ -408,7 +408,6 @@ static PyObject *TimSignal_deleteEvent(TimSignalObject *self, PyObject *args, Py
 
 static PyObject *TimSignal_setNamedEvents(TimSignalObject *self, PyObject *args, PyObject *kwds) {
   char isNamed_char=1;
-  int percentageLevel = 50;
   static char *kwlist[] = {"isNamed", NULL};
 
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "b", kwlist, &isNamed_char))
@@ -523,6 +522,23 @@ static PyObject * TimeMarker_setColor(TimeMarkerObject *self, PyObject *args, Py
   return (Py_None);
 }
 
+static PyObject * TimeMarker_setLabels(TimeMarkerObject *self, PyObject *args, PyObject *kwds) {
+  char showTime_c = self->timemarker->getTimeLabel() ? 1 : 0;
+  char *text = new char[self->timemarker->getText().length()+1];
+  char *text_bak = text;
+  strcpy(text, self->timemarker->getText().c_str());
+  static char *kwlist[] = {"showTime", "Text", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|bs", kwlist, &showTime_c, &text)) return NULL;
+  
+  self->timemarker->setText(text);
+  self->timemarker->setTimeLabel(showTime_c==0 ? false : true);
+  delete [] text_bak;
+  Py_INCREF(Py_None);
+  return (Py_None);
+}
+
+
 static PyObject * TimeMarker_setTime(TimeMarkerObject *self, PyObject *args, PyObject *kwds) {
   double time = 0.0;
   static char *kwlist[] = {"time", NULL};
@@ -537,6 +553,7 @@ static PyObject * TimeMarker_setTime(TimeMarkerObject *self, PyObject *args, PyO
 static PyMethodDef TimeMarker_methods[] = {
   {"setTime", (PyCFunction)TimeMarker_setTime, METH_VARARGS|METH_KEYWORDS, "Set the time to be marked."},
   {"setColor", (PyCFunction)TimeMarker_setColor, METH_VARARGS|METH_KEYWORDS, "Set the color of this time marker."},
+  {"setLabels", (PyCFunction)TimeMarker_setLabels, METH_VARARGS|METH_KEYWORDS, "Set the labels (time and text) of this time marker."},
   {NULL}  /* Sentinel */
 };
 

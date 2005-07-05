@@ -26,8 +26,6 @@
 #ifndef _H_TIMLABEL
 #define _H_TIMLABEL
 
-using namespace std;
-
 #include "TimingObject.h"
 #include "TimText.h"
 #include <string>
@@ -42,7 +40,7 @@ public:
   TimLabel();
   
   /// Create a Text object with newText
-  TimLabel(string newText);
+  TimLabel(std::string newText);
 
   /// The standard destructor
   ~TimLabel();

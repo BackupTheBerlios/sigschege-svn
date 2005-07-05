@@ -61,7 +61,7 @@ public:
   Handle<TimLabel> createLabel();
 
   //! Create an empty Timing Diagram Signal Object.
-  Handle<TimSignal> createSignal(string label, double defaultSlope=0.0);
+  Handle<TimSignal> createSignal(std::string label, double defaultSlope=0.0);
 
   //! Create a time scale.
   Handle<TimTime> createTime(double newLabelDistance, double newFirstLabel, double newTickDistance);
@@ -96,8 +96,8 @@ public:
   
 
 protected:
-  vector< Handle<TimingObject> > cLayoutList;
-  vector< Handle<TimingObject> > cOverlayList;
+  std::vector< Handle<TimingObject> > cLayoutList;
+  std::vector< Handle<TimingObject> > cOverlayList;
   int cSliceHeight;
   int cSliceWidth;
   // the vertical space between two slices

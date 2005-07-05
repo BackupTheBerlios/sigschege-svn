@@ -58,7 +58,7 @@ public:
   void exportEPS(std::string file);
 
   //! Export the Timing Diagram to any picture format (supported by fig2dev)
-  void exportAny(std::string file, string format);
+  void exportAny(std::string file, std::string format);
   
 private:
   YaVec::FFigure cYaVec;

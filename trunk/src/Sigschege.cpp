@@ -27,6 +27,8 @@
 #include <stdio.h>
 #include "PyTimingDiagram.h"
 
+using namespace std;
+
 static PyObject *td_module;
 
 int main (int ARGC, char **ARGV) {

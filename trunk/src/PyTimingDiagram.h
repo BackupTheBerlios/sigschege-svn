@@ -26,8 +26,6 @@
 #ifndef _H_PYTIMINGDIARAM
 #define _H_PYTIMINGDIARAM
 
-using namespace std;
-
 #include <Python.h>
 #include "TimingDiagram.h"
 

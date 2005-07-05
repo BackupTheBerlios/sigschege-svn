@@ -16,14 +16,17 @@ mts = md.createTimescale();
 mts.setLabel('Time', '[ns]')
 mts.setFont(18)
 
+markers = []
 for i in range(-10,40,4):
    mclk.addEvent(i, "1")
    mclk.addEvent(state1="0", time=i+2)
    if i>0:
       tm1 = md.createTimemarker(i, mclk, mts)
       tm1.setColor(1)
+      markers.append(tm1)
 
-
+markers[1].setLabels(Text="Data")
+markers[2].setLabels(Text="Ack", showTime=0)
 
 mdt.addEvent(-20, "X")
 

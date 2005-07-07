@@ -522,6 +522,33 @@ static PyObject * TimeMarker_setColor(TimeMarkerObject *self, PyObject *args, Py
   return (Py_None);
 }
 
+static PyObject * TimeMarker_setTextLabelFont(TimeMarkerObject *self, PyObject *args, PyObject *kwds) {
+  int size = -1;
+  int type = -1;
+  static char *kwlist[] = {"size", "type", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "i|i", kwlist, &size, &type)) return NULL;
+
+  if (type==-1) self->timemarker->setTextLabelFont(size);
+  else self->timemarker->setTextLabelFont(size, type);
+  Py_INCREF(Py_None);
+  return (Py_None);
+}
+
+static PyObject * TimeMarker_setTimLabelFont(TimeMarkerObject *self, PyObject *args, PyObject *kwds) {
+  int size = -1;
+  int type = -1;
+  static char *kwlist[] = {"size", "type", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "i|i", kwlist, &size, &type)) return NULL;
+
+  if (type==-1) self->timemarker->setTimLabelFont(size);
+  else self->timemarker->setTimLabelFont(size, type);
+  Py_INCREF(Py_None);
+  return (Py_None);
+}
+
+
 static PyObject * TimeMarker_setLabels(TimeMarkerObject *self, PyObject *args, PyObject *kwds) {
   char showTime_c = self->timemarker->getTimeLabel() ? 1 : 0;
   char *text = new char[self->timemarker->getText().length()+1];
@@ -554,6 +581,8 @@ static PyMethodDef TimeMarker_methods[] = {
   {"setTime", (PyCFunction)TimeMarker_setTime, METH_VARARGS|METH_KEYWORDS, "Set the time to be marked."},
   {"setColor", (PyCFunction)TimeMarker_setColor, METH_VARARGS|METH_KEYWORDS, "Set the color of this time marker."},
   {"setLabels", (PyCFunction)TimeMarker_setLabels, METH_VARARGS|METH_KEYWORDS, "Set the labels (time and text) of this time marker."},
+  {"setTimLabelFont", (PyCFunction)TimeMarker_setTimLabelFont, METH_VARARGS|METH_KEYWORDS, "Set the font for the time label."},
+  {"setTextLabelFont", (PyCFunction)TimeMarker_setTextLabelFont, METH_VARARGS|METH_KEYWORDS, "Set the font for the text label."},
   {NULL}  /* Sentinel */
 };
 

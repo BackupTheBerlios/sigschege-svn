@@ -1,6 +1,9 @@
 # $Id$
 
-all: docu
+all: docu sigschege-manual.dvi
+
+sigschege-manual.dvi: sigschege-manual.tex
+	latex sigschege-manual.tex
 
 docu:
 	doxygen doxygen_yavec.cfg
@@ -16,5 +19,6 @@ maintainer-clean:
 install:
 
 uninstall:
+
 
 .PHONY: all docu clean distclean maintainer-clean

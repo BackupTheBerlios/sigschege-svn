@@ -1,0 +1,98 @@
+% Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+%
+% This file is part of Sigschege - Signal Schedule Generator
+% 
+% #############################################################################
+%
+% Sigschege is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2, or (at your option)
+% any later version.
+% 
+% Sigschege is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with the Sigschege sources; see the file COPYING.  
+%
+% #############################################################################
+%
+% $Id: $
+%
+% Sigschege User Manual
+%
+
+
+\documentclass[11pt]{article}
+
+\begin{document}
+
+
+\section{Introduction}
+\label{sec:intro}
+
+Sigschege is an application to create timing diagrams for digital electrical circuits.
+
+
+
+\section{Anatomy of a Timing Diagram}
+\label{sec:anatomy}
+
+
+
+\section{The Python Interface}
+\label{sec:python}
+
+\subsection{Running Sigschege}
+
+The \texttt{sigschege} binary is simply an enhanced Python interpreter. The
+usual way to create a timing diagram is to write a Python script which uses the
+additional functions.
+
+\subsection{Creating a Timing Diagram}
+
+Sigschege implements the \texttt{TimingDiagram} namespace. To create a timing
+diagram just instantiate a \texttt{TimingDiagram} object from this namespace:
+
+
+\begin{center}
+  \texttt{TimingDiagram.TimingDiagram(<startTime>, <endTime>)}
+\end{center}
+
+Both times are floating point values.
+This function must be stored in a variable for later access. A real call will
+look like:
+
+\begin{center}
+  \texttt{td = TimingDiagram.TimingDiagram(0.0, 50.0)}
+\end{center}
+
+\subsection{Implementing Signals}
+\label{sec:sig}
+
+Signals can be created with \texttt{createSignal}. It can take the following
+arguments:
+
+\begin{description}
+\item[label] The label which will be printed in the text area on the left side.
+\item[defaultSlope] \emph{optional} The default slope for all events. Default is 0.
+\end{description}
+
+\begin{center}
+  \texttt{sig\_clk = td.createSignal(label=''Clock'', defaultSlope=0.5)}
+\end{center}
+
+\subsection{Instantiating a Time Scale}
+\label{sec:tis}
+
+
+
+\subsection{Exporting Timing Diagrams}
+\label{sec:exp}
+
+
+
+\end{document}
+

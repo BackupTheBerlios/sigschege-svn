@@ -23,6 +23,8 @@ for i in range(-10,40,4):
    if i>0:
       tm1 = md.createTimemarker(i, mclk, mts)
       tm1.setColor(1)
+      tm1.setTimLabelFont(8+i/4, i/4)
+      tm1.setTextLabelFont(size=12, type=0)
       markers.append(tm1)
 
 markers[1].setLabels(Text="Data")

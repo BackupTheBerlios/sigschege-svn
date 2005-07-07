@@ -58,6 +58,12 @@ public:
 
   //! Set if the time label is shown.
   void setTimeLabel(bool shown);
+
+  //! Set the font size and type for the time label.
+  void setTimLabelFont(int size = 12, int type = 2);
+  
+  //! Set the font size and type for the text label.
+  void setTextLabelFont(int size = 12, int type = 2);
   
   //! Return if the time label is shown.
   bool getTimeLabel(void);
@@ -85,6 +91,11 @@ private:
   Handle<LayoutObject> timLabelPlace;
 
   std::string cText;
+
+  int cTextLabelSize;
+  int cTextLabelType;
+  int cTimLabelSize;
+  int cTimLabelType;
   
 };
 

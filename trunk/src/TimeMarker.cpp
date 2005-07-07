@@ -40,6 +40,16 @@ bool TimeMarker::getTimeLabel(void) {
   return showTimLabel;
 }
 
+void TimeMarker::setTextLabelFont(int size, int type) {
+  cTextLabelSize = size;
+  cTextLabelType = type;
+}
+
+void TimeMarker::setTimLabelFont(int size, int type) {
+  cTimLabelSize = size;
+  cTimLabelType = type;
+}
+
 
 TimeMarker::TimeMarker(double time, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
                        Handle<LayoutObject> mainLayoutObject, LayoutObject* topLayoutObject,
@@ -68,6 +78,9 @@ TimeMarker::TimeMarker(double time, double startTime, double endTime, YaVec::Pos
   showTimLabel = true;
   timLabelLeft = false;
   timLabelPos = 0.3;
+  // set the default font properties
+  setTextLabelFont();
+  setTimLabelFont();
 }
 
 TimeMarker::~TimeMarker() {
@@ -118,29 +131,33 @@ void TimeMarker::paint(void) {
     FText *timLabel;
     FText *textLabel;
 
+    int ypos = static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos);
+    
     if (showText) {
+      ypos = static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos);
+      
       textLabel = getCompound()->text();
-      textLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos)));
-      textLabel->setSize(12);
-      textLabel->setFont(3);
+      textLabel->setSize(cTextLabelSize);
+      textLabel->setFont(cTextLabelType);
       textLabel->penColor(cColor);
       textLabel->setText(cText);
       textLabel->setJustification(timLabelLeft? 2 : 0);
+      textLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), ypos-30));
     }
 
     if (showTimLabel) {
       std::ostringstream markedTimeStr;
-      int ypos = static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos);
+      ypos = static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos);
 
-      if (showText) ypos += textLabel->getHeight()+30;
       timLabel = getCompound()->text();
-      timLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), ypos));
-      timLabel->setSize(12);
-      timLabel->setFont(3);
+      timLabel->setSize(cTimLabelSize);
+      timLabel->setFont(cTimLabelType);
       timLabel->penColor(cColor);
       markedTimeStr << markedTime << endl;
       timLabel->setText(markedTimeStr.str());
       timLabel->setJustification(timLabelLeft? 2 : 0);
+      ypos += timLabel->getHeight()+30;
+      timLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), ypos));
     }
 
   }

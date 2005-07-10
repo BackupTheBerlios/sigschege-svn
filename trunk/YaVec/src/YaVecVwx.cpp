@@ -167,7 +167,7 @@ namespace YaVec {
 
   void FigVwx::clear(void) {
     cout << "Clear" << endl;
-    Clear();
+    clear();
   }
 
   void FigVwx::drawMarker(PosInt origin) {

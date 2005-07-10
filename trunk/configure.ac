@@ -7,7 +7,7 @@ AC_CONFIG_SRCDIR([src/EventList.cpp])
 AM_INIT_AUTOMAKE
 AC_LANG(C++)
 
-AM_CONFIG_HEADER([src/config.h])
+AM_CONFIG_HEADER(src/config.h)
 
 # Checks for programs.
 AC_PROG_LIBTOOL

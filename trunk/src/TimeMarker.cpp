@@ -50,6 +50,14 @@ void TimeMarker::setTimLabelFont(int size, int type) {
   cTimLabelType = type;
 }
 
+void TimeMarker::setTimLabelPos(double pos) {
+  timLabelPos = pos;
+}
+
+double TimeMarker::getTimLabelPos(void) {
+  return timLabelPos;
+}
+
 
 TimeMarker::TimeMarker(double time, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
                        Handle<LayoutObject> mainLayoutObject, LayoutObject* topLayoutObject,
@@ -81,6 +89,7 @@ TimeMarker::TimeMarker(double time, double startTime, double endTime, YaVec::Pos
   // set the default font properties
   setTextLabelFont();
   setTimLabelFont();
+  
 }
 
 TimeMarker::~TimeMarker() {
@@ -98,8 +107,20 @@ TimeMarker::~TimeMarker() {
  */
 void TimeMarker::paint(void) {
   FPolyline *marker;
-  int xpos, yTop, yBottom;
+  int xpos;
   //TimList* parent = dynamic_cast< TimList* >(cReference.Object());
+
+  yTop = topReference->getUpperPos();
+  yBottom = bottomReference->getBottomPos();
+  // Make sure the bottom reference is below the top reference
+  if (yBottom<yTop) {
+    LayoutObject* tmpLayoutObject;
+    tmpLayoutObject = topReference.Object();
+    topReference = bottomReference;
+    bottomReference = tmpLayoutObject;
+    yTop = topReference->getUpperPos();
+    yBottom = bottomReference->getBottomPos();
+  }
 
   // check if a compound is available
   if (getCompound()==0) return;
@@ -113,17 +134,11 @@ void TimeMarker::paint(void) {
   marker = getCompound()->polyline();
   xpos = timXLeft + 
     +static_cast<int>((markedTime-cStartTime)/(cEndTime-cStartTime)*timWidth);
-  yTop = topReference->getUpperPos();
-  yBottom = bottomReference->getBottomPos();
   marker->lineStyle(YaVecLine::dashed);
   marker->penColor(cColor);
 
   marker->addPoint(xpos, yTop);
   marker->addPoint(xpos, yBottom);
-//   cout << "TMDEBUG: sigoffset= "  << parent->getDefaultSigOffset() << ", cSize.xpos()=" << cSize.xpos() <<
-//     ", timpercent=" << (markedTime-cStartTime)/(cEndTime-cStartTime) << cEndTimel;
-//   cout << "TIMEMARKER: line "  << xpos << ", " << yTop << "->" << yBottom << endl;
-  //  * parent->cSliceWidth;
 
   bool showText = cText.length()>0;
   

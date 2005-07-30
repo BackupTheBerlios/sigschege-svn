@@ -45,8 +45,17 @@ public:
   //! Paint the List.
   void paint(void);
 
-  //! Add a TimingObject to the Objectlist.
+  //! Add a TimingObject at the end of the Objectlist.
   void addLast(Handle<TimingObject> newTimingObject);
+
+  //! Add a TimingObject to the Objectlist before timObject.
+  void addBefore(Handle<TimingObject> newTimingObject, Handle<TimingObject> timObject);
+
+  //! Move a TimingObject in the Objectlist to the position before timObject.
+  void moveBefore(Handle<TimingObject> newTimingObject, TimingObject *timObject);
+
+  //! Delete a TimingObject from the Objectlist.
+  void deleteObject(Handle<TimingObject> newTimingObject);
 
   //! Add a TimingObject to the Overlay list.
   void addOverlay(Handle<TimingObject> newTimingObject);

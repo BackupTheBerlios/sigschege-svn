@@ -19,7 +19,7 @@
 %
 % #############################################################################
 %
-% $Id: $
+% $Id$
 %
 % Sigschege User Manual
 %
@@ -29,6 +29,20 @@
 
 \begin{document}
 
+\begin{center}
+\Huge Sigschege
+
+\vspace{1cm}
+
+\LARGE User Manual
+
+\vspace{3cm}
+
+Created from \verb$Revision$
+  
+\end{center}
+
+\eject
 
 \section{Introduction}
 \label{sec:intro}
@@ -49,7 +63,13 @@ Sigschege is an application to create timing diagrams for digital electrical cir
 
 The \texttt{sigschege} binary is simply an enhanced Python interpreter. The
 usual way to create a timing diagram is to write a Python script which uses the
-additional functions.
+additional functions. We recommend the extension \texttt{.spy} (Sigschege PYthon) for these
+scripts. To process a sigschege script just run:
+
+\begin{center}
+  \texttt{sigschege my-interface-protocol.spy}
+\end{center}
+
 
 \subsection{Creating a Timing Diagram}
 
@@ -78,6 +98,7 @@ arguments:
 \begin{description}
 \item[label] The label which will be printed in the text area on the left side.
 \item[defaultSlope] \emph{optional} The default slope for all events. Default is 0.
+\item[before] \emph{optional} Another element of the timing diagram to insert this element before.  
 \end{description}
 
 \begin{center}

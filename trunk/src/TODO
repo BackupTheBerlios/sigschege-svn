@@ -11,8 +11,6 @@ $Id$
 * Derive TimLabel class from TimingObject
   => all TimList elements are derived from TimingObject, no need to query it
 
-* add label to time marker (time label and optional text label)
-
 * Python interface: fix all those Py_INCREF's
 
 

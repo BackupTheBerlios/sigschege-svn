@@ -6,12 +6,15 @@ from sigschege_addon import *
 
 md = TimingDiagram.TimingDiagram(0.0, 40.0)
 
+mlbl = md.createLabel("")
 mclk = md.createSignal(label="Clock", defaultSlope=0.0)
-mrq = md.createSignal("Request", 0.4)
 mack = md.createSignal("Acknowledge", 0.4)
 mdt = md.createSignal("Data", 0.4)
 mdt.setNamedEvents(1);
 mts = md.createTimescale();
+
+mrq = md.createSignal(label="Request", defaultSlope=0.4, before=mack)
+
 
 mts.setLabel('Time', '[ns]')
 mts.setFont(18)
@@ -21,10 +24,11 @@ for i in range(-10,40,4):
    mclk.addEvent(i, "1")
    mclk.addEvent(state1="0", time=i+2)
    if i>0:
-      tm1 = md.createTimemarker(i, mclk, mts)
-      tm1.setColor(1)
+      tm1 = md.createTimemarker(i, mlbl, mts)
+      tm1.setColor(i%3)
       tm1.setTimLabelFont(8+i/4, i/4)
       tm1.setTextLabelFont(size=12, type=0)
+      tm1.setLabels(Pos=5.5/6)
       markers.append(tm1)
 
 markers[1].setLabels(Text="Data")
@@ -54,3 +58,10 @@ md.setTimeRange(0, 25)
 
 show(md)
 
+md.moveElement(mts, mlbl)
+
+show(md)
+
+md.moveElement(mts)
+
+show(md)

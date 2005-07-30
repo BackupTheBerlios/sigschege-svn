@@ -61,6 +61,7 @@ public:
   /// paint the layout object
   void paint(YaVec::FCompound *cCompound);
 
+  /// Function to be filled in by the derived class to query the text area.
   virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight) = 0;
   
 protected:
@@ -70,7 +71,5 @@ protected:
   int cFontSize;
   int cFontSize2;
 };
-
-
 
 #endif // _H_TIMTEXT

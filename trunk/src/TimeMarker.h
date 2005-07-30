@@ -68,6 +68,12 @@ public:
   //! Return if the time label is shown.
   bool getTimeLabel(void);
 
+  //! Set the vertical position of the labels.
+  void setTimLabelPos(double pos);
+
+  //! Return the vertical position of the labels.
+  double getTimLabelPos(void);
+  
   //! Set the time at which to paint the time marker.
   void setTime(double time) { markedTime = time; };
 

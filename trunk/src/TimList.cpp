@@ -102,11 +102,36 @@ void TimList::setTimeRange(double start, double end) {
 
 /*!
  * Add a TimingObject to the end of the list
- * \param newTimingObject Handel to the Layoutobject that should be added
+ * \param newTimingObject Handle to the Layoutobject that should be added
  */
 void TimList::addLast(Handle<TimingObject> newTimingObject) {
   cLayoutList.push_back(newTimingObject);
 }
+
+void TimList::addBefore(Handle<TimingObject> newTimingObject, Handle<TimingObject> timObject) {
+  vector< Handle<TimingObject> >::iterator TimingObjectIter;
+  TimingObjectIter = cLayoutList.begin();
+  while (TimingObjectIter!=cLayoutList.end() && TimingObjectIter->Object()!=timObject.Object()) {
+    TimingObjectIter++;
+  }
+  cLayoutList.insert(TimingObjectIter, newTimingObject);
+}
+
+void TimList::deleteObject(Handle<TimingObject> timObject) {
+  vector< Handle<TimingObject> >::iterator timingObjectIter;
+  timingObjectIter = cLayoutList.begin();
+  while (timingObjectIter!=cLayoutList.end() && timingObjectIter->Object()!=timObject.Object()) {
+    timingObjectIter++;
+  }
+  cLayoutList.erase(timingObjectIter);  
+}
+
+
+void TimList::moveBefore(Handle<TimingObject> newTimingObject, TimingObject *timObject) {
+  deleteObject(newTimingObject);
+  addBefore(newTimingObject, timObject);
+}
+
 
 /*!
  * Add a TimingObject to the end of the overlay list

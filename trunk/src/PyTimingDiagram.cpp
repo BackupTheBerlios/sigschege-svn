@@ -363,7 +363,6 @@ static PyObject *TimSignal_getEvent(TimSignalObject *self, PyObject *args, PyObj
 
   if (newStateS=="X" || newStateS=="0" || newStateS=="1" || newStateS=="Z") {
     event = self->signal->getEventAfter(after, percentageLevel, State(newStateS));
-    self->signal->debugEvents();
   } else {
     event = self->signal->getEventAfter(after, percentageLevel);
   }
@@ -391,7 +390,6 @@ static PyObject *TimSignal_deleteEvent(TimSignalObject *self, PyObject *args, Py
 
   if (newStateS=="X" || newStateS=="0" || newStateS=="1" || newStateS=="Z") {
     event = self->signal->getEventAfter(after, percentageLevel, State(newStateS));
-    self->signal->debugEvents();
   } else {
     event = self->signal->getEventAfter(after, percentageLevel);
   }
@@ -553,11 +551,14 @@ static PyObject * TimeMarker_setLabels(TimeMarkerObject *self, PyObject *args, P
   char showTime_c = self->timemarker->getTimeLabel() ? 1 : 0;
   char *text = new char[self->timemarker->getText().length()+1];
   char *text_bak = text;
+  double pos = self->timemarker->getTimLabelPos();
   strcpy(text, self->timemarker->getText().c_str());
-  static char *kwlist[] = {"showTime", "Text", NULL};
+  static char *kwlist[] = {"showTime", "Text", "Pos", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|bs", kwlist, &showTime_c, &text)) return NULL;
   
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|bsd", kwlist, &showTime_c, &text, &pos)) return NULL;
+
+  self->timemarker->setTimLabelPos(pos);
   self->timemarker->setText(text);
   self->timemarker->setTimeLabel(showTime_c==0 ? false : true);
   delete [] text_bak;
@@ -639,6 +640,20 @@ static  PyTypeObject TimeMarkerType = {
 // add a new TimingDiagram class to python
 ////////////////////////////////////////////////////////////////////////////////
 
+static TimingObject* getLayoutFromPyObject(PyObject* pyobj) {
+  TimingObject* lptr;
+  if (PyObject_IsInstance(pyobj, (PyObject*)&TimSignalType)) {
+    lptr = (((TimSignalObject *)pyobj)->signal).Object();
+  } else if (PyObject_IsInstance(pyobj, (PyObject*)&TimTimescaleType)) {
+    lptr = (((TimTimescaleObject *)pyobj)->timescale).Object();
+  } else if (PyObject_IsInstance(pyobj, (PyObject*)&TimLabelType)) {
+    lptr = (((TimLabelObject *)pyobj)->label).Object();
+  } else {
+    lptr = 0;
+  }
+  return lptr;
+}
+
 static PyObject* TimingDiagram_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
   TimingDiagramObject *self;
     
@@ -698,10 +713,11 @@ static PyObject *TimingDiagram_exportPic(TimingDiagramObject *self, PyObject *ar
 static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
 
   char *label = "none";
-  static char *kwlist[] = {"label", "defaultSlope", NULL};
+  static char *kwlist[] = {"label", "defaultSlope", "before", NULL};
   static double defaultSlope = 0.0;
-
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|d", kwlist, &label, &defaultSlope))
+  PyObject *before = NULL;
+  
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|dO", kwlist, &label, &defaultSlope, &before))
     return NULL;
   string tmps;
   tmps = label;
@@ -709,7 +725,13 @@ static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject
   // create new C++ signal object with TimingDiagram class 
   Handle<TimSignal> newSignal;
   newSignal = self->tim->createSignal(tmps);
-  self->tim->addLast(newSignal.Object());
+  if (before==NULL) {
+    self->tim->addLast(newSignal.Object());
+  } else {
+    TimingObject* beforePtr = getLayoutFromPyObject(before);
+    self->tim->addBefore(newSignal.Object(), beforePtr);
+  }
+    
   newSignal->setDefaultSlope(defaultSlope);
   // create a Python signal object to return to user 
   PyObject *newPySignal;
@@ -721,20 +743,6 @@ static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject
   newTimSignal->signal = newSignal;
   Py_INCREF(newPySignal);
   return (newPySignal);
-}
-
-static TimingObject* getLayoutFromPyObject(PyObject* pyobj) {
-  TimingObject* lptr;
-  if (PyObject_IsInstance(pyobj, (PyObject*)&TimSignalType)) {
-    lptr = (((TimSignalObject *)pyobj)->signal).Object();
-  } else if (PyObject_IsInstance(pyobj, (PyObject*)&TimTimescaleType)) {
-    lptr = (((TimTimescaleObject *)pyobj)->timescale).Object();
-  } else if (PyObject_IsInstance(pyobj, (PyObject*)&TimLabelType)) {
-    lptr = (((TimLabelObject *)pyobj)->label).Object();
-  } else {
-    lptr = 0;
-  }
-  return lptr;
 }
 
 static PyObject * TimingDiagram_createTimemarker(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
@@ -774,9 +782,10 @@ static PyObject * TimingDiagram_createTimescale(TimingDiagramObject *self, PyObj
   double labelDistance = 0.0;
   double labelStart = 0.0;
   double tickDistance = 0.0;
-  static char *kwlist[] = {"label", "labelDistance", "labelStart", "tickDistance", NULL};
+  PyObject *before = NULL;
+  static char *kwlist[] = {"label", "labelDistance", "labelStart", "tickDistance", "before", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sddd", kwlist, &label, &labelDistance, &labelStart, &tickDistance))
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sdddO", kwlist, &label, &labelDistance, &labelStart, &tickDistance, &before))
     return NULL;
   string tmps;
   tmps = label;
@@ -784,7 +793,12 @@ static PyObject * TimingDiagram_createTimescale(TimingDiagramObject *self, PyObj
   // create new C++ signal object with TimingDiagram class 
   Handle<TimTime> newTimescale;
   newTimescale = self->tim->createTime(labelDistance, labelStart, tickDistance);
-  self->tim->addLast(newTimescale.Object());
+  if (before==NULL) {
+    self->tim->addLast(newTimescale.Object());
+  } else {
+    TimingObject* beforePtr = getLayoutFromPyObject(before);
+    self->tim->addBefore(newTimescale.Object(), beforePtr);
+  }
   // create a Python signal object to return to user 
   PyObject *newPTimescaleObj;
   TimTimescaleObject *newPTimescale;
@@ -800,9 +814,10 @@ static PyObject * TimingDiagram_createTimescale(TimingDiagramObject *self, PyObj
 static PyObject * TimingDiagram_createLabel(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
 
   char *label = "none";
-  static char *kwlist[] = {"label", NULL};
+  PyObject *before = NULL;
+  static char *kwlist[] = {"label", "before", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|s", kwlist, &label))
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sO", kwlist, &label, &before))
     return NULL;
   string tmps;
   tmps = label;
@@ -810,7 +825,12 @@ static PyObject * TimingDiagram_createLabel(TimingDiagramObject *self, PyObject 
   // create new C++ signal object with TimingDiagram class 
   Handle<TimLabel> newLabel;
   newLabel = self->tim->createLabel();
-  self->tim->addLast(newLabel.Object());
+  if (before==NULL) {
+    self->tim->addLast(newLabel.Object());
+  } else {
+    TimingObject* beforePtr = getLayoutFromPyObject(before);
+    self->tim->addBefore(newLabel.Object(), beforePtr);
+  }
   // create a Python signal object to return to user 
   PyObject *newPLabelObj;
   TimLabelObject *newPLabel;
@@ -822,6 +842,33 @@ static PyObject * TimingDiagram_createLabel(TimingDiagramObject *self, PyObject 
   Py_INCREF(newPLabelObj);
   return (newPLabelObj);
 }
+
+static PyObject * TimingDiagram_moveElement(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
+
+  PyObject *element = NULL;
+  PyObject *before = NULL;
+  static char *kwlist[] = {"element", "before", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|O", kwlist, &element, &before))
+    return NULL;
+
+  // create new C++ signal object with TimingDiagram class 
+  Handle<TimLabel> newLabel;
+  newLabel = self->tim->createLabel();
+  TimingObject* beforePtr;
+  TimingObject* elementPtr;
+  elementPtr = getLayoutFromPyObject(element);
+  if (before==NULL) {
+    beforePtr = NULL;
+  } else {
+    beforePtr = getLayoutFromPyObject(before);
+  }
+  self->tim->moveBefore(elementPtr, beforePtr);
+
+  Py_INCREF(Py_None);
+  return (Py_None);
+}
+
 
 static PyObject *TimingDiagram_setTimeRange(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
 
@@ -862,6 +909,9 @@ static PyMethodDef TimingDiagram_methods[] = {
   },
   {"createLabel", (PyCFunction)TimingDiagram_createLabel, METH_VARARGS|METH_KEYWORDS,
    "Create a Label in the Timing Diagram."
+  },
+  {"moveElement", (PyCFunction)TimingDiagram_moveElement, METH_VARARGS|METH_KEYWORDS,
+   "Move an element in the Timing Diagram to the position before the given before argument or at the end."
   },
   {"setTimeRange", (PyCFunction)TimingDiagram_setTimeRange, METH_VARARGS|METH_KEYWORDS,
    "Set the visible time range of this Timing Diagram."

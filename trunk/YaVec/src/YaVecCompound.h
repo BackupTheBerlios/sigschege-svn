@@ -82,19 +82,25 @@ namespace YaVec {
     virtual std::vector<YaVecElm*> flatList();
     /// Draw the content of this compound to the given view.
     virtual void draw(FigView* view) {};
+    /// Used by elements of this compound to announce that they changed.
     virtual void handleChange(YaVecElm*);
     virtual void saveElm(std::ofstream &fig_file);
     /// Print some (or some more) information about this figure element.
     virtual void debugPrint(std::ostream &dest, bool verbose, int depth);
+    /// Save the elements contained in this compound.
     void save_content(std::ofstream &fig_file);
+    /// This function copies all member elements of another compound to this compound.
     void copy_members(FCompound& source);
+    /// Delete all the elements in this compound.
     void clear(void);
+    /// Standard assignment operator from an existing compound.
     FCompound& operator=(FCompound& source);
 
     /// Return a list of significant points, which can be used for selection
     virtual void getPoints(std::vector<PosInt> &points, bool hierarchical, bool withCompounds);
 
   protected:
+    /// Elements of this compound, including other compounds.
     std::vector<YaVecElm*> members;
   };
 

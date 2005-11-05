@@ -61,7 +61,8 @@ namespace YaVec {
     virtual void drawLine(PosInt from, PosInt to, int width, YaVec::Array<int, 3> &color, int lineStyle, double styleLength) = 0;
     /// Draw a single arc to the view. Used by Arc. The arc is drawn counterclockwise.
     /*! 
-     * \param center Center of the arc circle.
+     * \param xCenter Horizontal center of the arc circle.
+     * \param yCenter Vertical center of the arc circle.
      * \param radius Radius of the circle.
      * \param phiStart  Start angle of the arc. 
      * \param phiEnd End angle of the arc.
@@ -72,15 +73,17 @@ namespace YaVec {
     virtual void drawChar(PosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
     /// Set up a paint buffer to speed up multiple paint events (used by Arc)
     // if a view doesn't require buffering color or thickness, just store them separately.
-    virtual void setPaintBuffer(int color, int thickness) = 0; 
+    virtual void setPaintBuffer(int color, int thickness) = 0;
+    /// Clear the paint buffer after finishing.
     virtual void clrPaintBuffer(void) = 0; 
     /// Force a redraw of the complete figure area.
     virtual void refreshAll(void) = 0;
     /// Clear the figure area.
     virtual void clear(void) = 0;
-    // draw a marker at this point
+    /// Draw a marker at this point.
     virtual void drawMarker(PosInt origin) = 0;
   protected:
+    /// Pointer to the figure that we represent.
     FFigure *mypicture;
   };
 

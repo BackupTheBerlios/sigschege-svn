@@ -59,8 +59,11 @@ namespace YaVec {
 
   
   protected:
+    /// The line style (as defined by fig format).
     int elmLineStyle;
+    /// The line style value (length of lines, as defined by fig format).
     double elmStyleValue;
+    /// Thickness of line, as defined by fig format.
     int elmThickness;
   };
 

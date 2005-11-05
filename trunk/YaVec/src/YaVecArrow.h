@@ -41,17 +41,20 @@ namespace YaVec {
   class YaVecArrow {
   public:
 
+    // The possible types of an arrow as defined by the fig format.
     enum arrowTypeType {
       stick_type,
       closed_triangle,
       closed_indented_butt,
       closed_pointed_butt
     };
+    // The possible styles of an arrow as defined by the fig format.
     enum arrowStyleType {
       hollow,
       filled
     };
 
+    /// Dedicated properties of one arrow.
     struct arrowInfo {
       int Type;
       int Style;
@@ -114,12 +117,11 @@ namespace YaVec {
 
     void drawArrow(const PosInt &tip, const PosInt &from, Array<int, 3> color, int thickness,
                    FigView* view, int scaleFactor, bool isBackward);
-  
+
+    /// Calculate the missing points (at back of arrow) from tip, length, arrow type and angle.
     static void calcPoints(arrowInfo &arrow, const PosInt &tip, double tipAngle, 
                            PosInt &pLeft, PosInt &pRight, PosInt &pMid);
-  
-    friend class FPolyline;
-  
+
   private:
     // array with length 2 - 0 is forward arrow, 1 is backward arrow
     // this makes internal code simpler (common functions which are just passed the index)

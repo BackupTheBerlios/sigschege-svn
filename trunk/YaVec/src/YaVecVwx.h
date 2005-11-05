@@ -36,6 +36,7 @@ namespace YaVec {
   /// A YaVec View class for the wxWidgets toolkit.
   class FigVwx : public wxWindow, public FigView {
   public:
+    /// Constructor for this class.
     FigVwx(FFigure *picture, wxFrame *frame, int x=-1, int y=-1, int width=-1, int height=-1,
              long style=wxTE_MULTILINE);
     virtual void drawLine(PosInt from, PosInt to, int width, YaVec::Array<int, 3> &color, int lineStyle, double styleLength);
@@ -59,10 +60,12 @@ namespace YaVec {
     virtual void clrPaintBuffer(void); 
     virtual void refreshAll(void);
     virtual void clear(void);
-    // draw a marker at this point
+    /// Draw a marker at this point.
     virtual void drawMarker(PosInt origin);
-  
+
+    /// Actions to be done when painting.
     void OnPaint(wxPaintEvent& event);
+    /// Actions to be done for mouse events.
     void OnMouse(wxMouseEvent& event);
   private:
     DECLARE_EVENT_TABLE();

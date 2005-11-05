@@ -1,10 +1,10 @@
 # hey emacs, it's -*- python -*-
-# $Id: $
+# $Id$
 # first example timing diagram creation script for sigschege
 
 from sigschege_addon import *
 
-md = TimingDiagram.TimingDiagram(0.0, 40.0)
+md = Sigschege.TimingDiagram(0.0, 40.0)
 
 mlbl = md.createLabel("")
 mclk = md.createSignal(label="Clock", defaultSlope=0.0)

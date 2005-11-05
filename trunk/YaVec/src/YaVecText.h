@@ -43,7 +43,8 @@ namespace YaVec {
   /// An YaVec text - corresponds to fig element text
   class FText : public YaVecElm {
   public:
-    FText();
+    FText(); // TODO: needed?
+    /// Constructor.
     FText(FCompound* parent_compound, FFigure* figure_compound);
     /// Place the edges of the bounding box in upper_left/lower_right.
     virtual void getBoundingBox(PosInt &upper_left, PosInt &lower_right);
@@ -83,7 +84,8 @@ namespace YaVec {
     PosInt drawOrCalc(FigView* view, bool noUpdate=false);
     /// Calculates the maximum point size so that the text fits into the given box.
     int sizeForBox(int height, int width, bool allowIncrease = false);
-    static bool initFreetype(void); // will be called by FFigure class
+    /// Initialize Freetype library - will be called by FFigure class.
+    static bool initFreetype(void); 
     /// Switch the fig2dev_fontfix on/off. Must be true for xfig/transfig versions before 3.2.5, false otherwise.
     /*!
      * This fixes a bug concerning font sizes for transfig/fig2dev for versions before 3.2.5. Instead
@@ -92,6 +94,7 @@ namespace YaVec {
     static void fig2dev_fontfix(bool needed) {
       fix_fig2dev_quirk = needed;
     };
+    /// Return the current setting of the fontfix feature.
     static bool fig2dev_fontfix(void) { return fix_fig2dev_quirk; }
 
     /// The justifications of text to its origin point.

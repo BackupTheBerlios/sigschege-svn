@@ -61,7 +61,7 @@ typedef struct {
 
 extern "C" {
 
-  PyMODINIT_FUNC initTimingDiagram(void);
+  PyMODINIT_FUNC initSigschege(void);
 
 }
 

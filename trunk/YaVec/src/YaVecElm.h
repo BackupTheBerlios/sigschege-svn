@@ -41,18 +41,22 @@ namespace YaVec {
 
   class YaVecElm;
 
-  /// structure for element queries by position
+  /// Structure for element queries by position.
   struct YaVecElmHit {
-    YaVecElm *elmP; // pointer to the element
-    int distance;     // distance of the element to the given position
-    int idx;          // index: which part of the element was clicked meaning depends on type of element) 
+    /// Pointer to the element.
+    YaVecElm *elmP;
+    /// Distance of the element to the given position.
+    int distance;
+    /// index: which part of the element was clicked (meaning depends on type of element).
+    int idx;    
   };
 
   /// An YaVec Element - abstract base class for all YaVec elements (compound, polyline, text,...)
   class YaVecElm {
   public:
-    // constructor
+    // Constructor
     YaVecElm(void);
+    // Constructor
     YaVecElm(FCompound* parent_compound, FFigure *figure_compound);
     // do we need a copy constructor?
     // destructor
@@ -104,15 +108,21 @@ namespace YaVec {
 
     /// Check if the selected position is near the point.
     static bool checkProximity(PosInt selPos, PosInt point, int fuzzyFact, int &fuzzyRes);
-    // Return the scale factor (file res/screen res) for this figure.
+    /// Return the scale factor (file res/screen res) for this figure.
     virtual int scale(void);
  
   protected:
-    FCompound *parent; // needed to inform the owner about change events
-    FFigure *figure; // needed to access global picture states
+    /// Needed to inform the owner about change events.
+    FCompound *parent;
+    /// Needed to access global picture states
+    FFigure *figure;
+    /// Color of the pen as fig color code.
     int elmPenColor;
+    /// Fill color as fig color code.
     int elmFillColor;
+    /// Fill style.
     int elmAreaFill;
+    /// Depth (layer) of this element. 
     int elmDepth;
   };
 

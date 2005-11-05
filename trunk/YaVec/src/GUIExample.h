@@ -25,6 +25,7 @@
 #ifndef _DEMOGUI_H
 #define _DEMOGUI_H _DEMOGUI_H 
 
+/// Example application
 class MyApp: public wxApp
 {
 public:
@@ -36,6 +37,7 @@ public:
 class MyTextWindow;
 class MyWindow;
 
+/// Example frame 
 class MyFrame: public wxFrame
 {
 public:

@@ -35,7 +35,7 @@ int main (int ARGC, char **ARGV) {
   int ret;
   PyObject *TimingDiagram_Module;
   Py_Initialize();
-  initTimingDiagram();
+  initSigschege();
   // TODO: why does importing from C++ not work???
 //   TimingDiagram_Module = PyImport_ImportModule("TimingDiagram");
 //   if (TimingDiagram_Module==0) {
@@ -46,7 +46,7 @@ int main (int ARGC, char **ARGV) {
 //     initTimingDiagram();
 //     Py_INCREF(td_module);
 //   }
-  PyRun_SimpleString("import TimingDiagram");
+  PyRun_SimpleString("import Sigschege");
 
   // TODO: automate version number and add GPL stuff
   cout << "Sigschege 0.0 - a program for creating timing diagrams" << endl;

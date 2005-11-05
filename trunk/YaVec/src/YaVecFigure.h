@@ -55,6 +55,7 @@ namespace YaVec {
 
     // do we need a copy constructor?
   
+    /// Used by elements of this compound to announce that they changed.
     virtual void handleChange(YaVecElm*);
 
     /// Register a view showing this figure.
@@ -74,16 +75,23 @@ namespace YaVec {
     /// Return the scaling factor file_dpi/screen_dpi
     virtual int scale(void) { return scale_fact; }
 
+    /// Draw this compound into all registered views.
     void buildViews(void);
     /// Save the figure in the fig file 'filename'.
     bool save(std::string filename);
 
     /// Directly export into a foreign graphics format.
     bool exportFig2dev(std::string language, std::string filename);
+    /// Assignment operator to copy from an existing figure.
     FFigure& operator=(FFigure& source);
 
+    /// Enable/disable updating of views.
+    /*!
+     * This is useful if several elements are changed to avoid repeatedly updating
+     * the view which results in flickering and slow down.
+     */
     void updating(bool newUpdateStatus) { noViewUpdate = !newUpdateStatus; }
-
+    /// Define if and how markers (points for selecting items) are shown.
     void setMarkers(bool shown, bool hierarchical = true, bool showCompounds = true);
   
   private:

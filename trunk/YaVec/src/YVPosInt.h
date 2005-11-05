@@ -55,6 +55,7 @@ namespace YaVec {
     PosInt &operator/(double divisor) const;
     /// Adding assignment operator.
     PosInt &operator+=(PosInt &add);
+    /// Adding assignment operator.
     PosInt &operator+=(PosInt add);
   
     /// Return the x coordinate.

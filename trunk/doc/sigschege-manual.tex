@@ -73,12 +73,12 @@ scripts. To process a sigschege script just run:
 
 \subsection{Creating a Timing Diagram}
 
-Sigschege implements the \texttt{TimingDiagram} namespace. To create a timing
+Sigschege implements the \texttt{Sigschege} namespace. To create a timing
 diagram just instantiate a \texttt{TimingDiagram} object from this namespace:
 
 
 \begin{center}
-  \texttt{TimingDiagram.TimingDiagram(<startTime>, <endTime>)}
+  \texttt{Sigschege.TimingDiagram(<startTime>, <endTime>)}
 \end{center}
 
 Both times are floating point values.
@@ -86,7 +86,7 @@ This function must be stored in a variable for later access. A real call will
 look like:
 
 \begin{center}
-  \texttt{td = TimingDiagram.TimingDiagram(0.0, 50.0)}
+  \texttt{td = Sigschege.TimingDiagram(0.0, 50.0)}
 \end{center}
 
 \subsection{Implementing Signals}

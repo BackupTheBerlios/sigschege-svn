@@ -974,7 +974,7 @@ static PyTypeObject TimingDiagramType = {
 ////////////////////////////////////////////////////////////////////////////////
 
 PyMODINIT_FUNC
-initTimingDiagram(void) 
+initSigschege(void) 
 {
   PyObject* m;
     
@@ -994,8 +994,8 @@ initTimingDiagram(void)
     
   if (PyType_Ready(&TimeMarkerType) < 0) return;
     
-  m = Py_InitModule3("TimingDiagram", TimingDiagram_methods,
-                     "TimingDiagram Base Class.");
+  m = Py_InitModule3("Sigschege", TimingDiagram_methods,
+                     "Module for creating timing diagrams.");
     
   Py_INCREF(&TimingDiagramType);
   PyModule_AddObject(m, "TimingDiagram", (PyObject *)&TimingDiagramType);

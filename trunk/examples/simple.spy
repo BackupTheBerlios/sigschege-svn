@@ -1,8 +1,8 @@
 # hey emacs, it's -*- python -*-
-# $Id: $
+# $Id$
 # first example timing diagram creation script for sigschege
 
-md = TimingDiagram.TimingDiagram(0.0, 251.0)
+md = Sigschege.TimingDiagram(0.0, 251.0)
 mclk = md.createSignal(label="clk", defaultSlope=0.0)
 mdi = md.createSignal("dat_in", 2.0)
 mdo = md.createSignal("dat_out")

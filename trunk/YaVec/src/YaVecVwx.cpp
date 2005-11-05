@@ -196,7 +196,7 @@ namespace YaVec {
   }
 
 
-  // Define the repainting behaviour
+  /// Define the repainting behaviour
   void FigVwx::OnPaint(wxPaintEvent& WXUNUSED(event) )
   {
     //SetBackgroundColour(*wxWHITE);

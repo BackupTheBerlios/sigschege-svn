@@ -59,7 +59,8 @@ namespace YaVec {
     } else return false;
   }
 
-  void FFigure::buildViews(void) {
+  void FFigure::
+  buildViews(void) {
     if (!noViewUpdate) {
       for (vector<FigView*>::iterator views_iter = views.begin();
            views_iter != views.end(); views_iter++) {

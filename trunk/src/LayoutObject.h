@@ -30,6 +30,7 @@
 #include <vector>
 #include <YaVecFigure.h>
 
+/// Generic layout object.
 class LayoutObject {
 public:
   //! The standard constructor
@@ -44,6 +45,7 @@ public:
 
   virtual void setCompound(YaVec::FCompound *newCompound);
 
+  /// Get a pointer to the compound of this layout object.
   YaVec::FCompound* getCompound();
 
   //! Paint this Layout Object
@@ -101,9 +103,13 @@ public:
   //! Return the current reference count 
   int objRefCount() { return refCount; }
 
+  /// Get the upper position of this compound.
   int getUpperPos();
+  /// Get the left position of this compound.
   int getLeftPos();
+  /// Get the bottom position of this compound.
   int getBottomPos();
+  /// Get the right position of this compound.
   int getRightPos();
   
   //! Set the Size of this Layout Object
@@ -133,18 +139,25 @@ public:
   //! Enable/Disable drawing of the Border
   virtual void enableBorder(bool enable);
 
+  /// Set the padding - virtual to allow adapting the content of the layout object.
   virtual void setPadding(int newPadding);
 
 protected:
-  // the padding of this layout object 
+  /// The padding of this layout object.
   int      cPadding;
-  // the origin (upper left corner) of this layout object
+  /// The origin (upper left corner) of this layout object.
   YaVec::PosInt cOrigin;
+  /// The size of this layout object.
   YaVec::PosInt cSize;
+  /// Reference count.
   int refCount;
+  /// The LayoutObject in which this one is contained.
   Handle<LayoutObject> cReference;
-  bool cDrawBorder;
+  /// LayoutObjects depending on this LayoutObject.
   std::vector< Handle<LayoutObject> > cReferrers;
+  /// Determine if a border is needed.
+  bool cDrawBorder;
+  /// The compound this layout object is drawn into.
   YaVec::FCompound *cCompound;
 };
 

@@ -50,7 +50,7 @@ public:
   /// Function needed by the TimText base class to query the text area.
   virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight);
 
-  // internal helper function: calculate the position from the state (0, 1, Z)
+  /// internal helper function: calculate the position from the state (0, 1, Z)
   int vertPosFromState(State::drawStateType state, State::drawStateType newState=State::Illegal, double percentageNew=0.0);
 
 };

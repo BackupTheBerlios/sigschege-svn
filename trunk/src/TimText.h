@@ -36,20 +36,24 @@
 
 class TimText {
 public:
-  
+
+  /// Constructor.
   TimText(std::string text1 = "", std::string text2 = "");
 
   /// The standard destructor
   virtual ~TimText() {}
   
-  /// Set a new Text
+  /// Set a new Text.
   void setText(std::string newText);
+  /// Set a new Text (same as setText).
   void setText1(std::string newText1);
+  /// Set a new Text2 - if this is used two lines of text are shown.
   void setText2(std::string newText2);
 
+  /// Return the currently active text.
   std::string getText(void) { return cText1; }
   
-  /// Set the Font Type
+  /// Set the Font Type.
   void setFontType(int newFont) { cFontType = newFont; }
 
   /// Set the Font Size
@@ -65,10 +69,13 @@ public:
   virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight) = 0;
   
 protected:
-  std::string cText1;
-  std::string cText2;
+  /// The text(s). If text2 is set, two lines of text are shown
+  std::string cText1, cText2;
+  /// The font type as defined by the fig format.
   int cFontType;
+  /// The size of the (upper) text.
   int cFontSize;
+  /// The size of the lower text.
   int cFontSize2;
 };
 

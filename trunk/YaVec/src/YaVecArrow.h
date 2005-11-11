@@ -41,14 +41,14 @@ namespace YaVec {
   class YaVecArrow {
   public:
 
-    // The possible types of an arrow as defined by the fig format.
+    /// The possible types of an arrow as defined by the fig format.
     enum arrowTypeType {
       stick_type,
       closed_triangle,
       closed_indented_butt,
       closed_pointed_butt
     };
-    // The possible styles of an arrow as defined by the fig format.
+    /// The possible styles of an arrow as defined by the fig format.
     enum arrowStyleType {
       hollow,
       filled
@@ -56,11 +56,16 @@ namespace YaVec {
 
     /// Dedicated properties of one arrow.
     struct arrowInfo {
+       /// The type of the arrow according to fig format.
       int Type;
+      /// The style of the arrow according to fig format.
       int Style;
+      /// Thickness of the arrow lines.
       double Thickness;
+      /// Width of the arrow head.
       double Width;
-      double Height;
+      /// Length of the arrow head.
+      double Height; 
     };
 
     YaVecArrow();
@@ -115,6 +120,7 @@ namespace YaVec {
     /// Return the string to be inserted into fig file for a backward arrow.
     std::string backwardArrowString(void);
 
+    /// Draw the arrow into the given view.
     void drawArrow(const PosInt &tip, const PosInt &from, Array<int, 3> color, int thickness,
                    FigView* view, int scaleFactor, bool isBackward);
 

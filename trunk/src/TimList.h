@@ -34,6 +34,7 @@
 #include "TimeMarker.h"
 #include "Handle.t"
 
+/// Vertical list of timing diagram objects.
 class TimList : public LayoutObject {
 public:
   //! The standard constructor
@@ -105,16 +106,19 @@ public:
   
 
 protected:
+  /// List of the signal elements (signals, time scale, label)
   std::vector< Handle<TimingObject> > cLayoutList;
+  /// List of overlay elements.
   std::vector< Handle<TimingObject> > cOverlayList;
-  int cSliceHeight;
-  int cSliceWidth;
-  // the vertical space between two slices
+  /// Size of a slice.
+  int cSliceHeight,  cSliceWidth;
+  /// The vertical space between two slices.
   int cSliceSpace;
+  /// Start and end time for all visible signal areas.
   double cStartTime, cEndTime;
-  // defaults for signals/labels/time scale
-  int  cDefaultHeight;
-  int  cDefaultPadding;
+  /// Defaults for signals/labels/time scale.
+  int  cDefaultHeight,  cDefaultPadding;
+  /// Should the elements have a border?
   bool cDefaultBorder;
   // NOTE: all "time aware" children (signal, time scale, time marker) must
   // have their sigOffset consistent with the default

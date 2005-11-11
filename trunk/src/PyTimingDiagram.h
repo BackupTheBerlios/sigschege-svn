@@ -29,33 +29,44 @@
 #include <Python.h>
 #include "TimingDiagram.h"
 
+/// Python wrapper for a TimTime object.
 typedef struct {
   PyObject_HEAD
   Handle<TimTime> timescale;
 } TimTimescaleObject;
 
+/// Python wrapper for a TimingDiagram object.
 typedef struct {
   PyObject_HEAD
+  /// The actual object.
   TimingDiagram *tim;
 } TimingDiagramObject;
 
+/// Python wrapper for a TimSignal object.
 typedef struct {
   PyObject_HEAD
+  /// The actual object.
   Handle<TimSignal> signal;
 } TimSignalObject;
 
+/// Python wrapper for an Event object.
 typedef struct {
   PyObject_HEAD
+  /// The actual object.
   Handle<Event> event;
 } TimEventObject;
 
+/// Python wrapper for a TimLabel object.
 typedef struct {
   PyObject_HEAD
+  /// The actual object.
   Handle<TimLabel> label;
 } TimLabelObject;
 
+/// Python wrapper for a TimeMarker object.
 typedef struct {
   PyObject_HEAD
+  /// The actual object.
   Handle<TimeMarker> timemarker;
 } TimeMarkerObject;
 

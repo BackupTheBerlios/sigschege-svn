@@ -39,10 +39,6 @@
 class EventList {
  public:
   //! This constructor will create an empty EventList.
-  /*!
-   * \param evTime The point in time from which the first event is returned. 
-   * \param evTime The point in time from which the first event is returned. 
-   */
   EventList(double defaultSlope=0.0);
 
   //! This destructor will destroy the EventList and all stored events.
@@ -55,6 +51,8 @@ class EventList {
    * \param evTime The point in time from which the first event is returned. 
    * \param percentageLevel The level to which the event must have been completed.
    * Default is 0, which means the event can just have started.
+   * \param newState Limit search to events with a transition to the state newState.
+   * To find an event regardless of the new state leave the default value of State::Illegal.
    * \return Return a pointer to the event, NULL if no event occured after evTime.
    */
   Handle<Event> getEventAfter(double evTime, int percentageLevel=0, State newState=State(State::Illegal)); 
@@ -91,7 +89,8 @@ class EventList {
   void clear(void);
   
   //! Sort the list of events by time;
-  void sort();  
+  void sort();
+  /// Helper function for sort to compare two events by time.
   struct evTimeCmp {
     bool operator()(Handle<Event> x, Handle<Event> y) {
       return x.Object()->getTime()<y.Object()->getTime();
@@ -121,10 +120,13 @@ class EventList {
   void paint(void);
   
 protected:
+  /// List of all value transistions of this signal.
   std::vector< Handle<Event> > events;
-  // pseudo event to define initial state - no reference event, no time/delay (time is "-infinity")
-  Handle<Event> initialState; 
+  /// pseudo event to define initial state - no reference event, no time/delay (time is "-infinity")
+  Handle<Event> initialState;
+  /// Use named events (e.g. bus values). 
   bool namedEvents;
+  /// Default slope for new events.
   double cDefaultSlope;
 
 };

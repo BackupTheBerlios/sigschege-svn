@@ -54,12 +54,12 @@ namespace YaVec {
   /// An YaVec Element - abstract base class for all YaVec elements (compound, polyline, text,...)
   class YaVecElm {
   public:
-    // Constructor
+    /// Constructor
     YaVecElm(void);
-    // Constructor
+    /// Constructor
     YaVecElm(FCompound* parent_compound, FFigure *figure_compound);
     // do we need a copy constructor?
-    // destructor
+    /// Destructor.
     virtual ~YaVecElm();
 
     /// Return the bounding box in upper_left/lower_right

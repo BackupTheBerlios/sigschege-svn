@@ -208,7 +208,7 @@ public:
   //! Return the current reference count 
   int objRefCount() { return refCount; }
 
-  // Must be a friend to access the private functions for modifying the reference count
+  /// Must be a friend to access the private functions for modifying the reference count.
   friend class Handle<Event>;
   
 private:

@@ -30,6 +30,7 @@ class MyApp: public wxApp
 {
 public:
     MyApp();
+    /// To be executed on initialization of the application.
     bool OnInit();
 };
 
@@ -41,25 +42,39 @@ class MyWindow;
 class MyFrame: public wxFrame
 {
 public:
-    MyFrame(wxFrame *frame, const wxChar *title, int x, int y, int w, int h);
 
-    void OnQuit(wxCommandEvent& event);
+  /// Constructor.
+  MyFrame(wxFrame *frame, const wxChar *title, int x, int y, int w, int h);
 
-    void add_pline_point(wxCommandEvent& event);
-    void toggleScreenDpi(wxCommandEvent& event);
-    void toggleMarkers(wxCommandEvent& event);
-    void toggleDashedLines(wxCommandEvent& event);
-    void toggleBoxes(wxCommandEvent& event);
-    void toggleArrows(wxCommandEvent& event);
-    void toggleArcs(wxCommandEvent& event);
-    void toggleText(wxCommandEvent& event);
-    void OnMouse(wxMouseEvent& event);
-    void save(wxCommandEvent& event);
-    void TestNotebookSizers(wxCommandEvent& event);
-    void About(wxCommandEvent& event);
-
-private:
-    DECLARE_EVENT_TABLE()
+  /// Function to be executed when quitting this frame.
+  void OnQuit(wxCommandEvent& event);
+  /// Dummy comment.
+  void add_pline_point(wxCommandEvent& event);
+  /// Dummy comment.
+  void toggleScreenDpi(wxCommandEvent& event);
+  /// Dummy comment.
+  void toggleMarkers(wxCommandEvent& event);
+  /// Dummy comment.
+  void toggleDashedLines(wxCommandEvent& event);
+  /// Dummy comment.
+  void toggleBoxes(wxCommandEvent& event);
+  /// Dummy comment.
+  void toggleArrows(wxCommandEvent& event);
+  /// Dummy comment.
+  void toggleArcs(wxCommandEvent& event);
+  /// Dummy comment.
+  void toggleText(wxCommandEvent& event);
+  /// Dummy comment.
+  void OnMouse(wxMouseEvent& event);
+  /// Dummy comment.
+  void save(wxCommandEvent& event);
+  /// Dummy comment.
+  void TestNotebookSizers(wxCommandEvent& event);
+  /// Dummy comment.
+  void About(wxCommandEvent& event);
+  
+ private:
+  DECLARE_EVENT_TABLE()
 };
 
 

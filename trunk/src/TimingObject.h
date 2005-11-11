@@ -55,12 +55,16 @@ class TimingObject : public LayoutObject {
   //! Set the Origin of this timing object
   virtual void setOrigin(YaVec::PosInt newOrigin);
 
+  /// From LayoutObject -  adapt the content of this object.
   virtual void setPadding(int newPadding);
 
+  /// Set the time range of this object.
   void setTimeRange(double startTime, double endTime);
 
  protected:
+  /// Start and end time of the visible signal area.
   double cStartTime, cEndTime;
+  /// Offset for the visible signal area.
   int cSigOffset;
   /// Horizontal geometry information for the timing area.
   int timXLeft, timXRight, timWidth;

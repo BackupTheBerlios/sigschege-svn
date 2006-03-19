@@ -15,6 +15,6 @@ sigschege_SOURCES = Handle.t config.h Event.h Event.cpp EventList.h EventList.cp
     TimTime.cpp State.h State.cpp PyTimingDiagram.cpp PyTimingDiagram.h TimText.h TimText.cpp
 sigschege_LDADD = ../YaVec/src/lib_yavec.la
 sigschege_CPPFLAGS = -Wall -g
-sigschege_LDFLAGS  = $(shell freetype-config --libs) -lpython2.3
+sigschege_LDFLAGS  = $(shell freetype-config --libs) -lpython2.4
 
 AM_CPPFLAGS = -I ../YaVec/src -I @INC_PYTHON@

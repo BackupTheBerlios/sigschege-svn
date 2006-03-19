@@ -37,9 +37,9 @@ fi
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([/usr/include/python2.3/Python.h]      ,[AC_SUBST(INC_PYTHON,[/usr/include/python2.3])],[
+AC_CHECK_HEADERS([/usr/include/python2.4/Python.h]      ,[AC_SUBST(INC_PYTHON,[/usr/include/python2.4])],[
 AC_CHECK_HEADERS([/usr/include/Python.h]                ,[AC_SUBST(INC_PYTHON,[/usr/include])],[
-AC_CHECK_HEADERS([/usr/local/include/python2.3/Python.h],[AC_SUBST(INC_PYTHON,[/usr/local/include/python2.3])],[
+AC_CHECK_HEADERS([/usr/local/include/python2.4/Python.h],[AC_SUBST(INC_PYTHON,[/usr/local/include/python2.4])],[
 AC_CHECK_HEADERS([/usr/local/include/Python.h]          ,[AC_SUBST(INC_PYTHON,[/usr/local/include])],[AC_MSG_ERROR([Python.h no found!]);exit;])])])])
 
 

@@ -28,6 +28,7 @@
 #include <cstdlib>
 #include "YaVecText.h"
 #include "YaVecFigure.h"
+#include <math.h>
 
 using namespace std;
 

@@ -56,11 +56,11 @@ namespace YaVec {
   }
 
   template <class Type, int size>
-  inline Array<Type,size>::Array<Type,size>() {
+  inline Array<Type,size>::Array() {
   }
 
   template <class Type, int size>
-  inline Array<Type,size>::Array<Type,size>(Type initializer) {
+  inline Array<Type,size>::Array(Type initializer) {
     for (int i=0; i<size; i++) {
       data[i] = initializer;
     }

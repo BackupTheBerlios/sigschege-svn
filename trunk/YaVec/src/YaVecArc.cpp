@@ -27,6 +27,7 @@
 #include "YaVecFigure.h"
 #include <fstream>
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 

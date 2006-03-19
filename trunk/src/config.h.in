@@ -36,16 +36,16 @@
 /* Define to 1 if the system has the type `_Bool'. */
 #undef HAVE__BOOL
 
-/* Define to 1 if you have the </usr/include/python2.3/Python.h> header file.
+/* Define to 1 if you have the </usr/include/python2.4/Python.h> header file.
    */
-#undef HAVE__USR_INCLUDE_PYTHON2_3_PYTHON_H
+#undef HAVE__USR_INCLUDE_PYTHON2_4_PYTHON_H
 
 /* Define to 1 if you have the </usr/include/Python.h> header file. */
 #undef HAVE__USR_INCLUDE_PYTHON_H
 
-/* Define to 1 if you have the </usr/local/include/python2.3/Python.h> header
+/* Define to 1 if you have the </usr/local/include/python2.4/Python.h> header
    file. */
-#undef HAVE__USR_LOCAL_INCLUDE_PYTHON2_3_PYTHON_H
+#undef HAVE__USR_LOCAL_INCLUDE_PYTHON2_4_PYTHON_H
 
 /* Define to 1 if you have the </usr/local/include/Python.h> header file. */
 #undef HAVE__USR_LOCAL_INCLUDE_PYTHON_H

@@ -28,6 +28,7 @@
 #include <sstream>
 #include <YaVecText.h>
 #include <YaVecPolyline.h>
+#include <math.h>
 
 using namespace std;
 using namespace YaVec;

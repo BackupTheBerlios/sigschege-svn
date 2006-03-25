@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -52,10 +52,10 @@ class EventList {
    * \param percentageLevel The level to which the event must have been completed.
    * Default is 0, which means the event can just have started.
    * \param newState Limit search to events with a transition to the state newState.
-   * To find an event regardless of the new state leave the default value of State::Illegal.
+   * To find an event regardless of the new state leave the default value of an empty string.
    * \return Return a pointer to the event, NULL if no event occured after evTime.
    */
-  Handle<Event> getEventAfter(double evTime, int percentageLevel=0, State newState=State(State::Illegal)); 
+  Handle<Event> getEventAfter(double evTime, int percentageLevel=0, std::string newState=std::string("")); 
 
   //! Create a new Event
   /*!
@@ -74,10 +74,10 @@ class EventList {
    * \return A pointer to the new event.
    * \sa deleteEvent 
    */
-  Handle<Event> createEvent(const State &eventNewState, double eventDelay, Handle<Event> *refEvent = 0);
+  Handle<Event> createEvent(const std::string &eventNewState, double eventDelay, Handle<Event> *refEvent = 0);
   
 
-  //! Delete an Events
+  //! Delete an Event.
   /*! 
    * This function will destroy the given event 
    * \param obsoleteEvent A pointer to the Event.
@@ -104,7 +104,7 @@ class EventList {
   /*!
    * The initial state is the value used before the first actual event.
    */
-  void setInitialState(State newInitialState) {
+  void setInitialState(std::string newInitialState) {
     initialState->setNewState(newInitialState);
   }
 
@@ -128,7 +128,9 @@ protected:
   bool namedEvents;
   /// Default slope for new events.
   double cDefaultSlope;
-
+  /// The state map, which defines how to visualize states.
+  StateMap smap;
+  
 };
 
 #endif /* _H_EVENTLIST */

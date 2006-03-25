@@ -26,6 +26,7 @@
 #include "TimTime.h"
 #include <iostream>
 #include <sstream>
+#include <cmath>
 #include <YaVecText.h>
 #include <YaVecPolyline.h>
 #include <math.h>

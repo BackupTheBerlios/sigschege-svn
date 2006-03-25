@@ -33,7 +33,7 @@ using namespace std;
 using namespace YaVec;
 
 EventList::EventList(double defaultSlope)
-  : events(), initialState(new Event), cDefaultSlope(defaultSlope)
+  : events(), initialState(new Event), cDefaultSlope(defaultSlope), smap(true)
 {
   namedEvents = false;
 }
@@ -59,7 +59,7 @@ Handle<Event> EventList::createEvent() {
   return new_handle;
 }
 
-Handle<Event> EventList::createEvent(const State &eventNewState, double eventDelay, Handle<Event> *refEvent_p) {
+Handle<Event> EventList::createEvent(const string &eventNewState, double eventDelay, Handle<Event> *refEvent_p) {
   Handle<Event> new_event = createEvent();
   if (refEvent_p!=0) {
     new_event->setReference(*refEvent_p);
@@ -86,12 +86,12 @@ void EventList::sort() {
   ::sort(events.begin(), events.end(), EventList::evTimeCmp());
 }
 
-Handle<Event> EventList::getEventAfter(double evTime, int percentageLevel, State newState) {
+Handle<Event> EventList::getEventAfter(double evTime, int percentageLevel, string newState) {
   vector< Handle<Event> >::iterator eventsIter;
   sort(); // makes life easier... 
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
     if (eventsIter->Object()->getTime(percentageLevel)>=evTime &&
-        (newState==State(State::Illegal) || newState==eventsIter->Object()->getNewState())) {
+        (newState==string("") || newState==eventsIter->Object()->getNewState())) {
       return *eventsIter;
     }
   }

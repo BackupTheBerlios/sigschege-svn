@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -333,18 +333,16 @@ static PyObject *WrapPythonEvent(Handle<Event> event) {
 }
 
 static PyObject *TimSignal_addEvent(TimSignalObject *self, PyObject *args, PyObject *kwds) {
-  char *state1 = "1";
-  char *state2 = "";
+  char *state = "0";
   double time = 0.0;
-  static char *kwlist[] = {"time", "state1", "state2", NULL};
+  static char *kwlist[] = {"time", "state", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "ds|s", kwlist, &time, &state1, &state2))
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "d|s", kwlist, &time, &state))
     return NULL;
-  string state1_s = state1;
-  string state2_s = state2;
+  string state_s = state;
 
   Handle<Event> event;
-  event = self->signal->createEvent(State(state1_s, state2_s), time);
+  event = self->signal->createEvent(state_s, time);
   return WrapPythonEvent(event);
 }
 
@@ -361,8 +359,8 @@ static PyObject *TimSignal_getEvent(TimSignalObject *self, PyObject *args, PyObj
 
   Handle<Event> event;
 
-  if (newStateS=="X" || newStateS=="0" || newStateS=="1" || newStateS=="Z") {
-    event = self->signal->getEventAfter(after, percentageLevel, State(newStateS));
+  if (newStateS!="") {
+    event = self->signal->getEventAfter(after, percentageLevel, newStateS);
   } else {
     event = self->signal->getEventAfter(after, percentageLevel);
   }
@@ -388,8 +386,8 @@ static PyObject *TimSignal_deleteEvent(TimSignalObject *self, PyObject *args, Py
 
   Handle<Event> event;
 
-  if (newStateS=="X" || newStateS=="0" || newStateS=="1" || newStateS=="Z") {
-    event = self->signal->getEventAfter(after, percentageLevel, State(newStateS));
+  if (newStateS!="") {
+    event = self->signal->getEventAfter(after, percentageLevel, newStateS);
   } else {
     event = self->signal->getEventAfter(after, percentageLevel);
   }

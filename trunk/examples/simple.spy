@@ -26,7 +26,7 @@ mdo.addEvent(60, "0")
 
 for i in range(5,220,20):
    mclk.addEvent(i, "1")
-   mclk.addEvent(state1="0", time=i+10)
+   mclk.addEvent(state="0", time=i+10)
 
 clkEvent = mclk.getEvent(after=44.4, percentageLevel=100)
 print "clkEvent @ ", clkEvent.getTime(0), "->", clkEvent.getTime(100)

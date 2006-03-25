@@ -1,5 +1,5 @@
 
-# $Id: $
+# $Id$
 
 import commands
 import posix

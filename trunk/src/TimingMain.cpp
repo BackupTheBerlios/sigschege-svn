@@ -53,7 +53,7 @@ void layout (void) {
 
   Signal1->setText("Output");
 
-  Handle<Event> ev1 = Signal1->createEvent(State("X"), -50.0);
+  Handle<Event> ev1 = Signal1->createEvent(string("X"), -50.0);
   for (int i=0; i<8; i++) {
     string nstate;
     if (i==0) nstate="0x12";
@@ -64,7 +64,7 @@ void layout (void) {
     else if (i==5) nstate="0xf0";
     else if (i==6) nstate="0x0f";
     else if (i==7) nstate="0xbc";
-    ev1 = Signal1->createEvent(State(nstate), i*31-1.0);
+    ev1 = Signal1->createEvent(nstate, i*31-1.0);
     ev1->setSlope(7.0);
     
   }
@@ -82,10 +82,10 @@ void layout (void) {
 
   Handle<TimSignal> Signal2 = tim.createSignal("O", 5);
   Handle<Event> s2[4];
-  s2[0] = Signal2->createEvent(State("1"), 50);
-  s2[1] = Signal2->createEvent(State("0"), 100);
-  s2[2] = Signal2->createEvent(State("1"), 150);
-  s2[3] = Signal2->createEvent(State("0"), 200);
+  s2[0] = Signal2->createEvent(string("1"), 50);
+  s2[1] = Signal2->createEvent(string("0"), 100);
+  s2[2] = Signal2->createEvent(string("1"), 150);
+  s2[3] = Signal2->createEvent(string("0"), 200);
   s2[2]->setSlope(10.0);
   Signal2->setText("Sync");
 
@@ -99,12 +99,12 @@ void layout (void) {
   List1->addLast(Label4.Object());
   List1->addLast(Label5.Object());
 
-  Handle<Event> s0ev_1 = Signal0->createEvent(State("1"), -200);
-  Handle<Event> s0ev0 = Signal0->createEvent(State("0"), -5);
-  Handle<Event> s0ev1 = Signal0->createEvent(State("X"), 80);
+  Handle<Event> s0ev_1 = Signal0->createEvent(string("1"), -200);
+  Handle<Event> s0ev0 = Signal0->createEvent(string("0"), -5);
+  Handle<Event> s0ev1 = Signal0->createEvent(string("X"), 80);
   Handle<Event> s0ev2 = Signal0->createEvent();
   Handle<Event> s0ev3 = Signal0->createEvent();
-  Handle<Event> s0ev4 = Signal0->createEvent(State("1"), 50, &s0ev3);
+  Handle<Event> s0ev4 = Signal0->createEvent(string("1"), 50, &s0ev3);
   s0ev2->setReference(s0ev1);
   s0ev3->setReference(s0ev2);
   s0ev3->setReference(s0ev1);
@@ -113,10 +113,10 @@ void layout (void) {
   s0ev2->setSlope(10.0);
   s0ev3->setDelay(75.0);
   s0ev3->setSlope(10.0);
-  s0ev2->setNewState(State("0"));
-  s0ev3->setNewState(State("1"));
+  s0ev2->setNewState(string("0"));
+  s0ev3->setNewState(string("1"));
   s0ev4->setSlope(10.0);
-  s0ev4->setNewState(State("0"));
+  s0ev4->setNewState(string("0"));
 
   s0ev_1->setSlope(20.0);
   s0ev0->setSlope(10.0);
@@ -154,7 +154,7 @@ void event(void) {
   TimSignal mainList;
   bool never_true = false;
   bool always_true = true;
-  Handle<Event> ev1 = mainList.createEvent(State("1"), 80);
+  Handle<Event> ev1 = mainList.createEvent(string("1"), 80);
   ev1->setSlope(20.0);
   Handle<Event> ev2 = mainList.createEvent();
   Handle<Event> ev3 = mainList.createEvent();
@@ -169,10 +169,10 @@ void event(void) {
   never_true = ev2->setReference(ev2);
   never_true = never_true || ev1->setReference(ev3);
 
-  ev2->setNewState(State("0"));
-  ev3->setNewState(State("1"));
+  ev2->setNewState(string("0"));
+  ev3->setNewState(string("1"));
   
-  Handle<Event> ev4 = mainList.createEvent(State("1"), 50, &ev3);
+  Handle<Event> ev4 = mainList.createEvent(string("1"), 50, &ev3);
   ev4->setSlope(10.0);
 
   if (always_true && (!never_true)) {

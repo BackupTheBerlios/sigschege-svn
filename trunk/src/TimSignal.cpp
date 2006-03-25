@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -64,26 +64,26 @@ TimSignal::TimSignal(string signalLabel, double startTime, double endTime, YaVec
 TimSignal::~TimSignal() {
 }
 
-int TimSignal::vertPosFromState(State::drawStateType state, State::drawStateType newState, double percentageNew) {
+int TimSignal::vertPosFromState(StateVisual::visualType visual, StateVisual::visualType newVisual, double percentageNew) {
   int pos = timYTop;
-  if (state==State::Zero) {
+  if (visual==StateVisual::Zero) {
     pos += timHeight;
-    if (newState==State::One) {
+    if (newVisual==StateVisual::One) {
       pos -= static_cast<int>(percentageNew*timHeight);
-    } else if (newState==State::Z) {
+    } else if (newVisual==StateVisual::Z) {
       pos -= static_cast<int>(0.5*percentageNew*timHeight);
     }
-  } else if  (state==State::One) {
-    if (newState==State::Zero) {
+  } else if  (visual==StateVisual::One) {
+    if (newVisual==StateVisual::Zero) {
       pos += static_cast<int>(percentageNew*timHeight);
-    } else if (newState==State::Z) {
+    } else if (newVisual==StateVisual::Z) {
       pos += static_cast<int>(0.5*percentageNew*timHeight);
     }
   } else {
     pos += static_cast<int>(0.5*timHeight);
-    if (newState==State::Zero) {
+    if (newVisual==StateVisual::Zero) {
       pos += static_cast<int>(0.5*percentageNew*timHeight);
-    } else if (newState==State::One) {
+    } else if (newVisual==StateVisual::One) {
       pos -= static_cast<int>(0.5*percentageNew*timHeight);
     }
   }
@@ -97,8 +97,13 @@ void TimSignal::paint(void) {
   FPolyline *sigline1 = 0;
   FPolyline *sigline_tmp = 0;
 
-  State currentState = initialState->getNewState();
-  State newState;
+  string currentStateStr = initialState->getNewState();
+  StateVisual currentState = smap[currentStateStr];
+  StateVisual newState;
+  string newStateStr;
+  StateVisual::visualType currentVisual = currentState.visualization();
+  StateVisual::visualType newVisual;
+
   vector< Handle<Event> >::iterator eventsIter;
   double eventStart, eventEnd;
   enum { before_visible, in_visible, after_visible } where;
@@ -110,8 +115,8 @@ void TimSignal::paint(void) {
   TimingObject::paint(); // draw the border
   TimText::paint(cCompound); // draw the text
   
-  int y0 = vertPosFromState(State::Zero);
-  int y1 = vertPosFromState(State::One);    
+  int y0 = vertPosFromState(StateVisual::Zero);
+  int y1 = vertPosFromState(StateVisual::One);    
   int y0start, y0end, y1start, y1end; // variations of y0/y1 in case an event crosses start/end
 
   where = before_visible;
@@ -124,23 +129,25 @@ void TimSignal::paint(void) {
 
   // make sure the starting points are set if the event list is empty
   if (events.size()==0) {
-    if (currentState==State::Zero || currentState==State::X || currentState==State::Named) {
+    if (currentVisual==StateVisual::Zero || currentVisual==StateVisual::X) {
       sigline0 = cCompound->polyline();
-      sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::Zero)));
-    } else if (currentState==State::Z) {
+      sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(StateVisual::Zero)));
+    } else if (currentVisual==StateVisual::Z) {
       sigline0 = cCompound->polyline();
-      sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::Z)));
+      sigline0->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(StateVisual::Z)));
     }
-    if (currentState==State::One || currentState==State::X || currentState==State::Named) {
+    if (currentVisual==StateVisual::One || currentVisual==StateVisual::X) {
       sigline1 = cCompound->polyline();
-      sigline1->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(State::One)));
+      sigline1->addPoint(PosInt(cOrigin.xpos(), vertPosFromState(StateVisual::One)));
     }
   }
   
   for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
 
     bool swapSiglines = false;
-    newState = eventsIter->Object()->getNewState();
+    newStateStr = eventsIter->Object()->getNewState();
+    newState = smap[newStateStr];
+    newVisual = newState.visualization();
     eventStart = eventsIter->Object()->getTime(0);
     eventEnd = eventsIter->Object()->getTime(100);
 
@@ -156,8 +163,8 @@ void TimSignal::paint(void) {
         // event crosses start of visible area
         startX = timXLeft;
         percentageNewStart = (cStartTime-eventStart)/(eventEnd-eventStart);
-        y1start = vertPosFromState(State::One, State::Zero, percentageNewStart);
-        y0start = vertPosFromState(State::Zero, State::One, percentageNewStart);
+        y1start = vertPosFromState(StateVisual::One, StateVisual::Zero, percentageNewStart);
+        y0start = vertPosFromState(StateVisual::Zero, StateVisual::One, percentageNewStart);
         partialStart = true;
       } else {
         percentageNewStart = 0.0;
@@ -179,8 +186,8 @@ void TimSignal::paint(void) {
         y1end=y1;
       }
 
-      if ((currentState.isRealDrawState('1') && newState.isRealDrawState('X')) ||
-          (currentState.isRealDrawState('X') && newState.isRealDrawState('1'))) {
+      if ((currentVisual==StateVisual::One && newVisual==StateVisual::X) ||
+          (currentVisual==StateVisual::X && newVisual==StateVisual::One)) {
         // 1->X and X->1 need a top2top line
         if (sigline1==0) {
           sigline1 = cCompound->polyline();
@@ -190,7 +197,7 @@ void TimSignal::paint(void) {
         }
         sigline1->addPoint(PosInt(startX, y1));
         sigline1->addPoint(PosInt(endX, y1));
-        if (newState.isRealDrawState('X')) {
+        if (newVisual==StateVisual::X) {
           // 1->X, make sure top2bottom works on the right sigline
           sigline_tmp = sigline1;
           sigline1 = sigline0;
@@ -198,8 +205,8 @@ void TimSignal::paint(void) {
         }
       }
       
-      if ((currentState.isRealDrawState('1') || currentState.isRealDrawState('X')) &&
-          (newState.isRealDrawState('0') || newState.isRealDrawState('X'))) {
+      if ((currentVisual==StateVisual::One || currentVisual==StateVisual::X) &&
+          (newVisual==StateVisual::Zero || newVisual==StateVisual::X)) {
         // 1->0, 1->X, X->X, X->0 need a top2bottom line
         if (sigline1==0) {
           sigline1 = cCompound->polyline();
@@ -212,7 +219,7 @@ void TimSignal::paint(void) {
         swapSiglines = true;
       }
       
-      if ((currentState.isRealDrawState('0') && newState.isRealDrawState('X')) || (currentState.isRealDrawState('X') && newState.isRealDrawState('0'))) {
+      if ((currentVisual==StateVisual::Zero && newVisual==StateVisual::X) || (currentVisual==StateVisual::X && newVisual==StateVisual::Zero)) {
         // 0->X and X->0 need a bottom2bottom line
         if (sigline0==0) {
           sigline0 = cCompound->polyline();
@@ -224,10 +231,10 @@ void TimSignal::paint(void) {
         sigline0->addPoint(PosInt(endX, y0));
       }
       
-      if ((currentState.isRealDrawState('0') || currentState.isRealDrawState('X'))
-          && (newState.isRealDrawState('1') || newState.isRealDrawState('X'))) {
+      if ((currentVisual==StateVisual::Zero || currentVisual==StateVisual::X)
+          && (newVisual==StateVisual::One || newVisual==StateVisual::X)) {
         // 0->1, 0->X, X->X and X->1 need a bottom2top line
-        if (currentState.isRealDrawState('0') && newState.isRealDrawState('X')) {
+        if (currentVisual==StateVisual::Zero && newVisual==StateVisual::X) {
           // Z->X, make sure bottom2top works on the right sigline
           sigline_tmp = sigline1;
           sigline1 = sigline0;
@@ -244,43 +251,43 @@ void TimSignal::paint(void) {
         sigline0->addPoint(PosInt(endX, y1end));
       }
       
-      if ((currentState.isRealDrawState('0') || currentState.isRealDrawState('X'))
-          && (newState.isRealDrawState('Z'))) {
+      if ((currentVisual==StateVisual::Zero || currentVisual==StateVisual::X)
+          && (newVisual==StateVisual::Z)) {
         // 0->Z, X->Z need a bottom2medium line
         if (sigline0==0) {
           sigline0 = cCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline0->addPoint(PosInt(timXLeft, vertPosFromState(State::Zero, State::Z, percentageNewStart)));
+            sigline0->addPoint(PosInt(timXLeft, vertPosFromState(StateVisual::Zero, StateVisual::Z, percentageNewStart)));
           }
         }
-        sigline0->addPoint(PosInt(startX, vertPosFromState(State::Zero, State::Z, percentageNewStart)));
-        sigline0->addPoint(PosInt(endX, vertPosFromState(State::Zero, State::Z, percentageNewEnd)));
+        sigline0->addPoint(PosInt(startX, vertPosFromState(StateVisual::Zero, StateVisual::Z, percentageNewStart)));
+        sigline0->addPoint(PosInt(endX, vertPosFromState(StateVisual::Zero, StateVisual::Z, percentageNewEnd)));
       }
 
-      if ((currentState.isRealDrawState('1') || currentState.isRealDrawState('X'))
-          && (newState.isRealDrawState('Z'))) {
+      if ((currentVisual==StateVisual::One || currentVisual==StateVisual::X)
+          && (newVisual==StateVisual::Z)) {
         // 1->Z, X->Z need a top2medium line
         if (sigline1==0) {
           sigline1 = cCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline1->addPoint(PosInt(timXLeft, vertPosFromState(State::One, State::Z, percentageNewStart)));
+            sigline1->addPoint(PosInt(timXLeft, vertPosFromState(StateVisual::One, StateVisual::Z, percentageNewStart)));
           }
         }
-        sigline1->addPoint(PosInt(startX, vertPosFromState(State::One, State::Z, percentageNewStart)));
-        sigline1->addPoint(PosInt(endX, vertPosFromState(State::One, State::Z, percentageNewEnd)));
+        sigline1->addPoint(PosInt(startX, vertPosFromState(StateVisual::One, StateVisual::Z, percentageNewStart)));
+        sigline1->addPoint(PosInt(endX, vertPosFromState(StateVisual::One, StateVisual::Z, percentageNewEnd)));
       }
       
-      if ((currentState.isRealDrawState('Z')) && (newState.isRealDrawState('0') || newState.isRealDrawState('X'))) {
+      if ((currentVisual==StateVisual::Z) && (newVisual==StateVisual::Zero || newVisual==StateVisual::X)) {
         // Z->0, Z->X need a medium2bottom line
         if (sigline0==0) {
           sigline0 = cCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline0->addPoint(PosInt(timXLeft, vertPosFromState(State::Z, State::Zero, percentageNewStart)));
+            sigline0->addPoint(PosInt(timXLeft, vertPosFromState(StateVisual::Z, StateVisual::Zero, percentageNewStart)));
           }
         }
-        sigline0->addPoint(PosInt(startX, vertPosFromState(State::Z, State::Zero, percentageNewStart)));
-        sigline0->addPoint(PosInt(endX, vertPosFromState(State::Z, State::Zero, percentageNewEnd)));
-        if (newState.isRealDrawState('X')) {
+        sigline0->addPoint(PosInt(startX, vertPosFromState(StateVisual::Z, StateVisual::Zero, percentageNewStart)));
+        sigline0->addPoint(PosInt(endX, vertPosFromState(StateVisual::Z, StateVisual::Zero, percentageNewEnd)));
+        if (newVisual==StateVisual::X) {
           // Z->X, make sure bottom2top works on the right sigline
           sigline_tmp = sigline1;
           sigline1 = sigline0;
@@ -288,36 +295,36 @@ void TimSignal::paint(void) {
         }
       }
 
-      if ((currentState.isRealDrawState('Z')) && (newState.isRealDrawState('1') || newState.isRealDrawState('X'))) {
+      if ((currentVisual==StateVisual::Z) && (newVisual==StateVisual::One || newVisual==StateVisual::X)) {
         // Z->1, Z->X need a medium2top line
         if (sigline0==0) {
           sigline0 = cCompound->polyline();
           if (where==before_visible && !partialStart) {
-            sigline0->addPoint(PosInt(timXLeft, vertPosFromState(State::Z, State::One, percentageNewStart)));
+            sigline0->addPoint(PosInt(timXLeft, vertPosFromState(StateVisual::Z, StateVisual::One, percentageNewStart)));
           }
         }
-        sigline0->addPoint(PosInt(startX, vertPosFromState(State::Z, State::One, percentageNewStart)));
-        sigline0->addPoint(PosInt(endX, vertPosFromState(State::Z, State::One, percentageNewEnd)));
+        sigline0->addPoint(PosInt(startX, vertPosFromState(StateVisual::Z, StateVisual::One, percentageNewStart)));
+        sigline0->addPoint(PosInt(endX, vertPosFromState(StateVisual::Z, StateVisual::One, percentageNewEnd)));
         swapSiglines = true;
       }
 
       // handle the case that an event doesn't change the state - required
       // if it's the first event in the visible area
-      if (currentState.getDrawState()==newState.getDrawState()) {
-        bool isX = (newState.isRealDrawState('X') || newState.isDrawState("Named"));
-        if (newState.isRealDrawState('0') || newState.isRealDrawState('Z') || isX ) {
+      if (currentVisual==newVisual) {
+        bool isX = (newVisual==StateVisual::X);
+        if (newVisual==StateVisual::Zero || newVisual==StateVisual::Z || isX ) {
           if (sigline0==0) {
             sigline0 = cCompound->polyline();
             if (where==before_visible && !partialStart) {
-              sigline0->addPoint(PosInt(timXLeft, vertPosFromState(isX? State::Zero : currentState.getDrawState(), State::One, 0.0)));
+              sigline0->addPoint(PosInt(timXLeft, vertPosFromState(isX? StateVisual::Zero : currentVisual, StateVisual::One, 0.0)));
             }
           }
         }
-        if (newState.isRealDrawState('1') || isX) {
+        if (newVisual==StateVisual::One || isX) {
           if (sigline1==0) {
             sigline1 = cCompound->polyline();
             if (where==before_visible && !partialStart) {
-              sigline1->addPoint(PosInt(timXLeft, vertPosFromState(isX? State::One : currentState.getDrawState(), State::One, 0.0)));
+              sigline1->addPoint(PosInt(timXLeft, vertPosFromState(isX? StateVisual::One : currentVisual, StateVisual::One, 0.0)));
             }
           }
         }
@@ -328,12 +335,12 @@ void TimSignal::paint(void) {
         sigline1 = sigline0;
         sigline0 = sigline_tmp;
       }
-      if (currentState.isRealDrawState('X') && (newState.isRealDrawState('1') || newState.isRealDrawState('0') || newState.isRealDrawState('Z'))) {
-        if (newState.isRealDrawState('0') || newState.isRealDrawState('Z')) sigline1 = 0;
+      if (currentVisual==StateVisual::X && (newVisual==StateVisual::One || newVisual==StateVisual::Zero || newVisual==StateVisual::Z)) {
+        if (newVisual==StateVisual::Zero || newVisual==StateVisual::Z) sigline1 = 0;
         else sigline0 = 0;
       }
       if (namedEvents) { //  && (where==in_visible || eventEnd>cEndTime ???
-        string stateText = currentState.getStateName();
+        string stateText = currentStateStr;
         if (stateText!="") {
           FText* label = cCompound->text();
           label->setOrigin(PosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/4));
@@ -347,13 +354,15 @@ void TimSignal::paint(void) {
     } else if (where == before_visible) {
       // event before compound: just get its new state (done anyway below)
     }
+    currentStateStr = newStateStr;
     currentState = newState;
+    currentVisual = newVisual;
   }
   
   // Add the last point of the signal
   if (sigline0!=0) {
-    if (currentState==State::Z) {
-      sigline0->addPoint(PosInt(timXRight, vertPosFromState(State::Z, State::Z, 1.0)));
+    if (currentVisual==StateVisual::Z) {
+      sigline0->addPoint(PosInt(timXRight, vertPosFromState(StateVisual::Z, StateVisual::Z, 1.0)));
     } else {
       sigline0->addPoint(PosInt(timXRight, y0end));
     }
@@ -362,7 +371,7 @@ void TimSignal::paint(void) {
     sigline1->addPoint(PosInt(timXRight, y1end));
   }
   if (namedEvents) { //  && (where==in_visible || eventEnd>cEndTime ???
-    string stateText = currentState.getStateName();
+    string stateText = currentStateStr;
     if (stateText!="") {
       FText* label = cCompound->text();
       label->setOrigin(PosInt(static_cast<int>((timXRight+oldEndX)/2), y0+(y1-y0)/4));

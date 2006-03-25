@@ -8,9 +8,6 @@ $Id$
 * Event class: constructor with arguments, 
   absolutify function (remove reference but keep absolute time)
 
-* Derive TimLabel class from TimingObject
-  => all TimList elements are derived from TimingObject, no need to query it
-
 * Python interface: fix all those Py_INCREF's
 
 

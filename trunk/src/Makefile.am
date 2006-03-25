@@ -1,5 +1,8 @@
 INCLUDES = $(shell wx-config --cxxflags) $(shell freetype-config --cflags)
 
+AM_CPPFLAGS = -I ../YaVec/src -I @INC_PYTHON@
+AM_CXXFLAGS = -I ../YaVec/src -I @INC_PYTHON@
+
 bin_PROGRAMS = TimingMain sigschege
 TimingMain_SOURCES = Handle.t config.h Event.h Event.cpp EventList.h EventList.cpp TimingDiagram.cpp \
     TimingMain.cpp TimingDiagram.h TimLabel.h TimLabel.cpp LayoutObject.h LayoutObject.cpp \
@@ -17,4 +20,3 @@ sigschege_LDADD = ../YaVec/src/lib_yavec.la
 sigschege_CPPFLAGS = -Wall -g
 sigschege_LDFLAGS  = $(shell freetype-config --libs) -lpython2.4
 
-AM_CPPFLAGS = -I ../YaVec/src -I @INC_PYTHON@

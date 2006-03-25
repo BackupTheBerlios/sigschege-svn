@@ -27,6 +27,9 @@
 
 \documentclass[11pt]{article}
 
+\setlength{\parskip}{1.5ex plus0.5ex minus 0.5ex}
+\setlength{\parindent}{0em}
+
 \begin{document}
 
 \begin{center}
@@ -37,6 +40,10 @@
 \LARGE User Manual
 
 \vspace{3cm}
+
+Written by Ulf Klaperski
+
+\vspace{1cm}
 
 Created from \verb$Revision$
   
@@ -49,11 +56,41 @@ Created from \verb$Revision$
 
 Sigschege is an application to create timing diagrams for digital electrical circuits.
 
-
+Currently the only available user interface is a Python plugin. A graphical user
+interface is planned for later releases.
 
 \section{Anatomy of a Timing Diagram}
 \label{sec:anatomy}
 
+\subsection{States and State Maps}
+\label{subsec:statemap}
+
+States in Sigschege are defined by a string. The interpretation of this string
+is defined by a state map that is usually a property of the signal.  
+
+If a state is not found in the state map it is drawn as ``X'' and the string
+will be shown. This way every unkown value will automatically be represented as
+a named bus value.
+
+The properties of a state are shown in table \ref{tab:statemap}.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}[l]{l|l}
+    \textbf{Properties}&\textbf{Values}\\\hline
+    Visualization&0, 1, X, Z\\
+    showString&Boolean\\\hline
+  \end{tabular}
+  \caption{Properties of a state}
+  \label{tab:statemap}
+\end{table}
+
+By default every signal has a state map which defines the values 0, 1, Z and
+X. These values are defined to be shown without a label with their expected
+visualization, which is a bottom line for 0, a top line for 1, a middle line for
+Z and top and bottom line for X. If the signal is supposed to represent a bus
+which could accidentally have one of the aforementioned values the state map has
+to be flushed.
 
 
 \section{The Python Interface}
@@ -104,6 +141,38 @@ arguments:
 \begin{center}
   \texttt{sig\_clk = td.createSignal(label=''Clock'', defaultSlope=0.5)}
 \end{center}
+
+\subsection{Creating events}
+\label{sec:evt}
+
+Events can be added to an existing signal with the \texttt{addEvent} method.
+
+\texttt{<signal>.addEvent(<time>, <stateValue>, [stateName])}
+
+The stateValue determines the value of the new state. The standard values are 1,
+0, X, Z or Named. For all other strings the value is set to Named and the string
+is used as stateName. 
+The optional stateName gives the name of the state as it should be printed. 
+
+In order to draw a ''1'' state (top line, no label):
+
+\texttt{clock.addEvent(50, ''1'')}
+
+If you want to have a bus value ''1'' you can set it as a Named state with name ''1'':
+
+\texttt{clock.addEvent(50, ''Named'', ''1'')}
+
+As a special case, it is also possible to draw value ''1'' (top line) with a
+label, e.g. ''H'' for a VHDL weak ''1'':
+
+\texttt{clock.addEvent(50, ''Named'', ''1'')}
+
+The following two examples are identical:
+
+\texttt{clock.addEvent(50, ''6'')}\\
+\texttt{clock.addEvent(50, ''Named'', ''6'')}
+
+
 
 \subsection{Instantiating a Time Scale}
 \label{sec:tis}

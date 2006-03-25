@@ -37,6 +37,7 @@
 #include "YaVecText.h"
 #include "YaVecVwx.h"
 #include <list>
+#include <cmath>
 
 #include <cstdio>
 

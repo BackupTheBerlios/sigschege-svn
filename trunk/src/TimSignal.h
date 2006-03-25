@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -50,8 +50,8 @@ public:
   /// Function needed by the TimText base class to query the text area.
   virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight);
 
-  /// internal helper function: calculate the position from the state (0, 1, Z)
-  int vertPosFromState(State::drawStateType state, State::drawStateType newState=State::Illegal, double percentageNew=0.0);
+  /// internal helper function: calculate the position from the state (0, 1, Z), also for transitions between states.
+  int vertPosFromState(StateVisual::visualType visual, StateVisual::visualType newVisual=StateVisual::X, double percentageNew=0.0);
 
 };
 

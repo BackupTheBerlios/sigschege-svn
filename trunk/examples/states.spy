@@ -1,0 +1,23 @@
+# hey emacs, it's -*- python -*-
+# $Id: $
+# Example timing diagram creation script for sigschege.
+# This script demonstrates the state handling
+
+myDiagram = Sigschege.TimingDiagram(0.0, 1000)
+
+
+sigBus = myDiagram.createSignal("Bus", 10)
+
+mts = myDiagram.createTimescale();
+
+sigBus.setNamedEvents(1)
+
+sigBus.addEvent(-1000, "Named", "5")
+sigBus.addEvent(100, "6")
+sigBus.addEvent(200, "Named", "1")
+sigBus.addEvent(300, "Named", "X")
+sigBus.addEvent(400, "Z")
+sigBus.addEvent(500, "Named", "Z")
+sigBus.addEvent(600, "Named", "0")
+
+myDiagram.exportPic("States.png", "png")

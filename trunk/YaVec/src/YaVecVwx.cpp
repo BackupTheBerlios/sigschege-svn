@@ -28,6 +28,7 @@
 #include "YaVecVwx.h"
 #include "YaVecFigure.h"
 #include "YaVecElm.h"
+#include <cmath>
 
 using namespace std;
 namespace YaVec {

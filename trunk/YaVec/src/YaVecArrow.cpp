@@ -28,7 +28,7 @@
 #include "YaVecLine.h"
 #include "YaVecView.h"
 #include <sstream>
-#include <math.h>
+#include <cmath>
 
 using namespace std;
 

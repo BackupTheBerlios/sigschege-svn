@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -27,74 +27,22 @@ using namespace std;
 
 #include <State.h>
 
-State::drawStateType State::string2state(const string stateString) {
-  if (stateString=="0") {
-    return Zero;
-  } else if (stateString=="1") {
-    return One;
-  } else if (stateString=="Z") {
-    return Z;
-  } else if (stateString=="X") {
-    return X;
-  } else if (stateString=="Named") {
-    return Named;
-  } else {
-    return Illegal;
-  }
+void StateMap::setVisual(string value, StateVisual::visualType visual, bool showLabel) {
+  //cVisualization = visual;
+  //cShowLabel = showLabel;
+
+  visuals[value] = StateVisual(visual, showLabel);
 }
 
-/*!
-  Rules: If one string is given, it can be one of the simple state names (0,1,X,Z) or
-  a bus value. If two strings are given, the first one must be a state name as a string
-  ("Named" for the Named state, actually every unknown string is mapped to Named now)
-  and the second contains the name.
- */
-bool State::setStateByString(const string &stateString1, const string &stateString2) {
-  drawStateType newDrawState = string2state(stateString1);
-  string newStateName;
+StateMap::StateMap(bool isBool) : visuals() {
+
+  if (isBool) {
+      visuals[ "1" ] = StateVisual(StateVisual::One, false);
+      visuals[ "0" ] = StateVisual(StateVisual::Zero, false);
+      visuals[ "X" ] = StateVisual(StateVisual::X, false);
+      visuals[ "Z" ] = StateVisual(StateVisual::Z, false);
+    };
   
-  if (stateString2=="") {
-    if (newDrawState==Illegal) {
-      newDrawState = Named;
-      newStateName = stateString1;
-    } else {
-      newStateName = "";
-    }
-  } else {
-    if (newDrawState==Illegal) {
-      newDrawState = Named;
-    }
-    newStateName = stateString2;
-  }
-  drawState = newDrawState;
-  stateName = newStateName;
-  return true;
-}
-
-bool State::isDrawState(const string &drawStateString) {
-  return string2state(drawStateString)==drawState;
-}
-
-bool State::isRealDrawState(char drawStateChar) {
-  switch (drawStateChar) {
-  case '1': return drawState==One;
-  case '0': return drawState==Zero;
-  case 'X': return drawState==X || drawState==Named;
-  case 'Z': return drawState==Z;
-  default: return false;
-  }
 }
 
 
-string State::getStateName(void) {
-  if (stateName.length()>0)  return stateName;
-  else {
-    switch (drawState) {
-    case Zero: return string("0");
-    case One: return string("1");
-    case X: return string("X");
-    case Z: return string("Z");
-    default: return string("?");
-    }
-  }
-}

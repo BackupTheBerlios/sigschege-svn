@@ -10,8 +10,8 @@ mlbl = md.createLabel("")
 mclk = md.createSignal(label="Clock", defaultSlope=0.0)
 mack = md.createSignal("Acknowledge", 0.4)
 mdt = md.createSignal("Data", 0.4)
-mdt.setNamedEvents(1);
-mts = md.createTimescale();
+mdt.setNamedEvents(1)
+mts = md.createTimescale()
 
 mrq = md.createSignal(label="Request", defaultSlope=0.4, before=mack)
 
@@ -22,7 +22,7 @@ mts.setFont(18)
 markers = []
 for i in range(-10,40,4):
    mclk.addEvent(i, "1")
-   mclk.addEvent(state1="0", time=i+2)
+   mclk.addEvent(state="0", time=i+2)
    if i>0:
       tm1 = md.createTimemarker(i, mlbl, mts)
       tm1.setColor(i%3)

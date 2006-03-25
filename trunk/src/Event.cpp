@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -29,7 +29,7 @@ using namespace std;
 #include <stdio.h>
 
 
-Event::Event(const State &setNewState, double setEventDelay, const Handle<Event> *setReference_p,
+Event::Event(const string &setNewState, double setEventDelay, const Handle<Event> *setReference_p,
              double setSlopeTime) : refCount(0) {
   eventDelay = setEventDelay;
   newState = setNewState;

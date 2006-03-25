@@ -25,7 +25,7 @@
 
 #include "YaVecElm.h"
 #include "YaVecFigure.h"
-#include <math.h>
+#include <cmath>
 
 using namespace std;
 

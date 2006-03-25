@@ -50,7 +50,7 @@ public:
    * \param setReference A pointer to the reference event handle. If not given, event is absolute.
    * \param setSlopeTime The time for the transition from the old to the new state.
    */
-  Event(const State &setNewState = State(State::Zero), double setEventDelay = 0.0,
+  Event(const std::string &setNewState = std::string("0"), double setEventDelay = 0.0,
         const Handle<Event> *setReference = 0, double setSlopeTime = 0.0);
 
   
@@ -182,8 +182,8 @@ public:
    * \return The old new state is returned.
    * \sa getNewState
    */
-  State setNewState(State newNewState) {
-    State tmp = newState;
+  std::string setNewState(std::string newNewState) {
+    std::string tmp = newState;
     newState = newNewState;
     return tmp;
   }
@@ -193,7 +193,7 @@ public:
    * This returns the new state of the event. 
    * \sa setNewState
    */
-  State getNewState(void) {
+  std::string getNewState(void) {
     return newState;
   }
 
@@ -216,7 +216,7 @@ private:
   int refLevel;
   double eventTime;
   double slopeTime;
-  State newState;
+  std::string newState;
   int refCount;
   Handle<Event> reference;
   std::vector< Handle<Event> > referrers;

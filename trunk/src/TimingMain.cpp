@@ -80,7 +80,7 @@ void layout (void) {
   Label4->setHeight(1000);
   Label4->enableBorder(true);
 
-  Handle<TimSignal> Signal2 = tim.createSignal("O", 5);
+  Handle<TimSignal> Signal2 = tim.createSignal("O", false, 5);
   Handle<Event> s2[4];
   s2[0] = Signal2->createEvent(string("1"), 50);
   s2[1] = Signal2->createEvent(string("0"), 100);

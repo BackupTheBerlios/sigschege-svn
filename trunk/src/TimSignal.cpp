@@ -40,7 +40,7 @@ void TimSignal::getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRi
 /*!
  * Construct a Timing Diagram Signal Object
  */
-TimSignal::TimSignal(double defaultSlope): TimingObject(), EventList(defaultSlope) {
+TimSignal::TimSignal(bool isBool, double defaultSlope): TimingObject(), EventList(isBool, defaultSlope) {
   cSigOffset = 0;
 }
 
@@ -54,9 +54,9 @@ TimSignal::TimSignal(double defaultSlope): TimingObject(), EventList(defaultSlop
  * \param sigOffset The horizontal offset at which the signal part starts.
  * \param defaultSlope The default slope for all events.
  */
-TimSignal::TimSignal(string signalLabel, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size,
-                     int sigOffset, double defaultSlope)
-  : TimingObject(0, origin, size, sigOffset), EventList(defaultSlope),
+TimSignal::TimSignal(string signalLabel, double startTime, double endTime, YaVec::PosInt origin,
+                     YaVec::PosInt size, bool isBool, int sigOffset, double defaultSlope)
+  : TimingObject(0, origin, size, sigOffset), EventList(isBool, defaultSlope),
     TimText(signalLabel) {
   setTimeRange(startTime, endTime);
 }
@@ -339,15 +339,14 @@ void TimSignal::paint(void) {
         if (newVisual==StateVisual::Zero || newVisual==StateVisual::Z) sigline1 = 0;
         else sigline0 = 0;
       }
-      if (namedEvents) { //  && (where==in_visible || eventEnd>cEndTime ???
-        string stateText = currentStateStr;
-        if (stateText!="") {
-          FText* label = cCompound->text();
-          label->setOrigin(PosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/4));
-          label->setText(stateText);
-          label->setJustification(FText::center);
-          label->setSize(10);
-        }
+      if (currentState.showLabel()) { //  && (where==in_visible || eventEnd>cEndTime ???
+        //        if (currentStateStrstateText!="") {
+        FText* label = cCompound->text();
+        label->setOrigin(PosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/4));
+        label->setText(currentStateStr);
+        label->setJustification(FText::center);
+        label->setSize(10);
+        //        }
       }
       oldEndX = endX;
       where = in_visible;

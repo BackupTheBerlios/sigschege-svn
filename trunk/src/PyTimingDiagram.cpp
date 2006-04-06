@@ -711,18 +711,19 @@ static PyObject *TimingDiagram_exportPic(TimingDiagramObject *self, PyObject *ar
 static PyObject * TimingDiagram_createSignal(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
 
   char *label = "none";
-  static char *kwlist[] = {"label", "defaultSlope", "before", NULL};
+  int isBus = 0;
+  static char *kwlist[] = {"label", "isBus", "defaultSlope", "before", NULL};
   static double defaultSlope = 0.0;
   PyObject *before = NULL;
   
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|dO", kwlist, &label, &defaultSlope, &before))
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|idO", kwlist, &label, &isBus, &defaultSlope, &before))
     return NULL;
   string tmps;
   tmps = label;
 
   // create new C++ signal object with TimingDiagram class 
   Handle<TimSignal> newSignal;
-  newSignal = self->tim->createSignal(tmps);
+  newSignal = self->tim->createSignal(tmps, isBus==0);
   if (before==NULL) {
     self->tim->addLast(newSignal.Object());
   } else {

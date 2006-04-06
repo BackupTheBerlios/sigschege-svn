@@ -39,7 +39,7 @@
 class EventList {
  public:
   //! This constructor will create an empty EventList.
-  EventList(double defaultSlope=0.0);
+  EventList(bool isBool = false, double defaultSlope=0.0);
 
   //! This destructor will destroy the EventList and all stored events.
   ~EventList();
@@ -108,7 +108,7 @@ class EventList {
     initialState->setNewState(newInitialState);
   }
 
-  //! Set the type of events (binary or named).
+  //! Set the type of events (binary or named). //OBSOLETE
   void setNamedEvents(bool named) {
     namedEvents = named;
   };
@@ -124,8 +124,7 @@ protected:
   std::vector< Handle<Event> > events;
   /// pseudo event to define initial state - no reference event, no time/delay (time is "-infinity")
   Handle<Event> initialState;
-  /// Use named events (e.g. bus values). 
-  bool namedEvents;
+  bool namedEvents; //OBSOLETE
   /// Default slope for new events.
   double cDefaultSlope;
   /// The state map, which defines how to visualize states.

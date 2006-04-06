@@ -1,4 +1,4 @@
-% Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+% Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
 %
 % This file is part of Sigschege - Signal Schedule Generator
 % 
@@ -134,6 +134,8 @@ arguments:
 
 \begin{description}
 \item[label] The label which will be printed in the text area on the left side.
+\item[isBus] If the signal is a bus. This means all signals are displayed with the X visual
+and the state printed. If isBus is 0 the signal is assumed to be a boolean. 
 \item[defaultSlope] \emph{optional} The default slope for all events. Default is 0.
 \item[before] \emph{optional} Another element of the timing diagram to insert this element before.  
 \end{description}

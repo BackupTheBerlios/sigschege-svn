@@ -32,8 +32,8 @@
 using namespace std;
 using namespace YaVec;
 
-EventList::EventList(double defaultSlope)
-  : events(), initialState(new Event), cDefaultSlope(defaultSlope), smap(true)
+EventList::EventList(bool isBool, double defaultSlope)
+  : events(), initialState(new Event), cDefaultSlope(defaultSlope), smap(isBool)
 {
   namedEvents = false;
 }

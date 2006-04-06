@@ -31,9 +31,9 @@
 #include <vector>
 #include <string>
 
-//! An \c Event Class stores the delay, the time and the dependencies to other events.
+//! An \c Event class stores the delay, the time and the dependencies to other events.
 /*!
- * An \c Event Class consists of two time values (delay and absolute time).
+ * An \c Event class consists of two time values (delay and absolute time).
  * The delay time is the relative time to a parent event whereas the absolute time is the time measured against null.
  * Every Event can have several referring events, but only one or no reference event.
  * If an event has no reference event, the delay and the absolute time are equal.

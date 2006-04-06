@@ -35,10 +35,10 @@
 class TimSignal : public TimingObject, public EventList, public TimText {
 public:
   //! The standard constructor
-  TimSignal(double defaultSlope=0.0);
+  TimSignal(bool isBool = false, double defaultSlope=0.0);
 
   //! Create a Signal with Text
-  TimSignal(std::string signalLabel, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size,
+  TimSignal(std::string signalLabel, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size, bool isBool = false,
             int sigOffset = 0, double defaultSlope=0.0);
 
   //! The standard destructor

@@ -7,13 +7,12 @@ from sigschege_addon import *
 md = Sigschege.TimingDiagram(0.0, 40.0)
 
 mlbl = md.createLabel("")
-mclk = md.createSignal(label="Clock", defaultSlope=0.0)
-mack = md.createSignal("Acknowledge", 0.4)
-mdt = md.createSignal("Data", 0.4)
-mdt.setNamedEvents(1)
+mclk = md.createSignal(label="Clock", isBus=0, defaultSlope=0.0)
+mack = md.createSignal("Acknowledge", 0, 0.4)
+mdt = md.createSignal("Data", 1, 0.4)
 mts = md.createTimescale()
 
-mrq = md.createSignal(label="Request", defaultSlope=0.4, before=mack)
+mrq = md.createSignal(label="Request", isBus=0, defaultSlope=0.4, before=mack)
 
 
 mts.setLabel('Time', '[ns]')

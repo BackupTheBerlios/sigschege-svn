@@ -71,7 +71,7 @@ public:
   Handle<TimLabel> createLabel();
 
   //! Create an empty Timing Diagram Signal Object.
-  Handle<TimSignal> createSignal(std::string label, double defaultSlope=0.0);
+  Handle<TimSignal> createSignal(std::string label, bool isBool=false, double defaultSlope=0.0);
 
   //! Create a time scale.
   Handle<TimTime> createTime(double newLabelDistance, double newFirstLabel, double newTickDistance);

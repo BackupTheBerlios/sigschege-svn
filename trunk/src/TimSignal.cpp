@@ -125,7 +125,7 @@ void TimSignal::paint(void) {
   double percentageNewStart;
   double percentageNewEnd; 
   
-  double oldEndX = cOrigin.xpos();
+  double oldEndX = timXLeft;
 
   // make sure the starting points are set if the event list is empty
   if (events.size()==0) {
@@ -345,7 +345,7 @@ void TimSignal::paint(void) {
         label->setOrigin(PosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/4));
         label->setText(currentStateStr);
         label->setJustification(FText::center);
-        label->setSize(10);
+        label->setSize(12);
         //        }
       }
       oldEndX = endX;
@@ -369,15 +369,12 @@ void TimSignal::paint(void) {
   if (sigline1!=0) {
     sigline1->addPoint(PosInt(timXRight, y1end));
   }
-  if (namedEvents) { //  && (where==in_visible || eventEnd>cEndTime ???
-    string stateText = currentStateStr;
-    if (stateText!="") {
-      FText* label = cCompound->text();
-      label->setOrigin(PosInt(static_cast<int>((timXRight+oldEndX)/2), y0+(y1-y0)/4));
-      label->setText(stateText);
-      label->setJustification(FText::center);
-      label->setSize(10);
-    }
+  if (currentState.showLabel()) {
+    FText* label = cCompound->text();
+    label->setOrigin(PosInt(static_cast<int>((timXRight+oldEndX)/2), y0+(y1-y0)/4));
+    label->setText(currentStateStr);
+    label->setJustification(FText::center);
+    label->setSize(12);
   }
 
 }

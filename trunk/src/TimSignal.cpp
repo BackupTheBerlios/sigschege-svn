@@ -127,6 +127,18 @@ void TimSignal::paint(void) {
   
   double oldEndX = timXLeft;
 
+  // calculate the height of the label font
+  PosInt upper_left, lower_right;
+  int labelheight;
+  FText* label = cCompound->text();
+  label->setOrigin(PosInt(0, 0));
+  label->setText("0gAq");
+  label->setJustification(FText::center);
+  label->setSize(12);
+  label->getBoundingBox(upper_left, lower_right);
+  labelheight = upper_left.ypos()-lower_right.ypos();
+  cCompound->remove(label);
+  
   // make sure the starting points are set if the event list is empty
   if (events.size()==0) {
     if (currentVisual==StateVisual::Zero || currentVisual==StateVisual::X) {
@@ -342,7 +354,7 @@ void TimSignal::paint(void) {
       if (currentState.showLabel()) { //  && (where==in_visible || eventEnd>cEndTime ???
         //        if (currentStateStrstateText!="") {
         FText* label = cCompound->text();
-        label->setOrigin(PosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0)/4));
+        label->setOrigin(PosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0-labelheight)/2));
         label->setText(currentStateStr);
         label->setJustification(FText::center);
         label->setSize(12);
@@ -371,7 +383,7 @@ void TimSignal::paint(void) {
   }
   if (currentState.showLabel()) {
     FText* label = cCompound->text();
-    label->setOrigin(PosInt(static_cast<int>((timXRight+oldEndX)/2), y0+(y1-y0)/4));
+    label->setOrigin(PosInt(static_cast<int>((timXRight+oldEndX)/2), y0+(y1-y0-labelheight)/2));
     label->setText(currentStateStr);
     label->setJustification(FText::center);
     label->setSize(12);

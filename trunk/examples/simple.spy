@@ -2,7 +2,7 @@
 # $Id$
 # first example timing diagram creation script for sigschege
 
-md = Sigschege.TimingDiagram(0.0, 251.0)
+md = Sigschege.TimingDiagram(0.0, 251.0, 10.0, 0.6)
 mclk = md.createSignal(label="clk", defaultSlope=0.0)
 mdi = md.createSignal("dat_in", 1, 2.0)
 mdo = md.createSignal("dat_out", 1)
@@ -45,6 +45,7 @@ mdo.addEvent(40, "1")
 
 md.exportFig("Simple.fig")
 md.exportPic("Simple1.png", "png")
+md.exportPic("Simple1.eps", "eps")
 
 mdo.deleteEvent(25, 0, "0")
 mdo.deleteEvent(25, 0, "1")

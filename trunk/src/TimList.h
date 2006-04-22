@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -88,13 +88,11 @@ public:
   double endTime(void) { return cEndTime; }
   
   //! Set the height for each slice
-  void setSliceHeight(int nHeight);
+  void setDefaultSliceHeight(int nHeight);
 
   //! Set the Slice Space
   void setSliceSpace(int space);
 
-  //! Set the default height of the timing diagram elements.
-  void setDefaultHeight(int defaultHeight) { cDefaultHeight = defaultHeight; }
   //! Set the default padding of the timing diagram elements.
   void setDefaultPadding(int defaultPadding) { cDefaultPadding = defaultPadding; }
   //! Set the default default border of the timing diagram elements.
@@ -110,14 +108,12 @@ protected:
   std::vector< Handle<TimingObject> > cLayoutList;
   /// List of overlay elements.
   std::vector< Handle<TimingObject> > cOverlayList;
-  /// Size of a slice.
-  int cSliceHeight,  cSliceWidth;
   /// The vertical space between two slices.
   int cSliceSpace;
   /// Start and end time for all visible signal areas.
   double cStartTime, cEndTime;
   /// Defaults for signals/labels/time scale.
-  int  cDefaultHeight,  cDefaultPadding;
+  int  cDefaultSliceHeight,  cDefaultPadding;
   /// Should the elements have a border?
   bool cDefaultBorder;
   // NOTE: all "time aware" children (signal, time scale, time marker) must

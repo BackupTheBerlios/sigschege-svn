@@ -588,7 +588,7 @@ static PyMethodDef TimeMarker_methods[] = {
 static int TimeMarker_print(TimeMarkerObject *obj, FILE *fp, int flags)
 {
   double time = obj->timemarker->getTime();
-  fprintf(fp, "\"<TimeMarker @  %d>\"", time);
+  fprintf(fp, "\"<TimeMarker @  %f>\"", time);
   return 0;
 }
 
@@ -664,13 +664,16 @@ static int TimingDiagram_init(TimingDiagramObject *self, PyObject *args, PyObjec
 
   double startTime = 0.0;
   double endTime = 100.0;
-  static char *kwlist[] = {"startTime", "endTime", NULL};
+  double width_in = 8.0; // width in inch
+  double sliceHeight_in = 1.0; // default slice height in inch
+  static char *kwlist[] = {"startTime", "endTime", "width", "sliceHeight", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|dd", kwlist, &startTime, &endTime))
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|dddd", kwlist, &startTime, &endTime, &width_in, &sliceHeight_in))
     return 1;
 
   self->tim = new TimingDiagram(startTime, endTime);
-  self->tim->setWidth(10000);
+  self->tim->setWidth(static_cast<int>(1200*width_in));
+  self->tim->setDefaultSliceHeight(static_cast<int>(1200*sliceHeight_in));
   self->tim->setSliceSpace(50);
   return (0);
 }
@@ -696,6 +699,7 @@ static PyObject * TimingDiagram_exportFig(TimingDiagramObject *self, PyObject *a
 static PyObject *TimingDiagram_exportPic(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
   char *filename = "demo.png";
   char *format = "png";
+  
   static char *kwlist[] = {"filename", "format", NULL};
 
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "ss", kwlist, &filename, &format))

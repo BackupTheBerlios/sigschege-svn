@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -33,11 +33,9 @@ using namespace YaVec;
  * Construct a Timing Diagram List
  */
 TimList::TimList():LayoutObject(), cLayoutList() {
-  cSliceHeight = 500;
-  cSliceWidth  = 500;
   cSliceSpace  = 0;
   setPadding(0);
-  cDefaultHeight = 1000;
+  cDefaultSliceHeight = 1000;
   cDefaultPadding = 200;
   cDefaultBorder = true;
   cDefaultSigOffset = 1500;
@@ -147,7 +145,7 @@ void TimList::addOverlay(Handle<TimingObject> newTimingObject) {
 Handle <TimLabel> TimList::createLabel() {
   Handle<TimLabel> newTimLabel = new TimLabel;
   newTimLabel->setCompound(getCompound()->compound());
-  newTimLabel->setHeight(cDefaultHeight);
+  newTimLabel->setHeight(cDefaultSliceHeight);
   newTimLabel->enableBorder(cDefaultBorder);
   return newTimLabel;
 }
@@ -156,10 +154,10 @@ Handle <TimLabel> TimList::createLabel() {
  * This Function will return a Handle to a Timing Diagram Signal Object
  */
 Handle <TimSignal> TimList::createSignal(string label, bool isBool, double defaultSlope) {
-  Handle<TimSignal> newTimSignal = new TimSignal(label, cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultHeight),
+  Handle<TimSignal> newTimSignal = new TimSignal(label, cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultSliceHeight),
                                                  isBool, cDefaultSigOffset, defaultSlope);
   newTimSignal->setCompound(getCompound()->compound());
-  newTimSignal->setHeight(cDefaultHeight);
+  newTimSignal->setHeight(cDefaultSliceHeight);
   newTimSignal->enableBorder(cDefaultBorder);
   newTimSignal->setPadding(cDefaultPadding);
   return newTimSignal;
@@ -169,10 +167,10 @@ Handle <TimSignal> TimList::createSignal(string label, bool isBool, double defau
  * This Function will return a Handle to a time scale object
  */
 Handle<TimTime> TimList::createTime(double newLabelDistance, double newFirstLabel, double newTickDistance) {
-  Handle<TimTime> newTimTime = new TimTime(cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultHeight),
+  Handle<TimTime> newTimTime = new TimTime(cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultSliceHeight),
                                            cDefaultSigOffset, newLabelDistance, newFirstLabel, newTickDistance);
   newTimTime->setCompound(getCompound()->compound());
-  newTimTime->setHeight(cDefaultHeight);
+  newTimTime->setHeight(cDefaultSliceHeight);
   newTimTime->enableBorder(cDefaultBorder);
   newTimTime->setPadding(cDefaultPadding);
   newTimTime->setSigOffset(cDefaultSigOffset); 
@@ -182,7 +180,7 @@ Handle<TimTime> TimList::createTime(double newLabelDistance, double newFirstLabe
 
 Handle<TimeMarker> TimList::createTimeMarker(double time, TimingObject* topTimingObject,
                                              TimingObject* bottomTimingObject) {
-  Handle<TimeMarker> newTimeMarker = new TimeMarker(time, cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultHeight),
+  Handle<TimeMarker> newTimeMarker = new TimeMarker(time, cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultSliceHeight),
                                                     cDefaultSigOffset, this, topTimingObject, bottomTimingObject);
   newTimeMarker->setPadding(cDefaultPadding);
   return newTimeMarker;
@@ -201,11 +199,11 @@ Handle <TimList> TimList::createList() {
 }
 
 /*!
- * Set the height for each slice
+ * Set the default height for each slice.
  * \param nHeight slice height
  */
-void TimList::setSliceHeight(int nHeight) {
-  cSliceHeight = nHeight;
+void TimList::setDefaultSliceHeight(int nHeight) {
+  cDefaultSliceHeight = nHeight;
 }
 
 

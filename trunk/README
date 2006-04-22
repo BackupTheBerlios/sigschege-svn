@@ -9,7 +9,7 @@ Subversion Id: $Id$
 * Copyright
 
 Sigschege and the associated YaVec library are copyright
-2004, 2005 by Ulf Klaperski and Ingo Hinrichs.
+2004-2006 by Ulf Klaperski and Ingo Hinrichs.
 
 Sigschege is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,12 +29,13 @@ along with the Sigschege sources; see the file COPYING.
 
 ANCI C++ compliant compiler, standard compliant C++ STL
 
+Python 2.4
+
 freetype2 library
  
 transfig/fig2dev
 
 Recommended: xfig
-
 
 * Building from source (distribution tarball)
 
@@ -58,3 +59,4 @@ make distclean
 CXXFLAGS=-g ./configure
 make
 
+libtool --mode=execute gdb ./sigschege

@@ -59,6 +59,9 @@ Sigschege is an application to create timing diagrams for digital electrical cir
 Currently the only available user interface is a Python plugin. A graphical user
 interface is planned for later releases.
 
+For example scripts please have a look at the examples directory of the
+Sigschege source tree.
+
 \section{Anatomy of a Timing Diagram}
 \label{sec:anatomy}
 
@@ -141,39 +144,26 @@ and the state printed. If isBus is 0 the signal is assumed to be a boolean.
 \end{description}
 
 \begin{center}
-  \texttt{sig\_clk = td.createSignal(label=''Clock'', defaultSlope=0.5)}
+  \texttt{sig\_clk = td.createSignal(label='Clock', defaultSlope=0.5)}
 \end{center}
 
-\subsection{Creating events}
+\subsection{Creating Events}
 \label{sec:evt}
 
 Events can be added to an existing signal with the \texttt{addEvent} method.
 
-\texttt{<signal>.addEvent(<time>, <stateValue>, [stateName])}
+\texttt{<signal>.addEvent(<time>, <state>)}
 
-The stateValue determines the value of the new state. The standard values are 1,
-0, X, Z or Named. For all other strings the value is set to Named and the string
-is used as stateName. 
-The optional stateName gives the name of the state as it should be printed. 
+The \texttt{state} determines the value of the new state. The visualization of
+the state is defined by the state map of the signal. 
 
-In order to draw a ''1'' state (top line, no label):
+In order to draw a '1' state:
 
-\texttt{clock.addEvent(50, ''1'')}
+\texttt{clock.addEvent(50, '1')}
 
-If you want to have a bus value ''1'' you can set it as a Named state with name ''1'':
-
-\texttt{clock.addEvent(50, ''Named'', ''1'')}
-
-As a special case, it is also possible to draw value ''1'' (top line) with a
-label, e.g. ''H'' for a VHDL weak ''1'':
-
-\texttt{clock.addEvent(50, ''Named'', ''1'')}
-
-The following two examples are identical:
-
-\texttt{clock.addEvent(50, ''6'')}\\
-\texttt{clock.addEvent(50, ''Named'', ''6'')}
-
+If the signal uses the \texttt{boolean} state map, the 1 will be displayed as a
+top line with no label. The \texttt{bus} state map would display it as top and
+bottom line with the 1 as a label.
 
 
 \subsection{Instantiating a Time Scale}
@@ -184,6 +174,39 @@ The following two examples are identical:
 \subsection{Exporting Timing Diagrams}
 \label{sec:exp}
 
+\subsection{Creating State Maps}
+\label{sec:tis}
+
+A new state map can be created with the command:
+
+\begin{center}
+  \texttt{<var> = Sigschege.StateMap()}
+\end{center}
+
+This freshly created state map is empty and thus has the same effect as the
+\texttt{bus} state map. To add state definitions
+
+\begin{center}
+  \texttt{<stateMap>.state(<arguments>)}
+\end{center}
+
+The arguments accepted by the \texttt{state} method are:
+
+\begin{description}
+\item[name] The name of the state.
+\item[showState] The state string will we printed as a label.
+\item[visual] Defines the visual to be used as a string. Possible values are 1, 0, Z and X.
+\end{description}
+
+Example:
+
+\texttt{boolmap = Sigschege.StateMap()}\\
+\texttt{boolmap.state(name='1', showState=False, visual='1')}\\
+\texttt{boolmap.state(name='0', showState=False, visual='0')}\\
+\texttt{boolmap.state(name='Z', showState=False, visual='Z')}\\
+
+This would actually create a map which is identical to the \texttt{boolean}
+state map.
 
 
 \end{document}

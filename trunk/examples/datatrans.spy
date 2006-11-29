@@ -6,7 +6,7 @@ from sigschege_addon import *
 
 md = Sigschege.TimingDiagram(0.0, 40.0)
 
-mlbl = md.createLabel("")
+mlbl = md.createLabel("Changing order of signals")
 mclk = md.createSignal(label="Clock", isBus=0, defaultSlope=0.0)
 mack = md.createSignal("Acknowledge", 0, 0.4)
 mdt = md.createSignal("Data", 1, 0.4)

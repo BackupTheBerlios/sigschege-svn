@@ -38,7 +38,7 @@
 class TimeMarker : public TimingObject {
 public:
   //! General constructor
-  TimeMarker(double time, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
+  TimeMarker(double time, TimSchedule *schedulePtr, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
              Handle<LayoutObject> mainLayoutObject,
              LayoutObject* topLayoutObject = 0,
              LayoutObject* bottomLayoutObject = 0,

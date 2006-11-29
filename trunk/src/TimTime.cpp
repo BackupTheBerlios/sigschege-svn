@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004, 2005 by Ulf Klaperski
+// Copyright 2004, 2005, 2006 by Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -41,22 +41,22 @@ void TimTime::getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRigh
 
 
 /*!
- * This constructor will create an Timing Diagram Label Object
+ * This constructor will create a Timing Diagram Label Object
  */
-TimTime::TimTime(double newStartTime, double newEndTime, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
+TimTime::TimTime(TimSchedule *schedulePtr, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
                  double newLabelDistance, double newFirstLabel, double newTickDistance):
   TimingObject(),
   TimText("Time")
 {
-  setTimeRange(newStartTime, newEndTime);
+  cSchedulePtr = schedulePtr;
   setTicks(newLabelDistance, newFirstLabel, newTickDistance);
 }
 
 TimTime::~TimTime(){
 }
 
-void TimTime::calcTicks(void) {
-  double timeRange = cEndTime-cStartTime;
+void TimTime::calcTicks(int i) {
+  double timeRange = cSchedulePtr->visibleTime();
   double normFactor = pow(10, floor(log10(timeRange)));
   double timeRangeNorm = timeRange/normFactor;
   double labelDistNorm;
@@ -80,7 +80,10 @@ void TimTime::calcTicks(void) {
   } else {
     tickDistance = labelDistance/10.0;
   }
-  firstLabel = ceil(cStartTime/labelDistance)*labelDistance;
+  firstLabel.clear();
+  for(int i = 0; i<cSchedulePtr->numVisibleTimeRanges(); i++) {
+    firstLabel.push_back(ceil(cSchedulePtr->timeRangeTimes(i).cStart/labelDistance)*labelDistance);
+  }
   //cout << "DEBUG: labelDistance=" << labelDistance << "firstLabel=" << firstLabel << endl;
   
 }
@@ -88,67 +91,70 @@ void TimTime::calcTicks(void) {
 void TimTime::setTicks(double newLabelDistance, double newFirstLabel, double newTickDistance) {
   if (newLabelDistance==0.0) {
     autoCalc = true;
-    calcTicks();
+    calcTicks(0);
   } else {
     autoCalc = false;
     labelDistance = newLabelDistance;
-    firstLabel = newFirstLabel;
+    firstLabel[0] = newFirstLabel; //TODO
     tickDistance = newTickDistance;
   }
 }
 
 
 /*!
- * Paint this text layout object
+ * Paint this time scale layout object
  */
 void TimTime::paint(void) {
   FText *text;
   int xpos;
   double tickTime;
-
+  
   // check if a compound is available
   if (getCompound()==0) return;
-
-  // first we have to clear out compound
+  
+  // first we have to clear the compound
   getCompound()->clear();
-
+  
   // and then we can draw new stuff
   // Draw the border
   LayoutObject::paint();
   TimText::paint(cCompound); // draw the text
+  
+  for(int i = 0; i<cSchedulePtr->numVisibleTimeRanges(); i++) {
+    Range<double> timeRange = cSchedulePtr->timeRangeTimes(i);
+    Range<int> timeArea = cSchedulePtr->timeRangeArea(i);
+    // draw the small ticks
+    tickTime = firstLabel[i]-tickDistance*floor((firstLabel[i]-timeRange.cStart)/tickDistance);
+    while (tickTime<timeRange.cEnd) {
+      xpos = static_cast<int>(timXLeft+tickTime/(timeRange.cEnd-timeRange.cStart)*timWidth);
+      FPolyline *tick = getCompound()->polyline();
+      tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
+      tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/10 );
+      
+      tickTime += tickDistance;
+    }
 
-  // draw the small ticks
-  tickTime = firstLabel-tickDistance*floor((firstLabel-cStartTime)/tickDistance);
-  while (tickTime<cEndTime) {
-    xpos = static_cast<int>(timXLeft+tickTime/(cEndTime-cStartTime)*timWidth);
-    FPolyline *tick = getCompound()->polyline();
-    tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
-    tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/10 );
-    
-    tickTime += tickDistance;
-  }
-
-  // draw the big ticks with labels
-  tickTime = firstLabel;
-  while (tickTime<cEndTime) {
-    string timeStr;
-    ostringstream strConv;
-    xpos = static_cast<int>(timXLeft+tickTime*timWidth/cEndTime-cStartTime);
-    FPolyline *tick = getCompound()->polyline();
-    tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
-    tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/5 );
-    // current time as text
-    text = getCompound()->text();
-    strConv << tickTime;
-    timeStr = strConv.str();
-    text->setText(timeStr);
-    text->setFont(cFontType);
-    text->setSize(cFontSize/2);
-    text->setJustification(FText::center);
-    text->setOrigin(PosInt(xpos, cOrigin.ypos()+cSize.ypos()-cPadding-cSize.ypos()*32/100));
-    
-    tickTime += labelDistance;
-  }
-    
+    // draw the big ticks with labels
+    tickTime = firstLabel[i];
+    while (tickTime<timeRange.cEnd) {
+      string timeStr;
+      ostringstream strConv;
+      xpos = static_cast<int>(timXLeft+tickTime*timWidth/timeRange.cEnd-timeRange.cStart);
+      FPolyline *tick = getCompound()->polyline();
+      tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/50);
+      tick->addPoint(xpos, getBottomPos()-cPadding-cSize.ypos()/5 );
+      // current time as text
+      text = getCompound()->text();
+      strConv << tickTime;
+      timeStr = strConv.str();
+      text->setText(timeStr);
+      text->setFont(cFontType);
+      text->setSize(cFontSize/2);
+      text->setJustification(FText::center);
+      text->setOrigin(PosInt(xpos, cOrigin.ypos()+cSize.ypos()-cPadding-cSize.ypos()*32/100));
+      
+      tickTime += labelDistance;
+    }
+  } 
 }
 

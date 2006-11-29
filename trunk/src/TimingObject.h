@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2005 by Ulf Klaperski
+// Copyright 2005, 2006 by Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -27,6 +27,7 @@
 #define _H_TIMINGOBJECT
 
 #include "LayoutObject.h"
+#include "TimSchedule.h"
 
 /// Base class for elements of a TimList.
 /*!
@@ -38,7 +39,8 @@ class TimingObject : public LayoutObject {
   TimingObject();
   
   /// General constructor.
-  TimingObject(LayoutObject *newReference, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset = 0);
+  TimingObject(LayoutObject *newReference, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset = 0,
+               TimSchedule *schedulePtr = 0);
     
   //! Set the horizontal offset for the signal part.
   virtual void setSigOffset(int sigOffset);
@@ -58,12 +60,11 @@ class TimingObject : public LayoutObject {
   /// From LayoutObject -  adapt the content of this object.
   virtual void setPadding(int newPadding);
 
-  /// Set the time range of this object.
-  void setTimeRange(double startTime, double endTime);
+  void setSchedule(TimSchedule *schedulePtr);
 
  protected:
-  /// Start and end time of the visible signal area.
-  double cStartTime, cEndTime;
+  /// pointer to the TimSchedule (managed by the TimList).
+  TimSchedule *cSchedulePtr;
   /// Offset for the visible signal area.
   int cSigOffset;
   /// Horizontal geometry information for the timing area.
@@ -81,10 +82,6 @@ private:
 inline TimingObject::TimingObject():
   LayoutObject(), cSigOffset(0) {}
 
-inline void TimingObject::setTimeRange(double startTime, double endTime) {
-  cStartTime = startTime;
-  cEndTime = endTime;
-}
 
 
 #endif // _H_TIMINGOBJECT

@@ -38,7 +38,7 @@ public:
   TimSignal(bool isBool = false, double defaultSlope=0.0);
 
   //! Create a Signal with Text
-  TimSignal(std::string signalLabel, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size, bool isBool = false,
+  TimSignal(std::string signalLabel, TimSchedule *schedulePtr, YaVec::PosInt origin, YaVec::PosInt size, bool isBool = false,
             int sigOffset = 0, double defaultSlope=0.0);
 
   //! The standard destructor
@@ -47,6 +47,9 @@ public:
   //! Paint the Signal.
   void paint(void);
 
+  //! internal function to paint the ranges
+  void paintRange(int rangeNum, Event* initialStateP);
+  
   /// Function needed by the TimText base class to query the text area.
   virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight);
 

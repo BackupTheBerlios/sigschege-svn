@@ -32,6 +32,7 @@
 #include "TimTime.h"
 #include "TimSignal.h"
 #include "TimeMarker.h"
+#include "TimSchedule.h"
 #include "Handle.t"
 
 /// Vertical list of timing diagram objects.
@@ -83,9 +84,9 @@ public:
   Handle<TimList> createList();
 
   //! Return start time of this timing list.
-  double startTime(void) { return cStartTime; }
+  double startTime(void) { return cSchedule.startTime(); }
   //! Return end time of this timing list.
-  double endTime(void) { return cEndTime; }
+  double endTime(void) { return cSchedule.endTime(); }
   
   //! Set the height for each slice
   void setDefaultSliceHeight(int nHeight);
@@ -97,12 +98,11 @@ public:
   void setDefaultPadding(int defaultPadding) { cDefaultPadding = defaultPadding; }
   //! Set the default default border of the timing diagram elements.
   void setDefaultBorder(bool defaultBorder) { cDefaultBorder = defaultBorder; }
-  //! Set the default offset of signals
+  //! Set the default offset of signals.
   void setDefaultSigOffset(int defaultSigOffset) { cDefaultSigOffset = defaultSigOffset; }
-  //! Get the default offset of signals
+  //! Get the default offset of signals.
   int getDefaultSigOffset(void) { return cDefaultSigOffset; }
   
-
 protected:
   /// List of the signal elements (signals, time scale, label)
   std::vector< Handle<TimingObject> > cLayoutList;
@@ -110,8 +110,8 @@ protected:
   std::vector< Handle<TimingObject> > cOverlayList;
   /// The vertical space between two slices.
   int cSliceSpace;
-  /// Start and end time for all visible signal areas.
-  double cStartTime, cEndTime;
+  /// Start and end time and ellipses.
+  TimSchedule cSchedule;
   /// Defaults for signals/labels/time scale.
   int  cDefaultSliceHeight,  cDefaultPadding;
   /// Should the elements have a border?
@@ -123,8 +123,6 @@ protected:
 private:
     //! Disable setting the height - it is calculated by the height of the elements.
   virtual void setHeight(int height) {};
-
-
 
 };
 

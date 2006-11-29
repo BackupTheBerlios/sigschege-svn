@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005 by Ulf Klaperski
+// Copyright 2004, 2005, 2006 by Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -37,7 +37,7 @@
 class TimTime : public TimingObject, public TimText {
 public:
   /// General constructor
-  TimTime(double newStartTime, double newEndTime, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
+  TimTime(TimSchedule *schedulePtr, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
           double newLabelDistance = 0.0, double newFirstLabel = 0.0, double newTickDistance = 0.0);
   
   /// The standard destructor
@@ -53,7 +53,7 @@ public:
   void setTicks(double newLabelDistance = 0.0, double newFirstLabel = 0.0, double newTickDistance = 0.0);
 
   /// automatically calculate the position of ticks and labels
-  void calcTicks(void);
+  void calcTicks(int i);
   
   virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight);
 
@@ -63,7 +63,7 @@ public:
   
 private:
   double labelDistance;
-  double firstLabel;
+  std::vector<double> firstLabel;
   double tickDistance;
   bool autoCalc;
 };

@@ -27,8 +27,10 @@
 
 using namespace YaVec;
 
-TimingObject::TimingObject(LayoutObject *newReference, PosInt origin, PosInt size, int sigOffset):
+TimingObject::TimingObject(LayoutObject *newReference, PosInt origin, PosInt size, int sigOffset,
+               TimSchedule *schedulePtr):
   LayoutObject(newReference, origin, size), cSigOffset(sigOffset) {
+  cSchedulePtr = schedulePtr;
   updatetimArea();
 }
 
@@ -73,3 +75,8 @@ void TimingObject::setPadding(int newPadding) {
   updatetimArea();
 }
 
+void TimingObject::setSchedule(TimSchedule *schedulePtr) {
+  cSchedulePtr = schedulePtr;
+  updatetimArea();
+  
+}

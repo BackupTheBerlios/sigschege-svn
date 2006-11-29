@@ -59,11 +59,10 @@ double TimeMarker::getTimLabelPos(void) {
 }
 
 
-TimeMarker::TimeMarker(double time, double startTime, double endTime, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
+TimeMarker::TimeMarker(double time, TimSchedule *schedulePtr, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset,
                        Handle<LayoutObject> mainLayoutObject, LayoutObject* topLayoutObject,
                        LayoutObject* bottomLayoutObject, int topPercentage, int bottomPercentage):
-  TimingObject(mainLayoutObject.Object(), origin, size, sigOffset) {
-  setTimeRange(startTime, endTime);
+  TimingObject(mainLayoutObject.Object(), origin, size, sigOffset, schedulePtr) {
   topReference = topLayoutObject;
   topReference->registerReferrer(this);
   bottomReference = bottomLayoutObject;
@@ -110,71 +109,71 @@ void TimeMarker::paint(void) {
   int xpos;
   //TimList* parent = dynamic_cast< TimList* >(cReference.Object());
 
-  yTop = topReference->getUpperPos();
-  yBottom = bottomReference->getBottomPos();
-  // Make sure the bottom reference is below the top reference
-  if (yBottom<yTop) {
-    LayoutObject* tmpLayoutObject;
-    tmpLayoutObject = topReference.Object();
-    topReference = bottomReference;
-    bottomReference = tmpLayoutObject;
-    yTop = topReference->getUpperPos();
-    yBottom = bottomReference->getBottomPos();
-  }
-
-  // check if a compound is available
-  if (getCompound()==0) return;
-  
-  // first we have to clear compound
-  getCompound()->clear();
-
-  // outside of visible area... nothing to do
-  if (markedTime<cStartTime || markedTime>cEndTime) return;
-  
-  marker = getCompound()->polyline();
-  xpos = timXLeft + 
-    +static_cast<int>((markedTime-cStartTime)/(cEndTime-cStartTime)*timWidth);
-  marker->lineStyle(YaVecLine::dashed);
-  marker->penColor(cColor);
-
-  marker->addPoint(xpos, yTop);
-  marker->addPoint(xpos, yBottom);
-
-  bool showText = cText.length()>0;
-  
-  if (showTimLabel || showText) {
-    FText *timLabel;
-    FText *textLabel;
-
-    int ypos = static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos);
-    
-    if (showText) {
-      ypos = static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos);
-      
-      textLabel = getCompound()->text();
-      textLabel->setSize(cTextLabelSize);
-      textLabel->setFont(cTextLabelType);
-      textLabel->penColor(cColor);
-      textLabel->setText(cText);
-      textLabel->setJustification(timLabelLeft? 2 : 0);
-      textLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), ypos-30));
-    }
-
-    if (showTimLabel) {
-      std::ostringstream markedTimeStr;
-      ypos = static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos);
-
-      timLabel = getCompound()->text();
-      timLabel->setSize(cTimLabelSize);
-      timLabel->setFont(cTimLabelType);
-      timLabel->penColor(cColor);
-      markedTimeStr << markedTime << endl;
-      timLabel->setText(markedTimeStr.str());
-      timLabel->setJustification(timLabelLeft? 2 : 0);
-      ypos += timLabel->getHeight()+30;
-      timLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), ypos));
-    }
-
-  }
+//  yTop = topReference->getUpperPos();
+//  yBottom = bottomReference->getBottomPos();
+//  // Make sure the bottom reference is below the top reference
+//  if (yBottom<yTop) {
+//    LayoutObject* tmpLayoutObject;
+//    tmpLayoutObject = topReference.Object();
+//    topReference = bottomReference;
+//    bottomReference = tmpLayoutObject;
+//    yTop = topReference->getUpperPos();
+//    yBottom = bottomReference->getBottomPos();
+//  }
+//
+//  // check if a compound is available
+//  if (getCompound()==0) return;
+//  
+//  // first we have to clear compound
+//  getCompound()->clear();
+//
+//  // outside of visible area... nothing to do
+//  if (markedTime<cStartTime || markedTime>cEndTime) return;
+//  
+//  marker = getCompound()->polyline();
+//  xpos = timXLeft + 
+//    +static_cast<int>((markedTime-cStartTime)/(cEndTime-cStartTime)*timWidth);
+//  marker->lineStyle(YaVecLine::dashed);
+//  marker->penColor(cColor);
+//
+//  marker->addPoint(xpos, yTop);
+//  marker->addPoint(xpos, yBottom);
+//
+//  bool showText = cText.length()>0;
+//  
+//  if (showTimLabel || showText) {
+//    FText *timLabel;
+//    FText *textLabel;
+//
+//    int ypos = static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos);
+//    
+//    if (showText) {
+//      ypos = static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos);
+//      
+//      textLabel = getCompound()->text();
+//      textLabel->setSize(cTextLabelSize);
+//      textLabel->setFont(cTextLabelType);
+//      textLabel->penColor(cColor);
+//      textLabel->setText(cText);
+//      textLabel->setJustification(timLabelLeft? 2 : 0);
+//      textLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), ypos-30));
+//    }
+//
+//    if (showTimLabel) {
+//      std::ostringstream markedTimeStr;
+//      ypos = static_cast<int>(yBottom+(yTop-yBottom)*timLabelPos);
+//
+//      timLabel = getCompound()->text();
+//      timLabel->setSize(cTimLabelSize);
+//      timLabel->setFont(cTimLabelType);
+//      timLabel->penColor(cColor);
+//      markedTimeStr << markedTime << endl;
+//      timLabel->setText(markedTimeStr.str());
+//      timLabel->setJustification(timLabelLeft? 2 : 0);
+//      ypos += timLabel->getHeight()+30;
+//      timLabel->setOrigin(PosInt(xpos+(timLabelLeft? -30 : 30), ypos));
+//    }
+//
+//  }
 }
 

@@ -118,15 +118,38 @@ diagram just instantiate a \texttt{TimingDiagram} object from this namespace:
 
 
 \begin{center}
-  \texttt{Sigschege.TimingDiagram(<startTime>, <endTime>)}
+  \texttt{Sigschege.TimingDiagram(<startTime>, <endTime>, <width>, <sliceHeight>)}
 \end{center}
 
-Both times are floating point values.
-This function must be stored in a variable for later access. A real call will
+This method takes the following arguments:
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}[l]{l|l|l}
+    \textbf{Argument}&\textbf{Type}&\textbf{Description}\\\hline
+    startTime&float&Start time of the diagram\\
+    endTime&float&End time of the diagram\\
+    width&float&\texttt{[optional]} Width of the timing diagram\\
+    % TODO:default 8.0
+    sliceHeight&float&\texttt{[optional]}default height of a single
+    slice\\\hline
+    % TODO: default 1.0, explain what a slice is
+  \end{tabular}
+  \caption{Arguments for TimingDiagram}
+  \label{tab:timdiagram}
+\end{table}
+
+The result of this function must be stored in a variable for later access. A real call will
 look like:
 
 \begin{center}
   \texttt{td = Sigschege.TimingDiagram(0.0, 50.0)}
+\end{center}
+
+Or maybe:
+
+\begin{center}
+  \texttt{td = Sigschege.TimingDiagram(startTime=0.0, endTime=50.0, width=10.0, )}
 \end{center}
 
 \subsection{Implementing Signals}

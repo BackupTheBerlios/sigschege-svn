@@ -110,7 +110,6 @@ class EventList {
 
   //! Set the type of events (binary or named). //OBSOLETE
   void setNamedEvents(bool named) {
-    namedEvents = named;
   };
 
   //! Set the default slope, which is give to all new events.
@@ -120,11 +119,10 @@ class EventList {
   void paint(void);
   
 protected:
-  /// List of all value transistions of this signal.
+  /// List of all value transitions of this signal.
   std::vector< Handle<Event> > events;
   /// pseudo event to define initial state - no reference event, no time/delay (time is "-infinity")
   Handle<Event> initialState;
-  bool namedEvents; //OBSOLETE
   /// Default slope for new events.
   double cDefaultSlope;
   /// The state map, which defines how to visualize states.

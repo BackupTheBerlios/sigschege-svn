@@ -54,11 +54,12 @@ TimSignal::TimSignal(bool isBool, double defaultSlope): TimingObject(), EventLis
  * \param sigOffset The horizontal offset at which the signal part starts.
  * \param defaultSlope The default slope for all events.
  */
-TimSignal::TimSignal(string signalLabel, double startTime, double endTime, YaVec::PosInt origin,
+TimSignal::TimSignal(string signalLabel, TimSchedule *schedulePtr, YaVec::PosInt origin,
                      YaVec::PosInt size, bool isBool, int sigOffset, double defaultSlope)
-  : TimingObject(0, origin, size, sigOffset), EventList(isBool, defaultSlope),
-    TimText(signalLabel) {
-  setTimeRange(startTime, endTime);
+  : TimingObject(0, origin, size, sigOffset, schedulePtr),
+    EventList(isBool, defaultSlope),
+    TimText(signalLabel)
+{
 }
 
 TimSignal::~TimSignal() {
@@ -90,15 +91,21 @@ int TimSignal::vertPosFromState(StateVisual::visualType visual, StateVisual::vis
   return pos;
 }
 
-void TimSignal::paint(void) {
-  if (cCompound==0) return;
-  sort(); // makes life easier... 
+//void TimSignal::paintTimeRange(void) {
+//}
+
+void TimSignal::paintRange(int rangeNum, Event* initialStateP) {
+
+  Range<double> tRange = cSchedulePtr->timeRangeTimes(rangeNum);
+  
+  
   FPolyline *sigline0 = 0;
   FPolyline *sigline1 = 0;
   FPolyline *sigline_tmp = 0;
 
-  string currentStateStr = initialState->getNewState();
+  string currentStateStr = initialStateP->getNewState();
   StateVisual currentState = smap[currentStateStr];
+
   StateVisual newState;
   string newStateStr;
   StateVisual::visualType currentVisual = currentState.visualization();
@@ -107,7 +114,7 @@ void TimSignal::paint(void) {
   vector< Handle<Event> >::iterator eventsIter;
   double eventStart, eventEnd;
   enum { before_visible, in_visible, after_visible } where;
-  double compoundTimeDiff = cEndTime-cStartTime;
+  double compoundTimeDiff = tRange.cEnd-tRange.cStart;
   int startX, endX;
   bool partialStart;
 
@@ -164,17 +171,17 @@ void TimSignal::paint(void) {
     eventEnd = eventsIter->Object()->getTime(100);
 
     startX = timXLeft+static_cast<int>(static_cast<double>(timWidth)
-                                             * (eventStart-cStartTime)/(compoundTimeDiff));
+                                             * (eventStart-tRange.cStart)/(compoundTimeDiff));
     endX = timXLeft+static_cast<int>(static_cast<double>(timWidth)
-                                           * (eventEnd-cStartTime)/(compoundTimeDiff));
+                                           * (eventEnd-tRange.cStart)/(compoundTimeDiff));
     
-    if ((where==in_visible || (where==before_visible && eventEnd>cStartTime)) && eventStart<cEndTime) {
+    if ((where==in_visible || (where==before_visible && eventEnd>tRange.cStart)) && eventStart<tRange.cEnd) {
       // we are in the visible area (2nd condition means we just entered)
 
-      if (eventStart<cStartTime) {
+      if (eventStart<tRange.cStart) {
         // event crosses start of visible area
         startX = timXLeft;
-        percentageNewStart = (cStartTime-eventStart)/(eventEnd-eventStart);
+        percentageNewStart = (tRange.cStart-eventStart)/(eventEnd-eventStart);
         y1start = vertPosFromState(StateVisual::One, StateVisual::Zero, percentageNewStart);
         y0start = vertPosFromState(StateVisual::Zero, StateVisual::One, percentageNewStart);
         partialStart = true;
@@ -185,10 +192,10 @@ void TimSignal::paint(void) {
         partialStart = false;
       }
 
-      if (eventEnd>cEndTime) {
+      if (eventEnd>tRange.cEnd) {
         // event crosses end of visible area
         endX = timXRight;
-        percentageNewEnd = (cEndTime-eventStart)/(eventEnd-eventStart);
+        percentageNewEnd = (tRange.cEnd-eventStart)/(eventEnd-eventStart);
         y1end = static_cast<int>(timYTop+timHeight*(1.0-percentageNewEnd));
         y0end = static_cast<int>(timYTop+timHeight*percentageNewEnd);
         where = after_visible;
@@ -351,7 +358,7 @@ void TimSignal::paint(void) {
         if (newVisual==StateVisual::Zero || newVisual==StateVisual::Z) sigline1 = 0;
         else sigline0 = 0;
       }
-      if (currentState.showLabel()) { //  && (where==in_visible || eventEnd>cEndTime ???
+      if (currentState.showLabel()) { //  && (where==in_visible || eventEnd>tRange.cEnd ???
         //        if (currentStateStrstateText!="") {
         FText* label = cCompound->text();
         label->setOrigin(PosInt(static_cast<int>((startX+oldEndX)/2), y0+(y1-y0-labelheight)/2));
@@ -389,4 +396,18 @@ void TimSignal::paint(void) {
     label->setSize(12);
   }
 
+
+}
+
+void TimSignal::paint(void) {
+  if (cCompound==0) return;
+  sort(); // makes life easier... 
+
+  Event* initState4Range = initialState.Object();
+  
+  for(int i = 0; i<cSchedulePtr->numVisibleTimeRanges(); i++) {
+
+    paintRange(i, initState4Range);
+
+  }
 }

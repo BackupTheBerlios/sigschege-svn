@@ -51,6 +51,8 @@ void TimList::paint(void) {
   vector< Handle<TimingObject> >::iterator TimingObjectIter;
   int current_pos = cPadding;
 
+  cSchedule.setGeometry(cDefaultSigOffset+cPadding+cOrigin.xpos(), cSize.xpos(), 10);
+  
   // check if a compound is available
   if (getCompound()==0) return;
 
@@ -81,19 +83,18 @@ void TimList::paint(void) {
 void TimList::setTimeRange(double start, double end) {
   vector< Handle<TimingObject> >::iterator TimingObjectIter;
 
-  cStartTime = start;
-  cEndTime = end;
+  cSchedule.setTimeRange(start, end);
   TimingObject *tobject;
   for (TimingObjectIter = cLayoutList.begin(); TimingObjectIter != cLayoutList.end(); TimingObjectIter++){
     tobject = TimingObjectIter->Object();
     if ( typeid(*tobject) == typeid(TimSignal) || typeid(*tobject) == typeid(TimTime)) {
-      dynamic_cast<TimingObject*>(tobject)->setTimeRange(start, end);
+      //dynamic_cast<TimingObject*>(tobject)->setTimeRange(start, end);
     }
   }
   for (TimingObjectIter = cOverlayList.begin(); TimingObjectIter != cOverlayList.end(); TimingObjectIter++){
     tobject = TimingObjectIter->Object();
     if ( typeid(*tobject) == typeid(TimeMarker)) {
-      dynamic_cast<TimingObject*>(tobject)->setTimeRange(start, end);
+      //dynamic_cast<TimingObject*>(tobject)->setTimeRange(start, end);
     }
   }  
 }
@@ -154,7 +155,7 @@ Handle <TimLabel> TimList::createLabel() {
  * This Function will return a Handle to a Timing Diagram Signal Object
  */
 Handle <TimSignal> TimList::createSignal(string label, bool isBool, double defaultSlope) {
-  Handle<TimSignal> newTimSignal = new TimSignal(label, cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultSliceHeight),
+  Handle<TimSignal> newTimSignal = new TimSignal(label, &cSchedule, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultSliceHeight),
                                                  isBool, cDefaultSigOffset, defaultSlope);
   newTimSignal->setCompound(getCompound()->compound());
   newTimSignal->setHeight(cDefaultSliceHeight);
@@ -167,7 +168,7 @@ Handle <TimSignal> TimList::createSignal(string label, bool isBool, double defau
  * This Function will return a Handle to a time scale object
  */
 Handle<TimTime> TimList::createTime(double newLabelDistance, double newFirstLabel, double newTickDistance) {
-  Handle<TimTime> newTimTime = new TimTime(cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultSliceHeight),
+  Handle<TimTime> newTimTime = new TimTime(&cSchedule, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultSliceHeight),
                                            cDefaultSigOffset, newLabelDistance, newFirstLabel, newTickDistance);
   newTimTime->setCompound(getCompound()->compound());
   newTimTime->setHeight(cDefaultSliceHeight);
@@ -180,7 +181,7 @@ Handle<TimTime> TimList::createTime(double newLabelDistance, double newFirstLabe
 
 Handle<TimeMarker> TimList::createTimeMarker(double time, TimingObject* topTimingObject,
                                              TimingObject* bottomTimingObject) {
-  Handle<TimeMarker> newTimeMarker = new TimeMarker(time, cStartTime, cEndTime, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultSliceHeight),
+  Handle<TimeMarker> newTimeMarker = new TimeMarker(time, &cSchedule, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultSliceHeight),
                                                     cDefaultSigOffset, this, topTimingObject, bottomTimingObject);
   newTimeMarker->setPadding(cDefaultPadding);
   return newTimeMarker;

@@ -50,7 +50,7 @@ int main (int ARGC, char **ARGV) {
 
   // TODO: automate version number and add GPL stuff
   cout << "Sigschege 0.0 - a program for creating timing diagrams" << endl;
-  cout << "(c) 2004-2005 by Ulf Klaperski and Ingo Hinrichs" << endl;
+  cout << "(c) 2004-2006 by Ulf Klaperski and Ingo Hinrichs" << endl;
   
   ret = Py_Main(ARGC, ARGV);
   

@@ -57,10 +57,12 @@ md.setTimeRange(0, 25)
 
 show(md)
 
-md.moveElement(mts, mlbl)
+mlbl.setText("Timescale is now above this label")
+md.moveElement(mts, mlbl) # move timescale in front of label
 
 show(md)
 
+mlbl.setText("Timescale is now at the bottom again", "Good bye!")
 md.moveElement(mts)
 
 show(md)

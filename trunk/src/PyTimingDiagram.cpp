@@ -140,14 +140,17 @@ static int TimLabel_print(TimLabelObject *obj, FILE *fp, int flags)
 }
 
 static PyObject * TimLabel_setText(TimLabelObject *self, PyObject *args, PyObject *kwds) {
-  char *text = "1";
-  static char *kwlist[] = {"text", NULL};
+  char *text = "";
+  char *text2 = "";
+  static char *kwlist[] = {"text", "text2", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist, &text))
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|s", kwlist, &text, &text2))
     return NULL;
   string text_s = text;
+  string text2_s = text2;
 
   self->label->setText(text);
+  self->label->setText2(text2);
   Py_INCREF(Py_None);
   return (Py_None);
 }
@@ -828,6 +831,7 @@ static PyObject * TimingDiagram_createLabel(TimingDiagramObject *self, PyObject 
   // create new C++ signal object with TimingDiagram class 
   Handle<TimLabel> newLabel;
   newLabel = self->tim->createLabel();
+  newLabel->setText(tmps);
   if (before==NULL) {
     self->tim->addLast(newLabel.Object());
   } else {

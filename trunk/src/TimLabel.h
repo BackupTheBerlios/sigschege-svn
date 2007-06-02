@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004 - 2006 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -32,8 +32,9 @@
 
 /// Layout Text Class
 /*!
- * This Text Layout Class can be used as header or footer
+ * This Text Layout Class can be used as a header or footer
  */
+
 class TimLabel : public TimingObject, public TimText {
 public:
   /// The standard constructor

@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004 - 2006 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -33,18 +33,20 @@ using namespace std;
 using namespace YaVec;
 
 /*!
- * This constructor will create an Timing Diagram Label Object
+ * This constructor will create a Timing Diagram Label Object
  */
 TimLabel::TimLabel(): TimingObject(), TimText() {
   cSigOffset = 0;
+  cHAlign1 = hcenter;
 }
 
 /*!
- * This constructor will create an Timing Diagram Label Object
- * newText will be set as Text
+ * This constructor will create a Timing Diagram Label Object.
+ * newText will be set as Text.
  */
 TimLabel::TimLabel(string newText): TimingObject(), TimText(newText) {
   cSigOffset = 0;
+  cHAlign1 = hcenter;
 }
 
 

@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2005 by Ulf Klaperski
+// Copyright 2005, 2006 by Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -41,7 +41,7 @@ void TimText::setText2(std::string newText2) {
   cText2 = newText2;
 }
 
-TimText::TimText(string text1, string text2) {
+TimText::TimText(string text1, string text2, hAlignment align1, hAlignment align2) {
   cText1 = text1;
   cText2 = text2;
   cFontType = 14;
@@ -51,6 +51,8 @@ TimText::TimText(string text1, string text2) {
     cFontSize = 20;
   }
   cFontSize2 = 0;
+  cHAlign1 = align1;
+  cHAlign2 = align2;
 }
 
 
@@ -61,19 +63,48 @@ void TimText::paint(YaVec::FCompound *cCompound) {
   PosInt cUpperLeft;
   getTextGeometry(cUpperLeft, cLowerRight);
   int height = cLowerRight.ypos()-cUpperLeft.ypos();
+  int width = cLowerRight.xpos()-cUpperLeft.xpos();
+  int xpos, twidth;
   
   text = cCompound->text();
   text->setText(cText1);
   text->setFont(cFontType);
   text->setSize(cFontSize);
-  text->setOrigin(PosInt(cUpperLeft.xpos(), cUpperLeft.ypos()+height/2+(cText2==""? text->getHeight()/2 : 0)));
 
+  twidth = text->getWidth();
+  switch (cHAlign1) {
+  case left:
+    xpos = cUpperLeft.xpos();
+    break;
+  case right:
+    xpos = cLowerRight.xpos()-twidth;
+    break;
+  case follow:
+  case hcenter:
+    xpos = cUpperLeft.xpos()+width/2-twidth/2;
+  }    
+  text->setOrigin(PosInt(xpos, cUpperLeft.ypos()+height/2+(cText2==""? text->getHeight()/2 : 0)));
+  
   if (cText2!="") {
+    hAlignment align = cHAlign2==follow ? cHAlign1 : cHAlign2;
+    
     text = cCompound->text();
     text->setText(cText2);
     text->setFont(cFontType);
     text->setSize(cFontSize2==0 ? cFontSize: cFontSize2);
-    text->setOrigin(PosInt(cUpperLeft.xpos(), cLowerRight.ypos()));
+    twidth = text->getWidth();
+    switch (align) {
+    case left:
+      xpos = cUpperLeft.xpos();
+      break;
+    case right:
+      xpos = cLowerRight.xpos()-twidth;
+      break;
+    case follow:
+    case hcenter:
+      xpos = cUpperLeft.xpos()+width/2-twidth/2;
+    }    
+    text->setOrigin(PosInt(xpos, cLowerRight.ypos()));
   }
 }
 

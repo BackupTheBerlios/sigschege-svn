@@ -6,11 +6,12 @@ AC_INIT(Sigschege, 0.0, suupkopp@user.berlios.de)
 AC_CONFIG_SRCDIR([src/EventList.cpp])
 AM_INIT_AUTOMAKE
 AC_LANG(C++)
+AC_PROG_LIBTOOL
 
 AM_CONFIG_HEADER(src/config.h)
 
 # Checks for programs.
-AC_PROG_LIBTOOL
+#AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_CXX
 
@@ -37,11 +38,13 @@ fi
 
 # Checks for header files.
 AC_HEADER_STDC
+AC_CHECK_HEADERS([/usr/include/python2.5/Python.h]      ,[AC_SUBST(INC_PYTHON,[/usr/include/python2.5])],[
+AC_CHECK_HEADERS([/usr/include/python2.5/Python.h]      ,[AC_SUBST(INC_PYTHON,[/usr/include/python2.5])],[
 AC_CHECK_HEADERS([/usr/include/python2.4/Python.h]      ,[AC_SUBST(INC_PYTHON,[/usr/include/python2.4])],[
 AC_CHECK_HEADERS([/usr/include/python2.4/Python.h]      ,[AC_SUBST(INC_PYTHON,[/usr/include/python2.4])],[
 AC_CHECK_HEADERS([/usr/include/Python.h]                ,[AC_SUBST(INC_PYTHON,[/usr/include])],[
 AC_CHECK_HEADERS([/usr/local/include/python2.4/Python.h],[AC_SUBST(INC_PYTHON,[/usr/local/include/python2.4])],[
-AC_CHECK_HEADERS([/usr/local/include/Python.h]          ,[AC_SUBST(INC_PYTHON,[/usr/local/include])],[AC_MSG_ERROR([Python.h no found!]);exit;])])])])])
+AC_CHECK_HEADERS([/usr/local/include/Python.h]          ,[AC_SUBST(INC_PYTHON,[/usr/local/include])],[AC_MSG_ERROR([Python.h no found!]);exit;])])])])])])])
 
 
 

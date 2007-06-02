@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2005 by Ulf Klaperski
+// Copyright 2005, 2006 by Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -29,6 +29,7 @@
 #include <string>
 #include "YaVecCompound.h"
 
+
 /// Text Class
 /*!
  * This Text Class shows a text for signals or time scales.
@@ -37,8 +38,21 @@
 class TimText {
 public:
 
+  /*!The horizontal alignment of a text.
+   * "follow" is meant for secondary text and makes
+   * it just follow alignment of the primary text.
+   */
+  enum hAlignment {
+    hcenter,
+    left,
+    right,
+    follow
+  };
+
+  
   /// Constructor.
-  TimText(std::string text1 = "", std::string text2 = "");
+  TimText(std::string text1 = "", std::string text2 = "",
+          hAlignment align1 = left, hAlignment align2 = follow);
 
   /// The standard destructor
   virtual ~TimText() {}
@@ -49,6 +63,11 @@ public:
   void setText1(std::string newText1);
   /// Set a new Text2 - if this is used two lines of text are shown.
   void setText2(std::string newText2);
+  /// Set the alignment for text1.
+  void setAlign1(hAlignment align);
+  /// Set the alignment for text2.
+  void setAlign2(hAlignment align);
+
 
   /// Return the currently active text.
   std::string getText(void) { return cText1; }
@@ -77,6 +96,18 @@ protected:
   int cFontSize;
   /// The size of the lower text.
   int cFontSize2;
+  /// Alignment of text1.
+  hAlignment cHAlign1;
+  /// Alignment of text2.
+  hAlignment cHAlign2;
 };
+
+inline void TimText::setAlign1(hAlignment align) {
+  cHAlign1 = align;
+}
+
+inline void TimText::setAlign2(hAlignment align) {
+  cHAlign2 = align;
+}
 
 #endif // _H_TIMTEXT

@@ -79,7 +79,6 @@ namespace YaVec {
       sortMembersByDepth();
       members_flat_valid = true;
       vector<YaVecElm*>::iterator members_iter;
-      cout << "================================================================================" << endl;
       for ( members_iter = members_flat.begin(); members_iter != members_flat.end(); ++members_iter ) {
         //cout << "DRAWING: ";
         //(*members_iter)->debugPrint(cout, true, 10);

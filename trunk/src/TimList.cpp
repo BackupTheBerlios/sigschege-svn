@@ -155,8 +155,9 @@ Handle <TimLabel> TimList::createLabel() {
  * This Function will return a Handle to a Timing Diagram Signal Object
  */
 Handle <TimSignal> TimList::createSignal(string label, bool isBool, double defaultSlope) {
-  Handle<TimSignal> newTimSignal = new TimSignal(label, &cSchedule, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultSliceHeight),
-                                                 isBool, cDefaultSigOffset, defaultSlope);
+  TimSignal * TS = new TimSignal(label, &cSchedule, cOrigin, PosInt(cSize.xpos()-2*cPadding, cDefaultSliceHeight),
+                                 isBool, cDefaultSigOffset, defaultSlope);
+  Handle<TimSignal> newTimSignal(TS);
   newTimSignal->setCompound(getCompound()->compound());
   newTimSignal->setHeight(cDefaultSliceHeight);
   newTimSignal->enableBorder(cDefaultBorder);

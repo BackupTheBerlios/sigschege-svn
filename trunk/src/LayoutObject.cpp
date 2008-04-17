@@ -39,6 +39,7 @@ LayoutObject::LayoutObject(): cReference(), cReferrers(), cCompound() {
 
 LayoutObject::LayoutObject(LayoutObject *newReference, YaVec::PosInt origin, YaVec::PosInt size):
   cOrigin(origin), cSize(size), cReference(newReference) {
+  refCount = 0;
   cDrawBorder = false;
   cPadding    = 50;
 }

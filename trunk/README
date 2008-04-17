@@ -44,6 +44,7 @@ INSTALL for generic install instructions.
 
 * Building from source (Subversion snapshot)
 
+libtoolize
 aclocal
 automake --add-missing
 autoconf

@@ -72,6 +72,7 @@ void LayoutObject::paint(void) {
   }
 }
 
+void LayoutObject::save(std::ofstream &ssg_file) {};
 
 /*!
  * Set the Origin of this Layout Object

@@ -66,3 +66,5 @@ mlbl.setText("Timescale is now at the bottom again", "Good bye!")
 md.moveElement(mts)
 
 show(md)
+
+md.save("datatrans.ssg")

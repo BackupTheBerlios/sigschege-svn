@@ -52,3 +52,4 @@ mdo.deleteEvent(25, 0, "1")
 
 md.exportPic("Simple2.png", "png")
 
+md.save("simple.ssg")

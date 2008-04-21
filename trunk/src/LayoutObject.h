@@ -29,6 +29,7 @@
 #include "Handle.t"
 #include <vector>
 #include <YaVecFigure.h>
+#include <fstream>
 
 /// Generic layout object.
 class LayoutObject {
@@ -51,7 +52,10 @@ public:
   //! Paint this Layout Object
   virtual void paint(void);
 
-  //! Register a layout object which references this layout object.
+  /// Save this Layout Object in XML
+  virtual void save(std::ofstream &ssg_file);
+
+  /// Register a layout object which references this layout object.
   /*!
    * Insert a layout object into the referrers list.
    * \return False if the layout object already  existed, true otherwise.

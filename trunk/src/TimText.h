@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2005, 2006 by Ulf Klaperski
+// Copyright 2005 - 2008 by Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -27,6 +27,7 @@
 #define _H_TIMTEXT
 
 #include <string>
+#include <fstream>
 #include "YaVecCompound.h"
 
 
@@ -83,6 +84,9 @@ public:
 
   /// paint the layout object
   void paint(YaVec::FCompound *cCompound);
+
+  /// save this element in the given stream (xml format)
+  void save(std::ofstream &ssg_file);
 
   /// Function to be filled in by the derived class to query the text area.
   virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight) = 0;

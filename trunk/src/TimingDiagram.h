@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004 - 2008 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -59,6 +59,8 @@ public:
 
   //! Export the Timing Diagram to any picture format (supported by fig2dev)
   void exportAny(std::string file, std::string format);
+
+  bool save(std::string filename, bool overwrite=false);
   
 private:
   YaVec::FFigure cYaVec;

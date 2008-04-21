@@ -903,6 +903,21 @@ static int TimingDiagram_print(TimSignalObject *obj, FILE *fp, int flags)
   fprintf(fp, "<TimingDiagram Object>");
   return 0;
 }
+static PyObject *TimingDiagram_save(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
+
+  char *filename = "";
+  static char *kwlist[] = {"filename", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist, &filename))
+    return NULL;
+  string tmps;
+  tmps = filename;
+
+  if (tmps.size()==0) return NULL; // TODO: error handling
+  self->tim->save(tmps);
+    Py_INCREF(Py_None);
+    return Py_None;
+}
 
 static PyMethodDef TimingDiagram_methods[] = {
   {"createSignal", (PyCFunction)TimingDiagram_createSignal, METH_VARARGS|METH_KEYWORDS,
@@ -930,6 +945,10 @@ static PyMethodDef TimingDiagram_methods[] = {
   {
     "exportPic", (PyCFunction)TimingDiagram_exportPic, METH_VARARGS|METH_KEYWORDS,
     "Export the Timing Diagram as any picture format."
+  },
+  {
+    "save", (PyCFunction)TimingDiagram_save, METH_VARARGS|METH_KEYWORDS,
+    "Save the Timing Diagram in Sigschege XML format."
   },
   {NULL}  /* Sentinel */
 };

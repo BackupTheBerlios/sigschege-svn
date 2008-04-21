@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004 - 2008 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -30,6 +30,7 @@
 #include "TimText.h"
 #include "EventList.h"
 #include <string>
+#include <fstream>
 
 //! Signal Call
 class TimSignal : public TimingObject, public EventList, public TimText {
@@ -47,6 +48,9 @@ public:
   //! Paint the Signal.
   void paint(void);
 
+  /// save this element in the given stream (xml format)
+  void save(std::ofstream &ssg_file);
+
   //! internal function to paint the ranges
   void paintRange(int rangeNum, Event* initialStateP);
   
@@ -56,6 +60,7 @@ public:
   /// internal helper function: calculate the position from the state (0, 1, Z), also for transitions between states.
   int vertPosFromState(StateVisual::visualType visual, StateVisual::visualType newVisual=StateVisual::X, double percentageNew=0.0);
 
+  
 };
 
 #endif

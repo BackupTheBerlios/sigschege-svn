@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005, 2006 by Ulf Klaperski
+// Copyright 2004 - 2008 by Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -26,6 +26,7 @@
 #ifndef _H_TIMTIME
 #define _H_TIMTIME
 
+#include <fstream>
 #include "TimingObject.h"
 #include "TimText.h"
 
@@ -59,6 +60,9 @@ public:
 
   /// paint the layout object
   void paint(void);
+
+  /// save this element in the given stream (xml format)
+  void save(std::ofstream &ssg_file);
 
   
 private:

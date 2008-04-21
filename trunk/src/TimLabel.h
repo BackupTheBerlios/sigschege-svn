@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004 - 2006 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004 - 2008 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -29,6 +29,7 @@
 #include "TimingObject.h"
 #include "TimText.h"
 #include <string>
+#include <fstream>
 
 /// Layout Text Class
 /*!
@@ -48,6 +49,9 @@ public:
   
   /// paint the layout object
   void paint(void);
+
+  /// save this element in the given stream (xml format)
+  void save(std::ofstream &ssg_file);
 
   /// Function needed by the TimText base class to query the text area.
   virtual void getTextGeometry(YaVec::PosInt &upperLeft, YaVec::PosInt &lowerRight);

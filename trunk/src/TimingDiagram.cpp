@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004, 2005 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004 - 2008 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -26,6 +26,8 @@
 
 #include "TimingDiagram.h"
 #include <stdio.h>
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 using namespace YaVec;
@@ -65,6 +67,21 @@ void TimingDiagram::exportEPS(string file) {
 void TimingDiagram::exportAny(string file, string format) {
   paint();
   cYaVec.exportFig2dev(format, file);
+}
+
+bool TimingDiagram::save(std::string filename, bool overwrite) {
+  ofstream ssg_file;
+  vector< Handle<TimingObject> >::iterator TimingObjectIter;
+
+  ssg_file.open(filename.c_str(), ios::out);
+  //if (!ssg_file) return false;
+  ssg_file << "<?xml version=\"1.0\"?>" << endl;
+  ssg_file << "<sigschege>" << endl;
+  for (TimingObjectIter = cLayoutList.begin(); TimingObjectIter != cLayoutList.end(); TimingObjectIter++){
+    TimingObjectIter->Object()->save(ssg_file);
+  }
+  ssg_file << "</sigschege>" << endl;
+  ssg_file.close();
 }
 
 

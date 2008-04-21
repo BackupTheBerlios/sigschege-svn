@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004, 2005, 2006 by Ulf Klaperski
+// Copyright 2004 - 2008 by Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -158,3 +158,7 @@ void TimTime::paint(void) {
   } 
 }
 
+void TimTime::save(std::ofstream &ssg_file) {
+  ssg_file << "<timescale>" << endl;
+  ssg_file << "</timescale>" << endl;
+}

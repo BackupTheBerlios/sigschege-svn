@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004 - 2008 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 

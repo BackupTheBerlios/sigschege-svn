@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2005, 2006 by Ulf Klaperski
+// Copyright 2005 - 2008 by Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -108,3 +108,7 @@ void TimText::paint(YaVec::FCompound *cCompound) {
   }
 }
 
+void TimText::save(std::ofstream &ssg_file) {
+  ssg_file << "<text>" << endl;
+  ssg_file << "</text>" << endl;
+}

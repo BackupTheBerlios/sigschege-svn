@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file  
-// Copyright 2004 - 2006 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004 - 2008 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -77,3 +77,7 @@ void TimLabel::paint(void) {
   TimText::paint(getCompound()); // draw the text
 }
 
+void TimLabel::save(std::ofstream &ssg_file) {
+  ssg_file << "<label>" << endl;
+  ssg_file << "</label>" << endl;
+}

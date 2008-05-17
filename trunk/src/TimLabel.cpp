@@ -79,5 +79,6 @@ void TimLabel::paint(void) {
 
 void TimLabel::save(std::ofstream &ssg_file) {
   ssg_file << "<label>" << endl;
+  TimText::save(ssg_file);
   ssg_file << "</label>" << endl;
 }

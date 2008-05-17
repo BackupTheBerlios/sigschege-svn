@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // \file 
-// Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
+// Copyright 2004 - 2008 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -903,6 +903,8 @@ static int TimingDiagram_print(TimSignalObject *obj, FILE *fp, int flags)
   fprintf(fp, "<TimingDiagram Object>");
   return 0;
 }
+
+
 static PyObject *TimingDiagram_save(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
 
   char *filename = "";
@@ -915,6 +917,23 @@ static PyObject *TimingDiagram_save(TimingDiagramObject *self, PyObject *args, P
 
   if (tmps.size()==0) return NULL; // TODO: error handling
   self->tim->save(tmps);
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+
+static PyObject *TimingDiagram_load(TimingDiagramObject *self, PyObject *args, PyObject *kwds) {
+
+  char *filename = "";
+  static char *kwlist[] = {"filename", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist, &filename))
+    return NULL;
+  string tmps;
+  tmps = filename;
+
+  if (tmps.size()==0) return NULL; // TODO: error handling
+  self->tim->load(tmps);
     Py_INCREF(Py_None);
     return Py_None;
 }

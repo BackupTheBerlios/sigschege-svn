@@ -45,23 +45,27 @@
 
 class TimingDiagram : public TimList {
 public:
-  //! The standard constructor
+  /// The standard constructor
   TimingDiagram(double newStartTime=0.0, double newEndTime=100.0);
 
-  //! The standard destructor
+  /// The standard destructor
   ~TimingDiagram();
 
-  //! Export the Timing Diagram to an xfig file
+  /// Export the Timing Diagram to an xfig file
   void exportFig(std::string file);
 
-  //! Export the Timing Diagram to an encapsulated postscript (EPS)
+  /// Export the Timing Diagram to an encapsulated postscript (EPS)
   void exportEPS(std::string file);
 
-  //! Export the Timing Diagram to any picture format (supported by fig2dev)
+  /// Export the Timing Diagram to any picture format (supported by fig2dev)
   void exportAny(std::string file, std::string format);
 
+  /// Save the timing diagram in native sigschege format (XML).
   bool save(std::string filename, bool overwrite=false);
-  
+
+  /// Load a timing diagram in native sigschege format.
+  bool load(std::string filename);
+
 private:
   YaVec::FFigure cYaVec;
 

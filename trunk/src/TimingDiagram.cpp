@@ -76,12 +76,19 @@ bool TimingDiagram::save(std::string filename, bool overwrite) {
   ssg_file.open(filename.c_str(), ios::out);
   //if (!ssg_file) return false;
   ssg_file << "<?xml version=\"1.0\"?>" << endl;
+  ssg_file << "<!DOCTYPE sigschege SYSTEM \"sigschege.dtd\">" << endl;
   ssg_file << "<sigschege>" << endl;
   for (TimingObjectIter = cLayoutList.begin(); TimingObjectIter != cLayoutList.end(); TimingObjectIter++){
     TimingObjectIter->Object()->save(ssg_file);
   }
   ssg_file << "</sigschege>" << endl;
   ssg_file.close();
+}
+
+bool TimingDiagram::load(std::string filename) {
+  ofstream ssg_file;
+  vector< Handle<TimingObject> >::iterator TimingObjectIter;
+
 }
 
 

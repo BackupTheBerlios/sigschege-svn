@@ -413,6 +413,24 @@ void TimSignal::paint(void) {
 }
 
 void TimSignal::save(std::ofstream &ssg_file) {
+  vector< Handle<Event> >::iterator eventsIter;
+
   ssg_file << "<signal>" << endl;
+  TimText::save(ssg_file);
+  ssg_file << "<initialstate>";
+  ssg_file << "<![CDATA[" << initialState.Object()->getNewState() << "]]>";
+  ssg_file << "</initialstate>" << endl;
+  for ( eventsIter = events.begin(); eventsIter != events.end(); ++eventsIter ) {
+    ssg_file << "<event>";
+    ssg_file << "<time>";
+    ssg_file << eventsIter->Object()->getTime();
+    ssg_file << "</time>";
+    ssg_file << "<state>";
+    ssg_file << "<![CDATA[" << eventsIter->Object()->getNewState() << "]]>";
+    ssg_file << "</state>";
+    ssg_file << "</event>" << endl;
+    
+  }
   ssg_file << "</signal>" << endl;
 }
+

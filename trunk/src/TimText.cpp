@@ -109,6 +109,7 @@ void TimText::paint(YaVec::FCompound *cCompound) {
 }
 
 void TimText::save(std::ofstream &ssg_file) {
-  ssg_file << "<text>" << endl;
-  ssg_file << "</text>" << endl;
+  ssg_file << "<primarytext>" << endl;
+  ssg_file << "<![CDATA[" << cText1 << "]]>" << endl;
+  ssg_file << "</primarytext>" << endl;
 }

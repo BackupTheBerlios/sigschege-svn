@@ -160,5 +160,6 @@ void TimTime::paint(void) {
 
 void TimTime::save(std::ofstream &ssg_file) {
   ssg_file << "<timescale>" << endl;
+  TimText::save(ssg_file);
   ssg_file << "</timescale>" << endl;
 }

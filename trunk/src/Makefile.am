@@ -10,7 +10,7 @@ TimingMain_SOURCES = Handle.t config.h Event.h Event.cpp EventList.h EventList.c
     TimTime.cpp TimeMarker.h TimeMarker.cpp State.h State.cpp TimText.h TimText.cpp TimSchedule.h TimSchedule.cpp
 TimingMain_LDADD = ../YaVec/src/lib_yavec.la
 TimingMain_CPPFLAGS = -Wall -g -DwxUSE_STD_STRING=1 -DwxUSE_UNICODE=0
-TimingMain_LDFLAGS  = $(shell freetype-config --libs)
+TimingMain_LDFLAGS  = $(shell freetype-config --libs) -lxerces-c
 
 general_sources = Handle.t config.h Event.h Event.cpp EventList.h EventList.cpp TimingDiagram.cpp \
     TimingDiagram.h TimLabel.h TimLabel.cpp LayoutObject.h LayoutObject.cpp TimingObject.h \
@@ -20,9 +20,9 @@ general_sources = Handle.t config.h Event.h Event.cpp EventList.h EventList.cpp 
 sigschege_SOURCES = Sigschege.cpp PyTimingDiagram.cpp PyTimingDiagram.h $(general_sources)
 sigschege_LDADD = ../YaVec/src/lib_yavec.la
 sigschege_CPPFLAGS = -Wall -g
-sigschege_LDFLAGS  = $(shell freetype-config --libs) -lpython2.5
+sigschege_LDFLAGS  = $(shell freetype-config --libs) -lpython2.5 -lxerces-c
 
 gsigschege_SOURCES = GSigschege.cpp $(general_sources) ../YaVec/src/YaVecVwx.cpp ../YaVec/src/YaVecVwx.h
 gsigschege_LDADD = ../YaVec/src/lib_yavec.la
 gsigschege_CPPFLAGS = -Wall -g
-gsigschege_LDFLAGS  = $(shell freetype-config --libs)  $(shell wx-config --libs)
+gsigschege_LDFLAGS  = $(shell freetype-config --libs)  $(shell wx-config --libs) -lxerces-c

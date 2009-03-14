@@ -26,6 +26,7 @@
 #ifndef _H_TIMING
 #define _H_TIMING
 
+#include "SigschegeCommon.h"
 #include "TimList.h"
 #include "TimLabel.h"
 #include "TimSignal.h"
@@ -35,6 +36,23 @@
 #include <YaVecFigure.h>
 #include "EventList.h"
 #include <vector>
+#include <xercesc/util/XercesDefs.hpp>
+#include <xercesc/sax/ErrorHandler.hpp>
+#include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/util/XMLString.hpp>
+#include <xercesc/dom/DOM.hpp>
+#include <xercesc/dom/DOMImplementation.hpp>
+#include <xercesc/dom/DOMImplementationLS.hpp>
+#include <xercesc/dom/DOMWriter.hpp>
+
+#include <xercesc/framework/StdOutFormatTarget.hpp>
+#include <xercesc/framework/LocalFileFormatTarget.hpp>
+#include <xercesc/parsers/XercesDOMParser.hpp>
+#include <xercesc/util/XMLUni.hpp>
+#include <iostream>
+#include <xercesc/util/OutOfMemoryException.hpp>
+
+XERCES_CPP_NAMESPACE_USE
 
 //! The TimingDiagram Class is the toplevel class that contains the layout and the objects of a timing diagram.
 /*!
@@ -68,6 +86,8 @@ public:
 
 private:
   YaVec::FFigure cYaVec;
+
+  std::string xml_gettext(DOMNode *parent);
 
 };
 #endif // _H_TIMING

@@ -26,6 +26,7 @@
 #include <fstream>
 #include <iostream>
 #include <typeinfo>
+#include <algorithm>
 #include "YaVecCompound.h"
 #include "YaVecPolyline.h"
 #include "YaVecArc.h"

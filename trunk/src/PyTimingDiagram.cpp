@@ -969,6 +969,10 @@ static PyMethodDef TimingDiagram_methods[] = {
     "save", (PyCFunction)TimingDiagram_save, METH_VARARGS|METH_KEYWORDS,
     "Save the Timing Diagram in Sigschege XML format."
   },
+  {
+    "load", (PyCFunction)TimingDiagram_load, METH_VARARGS|METH_KEYWORDS,
+    "Load a Timing Diagram in Sigschege XML format."
+  },
   {NULL}  /* Sentinel */
 };
 

@@ -61,3 +61,12 @@ CXXFLAGS=-g ./configure
 make
 
 libtool --mode=execute gdb ./sigschege
+
+* Building from source with cmake (experimental)
+
+> mkdir build
+> cd build
+> cmake ../
+> make
+
+

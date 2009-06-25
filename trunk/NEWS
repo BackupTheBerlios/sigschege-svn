@@ -1,0 +1,2 @@
+ - 25 June 2009, Ingo Hinrichs:
+   Added experimental cmake support. Currently only YaVec compiles.

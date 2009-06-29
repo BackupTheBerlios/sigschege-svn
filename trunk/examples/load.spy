@@ -1,0 +1,11 @@
+# hey emacs, it's -*- python -*-
+# $Id: datatrans.spy 149 2008-04-21 21:56:29Z ro_kenn $
+# first example timing diagram creation script for sigschege
+
+md = Sigschege.TimingDiagram(0.0, 40.0)
+md.load("simple.ssg")
+md.save("simple_save.ssg")
+
+me = Sigschege.TimingDiagram(0.0, 40.0)
+me.load("datatrans.ssg")
+me.save("datatrans_save.ssg")

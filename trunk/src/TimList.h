@@ -99,7 +99,7 @@ public:
   //! Set the default default border of the timing diagram elements.
   void setDefaultBorder(bool defaultBorder) { cDefaultBorder = defaultBorder; }
   //! Set the default offset of signals.
-  void setDefaultSigOffset(int defaultSigOffset) { cDefaultSigOffset = defaultSigOffset; }
+  void setDefaultSigOffset(int defaultSigOffset);
   //! Get the default offset of signals.
   int getDefaultSigOffset(void) { return cDefaultSigOffset; }
   

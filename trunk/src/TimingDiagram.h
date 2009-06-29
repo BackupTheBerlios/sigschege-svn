@@ -84,8 +84,10 @@ public:
   /// Load a timing diagram in native sigschege format.
   bool load(std::string filename);
 
-private:
+
   YaVec::FFigure cYaVec;
+
+private:
 
   std::string xml_gettext(DOMNode *parent);
 

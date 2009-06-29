@@ -64,9 +64,9 @@ namespace YaVec {
     /// Unregister a view that has doesn't want to be updated any more.
     void unregisterView(FigView* view);
 
-    /// Query the screen resolution in dpi
-    bool setScreenDpi(int newScreenDpi);
     /// Set the screen resolution in dpi
+    bool setScreenDpi(int newScreenDpi);
+    /// Query the screen resolution in dpi
     int getScreenDpi(void) { return screen_dpi; };
 
     /// Set the file resolution - should not be used (see file_dpi variable)

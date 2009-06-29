@@ -45,6 +45,15 @@ TimList::TimList():LayoutObject(), cLayoutList() {
 TimList::~TimList() {
 }
 
+void TimList::setDefaultSigOffset(int defaultSigOffset) {
+  vector< Handle<TimingObject> >::iterator TimingObjectIter;
+  cDefaultSigOffset = defaultSigOffset; 
+  for (TimingObjectIter = cLayoutList.begin(); TimingObjectIter != cLayoutList.end(); TimingObjectIter++){
+    TimingObjectIter->Object()->setSigOffset(cDefaultSigOffset);
+  }
+}
+
+
 /*!
  * Paint the List
  */
@@ -163,6 +172,7 @@ Handle <TimSignal> TimList::createSignal(string label, bool isBool, double defau
   newTimSignal->setHeight(cDefaultSliceHeight);
   newTimSignal->enableBorder(cDefaultBorder);
   newTimSignal->setPadding(cDefaultPadding);
+  newTimSignal->setSigOffset(cDefaultSigOffset); 
   return newTimSignal;
 }
 

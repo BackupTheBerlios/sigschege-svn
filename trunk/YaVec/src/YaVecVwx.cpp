@@ -40,11 +40,13 @@ namespace YaVec {
 
   // Define a constructor for my canvas
     FigVwx::FigVwx(FFigure *picture, wxFrame *frame, int x, int y, int w, int h, long style)
-      : wxWindow(frame, -1, wxPoint(x, y), wxSize(w, h), style), FigView(picture)
+      : wxScrolledWindow(frame, -1, wxPoint(x, y), wxSize(w, h), style), FigView(picture)
   {
     cout << "constr: " << this << endl;
     SetBackgroundColour(*wxWHITE);
     maxDist = 5*mypicture->scale()+5;
+    SetVirtualSize(wxSize(w, h));
+    SetScrollRate( 10, 10 );
   }
 
 
@@ -168,7 +170,7 @@ namespace YaVec {
 
   void FigVwx::clear(void) {
     cout << "Clear" << endl;
-    clear();
+    ClearBackground();
   }
 
   void FigVwx::drawMarker(PosInt origin) {

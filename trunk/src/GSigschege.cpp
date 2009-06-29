@@ -51,6 +51,7 @@ using namespace YaVec;
 MyFrame   *frame = (MyFrame *) NULL;
 wxMenuBar *menu_bar = (wxMenuBar *) NULL;
 FigVwx *canvas;
+FFigure *ev_pic;
 
 int state = 4;
 
@@ -73,7 +74,7 @@ MyApp::MyApp()
 bool MyApp::OnInit()
 {
 
-  FFigure *ev_pic = new FFigure();
+  ev_pic = new FFigure();
 
   // Make a menubar
   wxMenu *file_menu = new wxMenu;
@@ -87,7 +88,7 @@ bool MyApp::OnInit()
   file_menu->Append(FILE_QUIT, _T("E&xit"),                _T("Quit program"));
 
   wxMenu *help_menu = new wxMenu;
-  help_menu->Append(HELP_ABOUT, _T("&About"),              _T("About layout demo"));
+  help_menu->Append(HELP_ABOUT, _T("&About"),              _T("About"));
 
   menu_bar = new wxMenuBar;
 
@@ -96,6 +97,7 @@ bool MyApp::OnInit()
 
   // Create the main frame window
   frame = new MyFrame(NULL, _T("Sigschege"), -1, -1, 800, 600);
+  frame->tim = new TimingDiagram(0.0, 100.0);
 
   // Associate the menu bar with the frame
   frame->SetMenuBar(menu_bar);
@@ -118,7 +120,7 @@ bool MyApp::OnInit()
   wxButton *btn4 = new wxButton(panel, BUTTON_ARCS, _T("Toggle arcs")) ;
   wxButton *btn5 = new wxButton(panel, BUTTON_TEXT, _T("Toggle text")) ;
 
-  canvas = new FigVwx(ev_pic, frame, 0, 0, 400, 400, wxRETAINED);
+  canvas = new FigVwx(&frame->tim->cYaVec, frame, 0, 0, 800, 600, wxRETAINED);
   // Set constraints for canvas subwindow
   wxLayoutConstraints *c2 = new wxLayoutConstraints;
   c2->left.SameAs       (frame, wxLeft);
@@ -186,6 +188,7 @@ BEGIN_EVENT_TABLE(MyFrame, wxFrame)
   EVT_MENU(LAYOUT_QUIT, MyFrame::OnQuit)
   EVT_MENU(FILE_OPEN_FILE, MyFrame::open_file)
   EVT_MENU(FILE_SAVE, MyFrame::save)
+  EVT_MENU(FILE_QUIT, MyFrame::OnQuit)
   EVT_MENU(FILE_SAVE_AS, MyFrame::save_as)
   EVT_MENU(HELP_ABOUT, MyFrame::about) 
   EVT_BUTTON(BUTTON_DASHY, MyFrame::toggleDashedLines)
@@ -202,6 +205,25 @@ void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event) )
 }
 
 void MyFrame::open_file(wxCommandEvent& event) {
+
+  string filename;
+  wxFileDialog dialog(this, _T("Load Timing Diagram"), wxGetCwd(), wxEmptyString, _T("Sigschege Files (*.ssg)|*.ssg"));
+  
+  dialog.CentreOnParent();
+  //dialog.SetDirectory(wxGetHomeDir());
+
+    if (dialog.ShowModal() == wxID_OK)
+    {
+        wxString info =  _T("Information");
+        wxMessageDialog dialog2(this, info, dialog.GetPath());
+        dialog2.ShowModal();
+	filename = dialog.GetPath().char_str();
+	tim->setWidth(800*15);
+	//tim->setDefaultSigOffset(1000);
+	tim->load(filename);
+	tim->paint();
+	canvas->refreshAll();
+    }
 }
 
 void MyFrame::save(wxCommandEvent& event) {
@@ -400,4 +422,5 @@ void MyFrame::about(wxCommandEvent& event)
   wxString text = wxString(wxT("Sigschege\n")) + wxT("Written by Ulf Klaperski & Ingo Hinrichs\n");
       wxMessageDialog* dialog = new wxMessageDialog(this, text.c_str());
       dialog->ShowModal();
-      dialog->Destroy();}
+      dialog->Destroy();
+}

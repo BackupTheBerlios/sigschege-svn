@@ -934,6 +934,7 @@ static PyObject *TimingDiagram_load(TimingDiagramObject *self, PyObject *args, P
 
   if (tmps.size()==0) return NULL; // TODO: error handling
   self->tim->load(tmps);
+  // TODO: need "resync" functionality to import data structures into Python
     Py_INCREF(Py_None);
     return Py_None;
 }

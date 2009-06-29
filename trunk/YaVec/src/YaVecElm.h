@@ -51,7 +51,7 @@ namespace YaVec {
     int idx;    
   };
 
-  /// An YaVec Element - abstract base class for all YaVec elements (compound, polyline, text,...)
+  /// A YaVec Element - abstract base class for all YaVec elements (compound, polyline, text,...)
   class YaVecElm {
   public:
     /// Constructor

@@ -22,17 +22,18 @@
 //
 // $Id: $
 
+#include "TimingDiagram.h"
+
   
 #ifndef _GSIGSCHEGE_H
 #define _GSIGSCHEGE_H _GSIGSCHEGE_H 
 
 /// Example application
-class MyApp: public wxApp
-{
-public:
-    MyApp();
-    /// To be executed on initialization of the application.
-    bool OnInit();
+class MyApp: public wxApp {
+  public:
+  MyApp();
+  /// To be executed on initialization of the application.
+  bool OnInit();
 };
 
 // Define a new frame
@@ -42,11 +43,11 @@ class MyWindow;
 /// Example frame 
 class MyFrame: public wxFrame
 {
-public:
-
+  public:
+  
   /// Constructor.
   MyFrame(wxFrame *frame, const wxChar *title, int x, int y, int w, int h);
-
+  
   /// Function to be executed when quitting this frame.
   void OnQuit(wxCommandEvent& event);
   /// Dummy comment.
@@ -72,7 +73,10 @@ public:
   /// Dummy comment.
   void about(wxCommandEvent& event);
   
+  TimingDiagram *tim;
+
  private:
+
   DECLARE_EVENT_TABLE()
 };
 

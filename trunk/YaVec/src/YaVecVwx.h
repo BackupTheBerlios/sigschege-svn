@@ -34,7 +34,7 @@
 namespace YaVec {
 
   /// A YaVec View class for the wxWidgets toolkit.
-  class FigVwx : public wxWindow, public FigView {
+  class FigVwx : public wxScrolledWindow, public FigView {
   public:
     /// Constructor for this class.
     FigVwx(FFigure *picture, wxFrame *frame, int x=-1, int y=-1, int width=-1, int height=-1,

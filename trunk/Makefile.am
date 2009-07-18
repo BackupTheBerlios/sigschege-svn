@@ -1,1 +1,0 @@
-SUBDIRS = YaVec src doc

@@ -1,0 +1,7 @@
+ - 18 July 2009, Ingo Hinrichs:
+   - Created new directories for Sigschege (GUI) and Sigschege (library)
+   - Moved Sigschege library file to new library directory
+   - Setup cmake build system for Sigschege library
+   
+ - 25 June 2009, Ingo Hinrichs:
+   - Added experimental cmake support. Currently only YaVec compiles.

@@ -1,3 +1,8 @@
+
+cmake_minimum_required(VERSION 2.6)
+
+SET(CMAKE_BUILD_TYPE "Debug")
+
 include(FindFreetype)
 
 find_package(Freetype REQUIRED)
@@ -29,3 +34,13 @@ if(wxWidgets_FOUND)
     target_link_libraries(GUIExample yavec ${wxWidgets_LIBRARIES})
 endif(wxWidgets_FOUND)
 
+include(FindQt4)
+
+find_package(Qt4 REQUIRED)
+
+
+   set(QT_USE_QTXML 1)
+   include(${QT_USE_FILE})
+   QT4_WRAP_CPP(sources_moc YaVecVqt.h QtExample.h)
+   add_executable(QtExample QtExample.cpp YaVecVqt.cpp ${sources_moc})
+   target_link_libraries(QtExample yavec ${QT_LIBRARIES})

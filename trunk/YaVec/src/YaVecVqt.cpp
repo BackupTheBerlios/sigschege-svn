@@ -52,7 +52,6 @@ void FigVqt::paintEvent(QPaintEvent *)
   void FigVqt::drawLine(PosInt from, PosInt to, int width, Array<int, 3> &color, int lineStyle, double styleLength) {
     QPainter painter(this);
     QColor LineColor(color[0], color[1], color[2]);
-    cout << "DRAWLINE" << endl;
     painter.setPen(QPen(LineColor));
     painter.setBrush(LineColor);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -81,7 +80,6 @@ void FigVqt::paintEvent(QPaintEvent *)
     char bb;
     QPainter painter(this);
     QColor LineColor(255, 0, 255);
-    cout << "DRAWCHAR" << endl;
     painter.setPen(QPen(LineColor));
     painter.setBrush(LineColor);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -119,7 +117,7 @@ void FigVqt::paintEvent(QPaintEvent *)
 
 
   void FigVqt::refreshAll(void) {
-    int width, height;
+    update();
   }
 
 

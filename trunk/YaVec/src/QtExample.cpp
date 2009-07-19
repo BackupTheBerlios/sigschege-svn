@@ -151,6 +151,7 @@ bool MainWindow::addPoint() {
 bool MainWindow::toggleDPI() {
   if (mainpic->getScreenDpi()==80) mainpic->setScreenDpi(160);
   else  mainpic->setScreenDpi(80);
+  figure->refreshAll();
 }
 
 bool MainWindow::toggleMarkers() {
@@ -161,6 +162,7 @@ bool MainWindow::toggleMarkers() {
   cout << "MARKERS=" << marker << " hier=" << hier << " comp=" << comp << " state=" << state <<endl;
   //mainpic->setMarkers(marker, hier, comp);
   mainpic->setMarkers(true, true, true);
+  figure->refreshAll();
 }
 
 bool MainWindow::toggleDashed() {
@@ -211,6 +213,7 @@ bool MainWindow::toggleDashed() {
     dlines.clear();
   }
   mainpic->updating(true);
+  figure->refreshAll();
 }
 
 bool MainWindow::toggleArrowed() {
@@ -242,6 +245,7 @@ bool MainWindow::toggleArrowed() {
     alines.clear();
   }
   mainpic->updating(true);
+  figure->refreshAll();
 }
 
 bool MainWindow::toggleBoxes() {
@@ -270,6 +274,7 @@ bool MainWindow::toggleBoxes() {
     boxes.clear();
   }
   mainpic->updating(true);
+  figure->refreshAll();
 }
 
 bool MainWindow::toggleArcs() {
@@ -294,6 +299,7 @@ bool MainWindow::toggleArcs() {
     arcs.clear();
   }
   mainpic->updating(true);
+  figure->refreshAll();
 }
 
 bool MainWindow::toggleText() {
@@ -332,6 +338,7 @@ bool MainWindow::toggleText() {
     tboxes.clear();
   }
   mainpic->updating(true);
+  figure->refreshAll();
 }
 
 int main(int argc, char *argv[])

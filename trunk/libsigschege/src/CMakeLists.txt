@@ -3,7 +3,6 @@ include(FindFreetype)
 
 find_package(Freetype REQUIRED)
 
-
 IF (XERCESC_INCLUDE_DIR)
   # Already in cache, be silent.
   SET(XERCESC_FIND_QUIETLY TRUE)
@@ -28,8 +27,6 @@ ELSE(XERCESC_FOUND)
   SET( XERCESC_LIBRARIES )
 ENDIF(XERCESC_FOUND)
 
-include_directories(${FREETYPE_INCLUDE_DIR_freetype2} ${XERCESC_INCLUDE_DIR})
-
 set(LIBSIGSCHEGE_SRC
 SigschegeCommon.h
 Handle.t
@@ -48,6 +45,6 @@ TimList.h TimList.cpp
 TimText.h TimText.cpp
 )
 
-include_directories(. ${YaVec_SOURCE_DIR}/src)
+include_directories(. ${YaVec_SOURCE_DIR}/src ${FREETYPE_INCLUDE_DIR_freetype2} ${XERCESC_INCLUDE_DIR})
 
 add_library(sigschege SHARED ${LIBSIGSCHEGE_SRC})

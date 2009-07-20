@@ -57,31 +57,76 @@ void FigVqt::paintEvent(QPaintEvent *)
     painter.setRenderHint(QPainter::Antialiasing);
     //painter.translate(width() / 2, height() / 2);
     //painter.scale(side / 200.0, side / 200.0);
-    painter.drawLine(from.xpos(), from.ypos(), to.xpos(), to.ypos());
-
+    if (lineStyle==YaVecLine::solid) {
+      painter.drawLine(from.xpos(), from.ypos(), to.xpos(), to.ypos());
+    } else {
+      double dotLength = 0.0125*mypicture->getScreenDpi();
+      double distance = to.distance(from);
+      double curDist = 0.0;
+      double nextDist = 0.0;
+      bool activePhase = true;
+      PosInt delta = to-from;
+      double deltaX = delta.xpos()/distance;
+      double deltaY = delta.ypos()/distance;
+      PosInt curPoint(from);
+      PosInt nextPoint;
+      int activeCnt = 0;
+      double activeLength = lineStyle==YaVecLine::dashed ? styleLength : dotLength;
+      while (curDist<distance) {
+        if (activePhase) {
+          if (lineStyle!=YaVecLine::solid && lineStyle!=YaVecLine::dashed) {
+            if (lineStyle==YaVecLine::dash_dotted) {
+              activeLength = activeCnt==0 ? styleLength : dotLength;
+              if (++activeCnt > 1) activeCnt=0;
+            } else if (lineStyle==YaVecLine::dash_double_dotted) {
+              activeLength = activeCnt==0 ? styleLength : dotLength;
+              if (++activeCnt > 2) activeCnt=0;
+            } else if (lineStyle==YaVecLine::dash_triple_dotted) {
+              activeLength = activeCnt==0 ? styleLength : dotLength;
+              if (++activeCnt > 3) activeCnt=0;
+            }
+          }
+          nextDist += activeLength;
+          if (nextDist>distance) nextDist = distance;
+          nextPoint = from+PosInt(static_cast<int>(nextDist*deltaX), static_cast<int>(nextDist*deltaY));
+          painter.drawLine(curPoint.xpos(), curPoint.ypos(), nextPoint.xpos(), nextPoint.ypos());
+        } else {
+          nextDist += styleLength;
+          nextPoint = from+PosInt(static_cast<int>(nextDist*deltaX), static_cast<int>(nextDist*deltaY));
+        }
+        curPoint = nextPoint;
+        curDist = nextDist;
+        activePhase = !activePhase;
+      }
+    }
   }
 
-  void FigVqt::drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width) {
+  void FigVqt::drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width, Array<int, 3> &color) {
   
+    QPainter painter(this);
+    QColor LineColor(color[0], color[1], color[2]);
+    painter.setPen(QPen(LineColor));
+    painter.setBrush(LineColor);
+    painter.setRenderHint(QPainter::Antialiasing);
     double phi, phiDiff;
     phiDiff = 2*1.0/(radius*2*M_PI);
 
     phi = phiStart;
     if (phi<phiEnd) phiEnd -= 2*M_PI;
     while (phi>=phiEnd) {
-      //pBufpaintPtr->DrawPoint(static_cast<int>(xCenter+cos(phi)*radius), static_cast<int>(yCenter+sin(phi)*radius));
+      painter.drawPoint(static_cast<int>(xCenter+cos(phi)*radius), static_cast<int>(yCenter+sin(phi)*radius));
       phi -= phiDiff;
-    }  
+    }
   }
 
 
-  void FigVqt::drawChar(PosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
+  void FigVqt::drawChar(PosInt origin, int rows, int width, int pitch, unsigned char *buffer, Array<int, 3> &color) {
     int x, y, bit_no, bit_val;
     char bb;
     QPainter painter(this);
-    QColor LineColor(255, 0, 255);
-    painter.setPen(QPen(LineColor));
-    painter.setBrush(LineColor);
+    QColor CharColor(color[0], color[1], color[2]);
+    painter.setPen(QPen(CharColor));
+    painter.setBrush(CharColor);
     painter.setRenderHint(QPainter::Antialiasing);
     for (y=0; y<rows; ++y) {
       for (x=0; x<width; ++x) {

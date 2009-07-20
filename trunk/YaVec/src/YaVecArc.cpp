@@ -184,7 +184,7 @@ namespace YaVec {
     int radiusScreen = static_cast<int>(elmRadius/scale());
 
     if (elmLineStyle==YaVecLine::solid) {
-      view->drawArc(xCenterScreen, yCenterScreen, radiusScreen, elmPhi1, elmPhi3, elmThickness);
+      view->drawArc(xCenterScreen, yCenterScreen, radiusScreen, elmPhi1, elmPhi3, elmThickness, color);
     } else {
       double gapPhi, dotPhi, diffPhi, phi1, phi2, phiEnd;
       int activeCnt = 0;
@@ -216,7 +216,7 @@ namespace YaVec {
           }
         }
         phi2 = phi1 + (elmClockwise? (-diffPhi) : diffPhi);
-        view->drawArc(xCenterScreen, yCenterScreen, radiusScreen, phi1, phi2, elmThickness);
+        view->drawArc(xCenterScreen, yCenterScreen, radiusScreen, phi1, phi2, elmThickness, color);
         phi1 = phi2 + (elmClockwise? (-gapPhi) : gapPhi);;
       }
     }

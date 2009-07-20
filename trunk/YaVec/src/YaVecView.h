@@ -68,9 +68,9 @@ namespace YaVec {
      * \param phiEnd End angle of the arc.
      * \param width Width of the arc.
      */
-    virtual void drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width) = 0;
+    virtual void drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width, Array<int, 3> &color) = 0;
     /// Draw the character given in buffer to the view.
-    virtual void drawChar(PosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) = 0;
+    virtual void drawChar(PosInt origin, int rows, int width, int pitch, unsigned char *buffer, Array<int, 3> &color) = 0;
     /// Set up a paint buffer to speed up multiple paint events (used by Arc)
     // if a view doesn't require buffering color or thickness, just store them separately.
     virtual void setPaintBuffer(int color, int thickness) = 0;

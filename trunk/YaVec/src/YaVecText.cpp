@@ -204,10 +204,10 @@ namespace YaVec {
       // adapt bounding box to include this character
       BBoxUpperleft = min_coords(BBoxUpperleft, upperLeft);
       BBoxLowerRight = max_coords(BBoxLowerRight, lowerRight);
+      Array <int, 3> color;
+      getPenColorRGB(color);
 #if 0
       if (view) { //debug: draw bounding boxes around characters
-        Array <int, 3> color;
-        getPenColorRGB(color);
 
         view->drawLine(upperLeft, lowerRight, 1, color, 0, 8); 
         view->drawLine(upperLeft, PosInt(lowerRight.xpos(), upperLeft.ypos()), 1, color, 0, 8); 
@@ -220,7 +220,7 @@ namespace YaVec {
         FT_Bitmap cbitmap;
         cbitmap = glyphSlot->bitmap;
         view->drawChar(char_origin+PosInt(glyphSlot->bitmap_left+(xKerning>>6), -glyphSlot->bitmap_top-(yKerning>>6)),
-                       cbitmap.rows, cbitmap.width, cbitmap.pitch, cbitmap.buffer, elmPenColor);
+                       cbitmap.rows, cbitmap.width, cbitmap.pitch, cbitmap.buffer, color);
 #if 0
         // debug output
         cout << ">" << cur_char << ": adv=" << xAdvance << " bitmap_top=" << glyphSlot->bitmap_top << " cbitmap.width=" << cbitmap.width << endl;

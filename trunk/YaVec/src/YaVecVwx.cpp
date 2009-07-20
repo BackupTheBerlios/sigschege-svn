@@ -105,7 +105,7 @@ namespace YaVec {
     if (onPaintPaintDCp==0) delete paintPtr;
   }
 
-  void FigVwx::drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width) {
+  void FigVwx::drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width, YaVec::Array<int, 3> &color) {
   
     double phi, phiDiff;
     phiDiff = 2*1.0/(radius*2*M_PI);
@@ -119,7 +119,7 @@ namespace YaVec {
   }
 
 
-  void FigVwx::drawChar(PosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color) {
+  void FigVwx::drawChar(PosInt origin, int rows, int width, int pitch, unsigned char *buffer, Array<int, 3> &color) {
     int x, y, bit_no, bit_val;
     char bb;
 
@@ -127,7 +127,7 @@ namespace YaVec {
     if (onPaintPaintDCp!=0) paintPtr = onPaintPaintDCp;
     else paintPtr = new wxClientDC;
 
-    wxColour wxMyColour(yavec_std_colors[color][0], yavec_std_colors[color][1], yavec_std_colors[color][2]);
+    wxColour wxMyColour(color[0], color[1], color[2]);
     wxPen wxMyPen(wxMyColour, 1, 1);
     paintPtr->SetPen(wxMyPen);
 

@@ -52,8 +52,8 @@ namespace YaVec {
      * \param phiEnd The end angle of the circle, must be between 0 and 2*pi. 
      * \param width The width of the line to be drawn.
      */
-    virtual void drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width);
-    virtual void drawChar(PosInt origin, int rows, int width, int pitch, unsigned char *buffer, int color);
+    virtual void drawArc(double xCenter, double yCenter, double radius, double phiStart, double phiEnd, int width, YaVec::Array<int, 3> &color);
+    virtual void drawChar(PosInt origin, int rows, int width, int pitch, unsigned char *buffer, Array<int, 3> &color);
     /// Set up a paint buffer for functions which require it.
     virtual void setPaintBuffer(int color, int thickness); 
     /// Delete a previously allocated paint buffer.

@@ -51,10 +51,10 @@ MainWindow::MainWindow() :QMainWindow() {
   figure = new FigVqt(ev_pic, this);
   FPolyline *nline;
   nline = ev_pic->polyline();
-  nline->addPoint(1500, 1500);
-  nline->addPoint(300, 1500);
-  nline->addPoint(3300, 1500);
-  nline->addPoint(1720, 60);
+  nline->addPoint(500, 500);
+  nline->addPoint(100, 100);
+  nline->addPoint(500, 100);
+  nline->addPoint(500, 500);
   nline->depth(66);
   mainline = nline;
 
@@ -146,6 +146,15 @@ bool MainWindow::save() {
 }
 
 bool MainWindow::addPoint() {
+  double x, y;
+  x = rand(); 
+  y = rand();
+  x *= 15*200.0/RAND_MAX;
+  y *= 15*200.0/RAND_MAX;
+  cout << "add_pline_point =" << x << ":" << y << endl;
+  mainline->addPoint(static_cast<int>(x), static_cast<int>(y)); 
+  mainpic->updating(true);
+  figure->refreshAll();
 }
 
 bool MainWindow::toggleDPI() {

@@ -158,6 +158,15 @@ void FigVqt::paintEvent(QPaintEvent *)
   }
 
   void FigVqt::drawMarker(PosInt origin) {
+    // TODO: should use XOR for painting
+    QPainter painter(this);
+    QColor LineColor(0, 0, 0);
+    cout << "DRAWMARKER @ " << origin << endl;
+    painter.setPen(QPen(LineColor));
+    painter.setBrush(LineColor);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.drawLine(origin.xpos()-2, origin.ypos()-2, origin.xpos()+3, origin.ypos()+3);  
+    painter.drawLine(origin.xpos()+2, origin.ypos()-2, origin.xpos()-3, origin.ypos()+3);  
   }
 
 

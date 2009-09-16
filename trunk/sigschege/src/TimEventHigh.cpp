@@ -1,6 +1,6 @@
 // -*- c++ -*-
-// \file 
-// Copyright 2009 by 
+// TimEventHigh.cpp
+// Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -21,4 +21,37 @@
 //
 // #############################################################################
 //
+
+#include "TimEventHigh.h"
+#include "TimEvent.h"
+#include "TimWave.h"
+
+TimEventHigh::TimEventHigh(TimEvent *parent) : TimEventType(parent) {
+	setLevel(High);
+}
+
+void TimEventHigh::paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+
+	if(m_parent->getPrev() != NULL) {
+		EventLevel level = m_parent->getPrev()->getEventType()->getLevel();
+		switch(level) {
+		case(Low):
+			painter->drawLine(0, 35, 0, 15);
+			break;
+		}
+	}
+
+
+	// draw signal
+	unsigned int signal_length;
+	if(m_parent->getNext() == NULL) {
+		signal_length= m_parent->getWave()->getLayoutData()->get_col_1_width() - m_parent->pos().x();
+	} else {
+		signal_length= m_parent->getNext()->pos().x() - m_parent->pos().x() -1;
+	}
+
+	painter->drawLine(0, 15, signal_length, 15);
+}
+
+
 

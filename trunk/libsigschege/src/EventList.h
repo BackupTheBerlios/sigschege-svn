@@ -92,6 +92,7 @@ class EventList {
   void sort();
   /// Helper function for sort to compare two events by time.
   struct evTimeCmp {
+  	/// TODO
     bool operator()(Handle<Event> x, Handle<Event> y) {
       return x.Object()->getTime()<y.Object()->getTime();
     }

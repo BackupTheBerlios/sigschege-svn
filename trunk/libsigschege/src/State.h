@@ -91,11 +91,13 @@ inline StateVisual::StateVisual(visualType visualization, bool showLabel) {
 class StateMap {
  public:
 
+	/// TODO
   StateMap(bool isBool = false);
   
+  /// TODO
   void setVisual(std::string value, StateVisual::visualType visual, bool showLabel);
 
-
+  /// TODO
   StateVisual& operator[](std::string state);
  private:
   std::map<std::string,StateVisual> visuals;

@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 2.6)
 
 PROJECT(sigschege)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 IF(CMAKE_COMPILER_IS_GNUCC)
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fmessage-length=0")
 ENDIF(CMAKE_COMPILER_IS_GNUCC)

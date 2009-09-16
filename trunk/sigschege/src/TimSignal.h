@@ -1,6 +1,6 @@
 // -*- c++ -*-
-// \file 
-// Copyright 2009 by 
+// TimSignal.h
+// Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -22,3 +22,38 @@
 // #############################################################################
 //
 
+
+#ifndef TIMSIGNAL_H_
+#define TIMSIGNAL_H_
+
+#include <QtGui>
+
+#include "TimingScene.h"
+#include "TimLayoutData.h"
+
+class TimWave;
+class TimLabel;
+
+class TimSignal: public QGraphicsItem, public QGraphicsLayoutItem {
+
+public:
+	TimSignal(TimLayoutData *layout, QGraphicsItem *parent = 0);
+	~TimSignal();
+
+	virtual QRectF boundingRect() const;
+
+	virtual void
+			paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+	virtual void setGeometry(const QRectF & rect);
+
+protected:
+	virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
+			QSizeF()) const;
+
+	TimLabel *m_label;
+	TimWave *m_wave;
+	TimLayoutData *m_LayoutData;
+};
+
+#endif /* TIMSIGNAL_H_ */

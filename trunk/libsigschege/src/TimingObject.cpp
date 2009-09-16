@@ -27,56 +27,57 @@
 
 using namespace YaVec;
 
-TimingObject::TimingObject(LayoutObject *newReference, PosInt origin, PosInt size, int sigOffset,
-               TimSchedule *schedulePtr):
-  LayoutObject(newReference, origin, size), cSigOffset(sigOffset) {
-  cSchedulePtr = schedulePtr;
-  updatetimArea();
+TimingObject::TimingObject(LayoutObject *newReference, YaVec::PosInt origin,
+		YaVec::PosInt size, int sigOffset, TimSchedule *schedulePtr) :
+	LayoutObject(newReference, origin, size) {
+	cSigOffset = sigOffset;
+	cSchedulePtr = schedulePtr;
+	updatetimArea();
 }
 
 void TimingObject::updatetimArea(void) {
-  timXLeft = cOrigin.xpos()+cSigOffset+cPadding;
-  timXRight = cOrigin.xpos()+cSize.xpos()-cPadding;
-  timWidth = timXRight-timXLeft;
-  timYTop = cOrigin.ypos()+cPadding;
-  timYBottom = cOrigin.ypos()+cSize.ypos()-cPadding;
-  timHeight = timYBottom-timYTop;
-  labelXLeft = cOrigin.xpos()+cPadding;
-  labelXRight = cOrigin.xpos()+cSigOffset-cPadding;
+	timXLeft = cOrigin.xpos() + cSigOffset + cPadding;
+	timXRight = cOrigin.xpos() + cSize.xpos() - cPadding;
+	timWidth = timXRight - timXLeft;
+	timYTop = cOrigin.ypos() + cPadding;
+	timYBottom = cOrigin.ypos() + cSize.ypos() - cPadding;
+	timHeight = timYBottom - timYTop;
+	labelXLeft = cOrigin.xpos() + cPadding;
+	labelXRight = cOrigin.xpos() + cSigOffset - cPadding;
 }
 
 void TimingObject::setSigOffset(int sigOffset) {
-  cSigOffset = sigOffset;
-  updatetimArea();
+	cSigOffset = sigOffset;
+	updatetimArea();
 }
 
 void TimingObject::setSize(YaVec::PosInt newSize) {
-  LayoutObject::setSize(newSize);
-  updatetimArea();
+	LayoutObject::setSize(newSize);
+	updatetimArea();
 }
 
 void TimingObject::setWidth(int width) {
-  LayoutObject::setWidth(width);
-  updatetimArea();
+	LayoutObject::setWidth(width);
+	updatetimArea();
 }
 
 void TimingObject::setHeight(int height) {
-  LayoutObject::setHeight(height);
-  updatetimArea();
+	LayoutObject::setHeight(height);
+	updatetimArea();
 }
-  
+
 void TimingObject::setOrigin(YaVec::PosInt newOrigin) {
-  LayoutObject::setOrigin(newOrigin);
-  updatetimArea();
+	LayoutObject::setOrigin(newOrigin);
+	updatetimArea();
 }
 
 void TimingObject::setPadding(int newPadding) {
-  LayoutObject::setPadding(newPadding);
-  updatetimArea();
+	LayoutObject::setPadding(newPadding);
+	updatetimArea();
 }
 
 void TimingObject::setSchedule(TimSchedule *schedulePtr) {
-  cSchedulePtr = schedulePtr;
-  updatetimArea();
-  
+	cSchedulePtr = schedulePtr;
+	updatetimArea();
+
 }

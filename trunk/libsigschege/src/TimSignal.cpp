@@ -46,20 +46,14 @@ TimSignal::TimSignal(bool isBool, double defaultSlope): TimingObject(), EventLis
 
 /*!
  * Construct a Timing Diagram Signal Object with a text label.
- * \param signalLabel Signal label.
- * \param startTime The start time of the visible area.
- * \param endTime The end time of the visible area.
- * \param origin The origin in the timing diagram in xfig units.
- * \param size The complete size in xfig units.
- * \param sigOffset The horizontal offset at which the signal part starts.
- * \param defaultSlope The default slope for all events.
  */
-TimSignal::TimSignal(string signalLabel, TimSchedule *schedulePtr, YaVec::PosInt origin,
+TimSignal::TimSignal(std::string signalLabel, TimSchedule *schedulePtr, YaVec::PosInt origin,
                      YaVec::PosInt size, bool isBool, int sigOffset, double defaultSlope)
   : TimingObject(0, origin, size, sigOffset, schedulePtr),
     EventList(isBool, defaultSlope),
     TimText(signalLabel)
 {
+
 }
 
 TimSignal::~TimSignal() {

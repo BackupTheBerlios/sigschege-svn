@@ -33,7 +33,7 @@
 #include "TimSignal.h"
 #include "TimeMarker.h"
 #include "TimSchedule.h"
-#include "Handle.t"
+#include "Handle.h"
 
 /// Vertical list of timing diagram objects.
 class TimList : public LayoutObject {
@@ -113,11 +113,14 @@ protected:
   /// Start and end time and ellipses.
   TimSchedule cSchedule;
   /// Defaults for signals/labels/time scale.
-  int  cDefaultSliceHeight,  cDefaultPadding;
+  int  cDefaultSliceHeight;
+  /// TODO
+  int cDefaultPadding;
   /// Should the elements have a border?
   bool cDefaultBorder;
   // NOTE: all "time aware" children (signal, time scale, time marker) must
   // have their sigOffset consistent with the default
+  /// TODO
   int  cDefaultSigOffset;
 
 private:

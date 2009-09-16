@@ -1,6 +1,6 @@
 // -*- c++ -*-
-// \file 
-// Copyright 2009 by 
+// TimEventType.h
+// Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -22,3 +22,38 @@
 // #############################################################################
 //
 
+
+
+#ifndef TIMEVENTTYPE_H_
+#define TIMEVENTTYPE_H_
+
+#include <QtGui>
+
+#include "TimLayoutData.h"
+
+enum EventLevel {None, Low, High};
+
+class TimEvent;
+
+class TimEventType {
+
+public:
+	TimEventType(TimEvent* parent = 0);
+	virtual ~TimEventType();
+
+	void setParent(TimEvent *parent);
+
+	virtual void paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+	void setLevel(EventLevel level);
+	EventLevel getLevel();
+
+protected:
+	TimEvent *m_parent;
+
+private:
+	EventLevel m_level;
+
+};
+
+#endif /* TIMEVENTTYPE_H_ */

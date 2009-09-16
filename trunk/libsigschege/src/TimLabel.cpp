@@ -44,7 +44,7 @@ TimLabel::TimLabel(): TimingObject(), TimText() {
  * This constructor will create a Timing Diagram Label Object.
  * newText will be set as Text.
  */
-TimLabel::TimLabel(string newText): TimingObject(), TimText(newText) {
+TimLabel::TimLabel(std::string newText): TimingObject(), TimText(newText) {
   cSigOffset = 0;
   cHAlign1 = hcenter;
 }

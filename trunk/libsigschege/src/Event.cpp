@@ -28,145 +28,139 @@ using namespace std;
 #include "Event.h"
 #include <stdio.h>
 
-
-Event::Event(const string &setNewState, double setEventDelay, const Handle<Event> *setReference_p,
-             double setSlopeTime) : refCount(0) {
-  eventDelay = setEventDelay;
-  newState = setNewState;
-  refLevel = 50;
-  if (setReference_p!=0) reference = *setReference_p;
-  slopeTime = setSlopeTime;
-  updateTime();
+Event::Event(const std::string &setNewState, double setEventDelay,
+		const Handle<Event> *setReference_p, double setSlopeTime) :
+	refCount(0) {
+	eventDelay = setEventDelay;
+	newState = setNewState;
+	refLevel = 50;
+	if (setReference_p != 0)
+		reference = *setReference_p;
+	slopeTime = setSlopeTime;
+	updateTime();
 }
 
-
-Event::~Event(){
+Event::~Event() {
 }
 
 void Event::incrementRefcount() {
-  refCount++; 
+	refCount++;
 }
 
 void Event::decrementRefcount() {
-  refCount--;
+	refCount--;
 }
 
 bool Event::registerReferrer(Handle<Event> &newReferrer) {
-  vector< Handle<Event> >::iterator referrersIter;
-    for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
-      if (referrersIter->Object()==newReferrer.Object()) return false;
-    }
-    referrers.push_back(newReferrer);
-    return true;
+	vector<Handle<Event> >::iterator referrersIter;
+	for (referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter) {
+		if (referrersIter->Object() == newReferrer.Object())
+			return false;
+	}
+	referrers.push_back(newReferrer);
+	return true;
 }
 
 bool Event::unregisterReferrer(Handle<Event> &obsoleteReferrer) {
-  vector< Handle<Event> >::iterator referrersIter;
-    for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
-      if (referrersIter->Object()==obsoleteReferrer.Object()) {
-        referrers.erase(referrersIter);
-        return true;
-      }
-    }
-    return false;
+	vector<Handle<Event> >::iterator referrersIter;
+	for (referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter) {
+		if (referrersIter->Object() == obsoleteReferrer.Object()) {
+			referrers.erase(referrersIter);
+			return true;
+		}
+	}
+	return false;
 }
-
 
 Handle<Event> Event::getReference() {
-  return reference;
+	return reference;
 }
 
-
 bool Event::setReference(Handle<Event> &new_reference) {
-  Event* referenceWalk = new_reference.Object();
-  // make sure that no circle of events is created which would lead to an infinite loop
-  if (referenceWalk!=0) {
-    do {
-      if (referenceWalk==this) {
-        return false;
-      }
-      referenceWalk = referenceWalk->reference.Object();
-    } while (referenceWalk);
-  }
-  Handle<Event> thisEvent(this);
-  if (reference.Object()!=0) { // unregister from an old reference, if one existed
-    reference.Object()->unregisterReferrer(thisEvent);
-  }
-  reference = new_reference;
-  if (reference.Object()!=0) { // make sure the event this refers to knows, unless it's a NULL pointer
-    reference.Object()->registerReferrer(thisEvent); 
-  }
-  updateTime();
-  return true;
+	Event* referenceWalk = new_reference.Object();
+	// make sure that no circle of events is created which would lead to an infinite loop
+	if (referenceWalk != 0) {
+		do {
+			if (referenceWalk == this) {
+				return false;
+			}
+			referenceWalk = referenceWalk->reference.Object();
+		} while (referenceWalk);
+	}
+	Handle<Event> thisEvent(this);
+	if (reference.Object() != 0) { // unregister from an old reference, if one existed
+		reference.Object()->unregisterReferrer(thisEvent);
+	}
+	reference = new_reference;
+	if (reference.Object() != 0) { // make sure the event this refers to knows, unless it's a NULL pointer
+		reference.Object()->registerReferrer(thisEvent);
+	}
+	updateTime();
+	return true;
 }
 
 void Event::delReference() {
-  Handle<Event> event;
-  setReference(event);
+	Handle<Event> event;
+	setReference(event);
 }
 
-
 void Event::setDelay(double delay) {
-  if(eventDelay != delay){
-    eventDelay = delay;
-  }
-  updateTime();
+	if (eventDelay != delay) {
+		eventDelay = delay;
+	}
+	updateTime();
 }
 
 double Event::getDelay() {
-  return(eventDelay);
+	return (eventDelay);
 }
-
 
 void Event::setSlope(double slope) {
-  if(slopeTime != slope){
-    slopeTime = slope;
-  }
-  updateTime();
+	if (slopeTime != slope) {
+		slopeTime = slope;
+	}
+	updateTime();
 }
 
-
 double Event::getSlope() {
-  return(slopeTime);
+	return (slopeTime);
 }
 
 void Event::setRefLevel(int rlevel) {
-  if(refLevel != rlevel){
-    refLevel = rlevel;
-  }
-  updateTime();
+	if (refLevel != rlevel) {
+		refLevel = rlevel;
+	}
+	updateTime();
 }
-
 
 int Event::getRefLevel() {
-  return(refLevel);
+	return (refLevel);
 }
 
+void Event::updateTime() {
+	double oldTime;
+	oldTime = eventTime;
+	vector<Handle<Event> >::iterator referrersIter;
 
-void  Event::updateTime() {
-  double oldTime;
-  oldTime = eventTime;
-  vector< Handle<Event> >::iterator referrersIter;
+	// Calculate the new absolute Time of the Event
+	if (reference.Object() != 0) {
+		eventTime = reference.Object()->getTime() + eventDelay;
+	} else {
+		eventTime = eventDelay;
+	}
 
-  // Calculate the new absolute Time of the Event
-  if (reference.Object()!=0) {
-    eventTime = reference.Object()->getTime()+eventDelay;
-  } else {
-    eventTime = eventDelay;
-  }
-
-  // update all referrers if the absolute Time has changed
-  if (oldTime != eventTime) {
-    for ( referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter ) {
-      referrersIter->Object()->updateTime();
-    }
-  }
+	// update all referrers if the absolute Time has changed
+	if (oldTime != eventTime) {
+		for (referrersIter = referrers.begin(); referrersIter != referrers.end(); ++referrersIter) {
+			referrersIter->Object()->updateTime();
+		}
+	}
 }
 
 double Event::getTime(int level_percent) {
-  return(eventTime+slopeTime/100.0*level_percent);
+	return (eventTime + slopeTime / 100.0 * level_percent);
 }
 
 double Event::getPercentAtTime(double time) {
-  return(100.0*(eventTime+slopeTime-time)/slopeTime);
+	return (100.0 * (eventTime + slopeTime - time) / slopeTime);
 }

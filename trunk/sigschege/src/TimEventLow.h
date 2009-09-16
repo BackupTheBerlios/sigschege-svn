@@ -1,6 +1,6 @@
 // -*- c++ -*-
-// \file 
-// Copyright 2009 by 
+// TimEventLow.h
+// Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -22,3 +22,22 @@
 // #############################################################################
 //
 
+
+
+#ifndef TIMEVENTLOW_H_
+#define TIMEVENTLOW_H_
+
+#include "TimEventType.h"
+
+class TimEvent;
+
+class TimEventLow : public TimEventType {
+
+public:
+	TimEventLow(TimEvent *parent = 0);
+
+	virtual void paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+};
+
+#endif /* TIMEVENTLOW_H_ */

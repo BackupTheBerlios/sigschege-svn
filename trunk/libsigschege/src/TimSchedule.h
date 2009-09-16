@@ -30,14 +30,18 @@
 #include <vector>
 #include <stdio.h>
 
+/// TODO
 template <class Type> class Range {
  public:
   Range() {}
+  /// TODO
   Range(Type start, Type end) {
     cStart = start;
     cEnd = end;
   }
+  /// TODO
   Type cStart;
+  /// TODO
   Type cEnd;
 };
 
@@ -72,17 +76,23 @@ class TimSchedule {
    */
   void calc();
   
+  /// TODO
   void dump();
 
+  /// TODO
   int numVisibleTimeRanges() { calc(); return cVisibleTimeRanges.size();}
 
   
+  /// TODO
   bool getTimeRange(int i, double &startTime, double &endTime, double &startX, double &endX);
 
+  /// TODO
   Range<double> timeRangeTimes(int i) { calc(); return cVisibleTimeRanges[i]; }
 
+  /// TODO
   Range<int> timeRangeArea(int i) { calc(); return cVisibleAreas[i]; }
 
+  /// TODO
   double visibleTime() { calc(); return cVisibleTime;} 
 
 private:

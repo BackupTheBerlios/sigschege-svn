@@ -31,7 +31,7 @@
 #include "TimLabel.h"
 #include "TimSignal.h"
 #include "TimTime.h"
-#include "Handle.t"
+#include "Handle.h"
 #include <string>
 #include <YaVecFigure.h>
 #include "EventList.h"
@@ -52,7 +52,8 @@
 #include <iostream>
 #include <xercesc/util/OutOfMemoryException.hpp>
 
-XERCES_CPP_NAMESPACE_USE
+// The XERCES_CPP_NAMESPACE_USE macro causes parsing errors in eclipse CDT
+using namespace XERCES_CPP_NAMESPACE;
 
 //! The TimingDiagram Class is the toplevel class that contains the layout and the objects of a timing diagram.
 /*!
@@ -84,7 +85,7 @@ public:
   /// Load a timing diagram in native sigschege format.
   bool load(std::string filename);
 
-
+  /// TODO
   YaVec::FFigure cYaVec;
 
 private:

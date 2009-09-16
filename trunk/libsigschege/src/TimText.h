@@ -93,7 +93,9 @@ public:
   
 protected:
   /// The text(s). If text2 is set, two lines of text are shown
-  std::string cText1, cText2;
+  std::string cText1;
+  /// TODO
+  std::string cText2;
   /// The font type as defined by the fig format.
   int cFontType;
   /// The size of the (upper) text.

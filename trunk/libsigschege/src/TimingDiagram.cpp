@@ -45,7 +45,7 @@ TimingDiagram::~TimingDiagram() {
  * Export the Timingdiagram to a xfig-format
  * \param file XFig File Name
  */
-void TimingDiagram::exportFig(string file) {
+void TimingDiagram::exportFig(std::string file) {
   paint();
   cYaVec.save(file);
 }
@@ -54,7 +54,7 @@ void TimingDiagram::exportFig(string file) {
  * Export the Timingdiagram to an encapsulated postscript
  * \param file EPS File Name
  */
-void TimingDiagram::exportEPS(string file) {
+void TimingDiagram::exportEPS(std::string file) {
   paint();
   cYaVec.exportFig2dev("eps", file);
 }
@@ -64,7 +64,7 @@ void TimingDiagram::exportEPS(string file) {
  * \param file Picture file name.
  * \param format Format of the file, must be supported by fig2dev.
  */
-void TimingDiagram::exportAny(string file, string format) {
+void TimingDiagram::exportAny(std::string file, std::string format) {
   paint();
   cYaVec.exportFig2dev(format, file);
 }

@@ -51,7 +51,7 @@ LayoutObject::~LayoutObject() {
  * Set the Compound which is used to draw this Event.
  * \param newCompound The Compound to use.
  */
-void LayoutObject::setCompound(FCompound *newCompound) {
+void LayoutObject::setCompound(YaVec::FCompound *newCompound) {
   cCompound = newCompound;
 }
 
@@ -78,7 +78,7 @@ void LayoutObject::save(std::ofstream &ssg_file) {};
  * Set the Origin of this Layout Object
  * \param newOrigin The new Origin for this Layout Object
  */
-void LayoutObject::setOrigin(PosInt newOrigin) {
+void LayoutObject::setOrigin(YaVec::PosInt newOrigin) {
   cOrigin = newOrigin;
 }
 
@@ -94,7 +94,7 @@ PosInt LayoutObject::getOrigin() {
  * Set the Size of this Layout Object
  * \param newSize The new Size for this Layout Object
  */
-void LayoutObject::setSize(PosInt newSize) {
+void LayoutObject::setSize(YaVec::PosInt newSize) {
   cSize = newSize;
 }
 

@@ -27,7 +27,7 @@ using namespace std;
 
 #include <State.h>
 
-void StateMap::setVisual(string value, StateVisual::visualType visual, bool showLabel) {
+void StateMap::setVisual(std::string value, StateVisual::visualType visual, bool showLabel) {
   //cVisualization = visual;
   //cShowLabel = showLabel;
 

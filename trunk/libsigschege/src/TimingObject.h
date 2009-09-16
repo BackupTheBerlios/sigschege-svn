@@ -33,55 +33,68 @@
 /*!
  * This class provides common functionality for events of a TimList.
  */
-class TimingObject : public LayoutObject {
- public:
-  /// Standard constructor.
-  TimingObject();
-  
-  /// General constructor.
-  TimingObject(LayoutObject *newReference, YaVec::PosInt origin, YaVec::PosInt size, int sigOffset = 0,
-               TimSchedule *schedulePtr = 0);
-    
-  //! Set the horizontal offset for the signal part.
-  virtual void setSigOffset(int sigOffset);
+class TimingObject: public LayoutObject {
+public:
+	/// Standard constructor.
+	TimingObject();
 
-  //! Set the size of this timing object.
-  virtual void setSize(YaVec::PosInt newSize);
+	/// General constructor.
+			TimingObject(LayoutObject *newReference, YaVec::PosInt origin,
+					YaVec::PosInt size, int sigOffset = 0,
+					TimSchedule *schedulePtr = 0);
 
-  //! Set the width.
-  virtual void setWidth(int width);
+	//! Set the horizontal offset for the signal part.
+	virtual void setSigOffset(int sigOffset);
 
-  //! Set the height.
-  virtual void setHeight(int height);
-  
-  //! Set the Origin of this timing object
-  virtual void setOrigin(YaVec::PosInt newOrigin);
+	//! Set the size of this timing object.
+	virtual void setSize(YaVec::PosInt newSize);
 
-  /// From LayoutObject -  adapt the content of this object.
-  virtual void setPadding(int newPadding);
+	//! Set the width.
+	virtual void setWidth(int width);
 
-  void setSchedule(TimSchedule *schedulePtr);
+	//! Set the height.
+	virtual void setHeight(int height);
 
- protected:
-  /// pointer to the TimSchedule (managed by the TimList).
-  TimSchedule *cSchedulePtr;
-  /// Offset for the visible signal area.
-  int cSigOffset;
-  /// Horizontal geometry information for the timing area.
-  int timXLeft, timXRight, timWidth;
-  /// Vertical geometry information for the timing area.
-  int timYTop, timYBottom, timHeight;
-  /// Horizontal geometry information for the label area.
-  int labelXLeft, labelXRight;
+	//! Set the Origin of this timing object
+	virtual void setOrigin(YaVec::PosInt newOrigin);
+
+	/// From LayoutObject -  adapt the content of this object.
+	virtual void setPadding(int newPadding);
+
+	/// TODO
+	void setSchedule(TimSchedule *schedulePtr);
+
+protected:
+	/// pointer to the TimSchedule (managed by the TimList).
+	TimSchedule *cSchedulePtr;
+	/// Offset for the visible signal area.
+	int cSigOffset;
+	/// Horizontal geometry information for the timing area.
+	int timXLeft;
+	/// TODO
+	int timXRight;
+	/// TODO
+	int timWidth;
+
+	/// Vertical geometry information for the timing area.
+	int timYTop;
+	/// TODO
+	int timYBottom;
+	/// TODO
+	int timHeight;
+
+	/// Horizontal geometry information for the label area.
+	int labelXLeft;
+	/// TODO
+	int labelXRight;
 
 private:
-  //! Update the geometry information for the timing area.
-  void updatetimArea(void);
+	//! Update the geometry information for the timing area.
+	void updatetimArea(void);
 };
 
-inline TimingObject::TimingObject():
-  LayoutObject(), cSigOffset(0) {}
-
-
+inline TimingObject::TimingObject() :
+	LayoutObject(), cSigOffset(0) {
+}
 
 #endif // _H_TIMINGOBJECT

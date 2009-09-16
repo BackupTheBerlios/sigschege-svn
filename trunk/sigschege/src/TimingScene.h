@@ -1,6 +1,6 @@
 // -*- c++ -*-
-// \file 
-// Copyright 2009 by 
+// TimingScene.h
+// Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -22,3 +22,35 @@
 // #############################################################################
 //
 
+
+
+#ifndef TIMINGSCENE_H_
+#define TIMINGSCENE_H_
+
+#include <QtGui>
+#include "TimLayoutData.h"
+
+class TimSignal;
+
+class TimingScene : public QGraphicsScene {
+	Q_OBJECT
+
+public:
+	TimingScene(QObject *parent = 0);
+
+	TimSignal* addTimSignal();
+
+	TimLayoutData* getLayoutData();
+
+	void setStartTime(double stime);
+	void setEndTime(double etime);
+	void setLabelWidth(unsigned int width);
+	void setSceneWidth(unsigned int width);
+
+private:
+  QGraphicsLinearLayout *m_layout;
+	TimLayoutData m_LayoutData;
+
+};
+
+#endif /* TIMINGSCENE_H_ */

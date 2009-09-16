@@ -29,7 +29,7 @@ ENDIF(XERCESC_FOUND)
 
 set(LIBSIGSCHEGE_SRC
 SigschegeCommon.h
-Handle.t
+Handle.h
 EventList.h EventList.cpp
 LayoutObject.h LayoutObject.cpp
 State.h State.cpp
@@ -48,3 +48,4 @@ TimText.h TimText.cpp
 include_directories(. ${YaVec_SOURCE_DIR}/src ${FREETYPE_INCLUDE_DIR_freetype2} ${XERCESC_INCLUDE_DIR})
 
 add_library(sigschege SHARED ${LIBSIGSCHEGE_SRC})
+

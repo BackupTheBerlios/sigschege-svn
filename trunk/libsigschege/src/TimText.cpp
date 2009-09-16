@@ -41,7 +41,7 @@ void TimText::setText2(std::string newText2) {
   cText2 = newText2;
 }
 
-TimText::TimText(string text1, string text2, hAlignment align1, hAlignment align2) {
+TimText::TimText(std::string text1, std::string text2, hAlignment align1, hAlignment align2) {
   cText1 = text1;
   cText2 = text2;
   cFontType = 14;

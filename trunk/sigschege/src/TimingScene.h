@@ -23,7 +23,6 @@
 //
 
 
-
 #ifndef TIMINGSCENE_H_
 #define TIMINGSCENE_H_
 
@@ -32,24 +31,24 @@
 
 class TimSignal;
 
-class TimingScene : public QGraphicsScene {
-	Q_OBJECT
+class TimingScene: public QGraphicsScene {
+Q_OBJECT
 
 public:
-	TimingScene(QObject *parent = 0);
+  TimingScene(QObject *parent = 0);
 
-	TimSignal* addTimSignal();
+  TimSignal* addTimSignal();
 
-	TimLayoutData* getLayoutData();
+  TimLayoutData* getLayoutData();
 
-	void setStartTime(double stime);
-	void setEndTime(double etime);
-	void setLabelWidth(unsigned int width);
-	void setSceneWidth(unsigned int width);
+  void setStartTime(double stime);
+  void setEndTime(double etime);
+  void setLabelWidth(unsigned int width);
+  void setSceneWidth(unsigned int width);
 
 private:
   QGraphicsLinearLayout *m_layout;
-	TimLayoutData m_LayoutData;
+  TimLayoutData m_LayoutData;
 
 };
 

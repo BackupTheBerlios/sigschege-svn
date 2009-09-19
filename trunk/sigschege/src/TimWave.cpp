@@ -28,56 +28,55 @@
 #include "TimEventLow.h"
 
 TimWave::TimWave(TimLayoutData *layoutdata, QGraphicsItem *parent) :
-	QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
+  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
 
-	m_LayoutData = layoutdata;
+  m_LayoutData = layoutdata;
 
-	m_TimEvent = new TimEvent(this);
+  m_TimEvent = new TimEvent(this);
 
-	TimEvent *e1 = new TimEvent(this, new TimEventHigh(), 50);
-	TimEvent *e2 = new TimEvent(this, new TimEventLow(), 70);
+  TimEvent *e1 = new TimEvent(this, new TimEventHigh(), 50);
+  TimEvent *e2 = new TimEvent(this, new TimEventLow(), 70);
 
-	m_TimEvent->insertEvent(e1);
-	e1->insertEvent(e2);
-
+  m_TimEvent->insertEvent(e1);
+  e1->insertEvent(e2);
 
 }
 
 TimWave::~TimWave() {
-	delete m_TimEvent;
+  delete m_TimEvent;
 }
 
 QSizeF TimWave::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
-	switch (which) {
-	case Qt::MinimumSize:
-		return QSizeF(m_LayoutData->get_col_1_width(), 50);
-	case Qt::PreferredSize:
-		return QSizeF(m_LayoutData->get_col_1_width(), 50);
-	case Qt::MaximumSize:
-		return QSizeF(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-	default:
-		qWarning("r::TimWave::sizeHint(): Don't know how to handle the value of 'which'");
-		break;
-	}
-	return constraint;
+  switch (which) {
+  case Qt::MinimumSize:
+    return QSizeF(m_LayoutData->get_col_1_width(), 50);
+  case Qt::PreferredSize:
+    return QSizeF(m_LayoutData->get_col_1_width(), 50);
+  case Qt::MaximumSize:
+    return QSizeF(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+  default:
+    qWarning("r::TimWave::sizeHint(): Don't know how to handle the value of 'which'");
+    break;
+  }
+  return constraint;
 
 }
 
 void TimWave::setGeometry(const QRectF & rect) {
-	setPos(rect.topLeft());
+  setPos(rect.topLeft());
 }
 
 QRectF TimWave::boundingRect() const {
-	qreal penWidth = 1;
-	return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_LayoutData->get_col_1_width() + penWidth, 50
-			+ penWidth);
+  qreal penWidth = 1;
+  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_LayoutData->get_col_1_width()
+      + penWidth, 50 + penWidth);
 }
 
 void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-	//painter->drawRoundedRect(0, 0, m_LayoutData->get_col_1_width(), 50, 5, 5);
-	// painter->drawLine(0, 30, 250, 30);
+  //painter->drawRoundedRect(0, 0, m_LayoutData->get_col_1_width(), 50, 5, 5);
+  // painter->drawLine(0, 30, 250, 30);
 }
 
 TimLayoutData* TimWave::getLayoutData() {
-	return m_LayoutData;
+  return m_LayoutData;
 }

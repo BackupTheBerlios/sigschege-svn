@@ -28,153 +28,153 @@
 #include "TimEventHigh.h"
 
 TimEvent::TimEvent(TimWave *parent) :
-	QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
+  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
 
-	m_Wave = parent;
+  m_Wave = parent;
 
-	m_prev = NULL;
-	m_next = NULL;
-	m_EventType = NULL;
+  m_prev = NULL;
+  m_next = NULL;
+  m_EventType = NULL;
 
-	m_EventTime = 0.0;
+  m_EventTime = 0.0;
 
-	setEventType(new TimEventLow(this));
+  setEventType(new TimEventLow(this));
 
-	setPos( calcXPos(m_EventTime), 0);
-
-}
-
-TimEvent::TimEvent(TimWave *parent, TimEventType *type) :	QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
-	m_Wave = parent;
-
-	m_prev = NULL;
-	m_next = NULL;
-	m_EventType = NULL;
-
-	m_EventTime = 0.0;
-
-	setEventType(type);
-
-	setPos( calcXPos(m_EventTime), 0);
+  setPos(calcXPos(m_EventTime), 0);
 
 }
 
-TimEvent::TimEvent(TimWave *parent, TimEventType *type, double time) :	QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
-	m_Wave = parent;
+TimEvent::TimEvent(TimWave *parent, TimEventType *type) :
+  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
+  m_Wave = parent;
 
-	m_prev = NULL;
-	m_next = NULL;
-	m_EventType = NULL;
+  m_prev = NULL;
+  m_next = NULL;
+  m_EventType = NULL;
 
-	m_EventTime = time;
+  m_EventTime = 0.0;
 
-	setEventType(type);
+  setEventType(type);
 
-	setPos( calcXPos(m_EventTime), 0);
+  setPos(calcXPos(m_EventTime), 0);
 
 }
 
+TimEvent::TimEvent(TimWave *parent, TimEventType *type, double time) :
+  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
+  m_Wave = parent;
+
+  m_prev = NULL;
+  m_next = NULL;
+  m_EventType = NULL;
+
+  m_EventTime = time;
+
+  setEventType(type);
+
+  setPos(calcXPos(m_EventTime), 0);
+
+}
 
 TimEvent::~TimEvent() {
-	delete m_EventType;
+  delete m_EventType;
 }
 
 void TimEvent::insertEvent(TimEvent *node) {
 
-	/*
-	+----+     +----+
-	|    |-----|    |
-	|    |-----|    |
-	+----+     +----+
-	*/
+  /*
+   +----+     +----+
+   |    |-----|    |
+   |    |-----|    |
+   +----+     +----+
+   */
 
-	node->setNext(getNext());
-	node->setPrev(this);
+  node->setNext(getNext());
+  node->setPrev(this);
 
-	if(getNext() != NULL) {
-		getNext()->setPrev(node);
-	}
+  if (getNext() != NULL) {
+    getNext()->setPrev(node);
+  }
 
-	setNext(node);
-
+  setNext(node);
 
 }
 
 void TimEvent::setNext(TimEvent *next) {
-	m_next = next;
+  m_next = next;
 }
 
 void TimEvent::setPrev(TimEvent *prev) {
-	m_prev = prev;
+  m_prev = prev;
 }
 
 TimEvent* TimEvent::getNext() {
-	return m_next;
+  return m_next;
 }
 
 TimEvent* TimEvent::getPrev() {
-	return m_prev;
+  return m_prev;
 }
 
 unsigned int TimEvent::calcXPos(double time) {
-	double start_time = m_Wave->getLayoutData()->get_start_time();
-	double end_time = m_Wave->getLayoutData()->get_end_time();
-	unsigned int width = m_Wave->getLayoutData()->get_col_1_width();
+  double start_time = m_Wave->getLayoutData()->get_start_time();
+  double end_time = m_Wave->getLayoutData()->get_end_time();
+  unsigned int width = m_Wave->getLayoutData()->get_col_1_width();
 
-	double diff = end_time - start_time;
+  double diff = end_time - start_time;
 
-	double scale = diff / width;
+  double scale = diff / width;
 
-	unsigned int x_pos = (unsigned int)((time - start_time) / scale);
+  unsigned int x_pos = (unsigned int) ((time - start_time) / scale);
 
-	return x_pos;
+  return x_pos;
 
 }
 
 TimWave* TimEvent::getWave() {
-	return m_Wave;
+  return m_Wave;
 }
 
 void TimEvent::setEventType(TimEventType *type) {
-	if (m_EventType) {
-		delete m_EventType;
-	}
-	m_EventType = type;
-	m_EventType->setParent(this);
+  if (m_EventType) {
+    delete m_EventType;
+  }
+  m_EventType = type;
+  m_EventType->setParent(this);
 }
 
 TimEventType* TimEvent::getEventType() {
-	return m_EventType;
+  return m_EventType;
 }
 
 QSizeF TimEvent::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
-	switch (which) {
-	case Qt::MinimumSize:
-		return QSizeF(200, 50);
-	case Qt::PreferredSize:
-		return QSizeF(200, 50);
-	case Qt::MaximumSize:
-		return QSizeF(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-	default:
-		qWarning("r::TimWave::sizeHint(): Don't know how to handle the value of 'which'");
-		break;
-	}
-	return constraint;
+  switch (which) {
+  case Qt::MinimumSize:
+    return QSizeF(200, 50);
+  case Qt::PreferredSize:
+    return QSizeF(200, 50);
+  case Qt::MaximumSize:
+    return QSizeF(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+  default:
+    qWarning("r::TimWave::sizeHint(): Don't know how to handle the value of 'which'");
+    break;
+  }
+  return constraint;
 
 }
 
 void TimEvent::setGeometry(const QRectF & rect) {
 
-	setPos(calcXPos(m_EventTime), 0);
+  setPos(calcXPos(m_EventTime), 0);
 }
 
 QRectF TimEvent::boundingRect() const {
-	qreal penWidth = 1;
-	return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_Wave->getLayoutData()->get_col_1_width() + penWidth, 50
-			+ penWidth);
+  qreal penWidth = 1;
+  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_Wave->getLayoutData()->get_col_1_width()
+      + penWidth, 50 + penWidth);
 }
 
 void TimEvent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-	m_EventType->paint(this, painter, option, widget);
+  m_EventType->paint(this, painter, option, widget);
 }
 

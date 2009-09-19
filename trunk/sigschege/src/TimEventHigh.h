@@ -23,7 +23,6 @@
 //
 
 
-
 #ifndef TIMEVENTHIGH_H_
 #define TIMEVENTHIGH_H_
 
@@ -31,12 +30,13 @@
 
 class TimEvent;
 
-class TimEventHigh : public TimEventType {
+class TimEventHigh: public TimEventType {
 
 public:
-	TimEventHigh(TimEvent *parent = 0);
+  TimEventHigh(TimEvent *parent = 0);
 
-	virtual void paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+  virtual void
+      paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 };
 #endif /* TIMEVENTHIGH_H_ */

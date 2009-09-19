@@ -23,7 +23,6 @@
 //
 
 
-
 #ifndef TIMEVENTLOW_H_
 #define TIMEVENTLOW_H_
 
@@ -31,12 +30,31 @@
 
 class TimEvent;
 
-class TimEventLow : public TimEventType {
+/** @brief Low signal specialisation of @c TimEventType class
+ *
+ * This class is a specialisation of @c TimEventType class which implements the behaviour of a "low" signal.
+ *
+ */
+class TimEventLow: public TimEventType {
 
 public:
-	TimEventLow(TimEvent *parent = 0);
+  /** @brief The class constructor
+   *
+   * @param parent The TimEvent that owns this event type. Default: 0.
+   */
+  TimEventLow(TimEvent *parent = 0);
 
-	virtual void paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+  /** @brief Type specific paint implementation
+   *
+   * This function implements the low signal type paint implementation.
+   *
+   * @param event A pointer to the owning event.
+   * @param painter Painter context
+   * @param option Style options
+   * @param widget  The widget argument is optional. If provided, it points to the widget that is being painted on; otherwise, it is 0. For cached painting, widget is always 0.
+   */
+  virtual void
+      paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 };
 

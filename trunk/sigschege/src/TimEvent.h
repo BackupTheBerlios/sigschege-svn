@@ -34,39 +34,41 @@ class TimWave;
 class TimEvent: public QGraphicsItem, public QGraphicsLayoutItem {
 
 public:
-	TimEvent(TimWave *parent);
-	TimEvent(TimWave *parent, TimEventType *type);
-	TimEvent(TimWave *parent, TimEventType *type, double time);
+  TimEvent(TimWave *parent);
+  TimEvent(TimWave *parent, TimEventType *type);
+  TimEvent(TimWave *parent, TimEventType *type, double time);
 
-	~TimEvent();
+  ~TimEvent();
 
-	virtual void setEventType(TimEventType *type);
-	virtual TimEventType* getEventType();
-	TimWave* getWave();
-	unsigned int calcXPos(double time);
-	void insertEvent(TimEvent *node);
+  virtual void setEventType(TimEventType *type);
+  virtual TimEventType* getEventType();
+  TimWave* getWave();
+  unsigned int calcXPos(double time);
+  void insertEvent(TimEvent *node);
 
-	virtual QRectF boundingRect() const;
-	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-	virtual void setGeometry(const QRectF & rect);
+  virtual QRectF boundingRect() const;
+  virtual void
+      paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+  virtual void setGeometry(const QRectF & rect);
 
-	TimEvent* getNext();
-	TimEvent* getPrev();
+  TimEvent* getNext();
+  TimEvent* getPrev();
 
 protected:
-	void setNext(TimEvent *next);
-	void setPrev(TimEvent *prev);
-	virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =	QSizeF()) const;
+  void setNext(TimEvent *next);
+  void setPrev(TimEvent *prev);
+  virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
+      QSizeF()) const;
 
 private:
 
-	TimWave  *m_Wave;
-	TimEvent *m_prev;
-	TimEvent *m_next;
+  TimWave *m_Wave;
+  TimEvent *m_prev;
+  TimEvent *m_next;
 
-	TimEventType *m_EventType;
+  TimEventType *m_EventType;
 
-	double m_EventTime;
+  double m_EventTime;
 };
 
 #endif /* TIMEVENT_H_ */

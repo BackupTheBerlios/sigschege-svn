@@ -23,33 +23,32 @@
 //
 
 
-
 #ifndef TIMLAYOUTDATA_H_
 #define TIMLAYOUTDATA_H_
 
 class TimLayoutData {
 
 public:
-	TimLayoutData();
-	virtual ~TimLayoutData();
+  TimLayoutData();
+  virtual ~TimLayoutData();
 
-	double get_start_time();
-	void set_start_time(double start);
+  double get_start_time();
+  void set_start_time(double start);
 
-	double get_end_time();
-	void set_end_time(double end);
+  double get_end_time();
+  void set_end_time(double end);
 
-	unsigned int get_col_0_width();
-	void set_col_0_width(unsigned int);
+  unsigned int get_col_0_width();
+  void set_col_0_width(unsigned int);
 
-	unsigned int get_col_1_width();
-	void set_col_1_width(unsigned int width);
+  unsigned int get_col_1_width();
+  void set_col_1_width(unsigned int width);
 
 private:
-	double m_start_time; // start time of wave form
-	double m_end_time; // end time of wave form
-	unsigned int m_col_0_width; // text
-	unsigned int m_col_1_width; // wave form
+  double m_start_time; // start time of wave form
+  double m_end_time; // end time of wave form
+  unsigned int m_col_0_width; // text
+  unsigned int m_col_1_width; // wave form
 
 
 };

@@ -24,40 +24,42 @@
 
 #include "TimLabel.h"
 
-TimLabel::TimLabel(TimLayoutData *layout, QGraphicsItem *parent) : QGraphicsSimpleTextItem (parent), QGraphicsLayoutItem(0, false) {
-	m_LayoutData = layout;
+TimLabel::TimLabel(TimLayoutData *layout, QGraphicsItem *parent) :
+  QGraphicsSimpleTextItem(parent), QGraphicsLayoutItem(0, false) {
+  m_LayoutData = layout;
 }
 
-TimLabel::TimLabel(TimLayoutData *layout, const QString & text, QGraphicsItem *parent)  : QGraphicsSimpleTextItem (text, parent), QGraphicsLayoutItem(0, false) {
-	m_LayoutData = layout;
+TimLabel::TimLabel(TimLayoutData *layout, const QString & text, QGraphicsItem *parent) :
+  QGraphicsSimpleTextItem(text, parent), QGraphicsLayoutItem(0, false) {
+  m_LayoutData = layout;
 }
 
-QSizeF TimLabel::sizeHint ( Qt::SizeHint which, const QSizeF & constraint) const {
+QSizeF TimLabel::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
 
-	QRectF prec = parentItem()->boundingRect();
+  QRectF prec = parentItem()->boundingRect();
 
-	switch (which) {
-	            case Qt::MinimumSize:
-	                return QSizeF(m_LayoutData->get_col_0_width(), prec.width());
-	            case Qt::PreferredSize:
-	            	return QSizeF(m_LayoutData->get_col_0_width(), prec.width());
-	            case Qt::MaximumSize:
-	                return QSizeF(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-	            default:
-	                qWarning("r::TimWave::sizeHint(): Don't know how to handle the value of 'which'");
-	                break;
-	        }
-	        return constraint;
+  switch (which) {
+  case Qt::MinimumSize:
+    return QSizeF(m_LayoutData->get_col_0_width(), prec.width());
+  case Qt::PreferredSize:
+    return QSizeF(m_LayoutData->get_col_0_width(), prec.width());
+  case Qt::MaximumSize:
+    return QSizeF(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+  default:
+    qWarning("r::TimWave::sizeHint(): Don't know how to handle the value of 'which'");
+    break;
+  }
+  return constraint;
 
 }
 
-void TimLabel::setGeometry ( const QRectF & rect ) {
-	setPos(10, rect.height() - 10 - 20);
+void TimLabel::setGeometry(const QRectF & rect) {
+  setPos(10, rect.height() - 10 - 20);
 }
 
 QRectF TimLabel::boundingRect() const {
-	qreal penWidth = 1;
-  return QRectF(0 - penWidth / 2, 0 - penWidth / 2,
-	                   30 + penWidth, 50 + penWidth);
+  qreal penWidth = 1;
+  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, 30 + penWidth, 50
+      + penWidth);
 }
 

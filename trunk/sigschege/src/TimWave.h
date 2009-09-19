@@ -35,25 +35,25 @@ class TimSignal;
 class TimWave: public QGraphicsItem, public QGraphicsLayoutItem {
 
 public:
-	TimWave(TimLayoutData *layoutdata,QGraphicsItem *parent = 0);
-	~TimWave();
+  TimWave(TimLayoutData *layoutdata, QGraphicsItem *parent = 0);
+  ~TimWave();
 
-	virtual QRectF boundingRect() const;
+  virtual QRectF boundingRect() const;
 
-	virtual void
-			paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+  virtual void
+      paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-	virtual void setGeometry(const QRectF & rect);
+  virtual void setGeometry(const QRectF & rect);
 
-	TimLayoutData* getLayoutData();
+  TimLayoutData* getLayoutData();
 
 protected:
-	virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
-			QSizeF()) const;
+  virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
+      QSizeF()) const;
 
 private:
-	TimEvent      *m_TimEvent;
-	TimLayoutData *m_LayoutData;
+  TimEvent *m_TimEvent;
+  TimLayoutData *m_LayoutData;
 
 };
 

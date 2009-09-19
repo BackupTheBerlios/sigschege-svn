@@ -26,30 +26,32 @@
 #include "TimEvent.h"
 #include "TimWave.h"
 
-TimEventLow::TimEventLow(TimEvent *parent) : TimEventType(parent) {
-	setLevel(Low);
+TimEventLow::TimEventLow(TimEvent *parent) :
+  TimEventType(parent) {
+  setLevel(Low);
 }
 
 void TimEventLow::paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-	// draw edge
-	if(m_parent->getPrev() != NULL) {
-		EventLevel level = m_parent->getPrev()->getEventType()->getLevel();
-		switch(level) {
-		case(High):
-			painter->drawLine(0, 15, 0, 35);
-			break;
-		}
-	}
+  // draw edge
+  if (m_parent->getPrev() != NULL) {
+    EventLevel level = m_parent->getPrev()->getEventType()->getLevel();
+    switch (level) {
+    case (High):
+      painter->drawLine(0, 15, 0, 35);
+      break;
+    }
+  }
 
-	// draw signal
-	unsigned int signal_length;
-	if(m_parent->getNext() == NULL) {
-		signal_length= m_parent->getWave()->getLayoutData()->get_col_1_width() - m_parent->pos().x();
-	} else {
-		signal_length= m_parent->getNext()->pos().x()-1;
-	}
+  // draw signal
+  unsigned int signal_length;
+  if (m_parent->getNext() == NULL) {
+    signal_length = m_parent->getWave()->getLayoutData()->get_col_1_width()
+        - m_parent->pos().x();
+  } else {
+    signal_length = m_parent->getNext()->pos().x() - 1;
+  }
 
-	painter->drawLine(0, 35, signal_length, 35);
+  painter->drawLine(0, 35, signal_length, 35);
 }
 

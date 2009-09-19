@@ -26,7 +26,7 @@
 #include "TimEvent.h"
 
 TimEventType::TimEventType(TimEvent* parent) {
-	m_parent = parent;
+  m_parent = parent;
 }
 
 TimEventType::~TimEventType() {
@@ -34,17 +34,16 @@ TimEventType::~TimEventType() {
 }
 
 void TimEventType::setParent(TimEvent *parent) {
-	m_parent = parent;
+  m_parent = parent;
 }
-
 
 void TimEventType::paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 }
 
 void TimEventType::setLevel(EventLevel level) {
-	m_level = level;
+  m_level = level;
 }
 
 EventLevel TimEventType::getLevel() {
-	return m_level;
+  return m_level;
 }

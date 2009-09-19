@@ -34,22 +34,22 @@ class MainWindow: public QMainWindow {
 Q_OBJECT
 
 public:
-	MainWindow(QWidget *parent = 0);
-	virtual ~MainWindow();
+  MainWindow(QWidget *parent = 0);
+  virtual ~MainWindow();
 
 private:
-	void createActions();
-	void createMenus();
-	void createToolBars();
-	void createStatusBar();
-	void createTopView();
+  void createActions();
+  void createMenus();
+  void createToolBars();
+  void createStatusBar();
+  void createTopView();
 
 private:
-	QAction       *exitAct;
-	QMenu         *fileMenu;
-	QToolBar      *fileToolBar;
-	QGraphicsView *m_view;
-  TimingScene   *m_scene;
+  QAction *exitAct;
+  QMenu *fileMenu;
+  QToolBar *fileToolBar;
+  QGraphicsView *m_view;
+  TimingScene *m_scene;
 };
 
 #endif // MAINWINDOW_H

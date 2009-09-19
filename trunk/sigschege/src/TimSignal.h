@@ -37,23 +37,23 @@ class TimLabel;
 class TimSignal: public QGraphicsItem, public QGraphicsLayoutItem {
 
 public:
-	TimSignal(TimLayoutData *layout, QGraphicsItem *parent = 0);
-	~TimSignal();
+  TimSignal(TimLayoutData *layout, QGraphicsItem *parent = 0);
+  ~TimSignal();
 
-	virtual QRectF boundingRect() const;
+  virtual QRectF boundingRect() const;
 
-	virtual void
-			paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+  virtual void
+      paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-	virtual void setGeometry(const QRectF & rect);
+  virtual void setGeometry(const QRectF & rect);
 
 protected:
-	virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
-			QSizeF()) const;
+  virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
+      QSizeF()) const;
 
-	TimLabel *m_label;
-	TimWave *m_wave;
-	TimLayoutData *m_LayoutData;
+  TimLabel *m_label;
+  TimWave *m_wave;
+  TimLayoutData *m_LayoutData;
 };
 
 #endif /* TIMSIGNAL_H_ */

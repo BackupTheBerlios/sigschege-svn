@@ -26,13 +26,13 @@
 
 MainWindow::MainWindow(QWidget *parent) {
 
-	createActions();
-	createMenus();
-	createToolBars();
-	createStatusBar();
-	createTopView();
+  createActions();
+  createMenus();
+  createToolBars();
+  createStatusBar();
+  createTopView();
 
-	resize(800,500);
+  resize(800, 500);
 
 }
 MainWindow::~MainWindow() {
@@ -47,29 +47,28 @@ void MainWindow::createActions() {
 }
 
 void MainWindow::createMenus() {
-	fileMenu = menuBar()->addMenu(tr("&File"));
-	fileMenu->addAction(exitAct);
+  fileMenu = menuBar()->addMenu(tr("&File"));
+  fileMenu->addAction(exitAct);
 }
 
 void MainWindow::createToolBars() {
-	fileToolBar = addToolBar(tr("File"));
+  fileToolBar = addToolBar(tr("File"));
 }
 void MainWindow::createStatusBar() {
-	statusBar()->showMessage(tr("Ready"));
+  statusBar()->showMessage(tr("Ready"));
 }
 
 void MainWindow::createTopView() {
-	m_scene = new TimingScene;
+  m_scene = new TimingScene;
 
-	m_scene->setLabelWidth(50);
-	m_scene->setSceneWidth(600);
+  m_scene->setLabelWidth(50);
+  m_scene->setSceneWidth(600);
 
-	m_scene->addTimSignal();
-	m_scene->addTimSignal();
+  m_scene->addTimSignal();
+  m_scene->addTimSignal();
 
-
-	m_view = new QGraphicsView(m_scene);
-	m_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-	setCentralWidget(m_view);
+  m_view = new QGraphicsView(m_scene);
+  m_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+  setCentralWidget(m_view);
 
 }

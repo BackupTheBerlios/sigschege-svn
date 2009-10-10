@@ -26,29 +26,84 @@
 #ifndef TIMLAYOUTDATA_H_
 #define TIMLAYOUTDATA_H_
 
+/** @brief The @c TimLayoutData class stores all "global" timing diagram data.
+ *
+ */
 class TimLayoutData {
 
 public:
+
+  /** @brief CTor
+   */
   TimLayoutData();
+
+  /** @brief DTor
+   */
   virtual ~TimLayoutData();
 
+  /** @brief Get the start time
+   *
+   * @return Start time in sec.
+   */
   double get_start_time();
+
+  /** @brief Set the start time.
+   *
+   * @param start Start time in sec.
+   */
   void set_start_time(double start);
 
+  /** @brief Get the end time
+   *
+   * @return End time in sec.
+   */
   double get_end_time();
+
+  /** @brief Set the end time.
+   *
+   * @param start End time in sec.
+   */
   void set_end_time(double end);
 
+  /** @brief Get the width of col 0 (label).
+   *
+   * @return Width in pixel.
+   */
   unsigned int get_col_0_width();
-  void set_col_0_width(unsigned int);
 
+  /** @brief Set width of col 0 (label)
+   * @param width Width in pixel.
+   */
+  void set_col_0_width(unsigned int width);
+
+  /** @brief Get the width of col 1 (waveform).
+   *
+   * @return Width in pixel.
+   */
   unsigned int get_col_1_width();
+
+  /** @brief Set width of col 1 (waveform)
+   * @param width Width in pixel.
+   */
   void set_col_1_width(unsigned int width);
 
 private:
-  double m_start_time; // start time of wave form
-  double m_end_time; // end time of wave form
-  unsigned int m_col_0_width; // text
-  unsigned int m_col_1_width; // wave form
+
+  /** @brief start time of wave form
+   */
+  double m_start_time;
+
+  /** @brief end time of wave form
+   */
+  double m_end_time;
+
+  /** @brief Label width (first col)
+   */
+  unsigned int m_col_0_width;
+
+  /** @brief Width of wave form (second col)
+   */
+  unsigned int m_col_1_width;
 
 
 };

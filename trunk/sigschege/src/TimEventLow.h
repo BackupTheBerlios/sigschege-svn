@@ -38,6 +38,7 @@ class TimEvent;
 class TimEventLow: public TimEventType {
 
 public:
+
   /** @brief The class constructor
    *
    * @param parent The TimEvent that owns this event type. Default: 0.

@@ -29,24 +29,61 @@
 #include <QtGui>
 #include "TimLayoutData.h"
 
+/** @brief The @c TimLabel class is used to draw the signal labels.
+ *
+ * The @c TimLabel class ist used to draw the signal labels.
+ */
 class TimLabel: public QGraphicsSimpleTextItem, public QGraphicsLayoutItem {
 
 public:
+
+  /** @brief CTor
+   *
+   * @param layout Pointer to the layout data
+   * @param parent Pointer to the owning parent
+   *
+   */
   TimLabel(TimLayoutData *layout, QGraphicsItem *parent = 0);
+
+  /** @brief CTor
+   *
+   * @param layout Pointer to the layout data
+   * @param text Label text.
+   * @param parent Pointer to the owning parent
+   *
+   */
   TimLabel(TimLayoutData *layout, const QString & text, QGraphicsItem *parent =
       0);
 
+  /** @brief Returns the bounding rect.
+   *
+   * @return Returns the bounding rect.
+   */
   virtual QRectF boundingRect() const;
 
   /*	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
    QWidget *widget);
    */
+
+  /** @brief Sets the geometry
+   *
+   * @param rect The geometry stored in a rect.
+   */
   virtual void setGeometry(const QRectF & rect);
 protected:
+
+  /** @brief Returns a hint of the object size.
+   *
+   * @param which Specifies which hint is requested.
+   * @param constraint The constrains that apply.
+   */
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
 
 private:
+
+  /** @brief Stores a pointer to the layout data.
+   */
   TimLayoutData *m_LayoutData;
 
 };

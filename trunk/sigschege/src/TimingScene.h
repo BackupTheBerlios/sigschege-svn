@@ -95,7 +95,12 @@ public:
    *
    * @param width Scene width.
    */
-void setSceneWidth(unsigned int width);
+  void setSceneWidth(unsigned int width);
+
+  QAction* createRedoAction();
+  QAction* createUndoAction();
+
+  void pushCmd(QUndoCommand* cmd);
 
 private:
   /** @brief Pointer to the linear layout object.
@@ -110,6 +115,7 @@ private:
    */
   TimLayoutData m_LayoutData;
 
+  QUndoStack m_undoStack;
 };
 
 #endif /* TIMINGSCENE_H_ */

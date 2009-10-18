@@ -87,3 +87,15 @@ void TimingScene::setStartTime(double stime) {
 void TimingScene::setEndTime(double etime) {
   getLayoutData()->set_end_time(etime);
 }
+
+QAction* TimingScene::createRedoAction() {
+  return m_undoStack.createRedoAction(this);
+}
+
+QAction* TimingScene::createUndoAction() {
+  return m_undoStack.createUndoAction(this);
+}
+
+void TimingScene::pushCmd(QUndoCommand* cmd) {
+  m_undoStack.push(cmd);
+}

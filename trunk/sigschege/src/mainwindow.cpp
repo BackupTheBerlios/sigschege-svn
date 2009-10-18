@@ -23,14 +23,16 @@
 //
 
 #include "mainwindow.h"
+#include "TimCmdAddSignal.h"
 
 MainWindow::MainWindow(QWidget *parent) {
+
+  createTopView();
 
   createActions();
   createMenus();
   createToolBars();
   createStatusBar();
-  createTopView();
 
   resize(800, 500);
 
@@ -39,20 +41,46 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::createActions() {
-  exitAct = new QAction(tr("E&xit"), this);
-  exitAct->setShortcut(tr("Ctrl+Q"));
-  exitAct->setStatusTip(tr("Exit the application"));
-  connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
+  m_exitAct = new QAction(tr("E&xit"), this);
+  m_exitAct->setShortcut(tr("Ctrl+Q"));
+  m_exitAct->setStatusTip(tr("Exit the application"));
+  connect(m_exitAct, SIGNAL(triggered()), this, SLOT(close()));
+
+  m_addSignal = new QAction(tr("Add Signal"), this);
+  m_addSignal->setStatusTip(tr("Adds a new signal to the timing diagram"));
+  connect(m_addSignal, SIGNAL(triggered()), this, SLOT(cmdAddSignal()));
+
+  m_undoCmd = m_scene->createUndoAction();
+  m_redoCmd = m_scene->createRedoAction();
 
 }
 
 void MainWindow::createMenus() {
-  fileMenu = menuBar()->addMenu(tr("&File"));
-  fileMenu->addAction(exitAct);
+
+  // Create and init file menu
+  m_fileMenu = menuBar()->addMenu(tr("&File"));
+  m_fileMenu->addAction(m_exitAct);
+
+  // Create and init edit menu
+  m_editMenu = menuBar()->addMenu(tr("&Edit"));
+  m_editMenu->addAction(m_undoCmd);
+  m_editMenu->addAction(m_redoCmd);
+  m_editMenu->addSeparator();
+  m_editMenu->addAction(m_addSignal);
 }
 
 void MainWindow::createToolBars() {
-  fileToolBar = addToolBar(tr("File"));
+
+  // Create and init the file tool bar
+  m_fileToolBar = addToolBar(tr("File"));
+
+  // Create and init the edit tool bar
+  m_editToolBar = addToolBar(tr("Edit"));
+  m_editToolBar->addAction(m_addSignal);
+  m_editToolBar->addSeparator();
+  m_editToolBar->addAction(m_undoCmd);
+  m_editToolBar->addAction(m_redoCmd);
+
 }
 void MainWindow::createStatusBar() {
   statusBar()->showMessage(tr("Ready"));
@@ -64,11 +92,12 @@ void MainWindow::createTopView() {
   m_scene->setLabelWidth(50);
   m_scene->setSceneWidth(600);
 
-  m_scene->addTimSignal();
-  m_scene->addTimSignal();
-
   m_view = new QGraphicsView(m_scene);
   m_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   setCentralWidget(m_view);
 
+}
+
+void MainWindow::cmdAddSignal() {
+  m_scene->pushCmd(new TimCmdAddSignal(m_scene));
 }

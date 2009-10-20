@@ -5,6 +5,9 @@ find_package(Qt4 REQUIRED)
 set(QT_USE_QTXML 1)
 include(${QT_USE_FILE})
 
+QT4_ADD_RESOURCES(res 
+sigschege.qrc)
+
 QT4_WRAP_CPP(sources_moc 
 mainwindow.h
 TimingScene.h
@@ -35,7 +38,7 @@ TimCmdAddSignal.cpp
 
 include_directories(${sigschege_BINARY_DIR}/src)
 
-add_executable(sigschege_gui main.cpp ${sources} ${sources_ui} ${sources_moc})
+add_executable(sigschege_gui main.cpp ${sources} ${sources_ui} ${sources_moc} ${res})
 
 set_target_properties(sigschege_gui PROPERTIES OUTPUT_NAME sigschege)
 

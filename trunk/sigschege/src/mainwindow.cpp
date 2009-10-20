@@ -51,7 +51,9 @@ void MainWindow::createActions() {
   connect(m_addSignal, SIGNAL(triggered()), this, SLOT(cmdAddSignal()));
 
   m_undoCmd = m_scene->createUndoAction();
+  m_undoCmd->setIcon(QIcon(":/images/undo.png"));
   m_redoCmd = m_scene->createRedoAction();
+  m_redoCmd->setIcon(QIcon(":/images/redo.png"));
 
 }
 

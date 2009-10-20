@@ -42,17 +42,31 @@ TimingScene::TimingScene(QObject *parent) :
 
 TimSignal* TimingScene::addTimSignal() {
 
-  // create the new signal
-  TimSignal *ts1 = new TimSignal(&m_LayoutData);
+  return addTimSignal(new TimSignal(&m_LayoutData));
+}
+
+TimSignal* TimingScene::addTimSignal(TimSignal* signal) {
 
   // add signal to graphic scene
-  addItem(ts1);
+  addItem(signal);
 
   // add signal to layout manager
-  m_layout->addItem(ts1);
+  m_layout->addItem(signal);
 
-  return ts1;
+  return signal;
+
 }
+
+void TimingScene::removeTimSignal(TimSignal *signal) {
+
+  // First remove the signal from the layout
+  m_layout->removeItem(signal);
+  m_layout->setMaximumSize(0,0); // adapt the size
+
+  // then remove it from the scene
+  removeItem(signal);
+}
+
 
 TimLayoutData* TimingScene::getLayoutData() {
   return &m_LayoutData;

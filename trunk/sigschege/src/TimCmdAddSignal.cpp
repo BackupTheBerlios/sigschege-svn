@@ -29,13 +29,19 @@ TimCmdAddSignal::TimCmdAddSignal(TimingScene *tscene) {
   m_timSignal   = NULL;
 }
 
+TimCmdAddSignal::~TimCmdAddSignal() {
+  if(m_timSignal) {
+    delete m_timSignal;
+  }
+}
+
 void TimCmdAddSignal::undo() {
-  // TODO implement undo function
+  m_timingScene->removeTimSignal(m_timSignal);
 }
 
 void TimCmdAddSignal::redo() {
   if(m_timSignal) {
-    // TODO implement real redo function
+    m_timingScene->addTimSignal(m_timSignal);
   } else {
     m_timSignal = m_timingScene->addTimSignal();
   }

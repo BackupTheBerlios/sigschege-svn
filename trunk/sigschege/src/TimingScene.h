@@ -37,6 +37,7 @@ class TimSignal;
  * the layout data as well.
  */
 class TimingScene: public QGraphicsScene {
+
 Q_OBJECT
 
 public:
@@ -49,11 +50,28 @@ public:
 
   /** @brief Creates/adds and returns a new signal.
    *
-   * This method creates a new signal object, adds it to the timing scene and retuns a pointer to it.
+   * This method creates a new signal object, adds it to the timing scene and returns a pointer to it.
    *
    * @return Returns a pointer to the new signal.
    */
   TimSignal* addTimSignal();
+
+  /** @brief Adds and returns a new signal.
+   *
+   * This method adds signal object to the timing scene and returns a pointer to it.
+   *
+   * @param signal Pointer to TimSignal object
+   * @return Returns a pointer to the new signal.
+   */
+  TimSignal* addTimSignal(TimSignal* signal);
+
+  /** @brief Removes the signal from the timing scene
+   *
+   * This method removes the signal from the timing scene. It will not destroy the signal.
+   *
+   * @param signal Pointer to the signal to remove.
+   */
+  void removeTimSignal(TimSignal *signal);
 
   /** @brief Get a pointer to the layout data.
    *
@@ -77,7 +95,7 @@ public:
    * This method sets the end time of the timing scene. The time itself will be stored in the layout
    * data.
    *
-   * @param stime End time in sec.
+   * @param etime End time in sec.
    */
   void setEndTime(double etime);
 
@@ -97,9 +115,28 @@ public:
    */
   void setSceneWidth(unsigned int width);
 
+  /** @brief Creates a redo action
+   *
+   * This method creates a redo action that can be used in toolbars and menus.
+   *
+   * @return Redo action
+   */
   QAction* createRedoAction();
+
+  /** @brief Creates a undo action
+   *
+   * This method creates a undo action that can be used in toolbars and menus.
+   *
+   * @return Undo action
+   */
   QAction* createUndoAction();
 
+  /** @brief Push a command to the undo stack
+   *
+   * This method will execute and push the command to the undo stack.
+   *
+   * @param cmd Pointer to the command to execute and push to the undo stack.
+   */
   void pushCmd(QUndoCommand* cmd);
 
 private:

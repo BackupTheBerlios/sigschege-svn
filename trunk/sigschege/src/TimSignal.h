@@ -34,20 +34,53 @@
 class TimWave;
 class TimLabel;
 
+/** @brief The @c TimSignal class represents one signal in the Timing Diagram.
+ *
+ */
 class TimSignal: public QGraphicsItem, public QGraphicsLayoutItem {
 
 public:
+
+  /** @brief Creates a new @c TimSignal object.
+   *
+   * @param layout Pointer to the layout data object.
+   * @param parent Pointer to the owning parent object.
+   */
   TimSignal(TimLayoutData *layout, QGraphicsItem *parent = 0);
+
+  /** @brief DTor
+   * Destroys the @c TimSignal object
+   */
   ~TimSignal();
 
+  /** @brief Returns the bounding rect for this signal.
+   *
+   * @return Returns the bounding rect.
+   */
   virtual QRectF boundingRect() const;
 
+  /** @brief Paints the signal.
+   *
+   * @param painter Pointer to the painter object
+   * @param option Pointer to painter options
+   * @param widget Pointer to the painting widget
+   */
   virtual void
       paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+  /** @brief Sets the geometry of this object
+   *
+   * @param rect Reference to the geometry.
+   */
   virtual void setGeometry(const QRectF & rect);
 
 protected:
+
+  /* @brief Returns a hint to the size of this signal.
+   *
+   * @param which Defines which hint type should be returned
+   * @param constraint Specified any existing constraint.
+   */
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
 

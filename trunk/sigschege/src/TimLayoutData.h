@@ -61,7 +61,7 @@ public:
 
   /** @brief Set the end time.
    *
-   * @param start End time in sec.
+   * @param end End time in sec.
    */
   void set_end_time(double end);
 

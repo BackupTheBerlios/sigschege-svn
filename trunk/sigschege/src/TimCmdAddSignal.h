@@ -29,14 +29,39 @@
 #include "TimingScene.h"
 #include "TimSignal.h"
 
+/** @brief @c TimCmdAddSignal class implements the AddSignal command.
+ *
+ * The @c TimCmdAddSignal class implements the Add Signal command. It supports undo and redo operations.
+ *
+ */
 class TimCmdAddSignal : public QUndoCommand {
 
 public:
 
+  /** @brief CTOR
+   *
+   * Creates a new @c TimCmdAddSignal object.
+   *
+   * @param tscene Pointer to the scene where the signal should be added
+   */
   TimCmdAddSignal(TimingScene *tscene);
 
+  /** @brief DTOR
+   * Destroys the @c TimCmdAddSignal object and every owning TimSignal object.
+   */
+  virtual ~TimCmdAddSignal();
+
+  /** @brief Undo the command.
+   *
+   * Undo the addSignal command.
+   *
+   */
   virtual void undo();
 
+  /** @brief Redo the command.
+   *
+   * Redo the addSignal command.
+   */
   virtual void redo();
 
 private:

@@ -47,6 +47,7 @@ void MainWindow::createActions() {
   connect(m_exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
   m_addSignal = new QAction(tr("Add Signal"), this);
+  m_addSignal->setIcon(QIcon(":/images/add.png"));
   m_addSignal->setStatusTip(tr("Adds a new signal to the timing diagram"));
   connect(m_addSignal, SIGNAL(triggered()), this, SLOT(cmdAddSignal()));
 

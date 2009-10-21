@@ -84,8 +84,18 @@ protected:
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
 
+  /** @brief Pointer to the signal label
+   */
   TimLabel *m_label;
+
+  /** @brief Pointer to the wave form
+   */
   TimWave *m_wave;
+
+  /** @brief Pointer to the layout data.
+   *
+   * This is a weak pointer.  (no ownership)
+   */
   TimLayoutData *m_LayoutData;
 };
 

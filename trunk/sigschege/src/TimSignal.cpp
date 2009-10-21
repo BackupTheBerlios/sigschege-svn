@@ -29,6 +29,8 @@
 TimSignal::TimSignal(TimLayoutData *layout, QGraphicsItem *parent) :
   QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
 
+  setFlag(ItemIsSelectable);
+
   m_LayoutData = layout;
 
   m_label = new TimLabel(m_LayoutData, "Test", this);
@@ -68,6 +70,11 @@ QRectF TimSignal::boundingRect() const {
 }
 
 void TimSignal::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+
+  if(isSelected()) {
+    painter->setBrush(QBrush(QColor(100,100,255,100)));
+  }
+
   painter->drawRoundedRect(0, 0, m_LayoutData->get_col_0_width()
       + m_LayoutData->get_col_1_width(), 50, 5, 5);
 }

@@ -29,24 +29,48 @@
 #include "TimingScene.h"
 #include "TimSignal.h"
 
+/** @brief Main window of Sigschege
+ */
 class MainWindow: public QMainWindow {
 
 Q_OBJECT
 
 public:
+  /** @brief CTor
+   *
+   * @param parent Pointer to the parent object
+   */
   MainWindow(QWidget *parent = 0);
+
+  /** @brief DTor
+   */
   virtual ~MainWindow();
 
 private:
+  /** @brief Create all action objects
+   */
   void createActions();
+
+  /** @brief Create menus.
+   */
   void createMenus();
+
+  /** @brief Create tool bars
+   */
   void createToolBars();
+
+  /** @brief Create status bar
+   */
   void createStatusBar();
+
+  /** @brief Create timing diagram scene and view.
+   */
   void createTopView();
 
 private:
   QAction *m_exitAct;
   QAction *m_addSignal;
+  QAction *m_rmSignal;
   QAction *m_undoCmd;
   QAction *m_redoCmd;
   QMenu *m_fileMenu;
@@ -58,6 +82,8 @@ private:
 
 private slots:
   void cmdAddSignal();
+  void cmdRmSignal();
+  void selectionChanged();
 
 };
 

@@ -24,6 +24,7 @@
 
 #include "mainwindow.h"
 #include "TimCmdAddSignal.h"
+#include "TimCmdRmSignal.h"
 
 MainWindow::MainWindow(QWidget *parent) {
 
@@ -33,6 +34,9 @@ MainWindow::MainWindow(QWidget *parent) {
   createMenus();
   createToolBars();
   createStatusBar();
+
+  // handle changed selection
+  connect(m_scene, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
 
   resize(800, 500);
 
@@ -50,6 +54,12 @@ void MainWindow::createActions() {
   m_addSignal->setIcon(QIcon(":/images/add.png"));
   m_addSignal->setStatusTip(tr("Adds a new signal to the timing diagram"));
   connect(m_addSignal, SIGNAL(triggered()), this, SLOT(cmdAddSignal()));
+
+  m_rmSignal = new QAction(tr("Remove Signal"), this);
+  m_rmSignal->setEnabled(false);
+  m_rmSignal->setIcon(QIcon(":/images/rm.png"));
+  m_rmSignal->setStatusTip(tr("Removes one or more signal(s) from the timing diagram"));
+  connect(m_rmSignal, SIGNAL(triggered()), this, SLOT(cmdRmSignal()));
 
   m_undoCmd = m_scene->createUndoAction();
   m_undoCmd->setIcon(QIcon(":/images/undo.png"));
@@ -70,6 +80,7 @@ void MainWindow::createMenus() {
   m_editMenu->addAction(m_redoCmd);
   m_editMenu->addSeparator();
   m_editMenu->addAction(m_addSignal);
+  m_editMenu->addAction(m_rmSignal);
 }
 
 void MainWindow::createToolBars() {
@@ -80,6 +91,7 @@ void MainWindow::createToolBars() {
   // Create and init the edit tool bar
   m_editToolBar = addToolBar(tr("Edit"));
   m_editToolBar->addAction(m_addSignal);
+  m_editToolBar->addAction(m_rmSignal);
   m_editToolBar->addSeparator();
   m_editToolBar->addAction(m_undoCmd);
   m_editToolBar->addAction(m_redoCmd);
@@ -103,4 +115,24 @@ void MainWindow::createTopView() {
 
 void MainWindow::cmdAddSignal() {
   m_scene->pushCmd(new TimCmdAddSignal(m_scene));
+}
+
+void MainWindow::cmdRmSignal() {
+  m_scene->pushCmd(new TimCmdRmSignal(m_scene));
+}
+
+void MainWindow::selectionChanged() {
+
+  // get new selected items
+  QList<QGraphicsItem*> item_list = m_scene->selectedItems();
+
+  // check if any signal is selected
+  if(item_list.isEmpty()) {
+    // disable delete signal
+    m_rmSignal->setEnabled(false);
+  } else {
+    // enable delete signal
+    m_rmSignal->setEnabled(true);
+  }
+
 }

@@ -57,16 +57,38 @@ TimSignal* TimingScene::addTimSignal(TimSignal* signal) {
 
 }
 
-void TimingScene::removeTimSignal(TimSignal *signal) {
+TimSignal* TimingScene::addTimSignal(int index, TimSignal* signal) {
+
+  // add signal to graphic scene
+  addItem(signal);
+
+  // add signal to layout manager
+  m_layout->insertItem(index, signal);
+
+  return signal;
+
+}
+
+int TimingScene::removeTimSignal(TimSignal *signal) {
 
   // First remove the signal from the layout
+
+  // indexOf is missing in Qt < 4.6 :-(
+  int cnt = m_layout->count();
+  int index;
+  for (index = 0; index < cnt; ++index) {
+    if (signal == m_layout->itemAt(index)) {
+      break;
+    }
+  }
+
   m_layout->removeItem(signal);
-  m_layout->setMaximumSize(0,0); // adapt the size
+  m_layout->setMaximumSize(0, 0); // adapt the size
 
   // then remove it from the scene
   removeItem(signal);
+  return index;
 }
-
 
 TimLayoutData* TimingScene::getLayoutData() {
   return &m_LayoutData;

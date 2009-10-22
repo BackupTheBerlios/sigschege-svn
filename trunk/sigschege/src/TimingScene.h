@@ -65,13 +65,24 @@ public:
    */
   TimSignal* addTimSignal(TimSignal* signal);
 
+  /** @brief Adds and returns a new signal.
+   *
+   * This method adds signal object to the timing scene and returns a pointer to it.
+   *
+   * @param signal Pointer to TimSignal object
+   * @param index Add signal after this index.
+   * @return Returns a pointer to the new signal.
+   */
+  TimSignal* addTimSignal(int index, TimSignal* signal);
+
   /** @brief Removes the signal from the timing scene
    *
    * This method removes the signal from the timing scene. It will not destroy the signal.
    *
    * @param signal Pointer to the signal to remove.
+   * @returns Returns the old index.
    */
-  void removeTimSignal(TimSignal *signal);
+  int removeTimSignal(TimSignal *signal);
 
   /** @brief Get a pointer to the layout data.
    *

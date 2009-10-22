@@ -32,22 +32,59 @@
 
 class TimSignal;
 
+/** @brief Waveform object of a signals
+ */
 class TimWave: public QGraphicsItem, public QGraphicsLayoutItem {
 
 public:
+  /** @brief CTor
+   *
+   * @param layoutdata Pointer to the layout data object.
+   * @param parent Pointer to the parent object.
+   */
   TimWave(TimLayoutData *layoutdata, QGraphicsItem *parent = 0);
-  ~TimWave();
 
+  /** @brief DTor
+   */
+  virtual ~TimWave();
+
+  /** @brief Returns the bounding rect.
+   *
+   * @return Bounding rect.
+   */
   virtual QRectF boundingRect() const;
 
+  /** @brief Paints the waveform
+   *
+   * Actually the event draw the waveform, but border etc are drawn here.
+   *
+   * @param painter Pointer to the painter object.
+   * @param option Pointer to the paint options.
+   * @param widget Pointer to the drawing widget.
+   */
   virtual void
       paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+  /** @brief Set the waveform geometry
+   *
+   * @param rect New geometry.
+   */
   virtual void setGeometry(const QRectF & rect);
 
+  /** @brief Get a pointer to the layout data object.
+   *
+   * @return Pointer to the layout data object.
+   */
   TimLayoutData* getLayoutData();
 
 protected:
+
+  /** @brief Get s hint of the required waveform size.
+   *
+   * @param which Selects the requested hint type.
+   * @param constraint Specifies existing area constrains.
+   * @return Size hint.
+   */
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
 

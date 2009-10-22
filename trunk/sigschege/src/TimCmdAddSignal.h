@@ -67,6 +67,7 @@ public:
 private:
   TimingScene *m_timingScene;
   TimSignal   *m_timSignal;
+  bool        m_owned;
 };
 
 #endif /* TIMCMDADDSIGNAL_H_ */

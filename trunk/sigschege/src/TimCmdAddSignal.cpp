@@ -27,16 +27,18 @@
 TimCmdAddSignal::TimCmdAddSignal(TimingScene *tscene) {
   m_timingScene = tscene;
   m_timSignal   = NULL;
+  m_owned       = false;
 }
 
 TimCmdAddSignal::~TimCmdAddSignal() {
-  if(m_timSignal) {
+  if(m_owned && m_timSignal) {
     delete m_timSignal;
   }
 }
 
 void TimCmdAddSignal::undo() {
   m_timingScene->removeTimSignal(m_timSignal);
+  m_owned = true;
 }
 
 void TimCmdAddSignal::redo() {
@@ -45,4 +47,5 @@ void TimCmdAddSignal::redo() {
   } else {
     m_timSignal = m_timingScene->addTimSignal();
   }
+  m_owned = true;
 }

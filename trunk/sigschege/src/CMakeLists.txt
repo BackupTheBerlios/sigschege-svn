@@ -16,6 +16,7 @@ TimWave.h
 TimLabel.h
 TimEvent.h
 TimCmdAddSignal.h
+TimCmdRmSignal.h
 )
 
 set(sources
@@ -30,6 +31,7 @@ TimEventType.cpp
 TimEventLow.cpp
 TimEventHigh.cpp
 TimCmdAddSignal.cpp
+TimCmdRmSignal.cpp
 )
 
 # QT4_WRAP_UI(sources_ui Sigschege.ui)

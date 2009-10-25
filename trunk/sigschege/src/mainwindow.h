@@ -67,7 +67,14 @@ private:
    */
   void createTopView();
 
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private:
+  QAction *m_newAct;
+  QAction *m_loadAct;
+  QAction *m_saveAct;
+  QAction *m_saveAsAct;
   QAction *m_exitAct;
   QAction *m_addSignal;
   QAction *m_rmSignal;
@@ -79,8 +86,14 @@ private:
   QToolBar *m_editToolBar;
   QGraphicsView *m_view;
   TimingScene *m_scene;
+  bool maybeSave();
+  bool save();
 
 private slots:
+  void cmdNew();
+  void cmdLoad();
+  void cmdSave();
+  void cmdSaveAs();
   void cmdAddSignal();
   void cmdRmSignal();
   void selectionChanged();

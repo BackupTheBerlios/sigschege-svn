@@ -45,6 +45,25 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::createActions() {
+  m_newAct = new QAction(tr("&New"), this);
+  m_newAct->setShortcut(tr("Ctrl+N"));
+  m_newAct->setStatusTip(tr("Start a new timing diagram"));
+  connect(m_newAct, SIGNAL(triggered()), this, SLOT(cmdNew()));
+
+  m_loadAct = new QAction(tr("&Load"), this);
+  m_loadAct->setShortcut(tr("Ctrl+L"));
+  m_loadAct->setStatusTip(tr("Load a timing diagram"));
+  connect(m_loadAct, SIGNAL(triggered()), this, SLOT(cmdLoad()));
+
+  m_saveAct = new QAction(tr("&Save"), this);
+  m_saveAct->setShortcut(tr("Ctrl+S"));
+  m_saveAct->setStatusTip(tr("Save this timing diagram"));
+  connect(m_saveAct, SIGNAL(triggered()), this, SLOT(cmdSave()));
+
+  m_saveAsAct = new QAction(tr("Save &As"), this);
+  m_saveAsAct->setStatusTip(tr("Save the timing diagram under a new name"));
+  connect(m_saveAsAct, SIGNAL(triggered()), this, SLOT(cmdSaveAs()));
+
   m_exitAct = new QAction(tr("E&xit"), this);
   m_exitAct->setShortcut(tr("Ctrl+Q"));
   m_exitAct->setStatusTip(tr("Exit the application"));
@@ -72,6 +91,11 @@ void MainWindow::createMenus() {
 
   // Create and init file menu
   m_fileMenu = menuBar()->addMenu(tr("&File"));
+  m_fileMenu->addAction(m_newAct);
+  m_fileMenu->addAction(m_loadAct);
+  m_fileMenu->addAction(m_saveAct);
+  m_fileMenu->addAction(m_saveAsAct);
+  m_fileMenu->addSeparator();
   m_fileMenu->addAction(m_exitAct);
 
   // Create and init edit menu
@@ -106,11 +130,33 @@ void MainWindow::createTopView() {
 
   m_scene->setLabelWidth(50);
   m_scene->setSceneWidth(600);
+  m_scene->setModified(false);
 
   m_view = new QGraphicsView(m_scene);
   m_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   setCentralWidget(m_view);
 
+}
+
+void MainWindow::cmdNew() {
+}
+
+void MainWindow::cmdLoad() {
+}
+
+void MainWindow::cmdSave() {
+}
+
+void MainWindow::cmdSaveAs() {
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+  if (maybeSave()) {
+        event->accept();
+    } else {
+        event->ignore();
+    }
 }
 
 void MainWindow::cmdAddSignal() {
@@ -135,4 +181,24 @@ void MainWindow::selectionChanged() {
     m_rmSignal->setEnabled(true);
   }
 
+}
+
+bool MainWindow::save() {
+  return true; // TODO :)
+}
+
+bool MainWindow::maybeSave()
+{
+    if (m_scene->isModified()) {
+        QMessageBox::StandardButton user_choice;
+        user_choice = QMessageBox::warning(this, tr("Application"),
+                     tr("The timing diagram is modified.\n"
+                        "Do you want to save the changes?"),
+                     QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        if (user_choice == QMessageBox::Save)
+            return save();
+        else if (user_choice == QMessageBox::Cancel)
+            return false;
+    }
+    return true;
 }

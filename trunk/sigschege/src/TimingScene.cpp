@@ -37,7 +37,7 @@ TimingScene::TimingScene(QObject *parent) :
   QGraphicsWidget *form = new QGraphicsWidget;
   form->setLayout(m_layout);
   addItem(form);
-
+  modified = false;
 }
 
 TimSignal* TimingScene::addTimSignal() {
@@ -51,8 +51,9 @@ TimSignal* TimingScene::addTimSignal(TimSignal* signal) {
   addItem(signal);
 
   // add signal to layout manager
-  m_layout->addItem(signal);
+  m_layout->addItem(signal);  
 
+  modified = true;
   return signal;
 
 }
@@ -65,6 +66,7 @@ TimSignal* TimingScene::addTimSignal(int index, TimSignal* signal) {
   // add signal to layout manager
   m_layout->insertItem(index, signal);
 
+  modified = true;
   return signal;
 
 }
@@ -87,6 +89,7 @@ int TimingScene::removeTimSignal(TimSignal *signal) {
 
   // then remove it from the scene
   removeItem(signal);
+  modified = true;
   return index;
 }
 
@@ -103,6 +106,7 @@ void TimingScene::setLabelWidth(unsigned int width) {
   }
   getLayoutData()->set_col_0_width(width);
   setSceneWidth(scene_width);
+  modified = true;
 }
 
 void TimingScene::setSceneWidth(unsigned int width) {
@@ -114,6 +118,7 @@ void TimingScene::setSceneWidth(unsigned int width) {
   }
   setSceneRect(0, 0, m_LayoutData.get_col_0_width()
       + m_LayoutData.get_col_1_width(), 100);
+  modified = true;
 }
 
 void TimingScene::setStartTime(double stime) {

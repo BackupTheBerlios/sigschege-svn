@@ -72,7 +72,7 @@ protected:
 
 private:
   QAction *m_newAct;
-  QAction *m_loadAct;
+  QAction *m_openAct;
   QAction *m_saveAct;
   QAction *m_saveAsAct;
   QAction *m_exitAct;
@@ -86,12 +86,22 @@ private:
   QToolBar *m_editToolBar;
   QGraphicsView *m_view;
   TimingScene *m_scene;
+
+  /** @brief If this file is modified, ask the user what do do.
+   *
+   * This method is called if the current timing diagram will be obsoleted. It checks if it
+   * is modified and asks the user what to do.
+   * The choices are save, discard and cancel. 
+   *
+   * @return Returns true if the action that asks to invalidate the document may proceed, i.e.
+   * the user chose Discard or Save.
+   */
   bool maybeSave();
   bool save();
 
 private slots:
   void cmdNew();
-  void cmdLoad();
+  void cmdOpen();
   void cmdSave();
   void cmdSaveAs();
   void cmdAddSignal();

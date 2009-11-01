@@ -152,7 +152,7 @@ public:
 
   /** @brief Return if the diagram is modified
    *
-   * This method returns if the timing diagram has been changed since being loaded, saved or created.
+   * This method returns if the timing diagram has been changed since being opened, saved or created.
    *
    * @return modified flag
    */
@@ -183,7 +183,7 @@ private:
 
   /** @brief flag to indicate modification against saved file
    *
-   * This flag stores if the timing diagram has been changed since being loaded, saved or created.
+   * This flag stores if the timing diagram has been changed since being opened, saved or created.
    */
   bool modified;
 };

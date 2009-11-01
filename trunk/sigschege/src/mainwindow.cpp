@@ -50,10 +50,10 @@ void MainWindow::createActions() {
   m_newAct->setStatusTip(tr("Start a new timing diagram"));
   connect(m_newAct, SIGNAL(triggered()), this, SLOT(cmdNew()));
 
-  m_loadAct = new QAction(tr("&Load"), this);
-  m_loadAct->setShortcut(tr("Ctrl+L"));
-  m_loadAct->setStatusTip(tr("Load a timing diagram"));
-  connect(m_loadAct, SIGNAL(triggered()), this, SLOT(cmdLoad()));
+  m_openAct = new QAction(tr("&Open"), this);
+  m_openAct->setShortcut(tr("Ctrl+L"));
+  m_openAct->setStatusTip(tr("Open a timing diagram"));
+  connect(m_openAct, SIGNAL(triggered()), this, SLOT(cmdOpen()));
 
   m_saveAct = new QAction(tr("&Save"), this);
   m_saveAct->setShortcut(tr("Ctrl+S"));
@@ -92,7 +92,7 @@ void MainWindow::createMenus() {
   // Create and init file menu
   m_fileMenu = menuBar()->addMenu(tr("&File"));
   m_fileMenu->addAction(m_newAct);
-  m_fileMenu->addAction(m_loadAct);
+  m_fileMenu->addAction(m_openAct);
   m_fileMenu->addAction(m_saveAct);
   m_fileMenu->addAction(m_saveAsAct);
   m_fileMenu->addSeparator();
@@ -141,7 +141,27 @@ void MainWindow::createTopView() {
 void MainWindow::cmdNew() {
 }
 
-void MainWindow::cmdLoad() {
+void MainWindow::cmdOpen() {
+  
+  QString fileName =
+    QFileDialog::getOpenFileName(this, tr("Open Timing Diagram"),
+				 QDir::currentPath(),
+				 tr("Sigschege Timing Diagrams (*.ssg)"));
+  if (fileName.isEmpty())
+    return;
+
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, tr("QXmlStream Sigschege Timing Diagram"),
+                             tr("Cannot read file %1:\n%2.")
+                             .arg(fileName)
+                             .arg(file.errorString()));
+        return;
+    }
+    
+    // TODO: clear m_scene and then load :)
+
+
 }
 
 void MainWindow::cmdSave() {

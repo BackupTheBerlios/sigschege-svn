@@ -139,10 +139,15 @@ void MainWindow::createTopView() {
 }
 
 void MainWindow::cmdNew() {
+  maybeSave();
 }
 
 void MainWindow::cmdOpen() {
   
+  if (!maybeSave()) {
+    return;
+  }
+
   QString fileName =
     QFileDialog::getOpenFileName(this, tr("Open Timing Diagram"),
 				 QDir::currentPath(),
@@ -209,6 +214,7 @@ bool MainWindow::save() {
 
 bool MainWindow::maybeSave()
 {
+  bool affirmative = true;
     if (m_scene->isModified()) {
         QMessageBox::StandardButton user_choice;
         user_choice = QMessageBox::warning(this, tr("Application"),
@@ -216,9 +222,24 @@ bool MainWindow::maybeSave()
                         "Do you want to save the changes?"),
                      QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         if (user_choice == QMessageBox::Save)
-            return save();
+            affirmative = save();
         else if (user_choice == QMessageBox::Cancel)
-            return false;
+	  affirmative = false;
     }
-    return true;
+    affirmative = true;
+
+    if (affirmative)
+      {
+	TimingScene *new_scene = new TimingScene;
+	
+	new_scene->setLabelWidth(50);
+	new_scene->setSceneWidth(600);
+	new_scene->setModified(false);
+	m_view->setScene(new_scene);
+	delete m_scene;
+	m_scene = new_scene;
+	return true;
+      }
+    else return false;
+
 }

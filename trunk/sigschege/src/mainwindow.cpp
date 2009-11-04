@@ -25,6 +25,7 @@
 #include "mainwindow.h"
 #include "TimCmdAddSignal.h"
 #include "TimCmdRmSignal.h"
+#include "SSGReader.h"
 
 MainWindow::MainWindow(QWidget *parent) {
 
@@ -164,7 +165,17 @@ void MainWindow::cmdOpen() {
         return;
     }
     
-    // TODO: clear m_scene and then load :)
+    SSGReader reader(m_scene);
+    if (!reader.read(&file)) {
+        QMessageBox::warning(this, tr("QXmlStream Sigschege Timing Diagram"),
+                             tr("Parse error in file %1 at line %2, column %3:\n%4")
+                             .arg(fileName)
+                             .arg(reader.lineNumber())
+                             .arg(reader.columnNumber())
+                             .arg(reader.errorString()));
+    } else {
+        statusBar()->showMessage(tr("File loaded"), 2000);
+    }
 
 
 }

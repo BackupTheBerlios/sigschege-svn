@@ -74,6 +74,12 @@ public:
    */
   virtual void setGeometry(const QRectF & rect);
 
+  /** @brief Sets the text of the label
+   *
+   * @param text The new text of the label
+   */
+  void setText ( const QString & text );
+
 protected:
 
   /* @brief Returns a hint to the size of this signal.

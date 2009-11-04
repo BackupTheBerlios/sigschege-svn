@@ -63,6 +63,10 @@ void TimSignal::setGeometry(const QRectF & rect) {
   setPos(rect.topLeft());
 }
 
+void TimSignal::setText ( const QString & text ) {
+  m_label->setText(text);
+}
+
 QRectF TimSignal::boundingRect() const {
   qreal penWidth = 1;
   return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_LayoutData->get_col_0_width()

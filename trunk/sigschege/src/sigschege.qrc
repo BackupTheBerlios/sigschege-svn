@@ -4,5 +4,8 @@
         <file>redo.png</file>
         <file>add.png</file>
         <file>rm.png</file>
+        <file>arrow.png</file>
+        <file>SigH.png</file>
+        <file>SigL.png</file>
     </qresource>
 </RCC>

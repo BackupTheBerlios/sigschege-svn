@@ -28,6 +28,7 @@
 #include <QtGui>
 #include "TimingScene.h"
 #include "TimSignal.h"
+#include "TimSignalManager.h"
 
 /** @brief Main window of Sigschege
  */
@@ -76,16 +77,28 @@ private:
   QAction *m_saveAct;
   QAction *m_saveAsAct;
   QAction *m_exitAct;
-  QAction *m_addSignal;
-  QAction *m_rmSignal;
+  QAction *m_addSignalAct;
+  QAction *m_rmSignalAct;
+
+  QActionGroup *m_SigGroup;
+  QAction *m_SigArrow;
+  QAction *m_SigH;
+  QAction *m_SigL;
+
   QAction *m_undoCmd;
   QAction *m_redoCmd;
+
   QMenu *m_fileMenu;
   QMenu *m_editMenu;
+
   QToolBar *m_fileToolBar;
   QToolBar *m_editToolBar;
+  QToolBar *m_signalToolBar;
+
   QGraphicsView *m_view;
   TimingScene *m_scene;
+
+  TimSignalManager *m_signalManager;
 
   /** @brief If this file is modified, ask the user what do do.
    *

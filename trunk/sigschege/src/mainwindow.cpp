@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) {
 
   createTopView();
 
+  m_signalManager = new TimSignalManager(this);
+
   createActions();
   createMenus();
   createToolBars();
@@ -43,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) {
 
 }
 MainWindow::~MainWindow() {
+  delete m_signalManager;
 }
 
 void MainWindow::createActions() {
@@ -70,16 +73,40 @@ void MainWindow::createActions() {
   m_exitAct->setStatusTip(tr("Exit the application"));
   connect(m_exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-  m_addSignal = new QAction(tr("Add Signal"), this);
-  m_addSignal->setIcon(QIcon(":/images/add.png"));
-  m_addSignal->setStatusTip(tr("Adds a new signal to the timing diagram"));
-  connect(m_addSignal, SIGNAL(triggered()), this, SLOT(cmdAddSignal()));
+  m_addSignalAct = new QAction(tr("Add Signal"), this);
+  m_addSignalAct->setIcon(QIcon(":/images/add.png"));
+  m_addSignalAct->setStatusTip(tr("Adds a new signal to the timing diagram"));
+  connect(m_addSignalAct, SIGNAL(triggered()), this, SLOT(cmdAddSignal()));
 
-  m_rmSignal = new QAction(tr("Remove Signal"), this);
-  m_rmSignal->setEnabled(false);
-  m_rmSignal->setIcon(QIcon(":/images/rm.png"));
-  m_rmSignal->setStatusTip(tr("Removes one or more signal(s) from the timing diagram"));
-  connect(m_rmSignal, SIGNAL(triggered()), this, SLOT(cmdRmSignal()));
+  m_rmSignalAct = new QAction(tr("Remove Signal"), this);
+  m_rmSignalAct->setEnabled(false);
+  m_rmSignalAct->setIcon(QIcon(":/images/rm.png"));
+  m_rmSignalAct->setStatusTip(tr("Removes one or more signal(s) from the timing diagram"));
+  connect(m_rmSignalAct, SIGNAL(triggered()), this, SLOT(cmdRmSignal()));
+
+  m_SigArrow = new QAction(tr("Select mode"), this);
+  m_SigArrow->setIcon(QIcon(":/images/arrow.png"));
+  m_SigArrow->setCheckable(true);
+  m_SigArrow->setChecked(true);
+  m_SigArrow->setStatusTip(tr("Select mode"));
+  connect(m_SigArrow, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectNone(bool )));
+
+  m_SigH = new QAction(tr("High signal"), this);
+  m_SigH->setIcon(QIcon(":/images/SigH.png"));
+  m_SigH->setCheckable(true);
+  m_SigH->setStatusTip(tr("High signal"));
+  connect(m_SigH, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectHigh(bool )));
+
+  m_SigL = new QAction(tr("Low signal"), this);
+  m_SigL->setIcon(QIcon(":/images/SigL.png"));
+  m_SigL->setCheckable(true);
+  m_SigL->setStatusTip(tr("Low signal"));
+  connect(m_SigL, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectLow(bool )));
+
+  m_SigGroup = new QActionGroup(this);
+  m_SigGroup->addAction(m_SigArrow);
+  m_SigGroup->addAction(m_SigH);
+  m_SigGroup->addAction(m_SigL);
 
   m_undoCmd = m_scene->createUndoAction();
   m_undoCmd->setIcon(QIcon(":/images/undo.png"));
@@ -104,8 +131,8 @@ void MainWindow::createMenus() {
   m_editMenu->addAction(m_undoCmd);
   m_editMenu->addAction(m_redoCmd);
   m_editMenu->addSeparator();
-  m_editMenu->addAction(m_addSignal);
-  m_editMenu->addAction(m_rmSignal);
+  m_editMenu->addAction(m_addSignalAct);
+  m_editMenu->addAction(m_rmSignalAct);
 }
 
 void MainWindow::createToolBars() {
@@ -115,11 +142,18 @@ void MainWindow::createToolBars() {
 
   // Create and init the edit tool bar
   m_editToolBar = addToolBar(tr("Edit"));
-  m_editToolBar->addAction(m_addSignal);
-  m_editToolBar->addAction(m_rmSignal);
-  m_editToolBar->addSeparator();
   m_editToolBar->addAction(m_undoCmd);
   m_editToolBar->addAction(m_redoCmd);
+  m_editToolBar->addSeparator();
+  m_editToolBar->addAction(m_addSignalAct);
+  m_editToolBar->addAction(m_rmSignalAct);
+
+  // Create and init the signal tool bar
+  m_signalToolBar = new QToolBar(tr("Signal"), this);
+  addToolBar(Qt::LeftToolBarArea, m_signalToolBar);
+  m_signalToolBar->addAction(m_SigArrow);
+  m_signalToolBar->addAction(m_SigH);
+  m_signalToolBar->addAction(m_SigL);
 
 }
 void MainWindow::createStatusBar() {
@@ -144,39 +178,29 @@ void MainWindow::cmdNew() {
 }
 
 void MainWindow::cmdOpen() {
-  
+
   if (!maybeSave()) {
     return;
   }
 
-  QString fileName =
-    QFileDialog::getOpenFileName(this, tr("Open Timing Diagram"),
-				 QDir::currentPath(),
-				 tr("Sigschege Timing Diagrams (*.ssg)"));
+  QString
+      fileName =
+          QFileDialog::getOpenFileName(this, tr("Open Timing Diagram"), QDir::currentPath(), tr("Sigschege Timing Diagrams (*.ssg)"));
   if (fileName.isEmpty())
     return;
 
-    QFile file(fileName);
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        QMessageBox::warning(this, tr("QXmlStream Sigschege Timing Diagram"),
-                             tr("Cannot read file %1:\n%2.")
-                             .arg(fileName)
-                             .arg(file.errorString()));
-        return;
-    }
-    
-    SSGReader reader(m_scene);
-    if (!reader.read(&file)) {
-        QMessageBox::warning(this, tr("QXmlStream Sigschege Timing Diagram"),
-                             tr("Parse error in file %1 at line %2, column %3:\n%4")
-                             .arg(fileName)
-                             .arg(reader.lineNumber())
-                             .arg(reader.columnNumber())
-                             .arg(reader.errorString()));
-    } else {
-        statusBar()->showMessage(tr("File loaded"), 2000);
-    }
+  QFile file(fileName);
+  if (!file.open(QFile::ReadOnly | QFile::Text)) {
+    QMessageBox::warning(this, tr("QXmlStream Sigschege Timing Diagram"), tr("Cannot read file %1:\n%2.") .arg(fileName) .arg(file.errorString()));
+    return;
+  }
 
+  SSGReader reader(m_scene);
+  if (!reader.read(&file)) {
+    QMessageBox::warning(this, tr("QXmlStream Sigschege Timing Diagram"), tr("Parse error in file %1 at line %2, column %3:\n%4") .arg(fileName) .arg(reader.lineNumber()) .arg(reader.columnNumber()) .arg(reader.errorString()));
+  } else {
+    statusBar()->showMessage(tr("File loaded"), 2000);
+  }
 
 }
 
@@ -186,13 +210,12 @@ void MainWindow::cmdSave() {
 void MainWindow::cmdSaveAs() {
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
-{
+void MainWindow::closeEvent(QCloseEvent *event) {
   if (maybeSave()) {
-        event->accept();
-    } else {
-        event->ignore();
-    }
+    event->accept();
+  } else {
+    event->ignore();
+  }
 }
 
 void MainWindow::cmdAddSignal() {
@@ -209,12 +232,12 @@ void MainWindow::selectionChanged() {
   QList<QGraphicsItem*> item_list = m_scene->selectedItems();
 
   // check if any signal is selected
-  if(item_list.isEmpty()) {
+  if (item_list.isEmpty()) {
     // disable delete signal
-    m_rmSignal->setEnabled(false);
+    m_rmSignalAct->setEnabled(false);
   } else {
     // enable delete signal
-    m_rmSignal->setEnabled(true);
+    m_rmSignalAct->setEnabled(true);
   }
 
 }
@@ -223,34 +246,32 @@ bool MainWindow::save() {
   return true; // TODO :)
 }
 
-bool MainWindow::maybeSave()
-{
+bool MainWindow::maybeSave() {
   bool affirmative = true;
-    if (m_scene->isModified()) {
-        QMessageBox::StandardButton user_choice;
-        user_choice = QMessageBox::warning(this, tr("Application"),
-                     tr("The timing diagram is modified.\n"
-                        "Do you want to save the changes?"),
-                     QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        if (user_choice == QMessageBox::Save)
-            affirmative = save();
-        else if (user_choice == QMessageBox::Cancel)
-	  affirmative = false;
-    }
-    affirmative = true;
+  if (m_scene->isModified()) {
+    QMessageBox::StandardButton user_choice;
+    user_choice
+        = QMessageBox::warning(this, tr("Application"), tr("The timing diagram is modified.\n"
+          "Do you want to save the changes?"), QMessageBox::Save
+            | QMessageBox::Discard | QMessageBox::Cancel);
+    if (user_choice == QMessageBox::Save)
+      affirmative = save();
+    else if (user_choice == QMessageBox::Cancel)
+      affirmative = false;
+  }
+  affirmative = true;
 
-    if (affirmative)
-      {
-	TimingScene *new_scene = new TimingScene;
-	
-	new_scene->setLabelWidth(50);
-	new_scene->setSceneWidth(600);
-	new_scene->setModified(false);
-	m_view->setScene(new_scene);
-	delete m_scene;
-	m_scene = new_scene;
-	return true;
-      }
-    else return false;
+  if (affirmative) {
+    TimingScene *new_scene = new TimingScene;
+
+    new_scene->setLabelWidth(50);
+    new_scene->setSceneWidth(600);
+    new_scene->setModified(false);
+    m_view->setScene(new_scene);
+    delete m_scene;
+    m_scene = new_scene;
+    return true;
+  } else
+    return false;
 
 }

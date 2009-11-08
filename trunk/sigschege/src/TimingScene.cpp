@@ -23,6 +23,7 @@
 //
 
 #include "TimingScene.h"
+#include "TimScale.h"
 #include "TimSignal.h"
 
 TimingScene::TimingScene(QObject *parent) :
@@ -89,6 +90,59 @@ int TimingScene::removeTimSignal(TimSignal *signal) {
 
   // then remove it from the scene
   removeItem(signal);
+  modified = true;
+  return index;
+}
+
+
+TimScale* TimingScene::addTimScale() {
+  return addTimScale(new TimScale(&m_LayoutData));
+}
+
+TimScale* TimingScene::addTimScale(TimScale* timescale) {
+
+  // add timescale to graphic scene
+  addItem(timescale);
+
+  // add timescale to layout manager
+  m_layout->addItem(timescale);  
+
+  modified = true;
+  return timescale;
+
+}
+
+TimScale* TimingScene::addTimScale(int index, TimScale* timescale) {
+
+  // add timescale to graphic scene
+  addItem(timescale);
+
+  // add timescale to layout manager
+  m_layout->insertItem(index, timescale);
+
+  modified = true;
+  return timescale;
+
+}
+
+int TimingScene::removeTimScale(TimScale *timescale) {
+
+  // First remove the timescale from the layout
+
+  // indexOf is missing in Qt < 4.6 :-(
+  int cnt = m_layout->count();
+  int index;
+  for (index = 0; index < cnt; ++index) {
+    if (timescale == m_layout->itemAt(index)) {
+      break;
+    }
+  }
+
+  m_layout->removeItem(timescale);
+  m_layout->setMaximumSize(0, 0); // adapt the size
+
+  // then remove it from the scene
+  removeItem(timescale);
   modified = true;
   return index;
 }

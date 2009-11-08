@@ -12,6 +12,7 @@ QT4_WRAP_CPP(sources_moc
 mainwindow.h
 TimingScene.h
 TimSignal.h
+TimScale.h
 TimWave.h
 TimLabel.h
 TimEvent.h
@@ -25,6 +26,7 @@ set(sources
 mainwindow.cpp
 TimingScene.cpp
 TimSignal.cpp
+TimScale.cpp
 TimWave.cpp
 TimLabel.cpp
 TimLayoutData.cpp

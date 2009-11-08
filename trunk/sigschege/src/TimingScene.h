@@ -30,6 +30,7 @@
 #include "TimLayoutData.h"
 
 class TimSignal;
+class TimScale;
 
 /** @brief The timing scene holds all element of the timing diagram.
  *
@@ -83,6 +84,42 @@ public:
    * @returns Returns the old index.
    */
   int removeTimSignal(TimSignal *signal);
+
+  /** @brief Creates/adds and returns a new timescale.
+   *
+   * This method creates a new timescale object, adds it to the timing scene and returns a pointer to it.
+   *
+   * @return Returns a pointer to the new timescale.
+   */
+  TimScale* addTimScale();
+
+  /** @brief Adds and returns a new timescale.
+   *
+   * This method adds a timescale object to the timing scene and returns a pointer to it.
+   *
+   * @param timescale Pointer to TimScale object
+   * @return Returns a pointer to the new timescale.
+   */
+  TimScale* addTimScale(TimScale* timescale);
+
+  /** @brief Adds and returns a new timescale.
+   *
+   * This method adds timescale object to the timing scene and returns a pointer to it.
+   *
+   * @param timescale Pointer to TimScale object
+   * @param index Add timescale after this index.
+   * @return Returns a pointer to the new timescale.
+   */
+  TimScale* addTimScale(int index, TimScale* timescale);
+
+  /** @brief Removes the timescale from the timing scene
+   *
+   * This method removes the timescale from the timing scene. It will not destroy the timescale.
+   *
+   * @param timescale Pointer to the timescale to remove.
+   * @returns Returns the old index.
+   */
+  int removeTimScale(TimScale *timescale);
 
   /** @brief Get a pointer to the layout data.
    *

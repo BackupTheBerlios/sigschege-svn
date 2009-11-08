@@ -34,12 +34,6 @@ TimWave::TimWave(TimLayoutData *layoutdata, QGraphicsItem *parent) :
 
   m_TimEvent = new TimEvent(this);
 
-  TimEvent *e1 = new TimEvent(this, new TimEventHigh(), 50);
-  TimEvent *e2 = new TimEvent(this, new TimEventLow(), 70);
-
-  m_TimEvent->insertEvent(e1);
-  e1->insertEvent(e2);
-
 }
 
 TimWave::~TimWave() {

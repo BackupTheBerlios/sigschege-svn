@@ -29,6 +29,8 @@
 
 MainWindow::MainWindow(QWidget *parent) {
 
+  setWindowTitle(tr("Sigschege"));
+
   createTopView();
 
   m_signalManager = new TimSignalManager(this);
@@ -243,6 +245,7 @@ void MainWindow::selectionChanged() {
 }
 
 bool MainWindow::save() {
+
   return true; // TODO :)
 }
 

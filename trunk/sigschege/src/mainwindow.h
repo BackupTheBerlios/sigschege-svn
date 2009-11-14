@@ -78,6 +78,7 @@ private:
   QAction *m_saveAsAct;
   QAction *m_exitAct;
   QAction *m_addSignalAct;
+  QAction *m_addScaleAct;
   QAction *m_rmSignalAct;
 
   QActionGroup *m_SigGroup;
@@ -118,6 +119,7 @@ private slots:
   void cmdSave();
   void cmdSaveAs();
   void cmdAddSignal();
+  void cmdAddScale();
   void cmdRmSignal();
   void selectionChanged();
 

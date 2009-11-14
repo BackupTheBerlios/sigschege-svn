@@ -187,21 +187,22 @@ public:
    */
   void pushCmd(QUndoCommand* cmd);
 
-  /** @brief Return if the diagram is modified
+  /** @brief Return if the diagram is unmodified 
    *
-   * This method returns if the timing diagram has been changed since being opened, saved or created.
+   * This method returns true if the timing diagram has not been changed since being opened,
+   * saved or created.
    *
    * @return modified flag
    */
-  bool isModified() { return modified; };
+  bool isClean (void) { return m_undoStack.isClean(); };
  
-  /** @brief Set the modification status of this diagram
+  /** @brief Reset the modification status of the diagram 
    *
-   * This method allows to set the modification status of this diagram manually, e.g. if some
+   * This method allows to reset the modification status of this diagram manually, e.g. if some
    * modifications are done implicitly after creation, which shouldn't count as modification.
    *
    */
-  void setModified(bool newModified) { modified = newModified; };
+  void setClean(void) { m_undoStack.setClean(); };
 
 private:
   /** @brief Pointer to the linear layout object.
@@ -218,11 +219,6 @@ private:
 
   QUndoStack m_undoStack;
 
-  /** @brief flag to indicate modification against saved file
-   *
-   * This flag stores if the timing diagram has been changed since being opened, saved or created.
-   */
-  bool modified;
 };
 
 #endif /* TIMINGSCENE_H_ */

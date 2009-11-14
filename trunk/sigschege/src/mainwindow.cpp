@@ -24,6 +24,7 @@
 
 #include "mainwindow.h"
 #include "TimCmdAddSignal.h"
+#include "TimCmdAddScale.h"
 #include "TimCmdRmSignal.h"
 #include "SSGReader.h"
 
@@ -80,6 +81,11 @@ void MainWindow::createActions() {
   m_addSignalAct->setStatusTip(tr("Adds a new signal to the timing diagram"));
   connect(m_addSignalAct, SIGNAL(triggered()), this, SLOT(cmdAddSignal()));
 
+  m_addScaleAct = new QAction(tr("Add Time Scale"), this);
+  //m_addSignalAct->setIcon(QIcon(":/images/add.png"));
+  m_addScaleAct->setStatusTip(tr("Adds a new time scale to the timing diagram"));
+  connect(m_addScaleAct, SIGNAL(triggered()), this, SLOT(cmdAddScale()));
+
   m_rmSignalAct = new QAction(tr("Remove Signal"), this);
   m_rmSignalAct->setEnabled(false);
   m_rmSignalAct->setIcon(QIcon(":/images/rm.png"));
@@ -134,6 +140,7 @@ void MainWindow::createMenus() {
   m_editMenu->addAction(m_redoCmd);
   m_editMenu->addSeparator();
   m_editMenu->addAction(m_addSignalAct);
+  m_editMenu->addAction(m_addScaleAct);
   m_editMenu->addAction(m_rmSignalAct);
 }
 
@@ -167,7 +174,6 @@ void MainWindow::createTopView() {
 
   m_scene->setLabelWidth(50);
   m_scene->setSceneWidth(600);
-  m_scene->setModified(false);
 
   m_view = new QGraphicsView(m_scene);
   m_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -224,6 +230,10 @@ void MainWindow::cmdAddSignal() {
   m_scene->pushCmd(new TimCmdAddSignal(m_scene));
 }
 
+void MainWindow::cmdAddScale() {
+  m_scene->pushCmd(new TimCmdAddScale(m_scene));
+}
+
 void MainWindow::cmdRmSignal() {
   m_scene->pushCmd(new TimCmdRmSignal(m_scene));
 }
@@ -251,7 +261,7 @@ bool MainWindow::save() {
 
 bool MainWindow::maybeSave() {
   bool affirmative = true;
-  if (m_scene->isModified()) {
+  if (!m_scene->isClean()) {
     QMessageBox::StandardButton user_choice;
     user_choice
         = QMessageBox::warning(this, tr("Application"), tr("The timing diagram is modified.\n"
@@ -262,14 +272,13 @@ bool MainWindow::maybeSave() {
     else if (user_choice == QMessageBox::Cancel)
       affirmative = false;
   }
-  affirmative = true;
 
   if (affirmative) {
     TimingScene *new_scene = new TimingScene;
 
     new_scene->setLabelWidth(50);
     new_scene->setSceneWidth(600);
-    new_scene->setModified(false);
+    new_scene->setClean();
     m_view->setScene(new_scene);
     delete m_scene;
     m_scene = new_scene;

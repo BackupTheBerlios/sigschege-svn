@@ -17,7 +17,7 @@ TimWave.h
 TimLabel.h
 TimEvent.h
 TimCmdAddSignal.h
-TimCmdRmSignal.h
+TimCmdAddScale.h
 TimSignalManager.h
 SSGReader.h
 )
@@ -35,6 +35,7 @@ TimEventType.cpp
 TimEventLow.cpp
 TimEventHigh.cpp
 TimCmdAddSignal.cpp
+TimCmdAddScale.cpp
 TimCmdRmSignal.cpp
 TimSignalManager.cpp
 SSGReader.cpp

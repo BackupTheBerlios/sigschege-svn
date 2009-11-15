@@ -204,6 +204,14 @@ public:
    */
   void setClean(void) { m_undoStack.setClean(); };
 
+  /** @brief Clears the diagram completely 
+   *
+   * This method the diagram completely and resets it to its starting state, directly after construction.
+   * Note that this is not an undoable action of course.
+   *
+   */
+  void clear(void);
+
 private:
   /** @brief Pointer to the linear layout object.
    *

@@ -274,14 +274,7 @@ bool MainWindow::maybeSave() {
   }
 
   if (affirmative) {
-    TimingScene *new_scene = new TimingScene;
-
-    new_scene->setLabelWidth(50);
-    new_scene->setSceneWidth(600);
-    new_scene->setClean();
-    m_view->setScene(new_scene);
-    delete m_scene;
-    m_scene = new_scene;
+    m_scene->clear();
     return true;
   } else
     return false;

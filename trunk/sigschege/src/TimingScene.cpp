@@ -40,6 +40,24 @@ TimingScene::TimingScene(QObject *parent) :
   addItem(form);
 }
 
+void TimingScene::clear(void) {
+  
+  int cnt = m_layout->count();
+  int index;
+  QGraphicsLayoutItem *item;
+
+  for (index = cnt-1; index >= 0; --index) {
+    item = m_layout->itemAt(index);
+    m_layout->removeAt(index);
+    // then remove it from the scene
+    removeItem(dynamic_cast<QGraphicsItem*>(item));
+  }
+
+  m_layout->setMaximumSize(0, 0); // adapt the size
+  m_undoStack.clear();
+}
+
+
 TimSignal* TimingScene::addTimSignal() {
 
   return addTimSignal(new TimSignal(&m_LayoutData));

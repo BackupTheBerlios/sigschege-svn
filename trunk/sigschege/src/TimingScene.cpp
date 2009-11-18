@@ -162,6 +162,10 @@ TimLayoutData* TimingScene::getLayoutData() {
   return &m_LayoutData;
 }
 
+QGraphicsLinearLayout* TimingScene::getLayout() {
+  return m_layout;
+}
+
 void TimingScene::setLabelWidth(unsigned int width) {
   long scene_width = getLayoutData()->get_col_0_width()
       + getLayoutData()->get_col_1_width();

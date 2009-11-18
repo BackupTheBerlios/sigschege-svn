@@ -129,6 +129,8 @@ public:
    */
   TimLayoutData* getLayoutData();
 
+  QGraphicsLinearLayout* getLayout();
+  
   /** @brief Sets the start time of the timing scene.
    *
    * This method sets the start time of the timing scene. The time itself will be stored in the layout

@@ -26,23 +26,16 @@
 #include "TimWave.h"
 #include "TimLabel.h"
 #include "TimUtil.h"
+#include "SSGWriter.h"
 
 TimScale::TimScale(TimLayoutData *layout, QGraphicsItem *parent) :
-  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
-
-  setFlag(ItemIsSelectable);
-
-  m_LayoutData = layout;
+  TimMember(layout, parent) {
 
   m_label = new TimLabel(m_LayoutData, "Time", this);
   m_label->setGeometry(QRectF(0, 0, m_LayoutData->get_col_0_width(), 50));
-  m_wave = new TimWave(m_LayoutData, this);
-  m_wave->setGeometry(QRectF(m_LayoutData->get_col_0_width(), 0, m_LayoutData->get_col_1_width(), 50));
 }
 
 TimScale::~TimScale() {
-  delete m_wave;
-  delete m_label;
 }
 
 QSizeF TimScale::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
@@ -62,10 +55,6 @@ QSizeF TimScale::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
 
 void TimScale::setGeometry(const QRectF & rect) {
   setPos(rect.topLeft());
-}
-
-void TimScale::setText ( const QString & text ) {
-  m_label->setText(text);
 }
 
 QRectF TimScale::boundingRect() const {
@@ -96,3 +85,11 @@ void TimScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 }
 
+void TimScale::SSGWrite(SSGWriter *writer) {
+  writer->writeStartElement("timescale");
+  writer->writeStartElement("primarytext");
+  writer->writeCDATA("TODO");
+  writer->writeEndElement();
+  writer->writeEndElement();
+
+}

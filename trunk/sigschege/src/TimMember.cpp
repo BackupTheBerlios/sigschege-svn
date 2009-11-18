@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // TimSignal.cpp
-// Copyright 2009 by ingo
+// Copyright 2009 by ingo & ulf
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -22,25 +22,24 @@
 // #############################################################################
 //
 
-#include "TimSignal.h"
-#include "TimWave.h"
+#include "TimMember.h"
 #include "TimLabel.h"
-#include "SSGWriter.h"
+#include "TimUtil.h"
 
-TimSignal::TimSignal(TimLayoutData *layout, QGraphicsItem *parent) :
-  TimMember(layout, parent) {
+TimMember::TimMember(TimLayoutData *layout, QGraphicsItem *parent) :
+  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
 
-  m_label = new TimLabel(m_LayoutData, "Test", this);
-  m_label->setGeometry(QRectF(0, 0, m_LayoutData->get_col_0_width(), 50));
-  m_wave = new TimWave(m_LayoutData, this);
-  m_wave->setGeometry(QRectF(m_LayoutData->get_col_0_width(), 0, m_LayoutData->get_col_1_width(), 50));
+  setFlag(ItemIsSelectable);
+
+  m_LayoutData = layout;
+
 }
 
-TimSignal::~TimSignal() {
-  delete m_wave;
+TimMember::~TimMember() {
+  delete m_label;
 }
 
-QSizeF TimSignal::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
+QSizeF TimMember::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
   switch (which) {
   case Qt::MinimumSize:
     return QSizeF(50, 50);
@@ -49,37 +48,24 @@ QSizeF TimSignal::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const 
   case Qt::MaximumSize:
     return QSizeF(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
   default:
-    qWarning("r::TimSignal::sizeHint(): Don't know how to handle the value of 'which'");
+    qWarning("r::TimMember::sizeHint(): Don't know how to handle the value of 'which'");
     break;
   }
   return constraint;
 }
 
-void TimSignal::setGeometry(const QRectF & rect) {
+void TimMember::setGeometry(const QRectF & rect) {
   setPos(rect.topLeft());
 }
 
-QRectF TimSignal::boundingRect() const {
+void TimMember::setText ( const QString & text ) {
+  m_label->setText(text);
+}
+
+QRectF TimMember::boundingRect() const {
   qreal penWidth = 1;
   return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_LayoutData->get_col_0_width()
       + m_LayoutData->get_col_1_width() + penWidth, 50 + penWidth);
 }
 
-void TimSignal::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-  if(isSelected()) {
-    painter->setBrush(QBrush(QColor(100,100,255,100)));
-  }
-
-  painter->drawRoundedRect(0, 0, m_LayoutData->get_col_0_width()
-      + m_LayoutData->get_col_1_width(), 50, 5, 5);
-}
-
-void TimSignal::SSGWrite(SSGWriter *writer) {
-  writer->writeStartElement("signal");
-  writer->writeStartElement("primarytext");
-  writer->writeCDATA("TODO");
-  writer->writeEndElement();
-  writer->writeEndElement();
-
-}

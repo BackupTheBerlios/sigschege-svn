@@ -1,6 +1,5 @@
 // -*- c++ -*-
-// TimSignal.h
-// Copyright 2009 by ingo
+// Copyright 2009 by ingo & ulf
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -23,36 +22,35 @@
 //
 
 
-#ifndef TIMSIGNAL_H_
-#define TIMSIGNAL_H_
+#ifndef TIMMEMBER_H_
+#define TIMMEMBER_H_
 
 #include <QtGui>
 
-#include "TimMember.h"
 #include "TimingScene.h"
 #include "TimLayoutData.h"
 
-class TimWave;
+class SSGWriter;
 class TimLabel;
 
-/** @brief The @c TimSignal class represents one signal in the Timing Diagram.
+/** @brief The @c TimMember class displays a time scale in the Timing Diagram.
  *
  */
-class TimSignal: public TimMember {
+class TimMember: public QGraphicsItem, public QGraphicsLayoutItem {
 
 public:
 
-  /** @brief Creates a new @c TimSignal object.
+  /** @brief Creates a new @c TimMember object.
    *
    * @param layout Pointer to the layout data object.
    * @param parent Pointer to the owning parent object.
    */
-  TimSignal(TimLayoutData *layout, QGraphicsItem *parent = 0);
+  TimMember(TimLayoutData *layout, QGraphicsItem *parent = 0);
 
   /** @brief DTor
-   * Destroys the @c TimSignal object
+   * Destroys the @c TimMember object
    */
-  ~TimSignal();
+  ~TimMember();
 
   /** @brief Returns the bounding rect for this signal.
    *
@@ -67,7 +65,7 @@ public:
    * @param widget Pointer to the painting widget
    */
   virtual void
-      paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+      paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) = 0;
 
   /** @brief Sets the geometry of this object
    *
@@ -75,8 +73,13 @@ public:
    */
   virtual void setGeometry(const QRectF & rect);
 
+  /** @brief Sets the text of the label
+   *
+   * @param text The new text of the label
+   */
+  void setText ( const QString & text );
 
-  virtual void SSGWrite(SSGWriter *writer);
+  virtual void SSGWrite(SSGWriter *writer) = 0;
 
 protected:
 
@@ -88,10 +91,15 @@ protected:
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
 
-  /** @brief Pointer to the wave form
+  /** @brief Pointer to the signal label
    */
-  TimWave *m_wave;
+  TimLabel *m_label;
 
+  /** @brief Pointer to the layout data.
+   *
+   * This is a weak pointer.  (no ownership)
+   */
+  TimLayoutData *m_LayoutData;
 };
 
-#endif /* TIMSIGNAL_H_ */
+#endif /* TIMSCALE_H_ */

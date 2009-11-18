@@ -20,11 +20,13 @@ TimCmdAddSignal.h
 TimCmdAddScale.h
 TimSignalManager.h
 SSGReader.h
+SSGWriter.h
 )
 
 set(sources
 mainwindow.cpp
 TimingScene.cpp
+TimMember.cpp
 TimSignal.cpp
 TimScale.cpp
 TimWave.cpp
@@ -39,6 +41,7 @@ TimCmdAddScale.cpp
 TimCmdRmSignal.cpp
 TimSignalManager.cpp
 SSGReader.cpp
+SSGWriter.cpp
 )
 
 # QT4_WRAP_UI(sources_ui Sigschege.ui)

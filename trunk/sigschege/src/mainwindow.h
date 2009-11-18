@@ -111,7 +111,10 @@ private:
    * the user chose Discard or Save.
    */
   bool maybeSave();
-  bool save();
+  QString askForFileName(void);
+  bool save(QString &fileName);
+
+  QString m_filename;
 
 private slots:
   void cmdNew();

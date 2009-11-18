@@ -27,6 +27,7 @@
 #include "TimCmdAddScale.h"
 #include "TimCmdRmSignal.h"
 #include "SSGReader.h"
+#include "SSGWriter.h"
 
 MainWindow::MainWindow(QWidget *parent) {
 
@@ -208,14 +209,46 @@ void MainWindow::cmdOpen() {
     QMessageBox::warning(this, tr("QXmlStream Sigschege Timing Diagram"), tr("Parse error in file %1 at line %2, column %3:\n%4") .arg(fileName) .arg(reader.lineNumber()) .arg(reader.columnNumber()) .arg(reader.errorString()));
   } else {
     statusBar()->showMessage(tr("File loaded"), 2000);
+    m_filename = fileName;
   }
 
 }
 
+QString MainWindow::askForFileName(void) {
+  return QFileDialog::getSaveFileName(this, tr("Save Diagram As"),
+				 QDir::currentPath(),
+				 tr("Sigschege Files (*.ssg)"));
+}
+
+bool MainWindow::save(QString &fileName) {
+  QFile file(fileName);
+  if (!file.open(QFile::WriteOnly | QFile::Text)) {
+    QMessageBox::warning(this, tr("QXmlStream Bookmarks"),
+			 tr("Cannot write file %1:\n%2.")
+			 .arg(fileName)
+			 .arg(file.errorString()));
+    return false;
+  }
+
+
+  SSGWriter writer(m_scene);
+  return writer.write(&file);
+}
+
 void MainWindow::cmdSave() {
+  if (m_filename.isEmpty())
+    m_filename =  askForFileName();
+  save(m_filename);
 }
 
 void MainWindow::cmdSaveAs() {
+  QString fileName = askForFileName();
+    
+  if (fileName.isEmpty())
+    return;
+  
+  save(fileName);
+  
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
@@ -254,10 +287,6 @@ void MainWindow::selectionChanged() {
 
 }
 
-bool MainWindow::save() {
-
-  return true; // TODO :)
-}
 
 bool MainWindow::maybeSave() {
   bool affirmative = true;
@@ -268,7 +297,7 @@ bool MainWindow::maybeSave() {
           "Do you want to save the changes?"), QMessageBox::Save
             | QMessageBox::Discard | QMessageBox::Cancel);
     if (user_choice == QMessageBox::Save)
-      affirmative = save();
+      affirmative = save(m_filename);
     else if (user_choice == QMessageBox::Cancel)
       affirmative = false;
   }

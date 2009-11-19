@@ -178,3 +178,9 @@ void TimEvent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   m_EventType->paint(this, painter, option, widget);
 }
 
+void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
+  if (event->button() == Qt::LeftButton) {
+    //if(m_Wave->getScene()->m_)
+    qDebug("Mouse Event");
+  }
+}

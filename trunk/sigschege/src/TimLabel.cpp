@@ -23,15 +23,13 @@
 //
 
 #include "TimLabel.h"
+#include "SSGWriter.h"
 
-TimLabel::TimLabel(TimLayoutData *layout, QGraphicsItem *parent) :
-  QGraphicsSimpleTextItem(parent), QGraphicsLayoutItem(0, false) {
-  m_LayoutData = layout;
+TimLabel::TimLabel(TimingScene *scene) : TimMember(scene) {
 }
 
-TimLabel::TimLabel(TimLayoutData *layout, const QString & text, QGraphicsItem *parent) :
-  QGraphicsSimpleTextItem(text, parent), QGraphicsLayoutItem(0, false) {
-  m_LayoutData = layout;
+TimLabel::TimLabel(TimingScene *scene, const QString & text) : TimMember(scene) {
+  m_label = text;
 }
 
 QSizeF TimLabel::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
@@ -54,12 +52,20 @@ QSizeF TimLabel::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
 }
 
 void TimLabel::setGeometry(const QRectF & rect) {
-  setPos(10, rect.height() - 10 - 20);
+  setPos(10, 0 );
 }
 
 QRectF TimLabel::boundingRect() const {
   qreal penWidth = 1;
   return QRectF(0 - penWidth / 2, 0 - penWidth / 2, 30 + penWidth, 50
       + penWidth);
+}
+
+void TimLabel::SSGWrite(SSGWriter *writer) {
+
+}
+
+void TimLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+  painter->drawText(boundingRect(), Qt::AlignCenter, m_label);
 }
 

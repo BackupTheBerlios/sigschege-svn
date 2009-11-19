@@ -27,13 +27,17 @@
 #include "TimLabel.h"
 #include "SSGWriter.h"
 
-TimSignal::TimSignal(TimLayoutData *layout, QGraphicsItem *parent) :
-  TimMember(layout, parent) {
+TimSignal::TimSignal(TimingScene *scene) : TimMember(scene) {
 
-  m_label = new TimLabel(m_LayoutData, "Test", this);
-  m_label->setGeometry(QRectF(0, 0, m_LayoutData->get_col_0_width(), 50));
-  m_wave = new TimWave(m_LayoutData, this);
-  m_wave->setGeometry(QRectF(m_LayoutData->get_col_0_width(), 0, m_LayoutData->get_col_1_width(), 50));
+  setFlag(ItemIsSelectable);
+
+  m_label = new TimLabel(getScene(), "Test");
+  m_label->setGeometry(QRectF(0, 0, getLayoutData()->get_col_0_width(), 50));
+  m_label->setParentItem(this);
+  m_wave = new TimWave(m_scene);
+  m_wave->setParentItem(this);
+  m_wave->setGeometry(QRectF(getLayoutData()->get_col_0_width(), 0, getLayoutData()->get_col_1_width(), 50));
+
 }
 
 TimSignal::~TimSignal() {
@@ -61,8 +65,8 @@ void TimSignal::setGeometry(const QRectF & rect) {
 
 QRectF TimSignal::boundingRect() const {
   qreal penWidth = 1;
-  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_LayoutData->get_col_0_width()
-      + m_LayoutData->get_col_1_width() + penWidth, 50 + penWidth);
+  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, getLayoutData()->get_col_0_width()
+      + getLayoutData()->get_col_1_width() + penWidth, 50 + penWidth);
 }
 
 void TimSignal::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -71,8 +75,8 @@ void TimSignal::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setBrush(QBrush(QColor(100,100,255,100)));
   }
 
-  painter->drawRoundedRect(0, 0, m_LayoutData->get_col_0_width()
-      + m_LayoutData->get_col_1_width(), 50, 5, 5);
+  painter->drawRoundedRect(0, 0, getLayoutData()->get_col_0_width()
+      + getLayoutData()->get_col_1_width(), 50, 5, 5);
 }
 
 void TimSignal::SSGWrite(SSGWriter *writer) {

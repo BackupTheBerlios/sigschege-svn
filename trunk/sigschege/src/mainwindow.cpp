@@ -35,8 +35,6 @@ MainWindow::MainWindow(QWidget *parent) {
 
   createTopView();
 
-  m_signalManager = new TimSignalManager(this);
-
   createActions();
   createMenus();
   createToolBars();
@@ -49,7 +47,6 @@ MainWindow::MainWindow(QWidget *parent) {
 
 }
 MainWindow::~MainWindow() {
-  delete m_signalManager;
 }
 
 void MainWindow::createActions() {
@@ -98,19 +95,19 @@ void MainWindow::createActions() {
   m_SigArrow->setCheckable(true);
   m_SigArrow->setChecked(true);
   m_SigArrow->setStatusTip(tr("Select mode"));
-  connect(m_SigArrow, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectNone(bool )));
+  // TODO connect(m_SigArrow, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectNone(bool )));
 
   m_SigH = new QAction(tr("High signal"), this);
   m_SigH->setIcon(QIcon(":/images/SigH.png"));
   m_SigH->setCheckable(true);
   m_SigH->setStatusTip(tr("High signal"));
-  connect(m_SigH, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectHigh(bool )));
+  // TODO connect(m_SigH, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectHigh(bool )));
 
   m_SigL = new QAction(tr("Low signal"), this);
   m_SigL->setIcon(QIcon(":/images/SigL.png"));
   m_SigL->setCheckable(true);
   m_SigL->setStatusTip(tr("Low signal"));
-  connect(m_SigL, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectLow(bool )));
+  // TODO connect(m_SigL, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectLow(bool )));
 
   m_SigGroup = new QActionGroup(this);
   m_SigGroup->addAction(m_SigArrow);

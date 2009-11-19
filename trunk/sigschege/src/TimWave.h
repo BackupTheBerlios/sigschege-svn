@@ -27,6 +27,7 @@
 #define TIMWAVE_H_
 
 #include <QtGui>
+#include "TimingScene.h"
 #include "TimLayoutData.h"
 #include "TimEvent.h"
 
@@ -37,12 +38,12 @@ class TimSignal;
 class TimWave: public QGraphicsItem, public QGraphicsLayoutItem {
 
 public:
+
   /** @brief CTor
    *
-   * @param layoutdata Pointer to the layout data object.
-   * @param parent Pointer to the parent object.
+   * @param scene Pointer to the timing scene.
    */
-  TimWave(TimLayoutData *layoutdata, QGraphicsItem *parent = 0);
+  TimWave(TimingScene *scene);
 
   /** @brief DTor
    */
@@ -75,7 +76,9 @@ public:
    *
    * @return Pointer to the layout data object.
    */
-  TimLayoutData* getLayoutData();
+  TimLayoutData* getLayoutData() const;
+
+  TimingScene* getScene() const;
 
 protected:
 
@@ -90,8 +93,7 @@ protected:
 
 private:
   TimEvent *m_TimEvent;
-  TimLayoutData *m_LayoutData;
-
+  TimingScene *m_scene;
 };
 
 #endif /* TIMWAVE_H_ */

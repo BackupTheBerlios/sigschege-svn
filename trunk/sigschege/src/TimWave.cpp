@@ -27,10 +27,10 @@
 #include "TimEventHigh.h"
 #include "TimEventLow.h"
 
-TimWave::TimWave(TimLayoutData *layoutdata, QGraphicsItem *parent) :
-  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
+TimWave::TimWave(TimingScene *scene)  :
+    QGraphicsItem(0), QGraphicsLayoutItem(0, false){
 
-  m_LayoutData = layoutdata;
+  m_scene = scene;
 
   m_TimEvent = new TimEvent(this);
 
@@ -43,9 +43,9 @@ TimWave::~TimWave() {
 QSizeF TimWave::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
   switch (which) {
   case Qt::MinimumSize:
-    return QSizeF(m_LayoutData->get_col_1_width(), 50);
+    return QSizeF(getLayoutData()->get_col_1_width(), 50);
   case Qt::PreferredSize:
-    return QSizeF(m_LayoutData->get_col_1_width(), 50);
+    return QSizeF(getLayoutData()->get_col_1_width(), 50);
   case Qt::MaximumSize:
     return QSizeF(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
   default:
@@ -62,7 +62,7 @@ void TimWave::setGeometry(const QRectF & rect) {
 
 QRectF TimWave::boundingRect() const {
   qreal penWidth = 1;
-  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_LayoutData->get_col_1_width()
+  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, getLayoutData()->get_col_1_width()
       + penWidth, 50 + penWidth);
 }
 
@@ -71,6 +71,11 @@ void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
   // painter->drawLine(0, 30, 250, 30);
 }
 
-TimLayoutData* TimWave::getLayoutData() {
-  return m_LayoutData;
+TimLayoutData* TimWave::getLayoutData() const {
+  return m_scene->getLayoutData();
 }
+
+TimingScene* TimWave::getScene() const {
+  return m_scene;
+}
+

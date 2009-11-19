@@ -42,10 +42,9 @@ public:
 
   /** @brief Creates a new @c TimMember object.
    *
-   * @param layout Pointer to the layout data object.
-   * @param parent Pointer to the owning parent object.
+   * @param scene Pointer to the timing scene.
    */
-  TimMember(TimLayoutData *layout, QGraphicsItem *parent = 0);
+  TimMember(TimingScene *scene);
 
   /** @brief DTor
    * Destroys the @c TimMember object
@@ -81,6 +80,10 @@ public:
 
   virtual void SSGWrite(SSGWriter *writer) = 0;
 
+  virtual TimLayoutData* getLayoutData() const;
+
+  virtual TimingScene* getScene() const;
+
 protected:
 
   /* @brief Returns a hint to the size of this signal.
@@ -95,11 +98,11 @@ protected:
    */
   TimLabel *m_label;
 
-  /** @brief Pointer to the layout data.
+  /** @brief Pointer to the timing scene.
    *
    * This is a weak pointer.  (no ownership)
    */
-  TimLayoutData *m_LayoutData;
+  TimingScene *m_scene;
 };
 
 #endif /* TIMSCALE_H_ */

@@ -19,6 +19,7 @@ TimEvent.h
 TimCmdAddSignal.h
 TimCmdAddScale.h
 TimSignalManager.h
+TimCmdAddEvent.h
 SSGReader.h
 SSGWriter.h
 )
@@ -40,6 +41,7 @@ TimCmdAddSignal.cpp
 TimCmdAddScale.cpp
 TimCmdRmSignal.cpp
 TimSignalManager.cpp
+TimCmdAddEvent.cpp
 SSGReader.cpp
 SSGWriter.cpp
 )

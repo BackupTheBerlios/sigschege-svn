@@ -26,12 +26,12 @@
 #include "TimLabel.h"
 #include "TimUtil.h"
 
-TimMember::TimMember(TimLayoutData *layout, QGraphicsItem *parent) :
-  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
+TimMember::TimMember(TimingScene *scene) :
+  QGraphicsItem(0), QGraphicsLayoutItem(0, false) {
 
   setFlag(ItemIsSelectable);
 
-  m_LayoutData = layout;
+  m_scene = scene;
 
 }
 
@@ -64,8 +64,17 @@ void TimMember::setText ( const QString & text ) {
 
 QRectF TimMember::boundingRect() const {
   qreal penWidth = 1;
-  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_LayoutData->get_col_0_width()
-      + m_LayoutData->get_col_1_width() + penWidth, 50 + penWidth);
+  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, getLayoutData()->get_col_0_width()
+      + getLayoutData()->get_col_1_width() + penWidth, 50 + penWidth);
+}
+
+TimLayoutData* TimMember::getLayoutData() const {
+  return getScene()->getLayoutData();
+}
+
+
+TimingScene* TimMember::getScene() const {
+  return m_scene;
 }
 
 

@@ -27,33 +27,30 @@
 #define TIMLABEL_H_
 
 #include <QtGui>
+#include "TimMember.h"
 #include "TimLayoutData.h"
 
 /** @brief The @c TimLabel class is used to draw the signal labels.
  *
  * The @c TimLabel class ist used to draw the signal labels.
  */
-class TimLabel: public QGraphicsSimpleTextItem, public QGraphicsLayoutItem {
+class TimLabel: public TimMember {
 
 public:
 
   /** @brief CTor
    *
-   * @param layout Pointer to the layout data
-   * @param parent Pointer to the owning parent
-   *
+   * @param scene Pointer to the timing scene.
    */
-  TimLabel(TimLayoutData *layout, QGraphicsItem *parent = 0);
+  TimLabel(TimingScene *scene);
 
   /** @brief CTor
    *
-   * @param layout Pointer to the layout data
+   * @param scene Pointer to the timing scene.
    * @param text Label text.
-   * @param parent Pointer to the owning parent
    *
    */
-  TimLabel(TimLayoutData *layout, const QString & text, QGraphicsItem *parent =
-      0);
+  TimLabel(TimingScene *scene, const QString & text);
 
   /** @brief Returns the bounding rect.
    *
@@ -70,6 +67,11 @@ public:
    * @param rect The geometry stored in a rect.
    */
   virtual void setGeometry(const QRectF & rect);
+
+  virtual void SSGWrite(SSGWriter *writer);
+  virtual void
+        paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
 protected:
 
   /** @brief Returns a hint of the object size.
@@ -85,6 +87,8 @@ private:
   /** @brief Stores a pointer to the layout data.
    */
   TimLayoutData *m_LayoutData;
+
+  QString m_label;
 
 };
 

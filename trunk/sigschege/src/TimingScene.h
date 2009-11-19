@@ -28,6 +28,7 @@
 
 #include <QtGui>
 #include "TimLayoutData.h"
+#include "TimSignalManager.h"
 
 class TimSignal;
 class TimScale;
@@ -228,6 +229,8 @@ private:
   TimLayoutData m_LayoutData;
 
   QUndoStack m_undoStack;
+
+  TimSignalManager *m_signalManager;
 
 };
 

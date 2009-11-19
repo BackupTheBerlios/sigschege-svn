@@ -42,12 +42,12 @@ class TimSignal: public TimMember {
 
 public:
 
+
   /** @brief Creates a new @c TimSignal object.
    *
-   * @param layout Pointer to the layout data object.
-   * @param parent Pointer to the owning parent object.
+   * @param scene Pointer to the timing scene.
    */
-  TimSignal(TimLayoutData *layout, QGraphicsItem *parent = 0);
+  TimSignal(TimingScene *scene);
 
   /** @brief DTor
    * Destroys the @c TimSignal object
@@ -74,7 +74,6 @@ public:
    * @param rect Reference to the geometry.
    */
   virtual void setGeometry(const QRectF & rect);
-
 
   virtual void SSGWrite(SSGWriter *writer);
 

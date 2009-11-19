@@ -30,6 +30,7 @@
 #include "TimMember.h"
 #include "TimingScene.h"
 #include "TimLayoutData.h"
+#include "TimingScene.h"
 
 class TimLabel;
 
@@ -42,10 +43,9 @@ public:
 
   /** @brief Creates a new @c TimScale object.
    *
-   * @param layout Pointer to the layout data object.
-   * @param parent Pointer to the owning parent object.
+   * @param scene Pointer to the timing scene.
    */
-  TimScale(TimLayoutData *layout, QGraphicsItem *parent = 0);
+  TimScale(TimingScene *scene);
 
   /** @brief DTor
    * Destroys the @c TimScale object
@@ -73,7 +73,6 @@ public:
    */
   virtual void setGeometry(const QRectF & rect);
 
-
   virtual void SSGWrite(SSGWriter *writer);
 
 protected:
@@ -85,6 +84,14 @@ protected:
    */
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
+
+  /** @brief Pointer to the signal label
+   */
+  TimLabel *m_label;
+
+  /** @brief Pointer to the wave form
+   */
+  TimWave *m_wave;
 
 };
 

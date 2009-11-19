@@ -186,6 +186,9 @@ void setPrev(TimEvent *prev);
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
 
+protected:
+  void mousePressEvent ( QGraphicsSceneMouseEvent * event );
+
 private:
 
   /** @brief Pointer to the owning @c TimWave object

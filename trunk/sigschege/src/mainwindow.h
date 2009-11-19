@@ -28,7 +28,6 @@
 #include <QtGui>
 #include "TimingScene.h"
 #include "TimSignal.h"
-#include "TimSignalManager.h"
 
 /** @brief Main window of Sigschege
  */
@@ -98,8 +97,6 @@ private:
 
   QGraphicsView *m_view;
   TimingScene *m_scene;
-
-  TimSignalManager *m_signalManager;
 
   /** @brief If this file is modified, ask the user what do do.
    *

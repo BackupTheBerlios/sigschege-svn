@@ -28,11 +28,16 @@
 #include "TimUtil.h"
 #include "SSGWriter.h"
 
-TimScale::TimScale(TimLayoutData *layout, QGraphicsItem *parent) :
-  TimMember(layout, parent) {
+TimScale::TimScale(TimingScene *scene) : TimMember(scene) {
 
-  m_label = new TimLabel(m_LayoutData, "Time", this);
-  m_label->setGeometry(QRectF(0, 0, m_LayoutData->get_col_0_width(), 50));
+  setFlag(ItemIsSelectable);
+
+  m_label = new TimLabel(getScene(), "Time");
+  m_label->setGeometry(QRectF(0, 0, getLayoutData()->get_col_0_width(), 50));
+  m_label->setParentItem(this);
+  m_wave = new TimWave(m_scene);
+  m_wave->setParentItem(this);
+  m_wave->setGeometry(QRectF(m_scene->getLayoutData()->get_col_0_width(), 0, m_scene->getLayoutData()->get_col_1_width(), 50));
 }
 
 TimScale::~TimScale() {
@@ -59,8 +64,8 @@ void TimScale::setGeometry(const QRectF & rect) {
 
 QRectF TimScale::boundingRect() const {
   qreal penWidth = 1;
-  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_LayoutData->get_col_0_width()
-      + m_LayoutData->get_col_1_width() + penWidth, 50 + penWidth);
+  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_scene->getLayoutData()->get_col_0_width()
+      + m_scene->getLayoutData()->get_col_1_width() + penWidth, 50 + penWidth);
 }
 
 void TimScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -69,11 +74,11 @@ void TimScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->setBrush(QBrush(QColor(100,100,255,100)));
   }
 
-  painter->drawRoundedRect(0, 0, m_LayoutData->get_col_0_width()
-      + m_LayoutData->get_col_1_width(), 50, 5, 5);
+  painter->drawRoundedRect(0, 0, m_scene->getLayoutData()->get_col_0_width()
+      + m_scene->getLayoutData()->get_col_1_width(), 50, 5, 5);
 
   Range<double> timeRange(0.0, 100.0);
-  Range<double> layoutRange(0, m_LayoutData->get_col_1_width());
+  Range<double> layoutRange(0, m_scene->getLayoutData()->get_col_1_width());
 
   double tickTime;
   double tickDistance = 10.0;

@@ -38,6 +38,8 @@ TimingScene::TimingScene(QObject *parent) :
   QGraphicsWidget *form = new QGraphicsWidget;
   form->setLayout(m_layout);
   addItem(form);
+
+  m_signalManager = new TimSignalManager(this);
 }
 
 void TimingScene::clear(void) {
@@ -60,7 +62,7 @@ void TimingScene::clear(void) {
 
 TimSignal* TimingScene::addTimSignal() {
 
-  return addTimSignal(new TimSignal(&m_LayoutData));
+  return addTimSignal(new TimSignal(this));
 }
 
 TimSignal* TimingScene::addTimSignal(TimSignal* signal) {
@@ -110,7 +112,7 @@ int TimingScene::removeTimSignal(TimSignal *signal) {
 
 
 TimScale* TimingScene::addTimScale() {
-  return addTimScale(new TimScale(&m_LayoutData));
+  return addTimScale(new TimScale(this));
 }
 
 TimScale* TimingScene::addTimScale(TimScale* timescale) {

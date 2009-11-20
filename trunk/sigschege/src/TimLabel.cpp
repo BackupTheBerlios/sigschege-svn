@@ -69,3 +69,7 @@ void TimLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   painter->drawText(boundingRect(), Qt::AlignCenter, m_label);
 }
 
+void TimLabel::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
+  event->ignore();
+}
+

@@ -82,6 +82,8 @@ protected:
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
 
+  void mousePressEvent ( QGraphicsSceneMouseEvent * event );
+
 private:
 
   /** @brief Stores a pointer to the layout data.

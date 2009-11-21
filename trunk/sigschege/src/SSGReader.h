@@ -31,7 +31,6 @@
 
 /** @brief The SSG Reader reads a timing diagram in XML format.
  *
- * The ...
  */
 class SSGReader: public QXmlStreamReader {
 
@@ -44,9 +43,9 @@ public:
    */
   SSGReader(TimingScene *tscene = 0);
 
-  /** @brief Creates/adds and returns a new signal.
+  /** @brief Reads timing diagram from file.
    *
-   * This method .
+   * This method reads a Sigschege document from a file in XML format.
    *
    * @return Returns success.
    */
@@ -58,15 +57,19 @@ private:
 
     TimingScene *scene;
 
-    /** @brief Read a signal.
+    /** @brief Read the Sigschege contentn from the XML file.
      *
-     * This method 
-     *
-     * @param ?
-     * @return ?
      */
     void readSigschege();
+
+    /** @brief Read a signal declaration from the XML file.
+     *
+     */
     void readSignal();
+
+    /** @brief Read a timescale declaration from the XML file.
+     *
+     */
     void readTimeScale();
 
 };

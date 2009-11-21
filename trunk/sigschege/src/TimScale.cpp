@@ -1,5 +1,4 @@
 // -*- c++ -*-
-// TimSignal.cpp
 // Copyright 2009 by ingo & ulf
 //
 // This file is part of Sigschege - Signal Schedule Generator

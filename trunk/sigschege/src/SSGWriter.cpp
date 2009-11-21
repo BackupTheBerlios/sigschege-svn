@@ -48,83 +48,15 @@ bool SSGWriter::write(QIODevice *device)
   writeStartElement("sigschege");
   writeAttribute("version", "0.1");
   
+  // iterate through the QGraphicsLinearLayout, which contains the timing diagram
+  // Each member must have SSGWrite() implemented to write its content itself (using
+  // a backpointer here)
   int index;
   for (index = 0; index < m_layout->count(); ++index) {
     dynamic_cast<TimMember*>(m_layout->itemAt(index))->SSGWrite(this);
-//    const std::type_info& info = typeid(m_layout->itemAt(index));
-//    if (typeid(m_layout->itemAt(index))==typeid(TimSignal*)) {
-//      writeStartElement("signal");
-//      writeEndElement();
-//    } else {
-//      cout << "TYPEID: " << typeid(m_layout->itemAt(index)).name() << endl;
-//    }
   }
 
-
-
-    writeEndDocument();
-    return true;
+  writeEndDocument();
+  return true;
 }
 
-///void SSGWriter::readSigschege()
-///{
-///    Q_ASSERT(isStartElement() && name() == "sigschege");
-///
-///    while (!atEnd()) {
-///        readNext();
-///
-///        if (isEndElement())
-///            break;
-///
-///        if (isStartElement()) {
-///            if (name() == "signal")
-///                readSignal();
-///            else if (name() == "timescale")
-///                readTimeScale();
-/////            else
-/////              readUnknownElement();
-///        }
-///    }
-///}
-///
-///void SSGWriter::readSignal()
-///{
-///    Q_ASSERT(isStartElement() && name() == "signal");
-///
-///    QString title = "";
-///    while (!atEnd()) {
-///        readNext();
-///
-///        if (isEndElement())
-///            break;
-///
-///        if (isStartElement()) {
-///            if (name() == "primarytext")
-///                title = readElementText();
-///	}
-///    }
-///    TimSignal *new_signal = scene->addTimSignal();
-///    new_signal->setText(title);
-///}
-///
-///void SSGWriter::readTimeScale()
-///{
-///    Q_ASSERT(isStartElement() && name() == "timescale");
-///
-///    QString title = "";
-///    while (!atEnd()) {
-///        readNext();
-///
-///        if (isEndElement())
-///            break;
-///
-///        if (isStartElement()) {
-///            if (name() == "primarytext")
-///                title = readElementText();
-///	}
-///    }
-///    TimScale *new_scale = scene->addTimScale();
-///    new_scale->setText(title);
-///
-///    //scene->addTimTimeScale();
-///}

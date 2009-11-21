@@ -49,7 +49,7 @@ public:
   /** @brief DTor
    * Destroys the @c TimMember object
    */
-  ~TimMember();
+  virtual ~TimMember();
 
   /** @brief Returns the bounding rect for this signal.
    *
@@ -78,6 +78,14 @@ public:
    */
   void setText ( const QString & text );
 
+  /** @brief Write XML code for this class.
+   *
+   * This function writes the XML code for this object while saving a Sigschege XML file.
+   * It is a pure virtual function which must be implemented by the derived classes (TimSignal, 
+   * TimScale, ...)
+   *
+   * @param writer Pointer to the SSGWriter object, needed for callback.
+   */
   virtual void SSGWrite(SSGWriter *writer) = 0;
 
   virtual TimLayoutData* getLayoutData() const;

@@ -32,11 +32,11 @@ TimMember::TimMember(TimingScene *scene) :
   setFlag(ItemIsSelectable);
 
   m_scene = scene;
-
+  m_label = 0;
 }
 
 TimMember::~TimMember() {
-  delete m_label;
+  if (m_label) delete m_label;
 }
 
 QSizeF TimMember::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {

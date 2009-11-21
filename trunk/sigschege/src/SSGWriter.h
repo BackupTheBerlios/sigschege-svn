@@ -29,9 +29,8 @@
 #include <QXmlStreamWriter>
 
 
-/** @brief The SSG Writer reads a timing diagram in XML format.
+/** @brief The SSG Writer writes a timing diagram in XML format.
  *
- * The ...
  */
 class SSGWriter: public QXmlStreamWriter {
 
@@ -44,9 +43,9 @@ public:
    */
   SSGWriter(TimingScene *tscene = 0);
 
-  /** @brief Creates/adds and returns a new signal.
+  /** @brief Write XML file to device.
    *
-   * This method .
+   * This method saves the Sigschege document as an XML file into device.
    *
    * @return Returns success.
    */
@@ -60,16 +59,6 @@ private:
 
   QGraphicsLinearLayout *m_layout;
 
-  /** @brief Read a signal.
-   *
-   * This method 
-   *
-   * @param ?
-   * @return ?
-   */
-//  void readSigschege();
-//  void readSignal();
-//  void readTimeScale();
   
 };
 

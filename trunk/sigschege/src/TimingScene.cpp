@@ -209,3 +209,32 @@ QAction* TimingScene::createUndoAction() {
 void TimingScene::pushCmd(QUndoCommand* cmd) {
   m_undoStack.push(cmd);
 }
+
+QAction* TimingScene::getActionArrow() {
+  QAction *sigArrow = new QAction(tr("Select mode"), this);
+  sigArrow->setCheckable(true);
+  sigArrow->setChecked(true);
+  sigArrow->setStatusTip(tr("Select mode"));
+  connect(sigArrow, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectNone(bool )));
+
+  return sigArrow;
+}
+
+QAction* TimingScene::getActionSigH() {
+  QAction *sigH = new QAction(tr("High signal"), this);
+  sigH->setCheckable(true);
+  sigH->setStatusTip(tr("High signal"));
+  connect(sigH, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectHigh(bool )));
+
+  return sigH;
+}
+
+QAction* TimingScene::getActionSigL() {
+  QAction *sigL = new QAction(tr("Low signal"), this);
+  sigL->setCheckable(true);
+  sigL->setStatusTip(tr("Low signal"));
+  connect(sigL, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectLow(bool )));
+
+  return sigL;
+}
+

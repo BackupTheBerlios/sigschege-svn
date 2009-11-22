@@ -90,24 +90,14 @@ void MainWindow::createActions() {
   m_rmSignalAct->setStatusTip(tr("Removes one or more signal(s) from the timing diagram"));
   connect(m_rmSignalAct, SIGNAL(triggered()), this, SLOT(cmdRmSignal()));
 
-  m_SigArrow = new QAction(tr("Select mode"), this);
+  m_SigArrow = m_scene->getActionArrow();
   m_SigArrow->setIcon(QIcon(":/images/arrow.png"));
-  m_SigArrow->setCheckable(true);
-  m_SigArrow->setChecked(true);
-  m_SigArrow->setStatusTip(tr("Select mode"));
-  // TODO connect(m_SigArrow, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectNone(bool )));
 
-  m_SigH = new QAction(tr("High signal"), this);
+  m_SigH = m_scene->getActionSigH();
   m_SigH->setIcon(QIcon(":/images/SigH.png"));
-  m_SigH->setCheckable(true);
-  m_SigH->setStatusTip(tr("High signal"));
-  // TODO connect(m_SigH, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectHigh(bool )));
 
-  m_SigL = new QAction(tr("Low signal"), this);
+  m_SigL = m_scene->getActionSigL();
   m_SigL->setIcon(QIcon(":/images/SigL.png"));
-  m_SigL->setCheckable(true);
-  m_SigL->setStatusTip(tr("Low signal"));
-  // TODO connect(m_SigL, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectLow(bool )));
 
   m_SigGroup = new QActionGroup(this);
   m_SigGroup->addAction(m_SigArrow);

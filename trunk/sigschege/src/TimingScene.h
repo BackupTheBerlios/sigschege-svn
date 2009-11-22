@@ -197,7 +197,7 @@ public:
    *
    * @return modified flag
    */
-  bool isClean (void) { return m_undoStack.isClean(); };
+  bool isClean (void) { return m_undoStack.isClean(); }
  
   /** @brief Reset the modification status of the diagram 
    *
@@ -205,7 +205,7 @@ public:
    * modifications are done implicitly after creation, which shouldn't count as modification.
    *
    */
-  void setClean(void) { m_undoStack.setClean(); };
+  void setClean(void) { m_undoStack.setClean(); }
 
   /** @brief Clears the diagram completely 
    *
@@ -214,6 +214,30 @@ public:
    *
    */
   void clear(void);
+
+  /** @brief Get a pointer to the signal manager.
+   *
+   * @return Pointer to the signal manager.
+   */
+  TimSignalManager* getSignalManager() {return m_signalManager;}
+
+  /** @brief Creates a QAction object to activate selection mode.
+   *
+   * @return Pointer to a @c QAction object.
+   */
+  QAction* getActionArrow();
+
+  /** @brief Creates a QAction object to activate insert high signal mode.
+   *
+   * @return Pointer to a @c QAction object.
+   */
+  QAction* getActionSigH();
+
+  /** @brief Creates a QAction object to activate insert low signal mode.
+   *
+   * @return Pointer to a @c QAction object.
+   */
+  QAction* getActionSigL();
 
 private:
   /** @brief Pointer to the linear layout object.

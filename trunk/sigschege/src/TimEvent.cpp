@@ -180,7 +180,13 @@ void TimEvent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
   if (event->button() == Qt::LeftButton) {
-    //if(m_Wave->getScene()->m_)
+
+    // get a pointer to the signal manager
+    TimEventType * et = getWave()->getScene()->getSignalManager()->getCurrent();
+
+    if( et == NULL) {
+      QGraphicsItem::mousePressEvent(event);
+    }
     qDebug("Mouse Event");
   }
 }

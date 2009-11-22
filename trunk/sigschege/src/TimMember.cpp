@@ -32,11 +32,9 @@ TimMember::TimMember(TimingScene *scene) :
   setFlag(ItemIsSelectable);
 
   m_scene = scene;
-  m_label = 0;
 }
 
 TimMember::~TimMember() {
-  if (m_label) delete m_label;
 }
 
 QSizeF TimMember::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
@@ -56,10 +54,6 @@ QSizeF TimMember::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const 
 
 void TimMember::setGeometry(const QRectF & rect) {
   setPos(rect.topLeft());
-}
-
-void TimMember::setText ( const QString & text ) {
-  m_label->setText(text);
 }
 
 QRectF TimMember::boundingRect() const {

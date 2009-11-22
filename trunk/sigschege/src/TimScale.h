@@ -73,6 +73,12 @@ public:
    */
   virtual void setGeometry(const QRectF & rect);
 
+  /** @brief Sets the text of the label
+   *
+   * @param text The new text of the label
+   */
+  void setText ( const QString & text );
+
   virtual void SSGWrite(SSGWriter *writer);
 
 protected:
@@ -85,14 +91,13 @@ protected:
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
 
-  /** @brief Pointer to the signal label
-   */
-  TimLabel *m_label;
-
   /** @brief Pointer to the wave form
    */
   TimWave *m_wave;
 
+  /** @brief Pointer to the signal label
+   */
+  TimLabel *m_label;
 };
 
 #endif /* TIMSCALE_H_ */

@@ -72,6 +72,12 @@ public:
   virtual void
         paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+  /** @brief Sets the text of the label
+   *
+   * @param text The new text of the label
+   */
+  void setText(const QString & text );
+
 protected:
 
   /** @brief Returns a hint of the object size.

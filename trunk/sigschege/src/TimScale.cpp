@@ -34,6 +34,7 @@ TimScale::TimScale(TimingScene *scene) : TimMember(scene) {
   m_label = new TimLabel(getScene(), "Time");
   m_label->setGeometry(QRectF(0, 0, getLayoutData()->get_col_0_width(), 50));
   m_label->setParentItem(this);
+
   m_wave = new TimWave(m_scene);
   m_wave->setParentItem(this);
   m_wave->setGeometry(QRectF(m_scene->getLayoutData()->get_col_0_width(), 0, m_scene->getLayoutData()->get_col_1_width(), 50));
@@ -87,6 +88,10 @@ void TimScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->drawLine(place, 10, place, 40);
   }
 
+}
+
+void TimScale::setText ( const QString & text ) {
+  m_label->setText(text);
 }
 
 void TimScale::SSGWrite(SSGWriter *writer) {

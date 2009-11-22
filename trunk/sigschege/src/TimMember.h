@@ -72,12 +72,6 @@ public:
    */
   virtual void setGeometry(const QRectF & rect);
 
-  /** @brief Sets the text of the label
-   *
-   * @param text The new text of the label
-   */
-  void setText ( const QString & text );
-
   /** @brief Write XML code for this class.
    *
    * This function writes the XML code for this object while saving a Sigschege XML file.
@@ -101,10 +95,6 @@ protected:
    */
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
-
-  /** @brief Pointer to the signal label
-   */
-  TimLabel *m_label;
 
   /** @brief Pointer to the timing scene.
    *

@@ -34,6 +34,7 @@ TimSignal::TimSignal(TimingScene *scene) : TimMember(scene) {
   m_label = new TimLabel(getScene(), "Test");
   m_label->setGeometry(QRectF(0, 0, getLayoutData()->get_col_0_width(), 50));
   m_label->setParentItem(this);
+
   m_wave = new TimWave(m_scene);
   m_wave->setParentItem(this);
   m_wave->setGeometry(QRectF(getLayoutData()->get_col_0_width(), 0, getLayoutData()->get_col_1_width(), 50));
@@ -77,6 +78,10 @@ void TimSignal::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
   painter->drawRoundedRect(0, 0, getLayoutData()->get_col_0_width()
       + getLayoutData()->get_col_1_width(), 50, 5, 5);
+}
+
+void TimSignal::setText ( const QString & text ) {
+  m_label->setText(text);
 }
 
 void TimSignal::SSGWrite(SSGWriter *writer) {

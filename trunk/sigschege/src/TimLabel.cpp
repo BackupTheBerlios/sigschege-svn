@@ -73,3 +73,7 @@ void TimLabel::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
   event->ignore();
 }
 
+void TimLabel::setText(const QString & text ) {
+  m_label = text;
+}
+

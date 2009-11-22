@@ -26,6 +26,7 @@
 #include "TimWave.h"
 #include "TimEventLow.h"
 #include "TimEventHigh.h"
+#include "TimCmdAddEvent.h"
 
 TimEvent::TimEvent(TimWave *parent) :
   QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
@@ -97,7 +98,7 @@ void TimEvent::insertEvent(TimEvent *node) {
   }
 
   setNext(node);
-
+  prepareGeometryChange();
 }
 
 void TimEvent::setNext(TimEvent *next) {
@@ -108,18 +109,18 @@ void TimEvent::setPrev(TimEvent *prev) {
   m_prev = prev;
 }
 
-TimEvent* TimEvent::getNext() {
+TimEvent* TimEvent::getNext() const {
   return m_next;
 }
 
-TimEvent* TimEvent::getPrev() {
+TimEvent* TimEvent::getPrev() const {
   return m_prev;
 }
 
-unsigned int TimEvent::calcXPos(double time) {
-  double start_time = m_Wave->getLayoutData()->get_start_time();
-  double end_time = m_Wave->getLayoutData()->get_end_time();
-  unsigned int width = m_Wave->getLayoutData()->get_col_1_width();
+unsigned int TimEvent::calcXPos(double time) const {
+  double start_time = getWave()->getLayoutData()->get_start_time();
+  double end_time = getWave()->getLayoutData()->get_end_time();
+  unsigned int width = getWave()->getLayoutData()->get_col_1_width();
 
   double diff = end_time - start_time;
 
@@ -131,7 +132,7 @@ unsigned int TimEvent::calcXPos(double time) {
 
 }
 
-TimWave* TimEvent::getWave() {
+TimWave* TimEvent::getWave() const {
   return m_Wave;
 }
 
@@ -169,9 +170,14 @@ void TimEvent::setGeometry(const QRectF & rect) {
 }
 
 QRectF TimEvent::boundingRect() const {
-  qreal penWidth = 1;
-  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, m_Wave->getLayoutData()->get_col_1_width()
-      + penWidth, 50 + penWidth);
+
+  TimEvent *next = getNext();
+
+  if( next == NULL) {
+    return QRectF(0, 0 , getWave()->getLayoutData()->get_col_1_width() - x(), 50 );
+  } else {
+    return QRectF(0, 0, next->x() - x(), 50);
+  }
 }
 
 void TimEvent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -181,12 +187,30 @@ void TimEvent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
   if (event->button() == Qt::LeftButton) {
 
-    // get a pointer to the signal manager
-    TimEventType * et = getWave()->getScene()->getSignalManager()->getCurrent();
+    // get a pointer needed objects
+    TimingScene   *sc = getWave()->getScene();
+    TimEventType  *et = sc->getSignalManager()->getCurrent();
+    TimLayoutData *ld = getWave()->getLayoutData();
 
     if( et == NULL) {
       QGraphicsItem::mousePressEvent(event);
+    } else {
+
+      // Don't add events of the same type. eg. low->low
+      if(getEventType() == et) {
+        return;
+      }
+
+      // mapping the mouse event position to parent coordinate system make calculation easier
+      QPointF mousePos = mapToParent(event->pos());
+
+      int    width = ld->get_col_1_width();
+      double start = ld->get_start_time();
+      double end   = ld->get_end_time();
+
+      double time = ((((end-start)/width) * mousePos.x()));
+
+      sc->pushCmd(new TimCmdAddEvent(sc, this, et, time ));
     }
-    qDebug("Mouse Event");
   }
 }

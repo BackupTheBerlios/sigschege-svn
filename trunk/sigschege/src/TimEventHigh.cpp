@@ -33,8 +33,9 @@ TimEventHigh::TimEventHigh(TimEvent *parent) :
 
 void TimEventHigh::paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-  if (m_parent->getPrev() != NULL) {
-    EventLevel level = m_parent->getPrev()->getEventType()->getLevel();
+
+  if (event->getPrev() != NULL) {
+    EventLevel level = event->getPrev()->getEventType()->getLevel();
     switch (level) {
     case (Low):
       painter->drawLine(0, 35, 0, 15);
@@ -44,13 +45,15 @@ void TimEventHigh::paint(TimEvent *event, QPainter *painter, const QStyleOptionG
 
   // draw signal
   unsigned int signal_length;
-  if (m_parent->getNext() == NULL) {
-    signal_length = m_parent->getWave()->getLayoutData()->get_col_1_width()
-        - m_parent->pos().x();
+  if (event->getNext() == NULL) {
+    signal_length = event->getWave()->getLayoutData()->get_col_1_width() - event->pos().x();
   } else {
-    signal_length = m_parent->getNext()->pos().x() - m_parent->pos().x() - 1;
+    signal_length = event->getNext()->x() - event->x();
   }
 
+  QRectF rct(0, 0, signal_length, 50);
+
+  // painter->fillRect(rct, QColor(255,100,100,100)); // fill the whole boundary rect
   painter->drawLine(0, 15, signal_length, 15);
 }
 

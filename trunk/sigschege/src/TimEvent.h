@@ -98,7 +98,7 @@ public:
    *
    * @return Returns a pointer to the owning @c TimWave object.
    */
-  TimWave* getWave();
+  TimWave* getWave() const;
 
   /** @brief Calculates the horizontal event position.
    *
@@ -107,7 +107,7 @@ public:
    * @param time The time that should be converted to the horizontal position.
    * @return Returns the horizontal position in pixel.
    */
-  unsigned int calcXPos(double time);
+  unsigned int calcXPos(double time) const;
 
   /** @brief Insert a new event in the event linked list.
    *
@@ -149,7 +149,7 @@ public:
    *
    * @return Returns a pointer to the next @c TimEvent object in the event linked list or NULL
    */
-  TimEvent* getNext();
+  TimEvent* getNext() const;
 
   /** @brief Get the previous @c TimEvent in the event linked list.
    *
@@ -158,7 +158,11 @@ public:
    *
    * @return Returns a pointer to the previous @c TimEvent object in the event linked list or NULL
    */
-TimEvent* getPrev();
+  TimEvent* getPrev() const;
+
+  inline double getTime() const { return m_EventTime;}
+
+  inline void setTime(double time) {m_EventTime = time;}
 
 protected:
 

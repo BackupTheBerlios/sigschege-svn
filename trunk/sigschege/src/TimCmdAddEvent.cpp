@@ -24,16 +24,21 @@
 
 #include "TimCmdAddEvent.h"
 
-TimCmdAddEvent::TimCmdAddEvent(TimingScene *tscene, TimEventType *type) {
+TimCmdAddEvent::TimCmdAddEvent(TimingScene *tscene, TimEvent *event, TimEventType *type, double time) {
   m_timingScene = tscene;
+  m_event       = event;
   m_eventType   = type;
+  m_newEvent    = NULL;
+  m_time        = time;
 }
 
 void TimCmdAddEvent::undo() {
+  // TODO implement undo
 
 }
 
 void TimCmdAddEvent::redo() {
-
+  m_newEvent = new TimEvent(m_event->getWave(), m_eventType, m_time);
+  m_event->insertEvent(m_newEvent);
 }
 

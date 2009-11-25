@@ -173,8 +173,8 @@ QRectF TimEvent::boundingRect() const {
 
   TimEvent *next = getNext();
 
-  if( next == NULL) {
-    return QRectF(0, 0 , getWave()->getLayoutData()->get_col_1_width() - x(), 50 );
+  if (next == NULL) {
+    return QRectF(0, 0, getWave()->getLayoutData()->get_col_1_width() - x(), 50);
   } else {
     return QRectF(0, 0, next->x() - x(), 50);
   }
@@ -188,29 +188,24 @@ void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
   if (event->button() == Qt::LeftButton) {
 
     // get a pointer needed objects
-    TimingScene   *sc = getWave()->getScene();
-    TimEventType  *et = sc->getSignalManager()->getCurrent();
+    TimingScene *sc = getWave()->getScene();
+    TimEventType *et = sc->getSignalManager()->getCurrent();
     TimLayoutData *ld = getWave()->getLayoutData();
 
-    if( et == NULL) {
+    if (et == NULL) {
       QGraphicsItem::mousePressEvent(event);
     } else {
-
-      // Don't add events of the same type. eg. low->low
-      if(getEventType() == et) {
-        return;
-      }
 
       // mapping the mouse event position to parent coordinate system make calculation easier
       QPointF mousePos = mapToParent(event->pos());
 
-      int    width = ld->get_col_1_width();
+      int width = ld->get_col_1_width();
       double start = ld->get_start_time();
-      double end   = ld->get_end_time();
+      double end = ld->get_end_time();
 
-      double time = ((((end-start)/width) * mousePos.x()));
+      double time = ((((end - start) / width) * mousePos.x()));
 
-      sc->pushCmd(new TimCmdAddEvent(sc, this, et, time ));
+      sc->pushCmd(new TimCmdAddEvent(sc, this, et, time));
     }
   }
 }

@@ -40,13 +40,17 @@ void TimEventLow::paint(TimEvent *event, QPainter *painter, const QStyleOptionGr
     case (High):
       painter->drawLine(0, 15, 0, 35);
       break;
+    case (Low):
+      painter->drawLine(0, 30, 0, 35);
+      break;
     }
   }
 
   // draw signal
   unsigned int signal_length;
   if (event->getNext() == NULL) {
-    signal_length = event->getWave()->getLayoutData()->get_col_1_width()- event->x();
+    signal_length = event->getWave()->getLayoutData()->get_col_1_width()
+        - event->x();
   } else {
     signal_length = event->getNext()->x() - event->x();
   }

@@ -33,10 +33,12 @@ TimEventHigh::TimEventHigh(TimEvent *parent) :
 
 void TimEventHigh::paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-
   if (event->getPrev() != NULL) {
     EventLevel level = event->getPrev()->getEventType()->getLevel();
     switch (level) {
+    case (High):
+      painter->drawLine(0, 20, 0, 15);
+      break;
     case (Low):
       painter->drawLine(0, 35, 0, 15);
       break;
@@ -46,7 +48,8 @@ void TimEventHigh::paint(TimEvent *event, QPainter *painter, const QStyleOptionG
   // draw signal
   unsigned int signal_length;
   if (event->getNext() == NULL) {
-    signal_length = event->getWave()->getLayoutData()->get_col_1_width() - event->pos().x();
+    signal_length = event->getWave()->getLayoutData()->get_col_1_width()
+        - event->pos().x();
   } else {
     signal_length = event->getNext()->x() - event->x();
   }

@@ -118,6 +118,14 @@ public:
    */
   void insertEvent(TimEvent *node);
 
+  /** @brief remove the next event from the waveform
+   *
+   * This method removes the next event from the event list. The next event will be returned and not destroyed.
+   *
+   * @return Pointer to the next event or NULL when the next event does not exists.
+   */
+  TimEvent* removeEvent();
+
   /** @brief Calculated the bounding rect
    *
    * @return The bounding rect.

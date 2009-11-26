@@ -37,6 +37,7 @@ class TimCmdAddEvent : public QUndoCommand {
 public:
 
   TimCmdAddEvent(TimingScene *tscene, TimEvent* event, TimEventType *type, double time);
+  ~TimCmdAddEvent();
 
   virtual void undo();
   virtual void redo();

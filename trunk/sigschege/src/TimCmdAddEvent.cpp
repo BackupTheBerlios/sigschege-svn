@@ -32,13 +32,22 @@ TimCmdAddEvent::TimCmdAddEvent(TimingScene *tscene, TimEvent *event, TimEventTyp
   m_time        = time;
 }
 
-void TimCmdAddEvent::undo() {
-  // TODO implement undo
+TimCmdAddEvent::~TimCmdAddEvent() {
+  if(m_newEvent) {
+    delete m_newEvent;
+  }
+}
 
+void TimCmdAddEvent::undo() {
+  m_newEvent = m_event->removeEvent(); // we gain ownership again
 }
 
 void TimCmdAddEvent::redo() {
-  m_newEvent = new TimEvent(m_event->getWave(), m_eventType, m_time);
+
+  if(m_newEvent == NULL) {
+    m_newEvent = new TimEvent(m_event->getWave(), m_eventType, m_time);
+  }
   m_event->insertEvent(m_newEvent);
+  m_newEvent = NULL; // ownership was transfered
 }
 

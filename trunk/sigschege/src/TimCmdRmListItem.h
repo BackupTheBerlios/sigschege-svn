@@ -1,5 +1,6 @@
 // -*- c++ -*-
-// Copyright 2009 by ingo & ulf
+// TimCmdRmListItem.h
+// Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 
@@ -21,52 +22,52 @@
 // #############################################################################
 //
 
-#ifndef TIMCMDADDSCALE_H_
-#define TIMCMDADDSCALE_H_
+
+
+#ifndef TIMCMDRMLISTITEM_H_
+#define TIMCMDRMLISTITEM_H_
 
 #include <QtGui>
-#include "TimingScene.h"
-#include "TimScale.h"
 
-/** @brief @c TimCmdAddScale class implements the AddScale command.
+#include "TimingScene.h"
+
+/** @brief The @c TimCmdRmItem removes one item from the timing list.
  *
- * The @c TimCmdAddScale class implements the Add Scale command. It supports undo and redo operations.
+ * The @c TimCmdRmItem removes one item from the timing list. It supports undo and redo operations.
  *
  */
-class TimCmdAddScale : public QUndoCommand {
+class TimCmdRmListItem: public QUndoCommand {
 
 public:
-
-  /** @brief CTOR
+  /** @brief CTor
    *
-   * Creates a new @c TimCmdAddScale object.
+   * Creates a new @c TimCmdRmListItem object.
    *
-   * @param tscene Pointer to the scene where the scale should be added
+   * @param tscene Pointer to the scene where the signal should be added
    */
-  TimCmdAddScale(TimingScene *tscene);
+  TimCmdRmListItem(TimingScene *tscene);
 
-  /** @brief DTOR
-   * Destroys the @c TimCmdAddScale object and every owning TimScale object.
+  /** @brief DTor
+   * Destroys the @c TimCmdRmListItem object and every owning item object.
    */
-  virtual ~TimCmdAddScale();
+  virtual ~TimCmdRmListItem();
 
   /** @brief Undo the command.
    *
-   * Undo the addScale command.
+   * Undo the rmItem command.
    *
    */
   virtual void undo();
 
   /** @brief Redo the command.
    *
-   * Redo the addScale command.
+   * Redo the rmItem command.
    */
   virtual void redo();
 
 private:
   TimingScene *m_timingScene;
-  TimScale   *m_timScale;
-  bool        m_owned;
 };
 
-#endif /* TIMCMDADDSCALE_H_ */
+
+#endif /* TIMCMDRMLISTITEM_H_ */

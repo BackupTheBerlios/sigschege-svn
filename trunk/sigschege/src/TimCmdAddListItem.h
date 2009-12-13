@@ -1,5 +1,5 @@
 // -*- c++ -*-
-// TimCmdAddSignal.h
+// TimCmdAddListItem.h
 // Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
@@ -22,19 +22,20 @@
 // #############################################################################
 //
 
-#ifndef TIMCMDADDSIGNAL_H_
-#define TIMCMDADDSIGNAL_H_
+
+
+#ifndef TIMCMDADDLISTITEM_H_
+#define TIMCMDADDLISTITEM_H_
 
 #include <QtGui>
-#include "TimingScene.h"
-#include "TimSignal.h"
+#include "TimMember.h"
 
-/** @brief @c TimCmdAddSignal class implements the AddSignal command.
+/** @brief @c TimCmdAddListItem add timing items to tjhe timing diagram list.
  *
- * The @c TimCmdAddSignal class implements the Add Signal command. It supports undo and redo operations.
+ * The @c TimCmdAddListItem add timing items to tjhe timing diagram list. It supports undo and redo operations.
  *
  */
-class TimCmdAddSignal : public QUndoCommand {
+class TimCmdAddListItem : public QUndoCommand {
 
 public:
 
@@ -43,13 +44,15 @@ public:
    * Creates a new @c TimCmdAddSignal object.
    *
    * @param tscene Pointer to the scene where the signal should be added
+   * @param int    Insertion index
+   * @param item   Pointer to the new item
    */
-  TimCmdAddSignal(TimingScene *tscene);
+  TimCmdAddListItem(TimingScene *tscene, int index, TimMember *item);
 
   /** @brief DTOR
    * Destroys the @c TimCmdAddSignal object and every owning TimSignal object.
    */
-  virtual ~TimCmdAddSignal();
+  virtual ~TimCmdAddListItem();
 
   /** @brief Undo the command.
    *
@@ -66,8 +69,10 @@ public:
 
 private:
   TimingScene *m_timingScene;
-  TimSignal   *m_timSignal;
-  bool        m_owned;
+  TimMember   *m_item;
+  int          m_index;
+  bool         m_owning;
 };
 
-#endif /* TIMCMDADDSIGNAL_H_ */
+
+#endif /* TIMCMDADDLISTITEM_H_ */

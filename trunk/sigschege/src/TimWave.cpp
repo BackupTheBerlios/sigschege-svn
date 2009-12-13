@@ -27,8 +27,8 @@
 #include "TimEventHigh.h"
 #include "TimEventLow.h"
 
-TimWave::TimWave(TimingScene *scene)  :
-    QGraphicsItem(0), QGraphicsLayoutItem(0, false){
+TimWave::TimWave(TimMember *parent, TimingScene *scene)  :
+    TimMember(parent, scene) {
 
   m_scene = scene;
 

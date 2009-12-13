@@ -32,6 +32,7 @@
 
 class TimSignal;
 class TimScale;
+class TimMember;
 
 /** @brief The timing scene holds all element of the timing diagram.
  *
@@ -49,6 +50,21 @@ public:
    * @param parent Pointer to the owning parent object.
    */
   TimingScene(QObject *parent = 0);
+
+
+  /** @brief Adds item to the timing diagram list.
+   *
+   * @param index Index of the new item. -1 will add at the end of the list.
+   * @param item Pointer to the item which should be added at index
+   */
+  void addTimListItem(int index, TimMember *item);
+
+  /** @brief Removes a item from the timing diagram list.
+   *
+   * @param item Pointer to the item to remove
+   * @return Returns the index of the item before removal
+   */
+  int rmTimListItem(TimMember *item);
 
   /** @brief Creates/adds and returns a new signal.
    *
@@ -85,33 +101,6 @@ public:
    * @returns Returns the old index.
    */
   int removeTimSignal(TimSignal *signal);
-
-  /** @brief Creates/adds and returns a new timescale.
-   *
-   * This method creates a new timescale object, adds it to the timing scene and returns a pointer to it.
-   *
-   * @return Returns a pointer to the new timescale.
-   */
-  TimScale* addTimScale();
-
-  /** @brief Adds and returns a new timescale.
-   *
-   * This method adds a timescale object to the timing scene and returns a pointer to it.
-   *
-   * @param timescale Pointer to TimScale object
-   * @return Returns a pointer to the new timescale.
-   */
-  TimScale* addTimScale(TimScale* timescale);
-
-  /** @brief Adds and returns a new timescale.
-   *
-   * This method adds timescale object to the timing scene and returns a pointer to it.
-   *
-   * @param timescale Pointer to TimScale object
-   * @param index Add timescale after this index.
-   * @return Returns a pointer to the new timescale.
-   */
-  TimScale* addTimScale(int index, TimScale* timescale);
 
   /** @brief Removes the timescale from the timing scene
    *
@@ -187,8 +176,29 @@ public:
    * This method will execute and push the command to the undo stack.
    *
    * @param cmd Pointer to the command to execute and push to the undo stack.
+   * @sa startMacro
+   * @sa endMacro
    */
   void pushCmd(QUndoCommand* cmd);
+
+  /** @brief Start a macro command sequence.
+   *
+   * This method starts a macro command sequence. After starting the macro, every command pushed
+   * to the command stack will be combined as a single macro.
+   *
+   * @param text Name of the macro command sequence.
+   * @sa pushCmd
+   * @sa endMacro
+   */
+  void beginMacro(const QString& text);
+
+  /** @brief Ends a macro command sequence.
+   *
+   * This method end a macro command sequence.
+   * @sa pushCmd
+   * @sa endMacro
+   */
+  void endMacro();
 
   /** @brief Return if the diagram is unmodified 
    *
@@ -238,6 +248,16 @@ public:
    * @return Pointer to a @c QAction object.
    */
   QAction* getActionSigL();
+
+  /** @brief Creates a QAction object to remove item(s)
+   *
+   * @return Pointer to a @c QAction object.
+   */
+  QAction* getActionRemoveItems();
+
+protected slots:
+
+  void removeItems();
 
 private:
   /** @brief Pointer to the linear layout object.

@@ -23,6 +23,7 @@
 //
 
 #include "TimingScene.h"
+#include "TimMember.h"
 #include "TimScale.h"
 #include "TimSignal.h"
 
@@ -62,7 +63,7 @@ void TimingScene::clear(void) {
 
 TimSignal* TimingScene::addTimSignal() {
 
-  return addTimSignal(new TimSignal(this));
+  return addTimSignal(new TimSignal(0, this));
 }
 
 TimSignal* TimingScene::addTimSignal(TimSignal* signal) {
@@ -89,9 +90,37 @@ TimSignal* TimingScene::addTimSignal(int index, TimSignal* signal) {
 
 }
 
-int TimingScene::removeTimSignal(TimSignal *signal) {
+void TimingScene::addTimListItem(int index, TimMember *item) {
+
+  // add item to graphic scene
+  addItem(item);
+
+  // add item to layout manager
+  getLayout()->insertItem(index, item);
+}
+
+int TimingScene::rmTimListItem(TimMember *item) {
+
+  // indexOf is missing in Qt < 4.6 :-(
+  int cnt = m_layout->count();
+  int index;
+  for (index = 0; index < cnt; ++index) {
+    if (item == m_layout->itemAt(index)) {
+      break;
+    }
+  }
 
   // First remove the signal from the layout
+  m_layout->removeItem(item);
+  m_layout->setMaximumSize(0, 0); // adapt the size
+
+  // then remove it from the scene
+  removeItem(item);
+  return index;
+}
+
+int TimingScene::removeTimSignal(TimSignal *signal) {
+
 
   // indexOf is missing in Qt < 4.6 :-(
   int cnt = m_layout->count();
@@ -102,6 +131,7 @@ int TimingScene::removeTimSignal(TimSignal *signal) {
     }
   }
 
+  // First remove the signal from the layout
   m_layout->removeItem(signal);
   m_layout->setMaximumSize(0, 0); // adapt the size
 
@@ -110,34 +140,6 @@ int TimingScene::removeTimSignal(TimSignal *signal) {
   return index;
 }
 
-
-TimScale* TimingScene::addTimScale() {
-  return addTimScale(new TimScale(this));
-}
-
-TimScale* TimingScene::addTimScale(TimScale* timescale) {
-
-  // add timescale to graphic scene
-  addItem(timescale);
-
-  // add timescale to layout manager
-  m_layout->addItem(timescale);  
-
-  return timescale;
-
-}
-
-TimScale* TimingScene::addTimScale(int index, TimScale* timescale) {
-
-  // add timescale to graphic scene
-  addItem(timescale);
-
-  // add timescale to layout manager
-  m_layout->insertItem(index, timescale);
-
-  return timescale;
-
-}
 
 int TimingScene::removeTimScale(TimScale *timescale) {
 
@@ -210,6 +212,14 @@ void TimingScene::pushCmd(QUndoCommand* cmd) {
   m_undoStack.push(cmd);
 }
 
+void TimingScene::beginMacro(const QString& text) {
+  m_undoStack.beginMacro(text);
+}
+
+void TimingScene::endMacro() {
+  m_undoStack.endMacro();
+}
+
 QAction* TimingScene::getActionArrow() {
   QAction *sigArrow = new QAction(tr("Select mode"), this);
   sigArrow->setCheckable(true);
@@ -238,3 +248,25 @@ QAction* TimingScene::getActionSigL() {
   return sigL;
 }
 
+QAction* TimingScene::getActionRemoveItems() {
+  QAction *rmAct = new QAction(tr("Remove Item(s)"), this);
+  rmAct->setEnabled(false);
+  rmAct->setIcon(QIcon(":/images/rm.png"));
+  rmAct->setStatusTip(tr("Removes one or more items(s) from the timing diagram"));
+  connect(rmAct, SIGNAL(triggered()), this, SLOT(removeItems()));
+  return rmAct;
+}
+
+void TimingScene::removeItems() {
+  beginMacro("Delete Item(s)");
+  QList<QGraphicsItem*> m_items = selectedItems();
+
+  for(QList<QGraphicsItem*>::Iterator it = m_items.begin(); it != m_items.end(); ++it) {
+    TimMember *tm = (TimMember*)*it;
+    if(tm != NULL) {
+      pushCmd(tm->createDeleteCmd());
+    }
+  }
+
+  endMacro();
+}

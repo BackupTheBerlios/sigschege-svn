@@ -120,7 +120,6 @@ private slots:
   void cmdSaveAs();
   void cmdAddSignal();
   void cmdAddScale();
-  void cmdRmSignal();
   void selectionChanged();
 
 };

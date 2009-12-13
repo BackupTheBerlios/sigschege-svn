@@ -109,8 +109,9 @@ void SSGReader::readTimeScale()
                 title = readElementText();
 	}
     }
-    TimScale *new_scale = scene->addTimScale();
+    TimScale *new_scale = new TimScale(0, scene);
     new_scale->setText(title);
+    scene->addTimListItem(-1, new_scale);
 
     //scene->addTimTimeScale();
 }

@@ -1,7 +1,8 @@
-// TimCmdAddScale.cpp
-// Copyright 2009 by ingo & ulf
+// -*- c++ -*-
+// TimCmdAddListItem.cpp
+// Copyright 2009 by ingo
 //
-// This file is part of Sigschege - Scale Schedule Generator
+// This file is part of Sigschege - Signal Schedule Generator
 // 
 // #############################################################################
 //
@@ -21,30 +22,29 @@
 // #############################################################################
 //
 
-#include "TimCmdAddScale.h"
+#include "TimCmdAddListItem.h"
 
-TimCmdAddScale::TimCmdAddScale(TimingScene *tscene) {
+TimCmdAddListItem::TimCmdAddListItem(TimingScene *tscene, int index, TimMember *item) {
   m_timingScene = tscene;
-  m_timScale   = NULL;
-  m_owned       = false;
+  m_item        = item;
+  m_index       = index;
+  m_owning      = true;
 }
 
-TimCmdAddScale::~TimCmdAddScale() {
-  if(m_owned && m_timScale) {
-    delete m_timScale;
+TimCmdAddListItem::~TimCmdAddListItem() {
+  if(m_owning) {
+    delete m_item;
   }
 }
 
-void TimCmdAddScale::undo() {
-  m_timingScene->removeTimScale(m_timScale);
-  m_owned = true;
+void TimCmdAddListItem::undo() {
+  m_timingScene->rmTimListItem(m_item);
+  m_owning = true;
 }
 
-void TimCmdAddScale::redo() {
-  if(m_timScale) {
-    m_timingScene->addTimScale(m_timScale);
-  } else {
-    m_timScale = m_timingScene->addTimScale();
-  }
-  m_owned = true;
+void TimCmdAddListItem::redo() {
+  m_timingScene->addTimListItem(m_index , m_item);
+  m_owning = false;
 }
+
+

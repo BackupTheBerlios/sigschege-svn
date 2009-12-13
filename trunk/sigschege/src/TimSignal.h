@@ -47,7 +47,7 @@ public:
    *
    * @param scene Pointer to the timing scene.
    */
-  TimSignal(TimingScene *scene);
+  TimSignal(TimMember *parent, TimingScene *scene);
 
   /** @brief DTor
    * Destroys the @c TimSignal object
@@ -82,6 +82,16 @@ public:
   void setText ( const QString & text );
 
   virtual void SSGWrite(SSGWriter *writer);
+
+  /** @brief Creates a delete command
+   *
+   * This method create a delete command that deletes this item when executed.
+   *
+   * Note: The caller is responsible to delete the created command.
+   *
+   * @return Pointer to created delete command
+   */
+  virtual QUndoCommand* createDeleteCmd();
 
 protected:
 

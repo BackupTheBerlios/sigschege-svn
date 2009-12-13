@@ -40,17 +40,18 @@ public:
 
   /** @brief CTor
    *
+   * @param parent Pointer to the parent object
    * @param scene Pointer to the timing scene.
    */
-  TimLabel(TimingScene *scene);
+  TimLabel(TimMember *parent, TimingScene *scene);
 
   /** @brief CTor
    *
+   * @param parent Pointer to the parent object
    * @param scene Pointer to the timing scene.
    * @param text Label text.
-   *
    */
-  TimLabel(TimingScene *scene, const QString & text);
+  TimLabel(TimMember *parent, TimingScene *scene, const QString & text);
 
   /** @brief Returns the bounding rect.
    *
@@ -77,6 +78,14 @@ public:
    * @param text The new text of the label
    */
   void setText(const QString & text );
+
+  /** @brief Creates a delete command
+   *
+   * This is a dummy implementation that returns NULL.
+   *
+   * @return Pointer to created delete command
+   */
+  virtual QUndoCommand* createDeleteCmd() {return NULL;}
 
 protected:
 

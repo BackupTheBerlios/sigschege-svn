@@ -16,10 +16,10 @@ TimScale.h
 TimWave.h
 TimLabel.h
 TimEvent.h
-TimCmdAddSignal.h
-TimCmdAddScale.h
 TimSignalManager.h
 TimCmdAddEvent.h
+TimCmdAddListItem.h
+TimCmdRmListItem.h
 SSGReader.h
 SSGWriter.h
 )
@@ -37,11 +37,11 @@ TimEvent.cpp
 TimEventType.cpp
 TimEventLow.cpp
 TimEventHigh.cpp
-TimCmdAddSignal.cpp
-TimCmdAddScale.cpp
 TimCmdRmSignal.cpp
 TimSignalManager.cpp
 TimCmdAddEvent.cpp
+TimCmdAddListItem.cpp
+TimCmdRmListItem.cpp
 SSGReader.cpp
 SSGWriter.cpp
 )

@@ -26,17 +26,18 @@
 #include "TimWave.h"
 #include "TimLabel.h"
 #include "SSGWriter.h"
+#include "TimCmdRmSignal.h"
 
-TimSignal::TimSignal(TimingScene *scene) : TimMember(scene) {
+TimSignal::TimSignal(TimMember *parent, TimingScene *scene) : TimMember(parent, scene) {
 
   setFlag(ItemIsSelectable);
 
-  m_label = new TimLabel(getScene(), "Test");
+  m_label = new TimLabel(this, getScene(), "Test");
   m_label->setGeometry(QRectF(0, 0, getLayoutData()->get_col_0_width(), 50));
-  m_label->setParentItem(this);
+  //m_label->setParentItem(this);
 
-  m_wave = new TimWave(m_scene);
-  m_wave->setParentItem(this);
+  m_wave = new TimWave(this, m_scene);
+  //m_wave->setParentItem(this);
   m_wave->setGeometry(QRectF(getLayoutData()->get_col_0_width(), 0, getLayoutData()->get_col_1_width(), 50));
 
 }
@@ -91,4 +92,15 @@ void TimSignal::SSGWrite(SSGWriter *writer) {
   writer->writeEndElement();
   writer->writeEndElement();
 
+}
+
+QUndoCommand* TimSignal::createDeleteCmd() {
+
+  QList<QGraphicsItem*> list = m_wave->childItems();
+
+  for(QList<QGraphicsItem*>::iterator it = list.begin(); it != list.end(); ++it) {
+    qDebug("child = %p", *it);
+  }
+
+  return new TimCmdRmSignal(getScene()); // TODO implement real thing later
 }

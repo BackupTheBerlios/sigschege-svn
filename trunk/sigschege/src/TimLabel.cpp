@@ -25,10 +25,10 @@
 #include "TimLabel.h"
 #include "SSGWriter.h"
 
-TimLabel::TimLabel(TimingScene *scene) : TimMember(scene) {
+TimLabel::TimLabel(TimMember *parent, TimingScene *scene) : TimMember(parent, scene) {
 }
 
-TimLabel::TimLabel(TimingScene *scene, const QString & text) : TimMember(scene) {
+TimLabel::TimLabel(TimMember *parent, TimingScene *scene, const QString & text) : TimMember(parent, scene) {
   m_label = text;
 }
 

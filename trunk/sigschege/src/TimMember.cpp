@@ -26,8 +26,8 @@
 #include "TimLabel.h"
 #include "TimUtil.h"
 
-TimMember::TimMember(TimingScene *scene) :
-  QGraphicsItem(0), QGraphicsLayoutItem(0, false) {
+TimMember::TimMember(TimMember *parent, TimingScene *scene) :
+  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
 
   setFlag(ItemIsSelectable);
 
@@ -70,5 +70,4 @@ TimLayoutData* TimMember::getLayoutData() const {
 TimingScene* TimMember::getScene() const {
   return m_scene;
 }
-
 

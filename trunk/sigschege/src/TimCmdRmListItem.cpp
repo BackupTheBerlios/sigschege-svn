@@ -1,5 +1,5 @@
 // -*- c++ -*-
-// TimCmdAddSignal.cpp
+// TimCmdRmListItem.cpp
 // Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
@@ -22,30 +22,20 @@
 // #############################################################################
 //
 
-#include "TimCmdAddSignal.h"
+#include "TimCmdRmListItem.h"
 
-TimCmdAddSignal::TimCmdAddSignal(TimingScene *tscene) {
+TimCmdRmListItem::TimCmdRmListItem(TimingScene *tscene) {
   m_timingScene = tscene;
-  m_timSignal   = NULL;
-  m_owned       = false;
 }
 
-TimCmdAddSignal::~TimCmdAddSignal() {
-  if(m_owned && m_timSignal) {
-    delete m_timSignal;
-  }
+TimCmdRmListItem::~TimCmdRmListItem() {
 }
 
-void TimCmdAddSignal::undo() {
-  m_timingScene->removeTimSignal(m_timSignal);
-  m_owned = true;
+void TimCmdRmListItem::undo() {
 }
 
-void TimCmdAddSignal::redo() {
-  if(m_timSignal) {
-    m_timingScene->addTimSignal(m_timSignal);
-  } else {
-    m_timSignal = m_timingScene->addTimSignal();
-  }
-  m_owned = true;
+void TimCmdRmListItem::redo() {
 }
+
+
+

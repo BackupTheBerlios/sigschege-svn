@@ -42,9 +42,10 @@ public:
 
   /** @brief Creates a new @c TimMember object.
    *
+   * @param parent Pointer to the parent object
    * @param scene Pointer to the timing scene.
    */
-  TimMember(TimingScene *scene);
+  TimMember(TimMember* parent, TimingScene *scene);
 
   /** @brief DTor
    * Destroys the @c TimMember object
@@ -64,7 +65,7 @@ public:
    * @param widget Pointer to the painting widget
    */
   virtual void
-      paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) = 0;
+      paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {}
 
   /** @brief Sets the geometry of this object
    *
@@ -80,11 +81,30 @@ public:
    *
    * @param writer Pointer to the SSGWriter object, needed for callback.
    */
-  virtual void SSGWrite(SSGWriter *writer) = 0;
+  virtual void SSGWrite(SSGWriter *writer) {};
 
+  /** @brief Get a pointer to layout data
+   *
+   * @return Returns a pointer to the layout data
+   */
   virtual TimLayoutData* getLayoutData() const;
 
+
+  /** @brief Get a pointer to the timing scene
+   *
+   * @return Returns a pointer to the timing scene
+   */
   virtual TimingScene* getScene() const;
+
+  /** @brief Creates a delete command
+   *
+   * This method create a delete command that deletes this item when executed.
+   *
+   * Note: The caller is responsible to delete the created command.
+   *
+   * @return Pointer to created delete command
+   */
+  virtual QUndoCommand* createDeleteCmd() { return NULL;}
 
 protected:
 

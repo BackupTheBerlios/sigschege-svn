@@ -98,6 +98,8 @@ void TimEvent::insertEvent(TimEvent *node) {
   }
 
   setNext(node);
+
+
   node->setParentItem(getWave());
   prepareGeometryChange();
 }
@@ -113,9 +115,10 @@ TimEvent* TimEvent::removeEvent() {
 
     next->setPrev(NULL);
     next->setNext(NULL);
-    next->setParentItem(NULL);
 
     getWave()->getScene()->removeItem(next);
+
+    next->setParentItem(NULL);
 
     prepareGeometryChange();
   }

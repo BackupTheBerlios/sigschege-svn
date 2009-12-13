@@ -26,16 +26,17 @@
 #include "TimLabel.h"
 #include "TimUtil.h"
 #include "SSGWriter.h"
+#include "TimCmdRmSignal.h"
 
-TimScale::TimScale(TimingScene *scene) : TimMember(scene) {
+TimScale::TimScale(TimMember *parent, TimingScene *scene) : TimMember(parent, scene) {
 
   setFlag(ItemIsSelectable);
 
-  m_label = new TimLabel(getScene(), "Time");
+  m_label = new TimLabel(this, getScene(), "Time");
   m_label->setGeometry(QRectF(0, 0, getLayoutData()->get_col_0_width(), 50));
   m_label->setParentItem(this);
 
-  m_wave = new TimWave(m_scene);
+  m_wave = new TimWave(this, m_scene);
   m_wave->setParentItem(this);
   m_wave->setGeometry(QRectF(m_scene->getLayoutData()->get_col_0_width(), 0, m_scene->getLayoutData()->get_col_1_width(), 50));
 }
@@ -101,4 +102,8 @@ void TimScale::SSGWrite(SSGWriter *writer) {
   writer->writeEndElement();
   writer->writeEndElement();
 
+}
+
+QUndoCommand* TimScale::createDeleteCmd() {
+  return new TimCmdRmSignal(getScene()); // TODO implement real thing later
 }

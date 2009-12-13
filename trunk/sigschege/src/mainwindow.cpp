@@ -23,9 +23,10 @@
 //
 
 #include "mainwindow.h"
-#include "TimCmdAddSignal.h"
-#include "TimCmdAddScale.h"
+#include "TimSignal.h"
+#include "TimScale.h"
 #include "TimCmdRmSignal.h"
+#include "TimCmdAddListItem.h"
 #include "SSGReader.h"
 #include "SSGWriter.h"
 
@@ -84,11 +85,7 @@ void MainWindow::createActions() {
   m_addScaleAct->setStatusTip(tr("Adds a new time scale to the timing diagram"));
   connect(m_addScaleAct, SIGNAL(triggered()), this, SLOT(cmdAddScale()));
 
-  m_rmSignalAct = new QAction(tr("Remove Signal"), this);
-  m_rmSignalAct->setEnabled(false);
-  m_rmSignalAct->setIcon(QIcon(":/images/rm.png"));
-  m_rmSignalAct->setStatusTip(tr("Removes one or more signal(s) from the timing diagram"));
-  connect(m_rmSignalAct, SIGNAL(triggered()), this, SLOT(cmdRmSignal()));
+  m_rmSignalAct = m_scene->getActionRemoveItems();
 
   m_SigArrow = m_scene->getActionArrow();
   m_SigArrow->setIcon(QIcon(":/images/arrow.png"));
@@ -247,15 +244,13 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 }
 
 void MainWindow::cmdAddSignal() {
-  m_scene->pushCmd(new TimCmdAddSignal(m_scene));
+
+  m_scene->pushCmd(new TimCmdAddListItem(m_scene, -1, new TimSignal(0, m_scene)));
+
 }
 
 void MainWindow::cmdAddScale() {
-  m_scene->pushCmd(new TimCmdAddScale(m_scene));
-}
-
-void MainWindow::cmdRmSignal() {
-  m_scene->pushCmd(new TimCmdRmSignal(m_scene));
+  m_scene->pushCmd(new TimCmdAddListItem(m_scene, -1, new TimScale(0,m_scene)));
 }
 
 void MainWindow::selectionChanged() {

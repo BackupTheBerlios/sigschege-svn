@@ -28,7 +28,7 @@
 
 #include <QtGui>
 #include "TimingScene.h"
-#include "TimSignal.h"
+#include "TimMember.h"
 
 /** @brief The @c TimCmdRmSignal implements the remove signal command
  *
@@ -42,9 +42,10 @@ public:
    *
    * Creates a new @c TimCmdRmSignal object.
    *
-   * @param tscene Pointer to the scene where the signal should be added
+   * @param scene Pointer to Timingscene
+   * @param item Pointer to the list item to delete
    */
-  TimCmdRmSignal(TimingScene *tscene);
+  TimCmdRmSignal(TimingScene *scene, TimMember *item);
 
   /** @brief DTor
    * Destroys the @c TimCmdRmSignal object and every owning TimSignal object.
@@ -66,8 +67,9 @@ public:
 
 private:
   TimingScene *m_timingScene;
-  QList<QGraphicsItem*> m_items;
-  QList<int> m_index;
+  TimMember *m_item;
+  int m_index;
+  bool m_owning;
 };
 
 #endif /* TIMCMDRMSIGNAL_H_ */

@@ -96,11 +96,5 @@ void TimSignal::SSGWrite(SSGWriter *writer) {
 
 QUndoCommand* TimSignal::createDeleteCmd() {
 
-  QList<QGraphicsItem*> list = m_wave->childItems();
-
-  for(QList<QGraphicsItem*>::iterator it = list.begin(); it != list.end(); ++it) {
-    qDebug("child = %p", *it);
-  }
-
-  return new TimCmdRmSignal(getScene()); // TODO implement real thing later
+  return new TimCmdRmSignal(getScene(), this);
 }

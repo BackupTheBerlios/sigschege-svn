@@ -93,6 +93,16 @@ public:
    */
   TimSignal* addTimSignal(int index, TimSignal* signal);
 
+  /** @brief Removes item from the timing scene
+   *
+   * This method removes the specified item from the timing scene. It will not destroy the item.
+   *
+   * @param item Pointer to the item to remove.
+   * @returns Returns the old index.
+   */
+  int removeTimListItem(TimMember *item);
+
+
   /** @brief Removes the signal from the timing scene
    *
    * This method removes the signal from the timing scene. It will not destroy the signal.

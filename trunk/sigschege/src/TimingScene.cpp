@@ -119,8 +119,29 @@ int TimingScene::rmTimListItem(TimMember *item) {
   return index;
 }
 
-int TimingScene::removeTimSignal(TimSignal *signal) {
 
+int TimingScene::removeTimListItem(TimMember *item) {
+
+  // indexOf is missing in Qt < 4.6 :-(
+  int cnt = m_layout->count();
+  int index;
+  for (index = 0; index < cnt; ++index) {
+    if (item == m_layout->itemAt(index)) {
+      break;
+    }
+  }
+
+  // First remove the signal from the layout
+  m_layout->removeItem(item);
+  m_layout->setMaximumSize(0, 0); // adapt the size
+
+  // then remove it from the scene
+  removeItem(item);
+  return index;
+}
+
+
+int TimingScene::removeTimSignal(TimSignal *signal) {
 
   // indexOf is missing in Qt < 4.6 :-(
   int cnt = m_layout->count();
@@ -264,7 +285,10 @@ void TimingScene::removeItems() {
   for(QList<QGraphicsItem*>::Iterator it = m_items.begin(); it != m_items.end(); ++it) {
     TimMember *tm = (TimMember*)*it;
     if(tm != NULL) {
-      pushCmd(tm->createDeleteCmd());
+      QUndoCommand *cmd = tm->createDeleteCmd();
+      if(cmd != NULL) {
+        pushCmd(cmd);
+      }
     }
   }
 

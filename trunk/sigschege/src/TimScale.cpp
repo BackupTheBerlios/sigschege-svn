@@ -105,5 +105,5 @@ void TimScale::SSGWrite(SSGWriter *writer) {
 }
 
 QUndoCommand* TimScale::createDeleteCmd() {
-  return new TimCmdRmSignal(getScene()); // TODO implement real thing later
+  return new TimCmdRmSignal(getScene(), this);
 }

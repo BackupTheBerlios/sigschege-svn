@@ -258,17 +258,16 @@ void MainWindow::selectionChanged() {
   // get new selected items
   QList<QGraphicsItem*> item_list = m_scene->selectedItems();
 
-  // check if any signal is selected
+  // check if any item is selected
   if (item_list.isEmpty()) {
-    // disable delete signal
+    // disable delete item
     m_rmSignalAct->setEnabled(false);
   } else {
-    // enable delete signal
+    // enable delete item
     m_rmSignalAct->setEnabled(true);
   }
 
 }
-
 
 bool MainWindow::maybeSave() {
   bool affirmative = true;

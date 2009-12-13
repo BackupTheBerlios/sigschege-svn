@@ -24,33 +24,30 @@
 
 #include "TimCmdRmSignal.h"
 
-TimCmdRmSignal::TimCmdRmSignal(TimingScene *tscene) {
-  m_timingScene = tscene;
+TimCmdRmSignal::TimCmdRmSignal(TimingScene *scene, TimMember *item) {
+  m_timingScene = scene;
+  m_item = item;
+  m_index = -1;
+  m_owning = false;
 }
 
 TimCmdRmSignal::~TimCmdRmSignal() {
 
-  for (int it = 0; it < m_items.size(); ++it) {
-    delete m_items[it];
+  if (m_owning) {
+    delete m_item;
   }
 
 }
 
 void TimCmdRmSignal::undo() {
   // add items again
-  for (int it = m_items.size() - 1; it >= 0; --it) {
-    m_timingScene->addTimSignal(m_index[it], (TimSignal*) m_items[it]);
-  }
-  m_index.clear();
-  m_items.clear();
+  m_timingScene->addTimListItem(m_index, m_item);
+  m_owning = false;
 }
 
 void TimCmdRmSignal::redo() {
-  // get selected items
-  m_items = m_timingScene->selectedItems();
-  // remove the and store the index for undo operations
-  for (int it = 0; it < m_items.size(); ++it) {
-    m_index.push_back(m_timingScene->removeTimSignal((TimSignal*) m_items[it]));
-  }
+
+  m_index = m_timingScene->removeTimListItem(m_item);
+  m_owning = true;
 }
 

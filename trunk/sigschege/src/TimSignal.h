@@ -45,6 +45,7 @@ public:
 
   /** @brief Creates a new @c TimSignal object.
    *
+   * @oaram parent Pointer to the parent object
    * @param scene Pointer to the timing scene.
    */
   TimSignal(TimMember *parent, TimingScene *scene);

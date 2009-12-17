@@ -29,8 +29,6 @@
 TimMember::TimMember(TimMember *parent, TimingScene *scene) :
   QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
 
-  setFlag(ItemIsSelectable);
-
   m_scene = scene;
 }
 

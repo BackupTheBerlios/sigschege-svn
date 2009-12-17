@@ -24,7 +24,10 @@
 
 
 #include "TimSignalManager.h"
-
+#include "TimEvent.h"
+#include "TimEventType.h"
+#include "TimEventHigh.h"
+#include "TimEventLow.h"
 
 TimSignalManager::TimSignalManager(QObject * parent) : QObject(parent) {
   m_current = NULL;
@@ -44,6 +47,10 @@ TimSignalManager::~TimSignalManager() {
 
 TimEventType* TimSignalManager::getCurrent() {
   return m_current;
+}
+
+TimEventType* TimSignalManager::getDefault() {
+  return m_low;
 }
 
 void TimSignalManager::selectNone(bool checked) {

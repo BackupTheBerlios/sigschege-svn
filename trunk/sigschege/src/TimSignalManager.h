@@ -29,10 +29,10 @@
 
 #include <QtGui>
 
-#include "TimEvent.h"
-#include "TimEventType.h"
-#include "TimEventHigh.h"
-#include "TimEventLow.h"
+class TimEvent;
+class TimEventType;
+class TimEventLow;
+class TimEventHigh;
 
 class TimSignalManager : public QObject {
 
@@ -43,6 +43,8 @@ public:
   ~TimSignalManager();
 
   TimEventType* getCurrent();
+
+  TimEventType* getDefault();
 
 private:
   TimEventType *m_current;

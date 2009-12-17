@@ -27,9 +27,11 @@
 #define TIMEVENT_H_
 
 #include <QtGui>
+#include "TimMember.h"
 #include "TimEventType.h"
 
 class TimWave;
+class TimingScene;
 
 /** @brief The @c TimEvent class holds all event type independent informations.
  *
@@ -38,28 +40,19 @@ class TimWave;
  *
  * @c TimEvent and @c TimEventType implementing the state pattern.
  */
-class TimEvent: public QGraphicsItem, public QGraphicsLayoutItem {
+class TimEvent: public TimMember {
 
 public:
-
-  /** @brief Ctor
-   *
-   * Creates a new @c TimEvent object with default type and time.
-   * Default event is TimEventLow.
-   * Default time is 0.0 sec.
-   *
-   * @param parent Pointer to the owning TimWave object
-   */
-  TimEvent(TimWave *parent);
 
   /** @brief Ctor
    *
    * Creates a new TimEvent object with specified event type and default time of 0.0 second.
    *
    * @param parent Pointer to the owning TimWave object
+   * @param scene Pointer to the timing scene
    * @param type Pointer to the Event type object that should be used for this event.
    */
-  TimEvent(TimWave *parent, TimEventType *type);
+  TimEvent(TimWave *parent, TimingScene *scene, TimEventType *type);
 
   /** @brief Ctor
    *
@@ -69,11 +62,11 @@ public:
    * @param type Pointer to the Event type object.
    * @param time Time of this event in seconds.
    */
-  TimEvent(TimWave *parent, TimEventType *type, double time);
+  TimEvent(TimWave *parent, TimingScene *scene, TimEventType *type, double time);
 
   /** @brief Dtor
    */
-  ~TimEvent();
+  virtual ~TimEvent();
 
   /** @brief Set a new event type.
    *
@@ -184,7 +177,7 @@ protected:
    *
    * @param prev Pointer to the new "previous" event.
    */
-void setPrev(TimEvent *prev);
+  void setPrev(TimEvent *prev);
 
   /** @brief Get a hint of the size that this object would like to have.
    *
@@ -198,8 +191,20 @@ void setPrev(TimEvent *prev);
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
 
+  /** @brief Creates a event delete command
+   *
+   * This method create a delete command that deletes this event when executed.
+   *
+   * Note: The caller is responsible to delete the created command.
+   *
+   * @return Pointer to the delete command
+   */
+  virtual QUndoCommand* createDeleteCmd();
+
 protected:
   void mousePressEvent ( QGraphicsSceneMouseEvent * event );
+
+  void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event);
 
 private:
 

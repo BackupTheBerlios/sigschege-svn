@@ -24,56 +24,27 @@
 
 #include "TimEvent.h"
 #include "TimWave.h"
+#include "TimingScene.h"
 #include "TimEventLow.h"
 #include "TimEventHigh.h"
 #include "TimCmdAddEvent.h"
 
-TimEvent::TimEvent(TimWave *parent) :
-  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
-
-  m_Wave = parent;
-
-  m_prev = NULL;
-  m_next = NULL;
-  m_EventType = NULL;
-
-  m_EventTime = 0.0;
-
-  setEventType(new TimEventLow(this));
+TimEvent::TimEvent(TimWave *parent, TimingScene *scene, TimEventType *type) :
+  TimMember(parent, scene), m_prev(NULL), m_next(NULL), m_Wave(parent), m_EventType(type),
+  m_EventTime(0.0) {
 
   setPos(calcXPos(m_EventTime), 0);
 
+  setFlag(ItemIsSelectable);
 }
 
-TimEvent::TimEvent(TimWave *parent, TimEventType *type) :
-  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
-  m_Wave = parent;
-
-  m_prev = NULL;
-  m_next = NULL;
-  m_EventType = NULL;
-
-  m_EventTime = 0.0;
-
-  setEventType(type);
+TimEvent::TimEvent(TimWave *parent, TimingScene *scene, TimEventType *type, double time) :
+  TimMember(parent, scene), m_prev(NULL), m_next(NULL), m_Wave(parent), m_EventType(type),
+  m_EventTime(time) {
 
   setPos(calcXPos(m_EventTime), 0);
 
-}
-
-TimEvent::TimEvent(TimWave *parent, TimEventType *type, double time) :
-  QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
-  m_Wave = parent;
-
-  m_prev = NULL;
-  m_next = NULL;
-  m_EventType = NULL;
-
-  m_EventTime = time;
-
-  setEventType(type);
-
-  setPos(calcXPos(m_EventTime), 0);
+  setFlag(ItemIsSelectable);
 
 }
 
@@ -82,6 +53,8 @@ TimEvent::~TimEvent() {
 }
 
 void TimEvent::insertEvent(TimEvent *node) {
+
+  prepareGeometryChange();
 
   /*
    +----+     +----+
@@ -99,15 +72,16 @@ void TimEvent::insertEvent(TimEvent *node) {
 
   setNext(node);
 
-
   node->setParentItem(getWave());
-  prepareGeometryChange();
 }
 
 TimEvent* TimEvent::removeEvent() {
+
+  prepareGeometryChange();
+
   TimEvent* next = getNext();
 
-  if(next != NULL) {
+  if (next != NULL) {
 
     // remove next from list
     getNext()->setPrev(this);
@@ -118,9 +92,8 @@ TimEvent* TimEvent::removeEvent() {
 
     getWave()->getScene()->removeItem(next);
 
-    next->setParentItem(NULL);
+    //next->setParentItem(NULL);
 
-    prepareGeometryChange();
   }
 
   return next;
@@ -162,11 +135,7 @@ TimWave* TimEvent::getWave() const {
 }
 
 void TimEvent::setEventType(TimEventType *type) {
-  if (m_EventType) {
-    delete m_EventType;
-  }
   m_EventType = type;
-  m_EventType->setParent(this);
 }
 
 TimEventType* TimEvent::getEventType() {
@@ -206,6 +175,17 @@ QRectF TimEvent::boundingRect() const {
 }
 
 void TimEvent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+
+  if (isSelected()) {
+
+    QBrush old = painter->brush();
+
+    painter->setBrush(QBrush(QColor(100, 255, 100, 100)));
+    painter->drawRect(boundingRect());
+
+    painter->setBrush(old);
+  }
+
   m_EventType->paint(this, painter, option, widget);
 }
 
@@ -220,7 +200,6 @@ void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
     if (et == NULL) {
       QGraphicsItem::mousePressEvent(event);
     } else {
-
       // mapping the mouse event position to parent coordinate system make calculation easier
       QPointF mousePos = mapToParent(event->pos());
 
@@ -229,8 +208,15 @@ void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
       double end = ld->get_end_time();
 
       double time = ((((end - start) / width) * mousePos.x()));
-
       sc->pushCmd(new TimCmdAddEvent(sc, this, et, time));
     }
   }
+}
+
+void TimEvent::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event ) {
+
+}
+
+QUndoCommand* TimEvent::createDeleteCmd() {
+  return NULL;
 }

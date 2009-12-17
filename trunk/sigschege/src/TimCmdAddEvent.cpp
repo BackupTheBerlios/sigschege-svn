@@ -23,6 +23,8 @@
 //
 
 #include "TimCmdAddEvent.h"
+#include "TimWave.h"
+#include "TimEventHigh.h"
 
 TimCmdAddEvent::TimCmdAddEvent(TimingScene *tscene, TimEvent *event, TimEventType *type, double time) {
   m_timingScene = tscene;
@@ -45,7 +47,7 @@ void TimCmdAddEvent::undo() {
 void TimCmdAddEvent::redo() {
 
   if(m_newEvent == NULL) {
-    m_newEvent = new TimEvent(m_event->getWave(), m_eventType, m_time);
+    m_newEvent = new TimEvent(m_event->getWave(), m_timingScene, m_eventType, m_time);
   }
   m_event->insertEvent(m_newEvent);
   m_newEvent = NULL; // ownership was transfered

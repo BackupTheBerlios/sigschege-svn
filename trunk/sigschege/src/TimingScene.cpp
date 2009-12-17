@@ -282,6 +282,10 @@ void TimingScene::removeItems() {
   beginMacro("Delete Item(s)");
   QList<QGraphicsItem*> m_items = selectedItems();
 
+  if(m_items.isEmpty()) {
+    return;
+  }
+
   for(QList<QGraphicsItem*>::Iterator it = m_items.begin(); it != m_items.end(); ++it) {
     TimMember *tm = (TimMember*)*it;
     if(tm != NULL) {

@@ -32,6 +32,7 @@
 #include "TimLayoutData.h"
 #include "TimingScene.h"
 
+class TimWave;
 class TimLabel;
 
 /** @brief The @c TimScale class displays a time scale in the Timing Diagram.

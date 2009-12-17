@@ -26,13 +26,14 @@
 #include "TimSignal.h"
 #include "TimEventHigh.h"
 #include "TimEventLow.h"
+#include "TimCmdAddEvent.h"
 
 TimWave::TimWave(TimMember *parent, TimingScene *scene)  :
     TimMember(parent, scene) {
 
   m_scene = scene;
 
-  m_TimEvent = new TimEvent(this);
+  m_TimEvent = new TimEvent(this, getScene(), getScene()->getSignalManager()->getDefault());
 
 }
 
@@ -69,6 +70,18 @@ QRectF TimWave::boundingRect() const {
 void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   //painter->drawRoundedRect(0, 0, m_LayoutData->get_col_1_width(), 50, 5, 5);
   // painter->drawLine(0, 30, 250, 30);
+
+  if(isSelected()) {
+
+    QBrush old = painter->brush();
+
+    painter->setBrush(QBrush(QColor(255,100,100,100)));
+    painter->drawRect(boundingRect());
+    qDebug("Event is selected");
+
+    painter->setBrush(old);
+  }
+
 }
 
 TimLayoutData* TimWave::getLayoutData() const {

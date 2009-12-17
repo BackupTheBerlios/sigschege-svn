@@ -33,6 +33,7 @@ TimEventLow::TimEventLow(TimEvent *parent) :
 
 void TimEventLow::paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
+
   // draw edge
   if (event->getPrev() != NULL) {
     EventLevel level = event->getPrev()->getEventType()->getLevel();

@@ -27,8 +27,8 @@
 
 #include <QtGui>
 
-#include "TimingScene.h"
 #include "TimLayoutData.h"
+#include "TimingScene.h"
 
 class SSGWriter;
 class TimLabel;

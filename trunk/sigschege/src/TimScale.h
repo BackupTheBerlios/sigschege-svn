@@ -32,7 +32,6 @@
 #include "TimLayoutData.h"
 #include "TimingScene.h"
 
-class TimWave;
 class TimLabel;
 
 /** @brief The @c TimScale class displays a time scale in the Timing Diagram.
@@ -102,10 +101,6 @@ protected:
    */
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
-
-  /** @brief Pointer to the wave form
-   */
-  TimWave *m_wave;
 
   /** @brief Pointer to the signal label
    */

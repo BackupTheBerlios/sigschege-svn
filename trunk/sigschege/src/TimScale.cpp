@@ -22,7 +22,6 @@
 //
 
 #include "TimScale.h"
-#include "TimWave.h"
 #include "TimLabel.h"
 #include "TimUtil.h"
 #include "SSGWriter.h"
@@ -36,9 +35,6 @@ TimScale::TimScale(TimMember *parent, TimingScene *scene) : TimMember(parent, sc
   m_label->setGeometry(QRectF(0, 0, getLayoutData()->get_col_0_width(), 50));
   m_label->setParentItem(this);
 
-  m_wave = new TimWave(this, m_scene);
-  m_wave->setParentItem(this);
-  m_wave->setGeometry(QRectF(m_scene->getLayoutData()->get_col_0_width(), 0, m_scene->getLayoutData()->get_col_1_width(), 50));
 }
 
 TimScale::~TimScale() {
@@ -71,7 +67,7 @@ QRectF TimScale::boundingRect() const {
 
 void TimScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-  if(isSelected()) {
+  if (isSelected()) {
     painter->setBrush(QBrush(QColor(100,100,255,100)));
   }
 

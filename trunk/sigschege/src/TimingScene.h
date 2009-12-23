@@ -270,6 +270,12 @@ protected slots:
   void removeItems();
 
 private:
+
+  /** @brief Update size of the scene
+   *
+   */
+  void updateRect(void);
+
   /** @brief Pointer to the linear layout object.
    *
    * This layout object is used to organise the signals in a vertical list.

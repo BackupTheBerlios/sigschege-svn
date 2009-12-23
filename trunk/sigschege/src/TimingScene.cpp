@@ -26,15 +26,19 @@
 #include "TimMember.h"
 #include "TimScale.h"
 #include "TimSignal.h"
+#include <cassert>
+#include <iostream>
+
+using namespace std;
 
 TimingScene::TimingScene(QObject *parent) :
   QGraphicsScene(parent) {
 
-  setSceneRect(0, 0, m_LayoutData.get_col_0_width()
-      + m_LayoutData.get_col_1_width(), 100);
-
   m_layout = new QGraphicsLinearLayout(Qt::Vertical);
   m_layout->setMinimumWidth(width());
+  m_layout->setSpacing(5.0);
+
+  updateRect();
 
   QGraphicsWidget *form = new QGraphicsWidget;
   form->setLayout(m_layout);
@@ -45,9 +49,13 @@ TimingScene::TimingScene(QObject *parent) :
 
 void TimingScene::clear(void) {
   
-  int cnt = m_layout->count();
+  int cnt = 0;
   int index;
   QGraphicsLayoutItem *item;
+
+  if (m_layout != 0) {
+      cnt = m_layout->count();
+    }
 
   for (index = cnt-1; index >= 0; --index) {
     item = m_layout->itemAt(index);
@@ -68,6 +76,7 @@ TimSignal* TimingScene::addTimSignal() {
 
 TimSignal* TimingScene::addTimSignal(TimSignal* signal) {
 
+  cout << "addTS " << signal << endl;
   // add signal to graphic scene
   addItem(signal);
 
@@ -80,6 +89,7 @@ TimSignal* TimingScene::addTimSignal(TimSignal* signal) {
 
 TimSignal* TimingScene::addTimSignal(int index, TimSignal* signal) {
 
+  cout << "addTS " << signal << " @" << index << endl;
   // add signal to graphic scene
   addItem(signal);
 
@@ -92,15 +102,19 @@ TimSignal* TimingScene::addTimSignal(int index, TimSignal* signal) {
 
 void TimingScene::addTimListItem(int index, TimMember *item) {
 
+  cout << "addTLI " << item << " @" << index << endl;
   // add item to graphic scene
   addItem(item);
 
   // add item to layout manager
-  getLayout()->insertItem(index, item);
+  m_layout->insertItem(index, item);
+  
+  updateRect();
 }
 
 int TimingScene::rmTimListItem(TimMember *item) {
 
+  cout << "rmTLI " << item << endl;
   // indexOf is missing in Qt < 4.6 :-(
   int cnt = m_layout->count();
   int index;
@@ -108,6 +122,7 @@ int TimingScene::rmTimListItem(TimMember *item) {
     if (item == m_layout->itemAt(index)) {
       break;
     }
+    assert(index<cnt);
   }
 
   // First remove the signal from the layout
@@ -116,6 +131,9 @@ int TimingScene::rmTimListItem(TimMember *item) {
 
   // then remove it from the scene
   removeItem(item);
+
+  updateRect();
+
   return index;
 }
 
@@ -137,6 +155,7 @@ int TimingScene::removeTimListItem(TimMember *item) {
 
   // then remove it from the scene
   removeItem(item);
+  update();
   return index;
 }
 
@@ -298,3 +317,21 @@ void TimingScene::removeItems() {
 
   endMacro();
 }
+
+void TimingScene::updateRect(void) {
+  int cnt = m_layout->count();
+  QGraphicsLayoutItem *item;
+  int index;
+  int height = 0;
+
+  for (index = cnt-1; index >= 0; --index) {
+    item = m_layout->itemAt(index);
+    height += dynamic_cast<TimMember*>(item)->boundingRect().height() + m_layout->spacing();
+  }
+
+  if (height < 50) height = 50;
+
+  setSceneRect(0, 0, m_LayoutData.get_col_0_width()
+      + m_LayoutData.get_col_1_width() + 4, height);
+}
+

@@ -22,6 +22,7 @@ TimCmdAddListItem.h
 TimCmdRmListItem.h
 SSGReader.h
 SSGWriter.h
+DiaSettings.h
 )
 
 set(sources
@@ -44,6 +45,7 @@ TimCmdAddListItem.cpp
 TimCmdRmListItem.cpp
 SSGReader.cpp
 SSGWriter.cpp
+DiaSettings.cpp
 )
 
 # QT4_WRAP_UI(sources_ui Sigschege.ui)

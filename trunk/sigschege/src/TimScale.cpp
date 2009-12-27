@@ -26,6 +26,9 @@
 #include "TimUtil.h"
 #include "SSGWriter.h"
 #include "TimCmdRmSignal.h"
+#include <iostream>
+
+using namespace std;
 
 TimScale::TimScale(TimMember *parent, TimingScene *scene) : TimMember(parent, scene) {
 
@@ -74,14 +77,41 @@ void TimScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   painter->drawRoundedRect(0, 0, m_scene->getLayoutData()->get_col_0_width()
       + m_scene->getLayoutData()->get_col_1_width(), 50, 5, 5);
 
-  Range<double> timeRange(0.0, 100.0);
-  Range<double> layoutRange(0, m_scene->getLayoutData()->get_col_1_width());
+
+  TimLayoutData *layoutd;
+  layoutd = m_scene->getLayoutData();
+
+
+  Range<double> timeRange(layoutd->get_start_time(), layoutd->get_end_time());
+
+  Range<double> layoutRange(layoutd->get_col_0_width(), layoutd->get_col_0_width()+layoutd->get_col_1_width());
+
+  double timeDist = timeRange.distance();
+  double normFactor = pow(10, floor(log10(timeDist)));
+  double timeDistNorm = timeDist/normFactor;
+  double labelDistNorm;
+  if (timeDistNorm>8.0) {
+    labelDistNorm = 2.0;
+  } else if (timeDistNorm>5.0) {
+    labelDistNorm = 1.0;
+  } else if (timeDistNorm>2.5) {
+    labelDistNorm = 0.5;
+  } else if (timeDistNorm>1.0) {
+    labelDistNorm = 0.2;
+  } else {
+    labelDistNorm = 0.1;
+  }
+  
+  cout << "DEBUG: starttime=" << timeRange.cStart << " endtime=" << timeRange.cEnd << endl;
+  cout << "DEBUG: timeDist=" << timeDist << " normFactor=" << normFactor << endl;
+  cout << "DEBUG: timeDistNorm=" << timeDistNorm << " labelDistNorm=" << labelDistNorm << endl;
 
   double tickTime;
-  double tickDistance = 10.0;
+  double tickDistance = timeDistNorm;
 
-  for (tickTime = timeRange.cStart; tickTime<timeRange.cEnd; tickTime+=tickDistance) {
+  for (tickTime = timeRange.cStart; tickTime<timeRange.cEnd; tickTime += labelDistNorm*normFactor) {
     int place = static_cast<int>(static_cast<double>(layoutRange.distance())*(tickTime-timeRange.cStart)/timeRange.distance());
+    cout << "DEBUG: timeRange.cStart=" << timeRange.cStart << "DEBUG: timeRange.cEnd=" << timeRange.cEnd << " tickTime=" << tickTime << endl;
     painter->drawLine(place, 10, place, 40);
   }
 

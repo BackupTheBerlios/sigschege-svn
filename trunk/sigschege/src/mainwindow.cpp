@@ -24,6 +24,7 @@
 
 #include "mainwindow.h"
 #include "TimSignal.h"
+#include "DiaSettings.h"
 #include "TimScale.h"
 #include "TimCmdRmSignal.h"
 #include "TimCmdAddListItem.h"
@@ -85,6 +86,11 @@ void MainWindow::createActions() {
   m_addScaleAct->setStatusTip(tr("Adds a new time scale to the timing diagram"));
   connect(m_addScaleAct, SIGNAL(triggered()), this, SLOT(cmdAddScale()));
 
+  m_setDiaProps = new QAction(tr("Edit Diagram Properties"), this);
+  //m_addSignalAct->setIcon(QIcon(":/images/add.png"));
+  m_setDiaProps->setStatusTip(tr("Edit the global properties of this timing diagram"));
+  connect(m_setDiaProps, SIGNAL(triggered()), this, SLOT(cmdEditDiaProperties()));
+
   m_rmSignalAct = m_scene->getActionRemoveItems();
 
   m_SigArrow = m_scene->getActionArrow();
@@ -127,6 +133,7 @@ void MainWindow::createMenus() {
   m_editMenu->addAction(m_addSignalAct);
   m_editMenu->addAction(m_addScaleAct);
   m_editMenu->addAction(m_rmSignalAct);
+  m_editMenu->addAction(m_setDiaProps);
 }
 
 void MainWindow::createToolBars() {
@@ -289,4 +296,10 @@ bool MainWindow::maybeSave() {
   } else
     return false;
 
+}
+
+void MainWindow::cmdEditDiaProperties() {
+  DiaSettings setting_dialog(this, m_scene);
+
+  setting_dialog.exec();
 }

@@ -79,6 +79,7 @@ private:
   QAction *m_addSignalAct;
   QAction *m_addScaleAct;
   QAction *m_rmSignalAct;
+  QAction *m_setDiaProps;
 
   QActionGroup *m_SigGroup;
   QAction *m_SigArrow;
@@ -120,6 +121,7 @@ private slots:
   void cmdSaveAs();
   void cmdAddSignal();
   void cmdAddScale();
+  void cmdEditDiaProperties();
   void selectionChanged();
 
 };

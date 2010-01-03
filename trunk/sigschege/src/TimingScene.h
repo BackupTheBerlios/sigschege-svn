@@ -265,6 +265,8 @@ public:
    */
   QAction* getActionRemoveItems();
 
+  void settingChange(void);
+
 protected slots:
 
   void removeItems();

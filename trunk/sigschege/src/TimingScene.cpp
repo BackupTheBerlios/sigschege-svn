@@ -335,3 +335,7 @@ void TimingScene::updateRect(void) {
       + m_LayoutData.get_col_1_width() + 4, height);
 }
 
+void TimingScene::settingChange(void) {
+  updateRect();
+  invalidate();
+ }

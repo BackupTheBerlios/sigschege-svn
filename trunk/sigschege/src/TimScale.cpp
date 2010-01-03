@@ -102,16 +102,16 @@ void TimScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     labelDistNorm = 0.1;
   }
   
-  cout << "DEBUG: starttime=" << timeRange.cStart << " endtime=" << timeRange.cEnd << endl;
-  cout << "DEBUG: timeDist=" << timeDist << " normFactor=" << normFactor << endl;
-  cout << "DEBUG: timeDistNorm=" << timeDistNorm << " labelDistNorm=" << labelDistNorm << endl;
+//   cout << "DEBUG: starttime=" << timeRange.cStart << " endtime=" << timeRange.cEnd << endl;
+//   cout << "DEBUG: timeDist=" << timeDist << " normFactor=" << normFactor << endl;
+//   cout << "DEBUG: timeDistNorm=" << timeDistNorm << " labelDistNorm=" << labelDistNorm << endl;
 
   double tickTime;
   double tickDistance = timeDistNorm;
 
   for (tickTime = timeRange.cStart; tickTime<timeRange.cEnd; tickTime += labelDistNorm*normFactor) {
     int place = static_cast<int>(static_cast<double>(layoutRange.distance())*(tickTime-timeRange.cStart)/timeRange.distance());
-    cout << "DEBUG: timeRange.cStart=" << timeRange.cStart << "DEBUG: timeRange.cEnd=" << timeRange.cEnd << " tickTime=" << tickTime << endl;
+//    cout << "DEBUG: timeRange.cStart=" << timeRange.cStart << "DEBUG: timeRange.cEnd=" << timeRange.cEnd << " tickTime=" << tickTime << endl;
     painter->drawLine(place, 10, place, 40);
   }
 

@@ -27,9 +27,6 @@
 #include "TimScale.h"
 #include "TimSignal.h"
 #include <cassert>
-#include <iostream>
-
-using namespace std;
 
 TimingScene::TimingScene(QObject *parent) :
   QGraphicsScene(parent) {
@@ -76,7 +73,7 @@ TimSignal* TimingScene::addTimSignal() {
 
 TimSignal* TimingScene::addTimSignal(TimSignal* signal) {
 
-  cout << "addTS " << signal << endl;
+  qDebug() << "addTS " << signal;
   // add signal to graphic scene
   addItem(signal);
 
@@ -89,7 +86,7 @@ TimSignal* TimingScene::addTimSignal(TimSignal* signal) {
 
 TimSignal* TimingScene::addTimSignal(int index, TimSignal* signal) {
 
-  cout << "addTS " << signal << " @" << index << endl;
+  qDebug() << "addTS " << signal << " @" << index;
   // add signal to graphic scene
   addItem(signal);
 
@@ -102,7 +99,7 @@ TimSignal* TimingScene::addTimSignal(int index, TimSignal* signal) {
 
 void TimingScene::addTimListItem(int index, TimMember *item) {
 
-  cout << "addTLI " << item << " @" << index << endl;
+  qDebug() << "addTLI " << item << " @" << index;
   // add item to graphic scene
   addItem(item);
 
@@ -114,7 +111,7 @@ void TimingScene::addTimListItem(int index, TimMember *item) {
 
 int TimingScene::rmTimListItem(TimMember *item) {
 
-  cout << "rmTLI " << item << endl;
+  qDebug() << "rmTLI " << item;
   // indexOf is missing in Qt < 4.6 :-(
   int cnt = m_layout->count();
   int index;

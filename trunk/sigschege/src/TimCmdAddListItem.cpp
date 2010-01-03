@@ -23,8 +23,6 @@
 //
 
 #include "TimCmdAddListItem.h"
-#include <iostream>
-using namespace std;
 
 TimCmdAddListItem::TimCmdAddListItem(TimingScene *tscene, int index, TimMember *item) {
   m_timingScene = tscene;
@@ -35,8 +33,8 @@ TimCmdAddListItem::TimCmdAddListItem(TimingScene *tscene, int index, TimMember *
 
 TimCmdAddListItem::~TimCmdAddListItem() {
   if(m_owning) {
-    cout << "TimCmdAddListItem: delete " << m_item << endl;
-    //delete m_item; TODO: why does this create a crash in TimScene?
+    qDebug() << "TimCmdAddListItem: delete " << m_item;
+    delete m_item;
   }
 }
 

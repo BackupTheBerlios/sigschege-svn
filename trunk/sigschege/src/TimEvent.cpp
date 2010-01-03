@@ -49,7 +49,6 @@ TimEvent::TimEvent(TimWave *parent, TimingScene *scene, TimEventType *type, doub
 }
 
 TimEvent::~TimEvent() {
-  delete m_EventType;
 }
 
 void TimEvent::insertEvent(TimEvent *node) {

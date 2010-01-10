@@ -28,6 +28,7 @@
 #include "TimEventLow.h"
 #include "TimEventHigh.h"
 #include "TimCmdAddEvent.h"
+#include "TimCmdRmEvent.h"
 
 TimEvent::TimEvent(TimWave *parent, TimingScene *scene, TimEventType *type) :
   TimMember(parent, scene), m_prev(NULL), m_next(NULL), m_Wave(parent), m_EventType(type),
@@ -209,6 +210,8 @@ void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
       double time = ((((end - start) / width) * mousePos.x()));
       sc->pushCmd(new TimCmdAddEvent(sc, this, et, time));
     }
+  } else {
+    QGraphicsItem::mousePressEvent(event);
   }
 }
 
@@ -217,5 +220,5 @@ void TimEvent::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event ) {
 }
 
 QUndoCommand* TimEvent::createDeleteCmd() {
-  return NULL;
+  return new TimCmdRmEvent(this);
 }

@@ -102,25 +102,6 @@ public:
    */
   int removeTimListItem(TimMember *item);
 
-
-  /** @brief Removes the signal from the timing scene
-   *
-   * This method removes the signal from the timing scene. It will not destroy the signal.
-   *
-   * @param signal Pointer to the signal to remove.
-   * @returns Returns the old index.
-   */
-  int removeTimSignal(TimSignal *signal);
-
-  /** @brief Removes the timescale from the timing scene
-   *
-   * This method removes the timescale from the timing scene. It will not destroy the timescale.
-   *
-   * @param timescale Pointer to the timescale to remove.
-   * @returns Returns the old index.
-   */
-  int removeTimScale(TimScale *timescale);
-
   /** @brief Get a pointer to the layout data.
    *
    * This method returns a pointer to the layout data of this scene.

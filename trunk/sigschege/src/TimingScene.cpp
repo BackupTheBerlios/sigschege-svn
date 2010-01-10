@@ -156,49 +156,6 @@ int TimingScene::removeTimListItem(TimMember *item) {
   return index;
 }
 
-
-int TimingScene::removeTimSignal(TimSignal *signal) {
-
-  // indexOf is missing in Qt < 4.6 :-(
-  int cnt = m_layout->count();
-  int index;
-  for (index = 0; index < cnt; ++index) {
-    if (signal == m_layout->itemAt(index)) {
-      break;
-    }
-  }
-
-  // First remove the signal from the layout
-  m_layout->removeItem(signal);
-  m_layout->setMaximumSize(0, 0); // adapt the size
-
-  // then remove it from the scene
-  removeItem(signal);
-  return index;
-}
-
-
-int TimingScene::removeTimScale(TimScale *timescale) {
-
-  // First remove the timescale from the layout
-
-  // indexOf is missing in Qt < 4.6 :-(
-  int cnt = m_layout->count();
-  int index;
-  for (index = 0; index < cnt; ++index) {
-    if (timescale == m_layout->itemAt(index)) {
-      break;
-    }
-  }
-
-  m_layout->removeItem(timescale);
-  m_layout->setMaximumSize(0, 0); // adapt the size
-
-  // then remove it from the scene
-  removeItem(timescale);
-  return index;
-}
-
 TimLayoutData* TimingScene::getLayoutData() {
   return &m_LayoutData;
 }

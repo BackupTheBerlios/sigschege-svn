@@ -24,17 +24,28 @@
 
 #include "TimCmdRmListItem.h"
 
-TimCmdRmListItem::TimCmdRmListItem(TimingScene *tscene) {
-  m_timingScene = tscene;
+TimCmdRmListItem::TimCmdRmListItem(TimingScene *scene, TimMember *item) {
+  m_timingScene = scene;
+  m_item = item;
+  m_index = -1;
+  m_owning = false;
 }
 
 TimCmdRmListItem::~TimCmdRmListItem() {
+  if (m_owning) {
+    delete m_item;
+  }
 }
 
 void TimCmdRmListItem::undo() {
+  // add items again
+  m_timingScene->addTimListItem(m_index, m_item);
+  m_owning = false;
 }
 
 void TimCmdRmListItem::redo() {
+  m_index = m_timingScene->removeTimListItem(m_item);
+  m_owning = true;
 }
 
 

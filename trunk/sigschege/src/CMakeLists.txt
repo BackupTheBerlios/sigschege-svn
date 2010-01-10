@@ -38,11 +38,11 @@ TimEvent.cpp
 TimEventType.cpp
 TimEventLow.cpp
 TimEventHigh.cpp
-TimCmdRmSignal.cpp
 TimSignalManager.cpp
 TimCmdAddEvent.cpp
 TimCmdAddListItem.cpp
 TimCmdRmListItem.cpp
+TimCmdRmEvent.cpp
 SSGReader.cpp
 SSGWriter.cpp
 DiaSettings.cpp

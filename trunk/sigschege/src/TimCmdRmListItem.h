@@ -30,6 +30,7 @@
 #include <QtGui>
 
 #include "TimingScene.h"
+#include "TimMember.h"
 
 /** @brief The @c TimCmdRmItem removes one item from the timing list.
  *
@@ -43,9 +44,10 @@ public:
    *
    * Creates a new @c TimCmdRmListItem object.
    *
-   * @param tscene Pointer to the scene where the signal should be added
+   * @param scene Pointer to the scene where the signal should be added
+   * @param item Pointer to the list item to delete
    */
-  TimCmdRmListItem(TimingScene *tscene);
+  TimCmdRmListItem(TimingScene *tscene, TimMember *item);
 
   /** @brief DTor
    * Destroys the @c TimCmdRmListItem object and every owning item object.
@@ -67,6 +69,9 @@ public:
 
 private:
   TimingScene *m_timingScene;
+  TimMember *m_item;
+  int m_index;
+  bool m_owning;
 };
 
 

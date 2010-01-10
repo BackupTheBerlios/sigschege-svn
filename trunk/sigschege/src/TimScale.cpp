@@ -25,7 +25,7 @@
 #include "TimLabel.h"
 #include "TimUtil.h"
 #include "SSGWriter.h"
-#include "TimCmdRmSignal.h"
+#include "TimCmdRmListItem.h"
 #include <iostream>
 
 using namespace std;
@@ -131,5 +131,5 @@ void TimScale::SSGWrite(SSGWriter *writer) {
 }
 
 QUndoCommand* TimScale::createDeleteCmd() {
-  return new TimCmdRmSignal(getScene(), this);
+  return new TimCmdRmListItem(getScene(), this);
 }

@@ -1,5 +1,5 @@
 // -*- c++ -*-
-// TimCmdRmSignal.cpp
+// TimCmdRmEvent.cpp
 // Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
@@ -22,32 +22,35 @@
 // #############################################################################
 //
 
-#include "TimCmdRmSignal.h"
+#include "TimCmdRmEvent.h"
+#include "TimWave.h"
 
-TimCmdRmSignal::TimCmdRmSignal(TimingScene *scene, TimMember *item) {
-  m_timingScene = scene;
-  m_item = item;
-  m_index = -1;
+TimCmdRmEvent::TimCmdRmEvent(TimEvent *event) :
+  m_event(event) {
   m_owning = false;
+  m_first = false;
+  m_prev = m_event->getPrev();
 }
 
-TimCmdRmSignal::~TimCmdRmSignal() {
-
+TimCmdRmEvent::~TimCmdRmEvent() {
   if (m_owning) {
-    delete m_item;
+    delete m_event;
   }
-
 }
 
-void TimCmdRmSignal::undo() {
-  // add items again
-  m_timingScene->addTimListItem(m_index, m_item);
-  m_owning = false;
+void TimCmdRmEvent::redo() {
+  if (m_prev) {
+    m_owning = true;
+    m_prev->removeEvent();
+  } else {
+    // Check if we have a next event
+    qDebug() << "Try to delete last event in waveform. Ignore delete cmd.";
+  }
 }
 
-void TimCmdRmSignal::redo() {
-
-  m_index = m_timingScene->removeTimListItem(m_item);
-  m_owning = true;
+void TimCmdRmEvent::undo() {
+  if (m_owning) {
+    m_owning = false;
+    m_prev->insertEvent(m_event);
+  }
 }
-

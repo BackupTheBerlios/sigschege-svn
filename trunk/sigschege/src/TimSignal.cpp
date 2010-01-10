@@ -26,7 +26,7 @@
 #include "TimWave.h"
 #include "TimLabel.h"
 #include "SSGWriter.h"
-#include "TimCmdRmSignal.h"
+#include "TimCmdRmListItem.h"
 
 TimSignal::TimSignal(TimMember *parent, TimingScene *scene) : TimMember(parent, scene) {
 
@@ -96,5 +96,5 @@ void TimSignal::SSGWrite(SSGWriter *writer) {
 
 QUndoCommand* TimSignal::createDeleteCmd() {
 
-  return new TimCmdRmSignal(getScene(), this);
+  return new  TimCmdRmListItem(getScene(), this);
 }

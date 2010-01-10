@@ -26,7 +26,6 @@
 #include "TimSignal.h"
 #include "DiaSettings.h"
 #include "TimScale.h"
-#include "TimCmdRmSignal.h"
 #include "TimCmdAddListItem.h"
 #include "SSGReader.h"
 #include "SSGWriter.h"

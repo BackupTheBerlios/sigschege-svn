@@ -1,5 +1,5 @@
 // -*- c++ -*-
-// TimCmdRmSignal.h
+// TimCmdRmEvent.h
 // Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
@@ -22,54 +22,52 @@
 // #############################################################################
 //
 
-
-#ifndef TIMCMDRMSIGNAL_H_
-#define TIMCMDRMSIGNAL_H_
+#ifndef TIMCMDRMEVENT_H_
+#define TIMCMDRMEVENT_H_
 
 #include <QtGui>
-#include "TimingScene.h"
-#include "TimMember.h"
 
-/** @brief The @c TimCmdRmSignal implements the remove signal command
+#include "TimingScene.h"
+#include "TimEvent.h"
+
+
+/** @brief @c TimCmdRmEvent removes one item from the waveform.
  *
- * The @c TimCmdRmSignal implements the remove signal command. It supports undo and redo operations.
+ * The @c TimCmdRmItem removes one item from the timing list. It supports undo and redo operations.
  *
  */
-class TimCmdRmSignal: public QUndoCommand {
-
+class TimCmdRmEvent : public QUndoCommand {
 public:
   /** @brief CTor
    *
-   * Creates a new @c TimCmdRmSignal object.
+   * Creates a new @c TimCmdRmEvent object.
    *
-   * @param scene Pointer to Timingscene
-   * @param item Pointer to the list item to delete
    */
-  TimCmdRmSignal(TimingScene *scene, TimMember *item);
+  TimCmdRmEvent(TimEvent *event);
 
   /** @brief DTor
-   * Destroys the @c TimCmdRmSignal object and every owning TimSignal object.
+   * Destroys the @c TimCmdRmEvent object and every item object which is owned as well.
    */
-  virtual ~TimCmdRmSignal();
+  virtual ~TimCmdRmEvent();
 
   /** @brief Undo the command.
    *
-   * Undo the rmSignal command.
+   * Undo the rmItem command.
    *
    */
   virtual void undo();
 
   /** @brief Redo the command.
    *
-   * Redo the rmSignal command.
+   * Redo the rmItem command.
    */
   virtual void redo();
 
 private:
-  TimingScene *m_timingScene;
-  TimMember *m_item;
-  int m_index;
+  TimEvent *m_event;
+  TimEvent *m_prev;
   bool m_owning;
+  bool m_first;
 };
 
-#endif /* TIMCMDRMSIGNAL_H_ */
+#endif /* TIMCMDRMEVENT_H_ */

@@ -111,6 +111,13 @@ void MainWindow::createActions() {
   m_redoCmd = m_scene->createRedoAction();
   m_redoCmd->setIcon(QIcon(":/images/redo.png"));
 
+  sceneScaleCombo = new QComboBox;
+  QStringList scales;
+  scales << tr("25%") << tr("50%") << tr("75%") << tr("100%") << tr("125%") << tr("150%")<< tr("200%") << tr("300%");
+  sceneScaleCombo->addItems(scales);
+  sceneScaleCombo->setCurrentIndex(2);
+  connect(sceneScaleCombo, SIGNAL(currentIndexChanged(const QString &)),
+	  this, SLOT(sceneScaleChanged(const QString &)));
 }
 
 void MainWindow::createMenus() {
@@ -147,6 +154,7 @@ void MainWindow::createToolBars() {
   m_editToolBar->addSeparator();
   m_editToolBar->addAction(m_addSignalAct);
   m_editToolBar->addAction(m_rmSignalAct);
+  m_editToolBar->addWidget(sceneScaleCombo);
 
   // Create and init the signal tool bar
   m_signalToolBar = new QToolBar(tr("Signal"), this);
@@ -301,4 +309,13 @@ void MainWindow::cmdEditDiaProperties() {
   DiaSettings setting_dialog(this, m_scene);
 
   setting_dialog.exec();
+}
+
+void MainWindow::sceneScaleChanged(const QString &scale)
+{
+    double newScale = scale.left(scale.indexOf(tr("%"))).toDouble() / 100.0;
+    QMatrix oldMatrix = m_view->matrix();
+    m_view->resetMatrix();
+    m_view->translate(oldMatrix.dx(), oldMatrix.dy());
+    m_view->scale(newScale, newScale);
 }

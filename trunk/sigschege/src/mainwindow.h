@@ -99,6 +99,8 @@ private:
   QGraphicsView *m_view;
   TimingScene *m_scene;
 
+  QComboBox *sceneScaleCombo;
+
   /** @brief If this file is modified, ask the user what do do.
    *
    * This method is called if the current timing diagram will be obsoleted. It checks if it
@@ -123,6 +125,10 @@ private slots:
   void cmdAddScale();
   void cmdEditDiaProperties();
   void selectionChanged();
+
+  /** @brief A scale change of the scene was requested, change it in the view.
+   */
+  void sceneScaleChanged(const QString &scale);
 
 };
 

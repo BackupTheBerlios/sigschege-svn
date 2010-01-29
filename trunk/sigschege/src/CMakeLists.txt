@@ -3,6 +3,7 @@ include(FindQt4)
 find_package(Qt4 REQUIRED)
 
 set(QT_USE_QTXML 1)
+set(QT_USE_QTSVG 1)
 include(${QT_USE_FILE})
 
 QT4_ADD_RESOURCES(res 

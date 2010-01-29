@@ -75,6 +75,7 @@ private:
   QAction *m_openAct;
   QAction *m_saveAct;
   QAction *m_saveAsAct;
+  QAction *m_exportAct;
   QAction *m_exitAct;
   QAction *m_addSignalAct;
   QAction *m_addScaleAct;
@@ -121,6 +122,7 @@ private slots:
   void cmdOpen();
   void cmdSave();
   void cmdSaveAs();
+  void cmdExport();
   void cmdAddSignal();
   void cmdAddScale();
   void cmdEditDiaProperties();

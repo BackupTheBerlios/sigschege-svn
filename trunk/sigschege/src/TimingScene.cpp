@@ -290,6 +290,14 @@ void TimingScene::updateRect(void) {
 }
 
 void TimingScene::settingChange(void) {
+  int cnt = m_layout->count();
+  TimMember *item;
+  int index;
+
+  for (index = cnt-1; index >= 0; --index) {
+    item = dynamic_cast<TimMember*>(m_layout->itemAt(index));
+    item->timeRangeChange();
+  }
   updateRect();
   invalidate();
  }

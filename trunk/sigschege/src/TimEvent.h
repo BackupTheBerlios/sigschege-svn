@@ -165,6 +165,8 @@ public:
 
   inline void setTime(double time) {m_EventTime = time;}
 
+  void setStdPos() { setPos(calcXPos(m_EventTime), 0); }
+
 protected:
 
   /** @brief Set the next pointer of the event linked list.
@@ -200,6 +202,7 @@ protected:
    * @return Pointer to the delete command
    */
   virtual QUndoCommand* createDeleteCmd();
+
 
 protected:
   void mousePressEvent ( QGraphicsSceneMouseEvent * event );

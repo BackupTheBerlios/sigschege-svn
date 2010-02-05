@@ -1,6 +1,6 @@
 // -*- c++ -*-
 // mainwindow.h
-// Copyright 2009 by Ingo Hinrichs
+// Copyright 2009-2010 by Ingo Hinrichs, Ulf Klaperski
 //
 // This file is part of Sigschege - Signal Schedule Generator
 //

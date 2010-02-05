@@ -94,6 +94,8 @@ public:
    */
   virtual QUndoCommand* createDeleteCmd();
 
+  virtual void timeRangeChange();
+
 protected:
 
   /* @brief Returns a hint to the size of this signal.

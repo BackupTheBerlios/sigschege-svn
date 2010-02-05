@@ -92,3 +92,12 @@ TimingScene* TimWave::getScene() const {
   return m_scene;
 }
 
+void TimWave::timeRangeChange() { 
+  TimEvent *timEvent;
+  timEvent = m_TimEvent;
+  while (timEvent != 0) {
+    timEvent->setStdPos();
+    timEvent = timEvent->getNext();
+  }
+
+}

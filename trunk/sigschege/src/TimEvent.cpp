@@ -34,7 +34,7 @@ TimEvent::TimEvent(TimWave *parent, TimingScene *scene, TimEventType *type) :
   TimMember(parent, scene), m_prev(NULL), m_next(NULL), m_Wave(parent), m_EventType(type),
   m_EventTime(0.0) {
 
-  setPos(calcXPos(m_EventTime), 0);
+  setStdPos();
 
   setFlag(ItemIsSelectable);
 }
@@ -43,7 +43,7 @@ TimEvent::TimEvent(TimWave *parent, TimingScene *scene, TimEventType *type, doub
   TimMember(parent, scene), m_prev(NULL), m_next(NULL), m_Wave(parent), m_EventType(type),
   m_EventTime(time) {
 
-  setPos(calcXPos(m_EventTime), 0);
+  setStdPos();
 
   setFlag(ItemIsSelectable);
 
@@ -160,7 +160,7 @@ QSizeF TimEvent::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
 
 void TimEvent::setGeometry(const QRectF & rect) {
 
-  setPos(calcXPos(m_EventTime), 0);
+  setStdPos();
 }
 
 QRectF TimEvent::boundingRect() const {
@@ -175,6 +175,9 @@ QRectF TimEvent::boundingRect() const {
 }
 
 void TimEvent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+
+  if (m_EventTime > getWave()->getLayoutData()->get_end_time() || 
+      m_EventTime < getWave()->getLayoutData()->get_start_time()) return;
 
   if (isSelected()) {
 

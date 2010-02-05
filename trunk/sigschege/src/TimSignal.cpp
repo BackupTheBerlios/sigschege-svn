@@ -98,3 +98,7 @@ QUndoCommand* TimSignal::createDeleteCmd() {
 
   return new  TimCmdRmListItem(getScene(), this);
 }
+
+void TimSignal::timeRangeChange() { 
+  m_wave->timeRangeChange();
+}

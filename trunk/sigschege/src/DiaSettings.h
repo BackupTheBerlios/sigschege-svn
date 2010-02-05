@@ -1,5 +1,5 @@
 // -*- c++ -*-
-// Copyright 2009 by ulf
+// Copyright 2009-2010 by ulf
 //
 // This file is part of Sigschege - Signal Schedule Generator
 // 

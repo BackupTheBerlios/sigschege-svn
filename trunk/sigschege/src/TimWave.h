@@ -82,6 +82,8 @@ public:
 
   TimingScene* getScene() const;
 
+  virtual void timeRangeChange();
+
 protected:
 
   /** @brief Get s hint of the required waveform size.

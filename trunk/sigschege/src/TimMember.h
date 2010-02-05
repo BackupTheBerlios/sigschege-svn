@@ -106,6 +106,16 @@ public:
    */
   virtual QUndoCommand* createDeleteCmd() { return NULL;}
 
+
+  /** @brief This method handles a change of the time range
+   *
+   * This method is called when the time range changes and the geometry
+   * must be recalculated. It has to be implemented by elements which depend
+   * on the time. 
+   */
+  virtual void timeRangeChange() { }
+
+
 protected:
 
   /* @brief Returns a hint to the size of this signal.

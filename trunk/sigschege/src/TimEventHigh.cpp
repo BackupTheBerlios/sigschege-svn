@@ -47,7 +47,7 @@ void TimEventHigh::paint(TimEvent *event, QPainter *painter, const QStyleOptionG
 
   // draw signal
   unsigned int signal_length;
-  if (event->getNext() == NULL) {
+  if (event->getNext() == NULL || event->getNext()->getTime()>event->getWave()->getLayoutData()->get_end_time()) {
     signal_length = event->getWave()->getLayoutData()->get_col_1_width()
         - event->pos().x();
   } else {

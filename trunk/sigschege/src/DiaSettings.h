@@ -53,8 +53,12 @@ private:
 
   QGroupBox *TimeRangeGroupBox;
   QLineEdit *unitsEdit;
+  QLabel *startTimeLabel;
   QDoubleSpinBox *startTimeEdit;
+  QLabel *endTimeLabel;
   QDoubleSpinBox *endTimeEdit;
+  QLabel *snapDeltaTimeLabel;
+  QDoubleSpinBox *snapDeltaTimeEdit;
 
   QDialogButtonBox *buttonBox;
 

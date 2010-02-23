@@ -29,6 +29,8 @@
 #include "TimEventHigh.h"
 #include "TimCmdAddEvent.h"
 #include "TimCmdRmEvent.h"
+#include <iostream>
+using namespace std;
 
 TimEvent::TimEvent(TimWave *parent, TimingScene *scene, TimEventType *type) :
   TimMember(parent, scene), m_prev(NULL), m_next(NULL), m_Wave(parent), m_EventType(type),
@@ -211,7 +213,11 @@ void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
       double end = ld->get_end_time();
 
       double time = ((((end - start) / width) * mousePos.x()));
-      sc->pushCmd(new TimCmdAddEvent(sc, this, et, time));
+      double lower = ld->get_snap_delta_time()*floor(time/ld->get_snap_delta_time());
+      
+      if ((time-lower)<(ld->get_snap_delta_time()/2.0)) time = lower;
+      else time = lower + ld->get_snap_delta_time();
+      sc->pushCmd(new TimCmdAddEvent(sc, this, et, lower));
     }
   } else {
     QGraphicsItem::mousePressEvent(event);

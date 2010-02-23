@@ -88,7 +88,7 @@ void TimSignal::setText ( const QString & text ) {
 void TimSignal::SSGWrite(SSGWriter *writer) {
   writer->writeStartElement("signal");
   writer->writeStartElement("primarytext");
-  writer->writeCDATA("TODO");
+  writer->writeCDATA(m_label->getText());
   writer->writeEndElement();
   writer->writeEndElement();
 

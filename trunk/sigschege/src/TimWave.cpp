@@ -27,6 +27,8 @@
 #include "TimEventHigh.h"
 #include "TimEventLow.h"
 #include "TimCmdAddEvent.h"
+#include <iostream>
+using namespace std;
 
 TimWave::TimWave(TimMember *parent, TimingScene *scene)  :
     TimMember(parent, scene) {
@@ -55,6 +57,13 @@ QSizeF TimWave::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
   }
   return constraint;
 
+}
+
+void TimWave::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+  qreal xpos = mouseEvent->pos().x();
+  cout << "POS=" << xpos << endl;
+  //QGraphicsScene::mouseMoveEvent(mouseEvent);
 }
 
 void TimWave::setGeometry(const QRectF & rect) {

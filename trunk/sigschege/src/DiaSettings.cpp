@@ -40,21 +40,32 @@ DiaSettings::DiaSettings(QWidget *parent, TimingScene *scene)
   TimeRangeGroupBox = new QGroupBox(tr("Time Range"));
   TimeRangeGroupBox->setCheckable(false);
 
+  startTimeLabel = new QLabel(tr("Start Time"));
+
   startTimeEdit = new QDoubleSpinBox(TimeRangeGroupBox);
-  //startTimeEdit->setValue(0.0);
   startTimeEdit->setValue(scene->getLayoutData()->get_start_time());
 
   startTimeEdit->setDecimals(5);
   startTimeEdit->setMinimum(-100000.0);
   startTimeEdit->setMaximum(+100000.0);
 
+  endTimeLabel = new QLabel(tr("End Time"));
+    
   endTimeEdit = new QDoubleSpinBox(TimeRangeGroupBox);
-//  endTimeEdit->setValue(100.0);
   endTimeEdit->setValue(scene->getLayoutData()->get_end_time());
 
   endTimeEdit->setDecimals(5);
   endTimeEdit->setMinimum(-100000.0);
   endTimeEdit->setMaximum(+100000.0);
+
+  snapDeltaTimeLabel = new QLabel(tr("Snap Distance"));
+
+  snapDeltaTimeEdit = new QDoubleSpinBox(TimeRangeGroupBox);
+  snapDeltaTimeEdit->setValue(scene->getLayoutData()->get_snap_delta_time());
+
+  snapDeltaTimeEdit->setDecimals(5);
+  snapDeltaTimeEdit->setMinimum(-100000.0);
+  snapDeltaTimeEdit->setMaximum(+100000.0);
 
   buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
 				   | QDialogButtonBox::Cancel);
@@ -62,10 +73,14 @@ DiaSettings::DiaSettings(QWidget *parent, TimingScene *scene)
   connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
   connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
-  QVBoxLayout *layout = new QVBoxLayout;
-  layout->addWidget(startTimeEdit);
-  layout->addWidget(endTimeEdit);
-  layout->addWidget(buttonBox);
+  QGridLayout *layout = new QGridLayout;
+  layout->addWidget(startTimeLabel, 0, 0);
+  layout->addWidget(startTimeEdit, 0, 1);
+  layout->addWidget(endTimeLabel, 1, 0);
+  layout->addWidget(endTimeEdit, 1, 1);
+  layout->addWidget(snapDeltaTimeLabel, 2, 0);
+  layout->addWidget(snapDeltaTimeEdit, 2, 1);
+  layout->addWidget(buttonBox,3, 0, 1, 2);
   TimeRangeGroupBox->setLayout(layout);
 
   connect(this, SIGNAL(accepted()), m_scene, SLOT(update(m_scene->sceneRect)) );
@@ -79,6 +94,7 @@ DiaSettings::DiaSettings(QWidget *parent, TimingScene *scene)
 void DiaSettings::accept()  {
   m_scene->getLayoutData()->set_start_time(startTimeEdit->value());
   m_scene->getLayoutData()->set_end_time(endTimeEdit->value());
+  m_scene->getLayoutData()->set_snap_delta_time(snapDeltaTimeEdit->value());
   m_scene->settingChange();
   QDialog::accept();
 }

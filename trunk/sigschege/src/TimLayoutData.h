@@ -65,6 +65,18 @@ public:
    */
   void set_end_time(double end);
 
+  /** @brief Get the snap delta time
+   *
+   * @return Snap delta time in sec.
+   */
+  double get_snap_delta_time();
+
+  /** @brief Set the snap delta.
+   *
+   * @param delta Snap delta time in sec.
+   */
+  void set_snap_delta_time(double delta);
+
   /** @brief Get the width of col 0 (label).
    *
    * @return Width in pixel.
@@ -96,6 +108,14 @@ private:
   /** @brief end time of wave form
    */
   double m_end_time;
+
+  /** @brief Set events only at certain points in time defined by m_snap_delta_time
+   */
+  bool m_use_snapping;
+
+  /** @brief The distance at which events will be set
+   */
+  double m_snap_delta_time;
 
   /** @brief Label width (first col)
    */

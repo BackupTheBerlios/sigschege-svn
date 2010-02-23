@@ -25,11 +25,38 @@
 #include "TimLabel.h"
 #include "SSGWriter.h"
 
+DiagramTextItem::DiagramTextItem(QGraphicsItem *parent, QGraphicsScene *scene)
+    : QGraphicsTextItem(parent, scene)
+{
+    setFlag(QGraphicsItem::ItemIsSelectable);
+}
+
+DiagramTextItem::DiagramTextItem(const QString & text, QGraphicsItem *parent, QGraphicsScene *scene)
+  : QGraphicsTextItem(text, parent, scene)
+{
+    setFlag(QGraphicsItem::ItemIsSelectable);
+}
+
+void DiagramTextItem::focusOutEvent(QFocusEvent *event)
+{
+    setTextInteractionFlags(Qt::NoTextInteraction);
+    emit lostFocus(this);
+    QGraphicsTextItem::focusOutEvent(event);
+}
+
+void DiagramTextItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+  if (textInteractionFlags() == Qt::NoTextInteraction) setTextInteractionFlags(Qt::TextEditorInteraction);
+  QGraphicsTextItem::mouseDoubleClickEvent(event);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 TimLabel::TimLabel(TimMember *parent, TimingScene *scene) : TimMember(parent, scene) {
 }
 
 TimLabel::TimLabel(TimMember *parent, TimingScene *scene, const QString & text) : TimMember(parent, scene) {
-  m_label = text;
+  m_text = new DiagramTextItem(text, this);
 }
 
 QSizeF TimLabel::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
@@ -66,7 +93,7 @@ void TimLabel::SSGWrite(SSGWriter *writer) {
 }
 
 void TimLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-  painter->drawText(boundingRect(), Qt::AlignCenter, m_label);
+  //painter->drawText(boundingRect(), Qt::AlignCenter, m_label);
 }
 
 void TimLabel::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
@@ -74,6 +101,7 @@ void TimLabel::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
 }
 
 void TimLabel::setText(const QString & text ) {
-  m_label = text;
+  m_text->setPlainText(text);
 }
+
 

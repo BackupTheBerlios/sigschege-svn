@@ -30,6 +30,32 @@
 #include "TimMember.h"
 #include "TimLayoutData.h"
 
+
+class QFocusEvent;
+class QGraphicsItem;
+class QGraphicsScene;
+class QGraphicsSceneMouseEvent;
+
+class DiagramTextItem : public QGraphicsTextItem
+{
+  Q_OBJECT
+  
+public:
+  DiagramTextItem(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+  DiagramTextItem(const QString & text, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+  
+signals:
+    void lostFocus(DiagramTextItem *item);
+    void selectedChange(QGraphicsItem *item);
+
+protected:
+    void focusOutEvent(QFocusEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+
 /** @brief The @c TimLabel class is used to draw the signal labels.
  *
  * The @c TimLabel class ist used to draw the signal labels.
@@ -79,6 +105,12 @@ public:
    */
   void setText(const QString & text );
 
+  /** @brief Return the text of the label
+   *
+   * @return text The text of the label
+   */
+  QString getText( void );
+
   /** @brief Creates a delete command
    *
    * This is a dummy implementation that returns NULL.
@@ -105,8 +137,13 @@ private:
    */
   TimLayoutData *m_LayoutData;
 
-  QString m_label;
+  DiagramTextItem* m_text;
+  //QString m_label;
 
 };
+
+inline QString TimLabel::getText( void ) {
+  return m_text->toPlainText();  
+}
 
 #endif /* TIMLABEL_H_ */

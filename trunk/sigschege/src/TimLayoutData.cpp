@@ -27,6 +27,8 @@
 TimLayoutData::TimLayoutData() {
   m_start_time = 0.0;
   m_end_time = 100.0;
+  m_snap_delta_time = 1.0;
+  m_use_snapping = true;
   m_col_0_width = 50;
   m_col_1_width = 300;
 }
@@ -50,6 +52,15 @@ double TimLayoutData::get_end_time() {
 void TimLayoutData::set_end_time(double end) {
   m_end_time = end;
 }
+
+void TimLayoutData::set_snap_delta_time(double delta){
+  m_snap_delta_time = delta;
+}
+
+double TimLayoutData::get_snap_delta_time(){
+  return m_snap_delta_time;
+}
+
 
 unsigned int TimLayoutData::get_col_0_width() {
   return m_col_0_width;

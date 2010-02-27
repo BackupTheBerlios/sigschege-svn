@@ -28,21 +28,19 @@
 #include "TimEventType.h"
 #include "TimEventHigh.h"
 #include "TimEventLow.h"
+#include "TimEventInvert.h"
 
 TimSignalManager::TimSignalManager(QObject * parent) : QObject(parent) {
   m_current = NULL;
   m_high = new TimEventHigh();
   m_low  = new TimEventLow();
+  m_invert  = new TimEventInvert();
 }
 
 TimSignalManager::~TimSignalManager() {
-  if(m_high) {
-    delete m_high;
-  }
-
-  if(m_low) {
-    delete m_low;
-  }
+  if(m_high) delete m_high;
+  if(m_low) delete m_low;
+  if(m_invert) delete m_invert;
 }
 
 TimEventType* TimSignalManager::getCurrent() {
@@ -66,4 +64,9 @@ void TimSignalManager::selectHigh(bool checked) {
 void TimSignalManager::selectLow(bool checked) {
   if(checked)
     m_current = m_low;
+}
+
+void TimSignalManager::selectInvert(bool checked) {
+  if(checked)
+    m_current = m_invert;
 }

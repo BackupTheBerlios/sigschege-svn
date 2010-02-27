@@ -38,6 +38,7 @@ TimLayoutData.cpp
 TimEvent.cpp
 TimEventType.cpp
 TimEventLow.cpp
+TimEventInvert.cpp
 TimEventHigh.cpp
 TimSignalManager.cpp
 TimCmdAddEvent.cpp

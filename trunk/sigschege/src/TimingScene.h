@@ -240,6 +240,12 @@ public:
    */
   QAction* getActionSigL();
 
+  /** @brief Creates a QAction object to activate insert low/high signal mode.
+   *
+   * @return Pointer to a @c QAction object.
+   */
+  QAction* getActionSigLH();
+
   /** @brief Creates a QAction object to remove item(s)
    *
    * @return Pointer to a @c QAction object.

@@ -217,6 +217,12 @@ void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
       
       if ((time-lower)<(ld->get_snap_delta_time()/2.0)) time = lower;
       else time = lower + ld->get_snap_delta_time();
+
+      if (et->getLevel() == Invert) {
+	if (getWave()->getLevel(time) == Low) et = new TimEventHigh;
+	else et = new TimEventLow;
+      }
+      
       sc->pushCmd(new TimCmdAddEvent(sc, this, et, lower));
     }
   } else {

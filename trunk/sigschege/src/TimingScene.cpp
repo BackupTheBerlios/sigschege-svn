@@ -242,6 +242,15 @@ QAction* TimingScene::getActionSigL() {
   return sigL;
 }
 
+QAction* TimingScene::getActionSigLH() {
+  QAction *sigLH = new QAction(tr("Invert signal"), this);
+  sigLH->setCheckable(true);
+  sigLH->setStatusTip(tr("Invert signal"));
+  connect(sigLH, SIGNAL(toggled ( bool  )), m_signalManager, SLOT(selectInvert(bool )));
+
+  return sigLH;
+}
+
 QAction* TimingScene::getActionRemoveItems() {
   QAction *rmAct = new QAction(tr("Remove Item(s)"), this);
   rmAct->setEnabled(false);

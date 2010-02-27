@@ -106,10 +106,14 @@ void MainWindow::createActions() {
   m_SigL = m_scene->getActionSigL();
   m_SigL->setIcon(QIcon(":/images/SigL.png"));
 
+  m_SigLH = m_scene->getActionSigLH();
+  m_SigLH->setIcon(QIcon(":/images/SigLH.png"));
+
   m_SigGroup = new QActionGroup(this);
   m_SigGroup->addAction(m_SigArrow);
   m_SigGroup->addAction(m_SigH);
   m_SigGroup->addAction(m_SigL);
+  m_SigGroup->addAction(m_SigLH);
 
   m_undoCmd = m_scene->createUndoAction();
   m_undoCmd->setIcon(QIcon(":/images/undo.png"));
@@ -168,6 +172,7 @@ void MainWindow::createToolBars() {
   m_signalToolBar->addAction(m_SigArrow);
   m_signalToolBar->addAction(m_SigH);
   m_signalToolBar->addAction(m_SigL);
+  m_signalToolBar->addAction(m_SigLH);
 
 }
 void MainWindow::createStatusBar() {

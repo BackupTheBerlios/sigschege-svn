@@ -84,6 +84,9 @@ public:
 
   virtual void timeRangeChange();
 
+  EventLevel getLevel(qreal time);
+
+
 protected:
 
   /** @brief Get s hint of the required waveform size.

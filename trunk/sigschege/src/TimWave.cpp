@@ -110,3 +110,16 @@ void TimWave::timeRangeChange() {
   }
 
 }
+
+EventLevel TimWave::getLevel(qreal time) {
+  EventLevel result = Low;  
+  TimEvent *timEvent;
+  timEvent = m_TimEvent;
+  while (timEvent != 0) {
+    if (timEvent->getTime()>time) break;
+    result = timEvent->getEventType()->getLevel();
+    timEvent->setStdPos();
+    timEvent = timEvent->getNext();
+  }
+  return result;
+}

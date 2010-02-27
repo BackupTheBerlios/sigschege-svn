@@ -86,6 +86,7 @@ private:
   QAction *m_SigArrow;
   QAction *m_SigH;
   QAction *m_SigL;
+  QAction *m_SigLH;
 
   QAction *m_undoCmd;
   QAction *m_redoCmd;

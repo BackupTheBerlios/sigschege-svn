@@ -33,6 +33,7 @@ class TimEvent;
 class TimEventType;
 class TimEventLow;
 class TimEventHigh;
+class TimEventInvert;
 
 class TimSignalManager : public QObject {
 
@@ -53,11 +54,13 @@ private:
 
   TimEventHigh *m_high;
   TimEventLow  *m_low;
+  TimEventInvert  *m_invert;
 
 public slots:
   void selectNone(bool checked);
   void selectHigh(bool checked);
   void selectLow(bool checked);
+  void selectInvert(bool checked);
 };
 
 #endif /* TIMSIGNALMANGER_H_ */

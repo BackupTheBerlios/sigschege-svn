@@ -7,5 +7,6 @@
         <file>arrow.png</file>
         <file>SigH.png</file>
         <file>SigL.png</file>
+        <file>SigLH.png</file>
     </qresource>
 </RCC>

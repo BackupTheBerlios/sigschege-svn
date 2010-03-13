@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) {
   // handle changed selection
   connect(m_scene, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
 
-  resize(800, 500);
+  resize(800, 600);
 
 }
 MainWindow::~MainWindow() {
@@ -86,7 +86,7 @@ void MainWindow::createActions() {
   connect(m_addSignalAct, SIGNAL(triggered()), this, SLOT(cmdAddSignal()));
 
   m_addScaleAct = new QAction(tr("Add Time Scale"), this);
-  //m_addSignalAct->setIcon(QIcon(":/images/add.png"));
+  m_addScaleAct->setIcon(QIcon(":/images/addScale.png"));
   m_addScaleAct->setStatusTip(tr("Adds a new time scale to the timing diagram"));
   connect(m_addScaleAct, SIGNAL(triggered()), this, SLOT(cmdAddScale()));
 
@@ -163,6 +163,7 @@ void MainWindow::createToolBars() {
   m_editToolBar->addAction(m_redoCmd);
   m_editToolBar->addSeparator();
   m_editToolBar->addAction(m_addSignalAct);
+  m_editToolBar->addAction(m_addScaleAct);
   m_editToolBar->addAction(m_rmSignalAct);
   m_editToolBar->addWidget(sceneScaleCombo);
 
@@ -183,7 +184,7 @@ void MainWindow::createTopView() {
   m_scene = new TimingScene;
 
   m_scene->setLabelWidth(50);
-  m_scene->setSceneWidth(600);
+  m_scene->setSceneWidth(750);
 
   m_view = new QGraphicsView(m_scene);
   m_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -231,6 +232,7 @@ QString MainWindow::askForFileName(void) {
 
 bool MainWindow::save(QString &fileName) {
   QFile file(fileName);
+  bool success;
   if (!file.open(QFile::WriteOnly | QFile::Text)) {
     QMessageBox::warning(this, tr("QXmlStream Bookmarks"),
 			 tr("Cannot write file %1:\n%2.")
@@ -241,7 +243,9 @@ bool MainWindow::save(QString &fileName) {
 
 
   SSGWriter writer(m_scene);
-  return writer.write(&file);
+  success = writer.write(&file);
+  if (success) m_scene->setClean();
+  return success;
 }
 
 void MainWindow::cmdSave() {

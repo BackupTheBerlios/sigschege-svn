@@ -30,7 +30,7 @@ TimLayoutData::TimLayoutData() {
   m_snap_delta_time = 1.0;
   m_use_snapping = true;
   m_col_0_width = 50;
-  m_col_1_width = 300;
+  m_col_1_width = 400;
 }
 
 TimLayoutData::~TimLayoutData() {

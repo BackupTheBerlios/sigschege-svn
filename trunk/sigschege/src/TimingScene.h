@@ -258,6 +258,10 @@ protected slots:
 
   void removeItems();
 
+protected:
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+
+
 private:
 
   /** @brief Update size of the scene
@@ -280,6 +284,8 @@ private:
   QUndoStack m_undoStack;
 
   TimSignalManager *m_signalManager;
+
+  QGraphicsLineItem * m_posLine;
 
 };
 

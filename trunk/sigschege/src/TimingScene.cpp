@@ -22,11 +22,14 @@
 // #############################################################################
 //
 
+#include "TimUtil.h"
 #include "TimingScene.h"
 #include "TimMember.h"
 #include "TimScale.h"
 #include "TimSignal.h"
 #include <cassert>
+#include <iostream>
+using namespace std;
 
 TimingScene::TimingScene(QObject *parent) :
   QGraphicsScene(parent) {
@@ -42,6 +45,7 @@ TimingScene::TimingScene(QObject *parent) :
   addItem(form);
 
   m_signalManager = new TimSignalManager(this);
+  m_posLine = 0;
 }
 
 void TimingScene::clear(void) {
@@ -310,3 +314,40 @@ void TimingScene::settingChange(void) {
   updateRect();
   invalidate();
  }
+
+void TimingScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+  qreal xpos = mouseEvent->scenePos().x();
+  qreal ypos = mouseEvent->scenePos().y();
+  if (m_posLine != 0) {
+    removeItem(m_posLine);
+    m_posLine = 0;
+  }
+  if (xpos > m_LayoutData.get_col_0_width() && xpos < m_LayoutData.get_col_0_width()+m_LayoutData.get_col_1_width()) {
+    int cnt = m_layout->count();
+    QGraphicsLayoutItem *item;
+    int index;
+    TimMember* curMember;
+    TimMember* pointerVictim = 0;
+
+    for (index = cnt-1; index >= 0; --index) {
+      item = m_layout->itemAt(index);
+      curMember = dynamic_cast<TimMember*>(item);
+      if (ypos>=curMember->y() && ypos<=curMember->y()+curMember->boundingRect().height())
+	pointerVictim = curMember;
+    }
+    qreal percent = (xpos-m_LayoutData.get_col_0_width())/m_LayoutData.get_col_1_width();
+    Range<double> timeRange(m_LayoutData.get_start_time(), m_LayoutData.get_end_time());
+    qreal time = timeRange.distance()*percent;
+    cout << "Time=" << time << " %= " << percent << " DIST= " << timeRange.distance() << endl;
+    qreal lower = m_LayoutData.get_snap_delta_time()*floor(time/m_LayoutData.get_snap_delta_time());
+    
+    if ((time-lower)<(m_LayoutData.get_snap_delta_time()/2.0)) time = lower;
+    else time = lower + m_LayoutData.get_snap_delta_time();
+    cout << "Time=" << time << endl;
+    qreal tpos = time/timeRange.distance()*m_LayoutData.get_col_1_width()+m_LayoutData.get_col_0_width();
+    if (pointerVictim != 0)
+      m_posLine = addLine(QLineF(QPointF(tpos,pointerVictim->y()), QPointF(tpos,pointerVictim->y()+pointerVictim->boundingRect().height())));
+  }
+  
+}

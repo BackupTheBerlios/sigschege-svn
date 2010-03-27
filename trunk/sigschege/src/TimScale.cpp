@@ -118,7 +118,6 @@ void TimScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
   for (tickTime = timeRange.cStart; tickTime<timeRange.cEnd; tickTime += tickDistance) {
     int place = layoutRange.cStart+static_cast<int>(static_cast<double>(layoutRange.distance())*(tickTime-timeRange.cStart)/timeRange.distance());
-    cout << "T-PLACE:" << place << endl;
     painter->drawLine(place, 5, place, 15);
   }
 
@@ -129,7 +128,6 @@ void TimScale::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->drawLine(place, 5, place, 25);
     painter->drawText(QRect(place-tdistcoord/2, 27, tdistcoord, 20), Qt::AlignHCenter|Qt::AlignTop, QString("%1").arg(tickTime, 0, 'g', -1), &textBox);
   }
-
 
 }
 

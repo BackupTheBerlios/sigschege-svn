@@ -207,7 +207,6 @@ void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
     } else {
       // mapping the mouse event position to parent coordinate system make calculation easier
       QPointF mousePos = mapToParent(event->pos());
-
       int width = ld->get_col_1_width();
       double start = ld->get_start_time();
       double end = ld->get_end_time();
@@ -215,7 +214,7 @@ void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
       double time = ((((end - start) / width) * mousePos.x()));
       double lower = ld->get_snap_delta_time()*floor(time/ld->get_snap_delta_time());
       
-      if ((time-lower)<(ld->get_snap_delta_time()/2.0)) time = lower;
+      if ((time-lower)<(ld->get_snap_delta_time()/2.0))	time = lower;
       else time = lower + ld->get_snap_delta_time();
 
       if (et->getLevel() == Invert) {
@@ -223,7 +222,7 @@ void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
 	else et = new TimEventLow;
       }
       
-      sc->pushCmd(new TimCmdAddEvent(sc, this, et, lower));
+      sc->pushCmd(new TimCmdAddEvent(sc, this, et, time));
     }
   } else {
     QGraphicsItem::mousePressEvent(event);

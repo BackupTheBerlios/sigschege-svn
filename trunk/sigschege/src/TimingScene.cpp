@@ -317,26 +317,28 @@ void TimingScene::settingChange(void) {
 
 void TimingScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-  qreal xpos = mouseEvent->scenePos().x();
-  qreal ypos = mouseEvent->scenePos().y();
+  int cnt = m_layout->count();
+  QGraphicsLayoutItem *item;
+  int index;
+  TimMember* curMember;
+  TimMember* pointerVictim = 0;
+  
+  for (index = cnt-1; index >= 0; --index) {
+    item = m_layout->itemAt(index);
+    curMember = dynamic_cast<TimMember*>(item);
+    if (curMember->isUnderMouse())
+      pointerVictim = curMember;
+  }
+  
   if (m_posLine != 0) {
     removeItem(m_posLine);
     m_posLine = 0;
   }
-  if (xpos > m_LayoutData.get_col_0_width() && xpos < m_LayoutData.get_col_0_width()+m_LayoutData.get_col_1_width()) {
-    int cnt = m_layout->count();
-    QGraphicsLayoutItem *item;
-    int index;
-    TimMember* curMember;
-    TimMember* pointerVictim = 0;
-
-    for (index = cnt-1; index >= 0; --index) {
-      item = m_layout->itemAt(index);
-      curMember = dynamic_cast<TimMember*>(item);
-      if (ypos>=curMember->y() && ypos<=curMember->y()+curMember->boundingRect().height())
-	pointerVictim = curMember;
-    }
-    qreal percent = (xpos-m_LayoutData.get_col_0_width())/m_LayoutData.get_col_1_width();
+  if (pointerVictim) {
+    QPointF ppos = pointerVictim->mapFromScene( mouseEvent->scenePos());
+    cout << "MOUSE:" << mouseEvent->scenePos().x() << "/" << mouseEvent->scenePos().y() << "<->" 
+	 << ppos.x() << "/" << ppos.y() << endl;
+    qreal percent = (ppos.x()-m_LayoutData.get_col_0_width())/m_LayoutData.get_col_1_width();
     Range<double> timeRange(m_LayoutData.get_start_time(), m_LayoutData.get_end_time());
     qreal time = timeRange.distance()*percent;
     cout << "Time=" << time << " %= " << percent << " DIST= " << timeRange.distance() << endl;
@@ -345,7 +347,8 @@ void TimingScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
     if ((time-lower)<(m_LayoutData.get_snap_delta_time()/2.0)) time = lower;
     else time = lower + m_LayoutData.get_snap_delta_time();
     cout << "Time=" << time << endl;
-    qreal tpos = time/timeRange.distance()*m_LayoutData.get_col_1_width()+m_LayoutData.get_col_0_width();
+    qreal tpos = time/timeRange.distance()*m_LayoutData.get_col_1_width()+m_LayoutData.get_col_0_width()
+      -pointerVictim->mapFromScene( QPointF(0.0,0.0)).x();
     if (pointerVictim != 0)
       m_posLine = addLine(QLineF(QPointF(tpos,pointerVictim->y()), QPointF(tpos,pointerVictim->y()+pointerVictim->boundingRect().height())));
   }

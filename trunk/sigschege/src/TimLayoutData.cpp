@@ -27,7 +27,7 @@
 TimLayoutData::TimLayoutData() {
   m_start_time = 0.0;
   m_end_time = 100.0;
-  m_snap_delta_time = 1.0;
+  m_snap_delta_time = 5.0; // TODO: just for better visibility set to 5
   m_use_snapping = true;
   m_col_0_width = 50;
   m_col_1_width = 400;

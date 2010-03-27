@@ -69,3 +69,6 @@ TimingScene* TimMember::getScene() const {
   return m_scene;
 }
 
+qreal TimMember::calcSnapTime(qreal xpos) {
+  
+}

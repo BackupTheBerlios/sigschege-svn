@@ -115,6 +115,7 @@ public:
    */
   virtual void timeRangeChange() { }
 
+  qreal calcSnapTime(qreal xpos);
 
 protected:
 

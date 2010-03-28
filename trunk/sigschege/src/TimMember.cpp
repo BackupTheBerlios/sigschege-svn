@@ -26,6 +26,7 @@
 #include "TimLabel.h"
 #include "TimUtil.h"
 
+
 TimMember::TimMember(TimMember *parent, TimingScene *scene) :
   QGraphicsItem(parent), QGraphicsLayoutItem(0, false) {
 
@@ -69,6 +70,21 @@ TimingScene* TimMember::getScene() const {
   return m_scene;
 }
 
-qreal TimMember::calcSnapTime(qreal xpos) {
-  
+qreal TimMember::calcSnapTime(qreal xpos, bool isWave) {
+
+  TimLayoutData *ld = getLayoutData();
+
+  if (!isWave) xpos -= ld->get_col_0_width();
+
+  int width = ld->get_col_1_width();
+  double start = ld->get_start_time();
+  double end = ld->get_end_time();
+
+  double time = ((((end - start) / width) * xpos));
+  double lower = ld->get_snap_delta_time()*floor(time/ld->get_snap_delta_time());
+
+  if ((time-lower)<(ld->get_snap_delta_time()/2.0))	time = lower;
+  else time = lower + ld->get_snap_delta_time();
+
+  return time;
 }

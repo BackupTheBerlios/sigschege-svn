@@ -115,7 +115,17 @@ public:
    */
   virtual void timeRangeChange() { }
 
-  qreal calcSnapTime(qreal xpos);
+  /** @brief This method calculates the snap time belonging to the given mouse position.
+   *
+   * This method is called to calculate the time that would be chosen by the time snapping
+   * mechanism for the given mouse position. It can be called both from the scene for displaying
+   * a marker or from the Event to calculate the place to insert a new event.
+   *
+   * @param xpos The horizontal position of the mouse
+   * @param isWave Boolean parameter to indicate if this member is a wave or not to indicate coordinate origin. Default: false. 
+   * @return A time that is a multiple of the snap distance and close to the mouse.
+   */
+  qreal calcSnapTime(qreal xpos, bool isWave = false);
 
 protected:
 

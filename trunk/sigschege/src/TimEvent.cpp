@@ -200,22 +200,14 @@ void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
     // get a pointer needed objects
     TimingScene *sc = getWave()->getScene();
     TimEventType *et = sc->getSignalManager()->getCurrent();
-    TimLayoutData *ld = getWave()->getLayoutData();
 
     if (et == NULL) {
       QGraphicsItem::mousePressEvent(event);
     } else {
       // mapping the mouse event position to parent coordinate system make calculation easier
       QPointF mousePos = mapToParent(event->pos());
-      int width = ld->get_col_1_width();
-      double start = ld->get_start_time();
-      double end = ld->get_end_time();
 
-      double time = ((((end - start) / width) * mousePos.x()));
-      double lower = ld->get_snap_delta_time()*floor(time/ld->get_snap_delta_time());
-      
-      if ((time-lower)<(ld->get_snap_delta_time()/2.0))	time = lower;
-      else time = lower + ld->get_snap_delta_time();
+      double time = getWave()->calcSnapTime(mousePos.x(), true);
 
       if (et->getLevel() == Invert) {
 	if (getWave()->getLevel(time) == Low) et = new TimEventHigh;

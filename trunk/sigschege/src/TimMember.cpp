@@ -83,8 +83,10 @@ qreal TimMember::calcSnapTime(qreal xpos, bool isWave) {
   double time = ((((end - start) / width) * xpos));
   double lower = ld->get_snap_delta_time()*floor(time/ld->get_snap_delta_time());
 
-  if ((time-lower)<(ld->get_snap_delta_time()/2.0))	time = lower;
-  else time = lower + ld->get_snap_delta_time();
+  if ((time-lower)<(ld->get_snap_delta_time()/2.0))	m_snapTime = lower;
+  else m_snapTime = lower + ld->get_snap_delta_time();
 
-  return time;
+  m_snapDeviation = (time-m_snapTime)*2.0/ld->get_snap_delta_time();
+
+  return m_snapTime;
 }

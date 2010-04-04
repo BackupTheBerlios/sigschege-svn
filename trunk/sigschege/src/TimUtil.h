@@ -10,6 +10,7 @@ template <class Type> class Range {
   }
 
   Type distance(void) { return cEnd-cStart; }
+  bool contains(Type val) { return (val>=cStart && val<=cEnd); }
 
   Type cStart;
   Type cEnd;

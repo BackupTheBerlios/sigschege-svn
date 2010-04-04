@@ -127,6 +127,16 @@ public:
    */
   qreal calcSnapTime(qreal xpos, bool isWave = false);
 
+  /** @brief This method returns the current snap time.
+   *
+   */
+  qreal getSnapTime() { return m_snapTime; }
+
+  /** @brief This method returns the current deviation between snap time and real time.
+   *
+   */
+  qreal getSnapDeviation() { return m_snapDeviation; }
+
 protected:
 
   /* @brief Returns a hint to the size of this signal.
@@ -142,6 +152,19 @@ protected:
    * This is a weak pointer.  (no ownership)
    */
   TimingScene *m_scene;
+
+  /** @brief The snap time calculated from the latest pointer movement.
+   *
+   */
+  qreal m_snapTime;
+
+  /** @brief Deviation between actual and snapped time.
+   *
+   * The deviation between the time the pointer hovers over and the time
+   * that is selected by the snapping algorithm, range is -1.0 to +1.0.
+   */
+  qreal m_snapDeviation;
+
 };
 
 #endif /* TIMSCALE_H_ */

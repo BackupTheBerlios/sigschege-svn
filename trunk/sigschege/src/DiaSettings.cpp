@@ -52,11 +52,11 @@ DiaSettings::DiaSettings(QWidget *parent, TimingScene *scene)
   endTimeLabel = new QLabel(tr("End Time"));
     
   endTimeEdit = new QDoubleSpinBox(TimeRangeGroupBox);
-  endTimeEdit->setValue(scene->getLayoutData()->get_end_time());
 
   endTimeEdit->setDecimals(5);
   endTimeEdit->setMinimum(-100000.0);
   endTimeEdit->setMaximum(+100000.0);
+  endTimeEdit->setValue(scene->getLayoutData()->get_end_time());
 
   snapDeltaTimeLabel = new QLabel(tr("Snap Distance"));
 

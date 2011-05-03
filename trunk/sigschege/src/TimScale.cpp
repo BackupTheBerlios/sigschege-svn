@@ -138,7 +138,7 @@ void TimScale::setText ( const QString & text ) {
 void TimScale::SSGWrite(SSGWriter *writer) {
   writer->writeStartElement("timescale");
   writer->writeStartElement("primarytext");
-  writer->writeCDATA("TODO");
+  writer->writeCDATA(m_label->getText());
   writer->writeEndElement();
   writer->writeEndElement();
 

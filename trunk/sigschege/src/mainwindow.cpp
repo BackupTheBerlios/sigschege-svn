@@ -325,15 +325,23 @@ void MainWindow::selectionChanged() {
 bool MainWindow::maybeSave() {
   bool affirmative = true;
   if (!m_scene->isClean()) {
+
     QMessageBox::StandardButton user_choice;
     user_choice
         = QMessageBox::warning(this, tr("Application"), tr("The timing diagram is modified.\n"
           "Do you want to save the changes?"), QMessageBox::Save
             | QMessageBox::Discard | QMessageBox::Cancel);
-    if (user_choice == QMessageBox::Save)
+
+    if (user_choice == QMessageBox::Save) {
+
+      if (m_filename.isEmpty()) {
+        m_filename =  askForFileName();
+      }
+
       affirmative = save(m_filename);
-    else if (user_choice == QMessageBox::Cancel)
+    } else if (user_choice == QMessageBox::Cancel) {
       affirmative = false;
+    }
   }
 
   if (affirmative) {

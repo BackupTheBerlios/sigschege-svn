@@ -83,7 +83,7 @@ DiaSettings::DiaSettings(QWidget *parent, TimingScene *scene)
   layout->addWidget(buttonBox,3, 0, 1, 2);
   TimeRangeGroupBox->setLayout(layout);
 
-  connect(this, SIGNAL(accepted()), m_scene, SLOT(update(m_scene->sceneRect)) );
+  connect(this, SIGNAL(accepted()), m_scene, SLOT(update()) );
 
   QGridLayout *mainLayout = new QGridLayout;
   mainLayout->addWidget(TimeRangeGroupBox, 0, 0);

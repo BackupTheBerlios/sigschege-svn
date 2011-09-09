@@ -30,10 +30,7 @@
 #include <iostream>
 using namespace std;
 
-TimWave::TimWave(TimMember *parent, TimingScene *scene)  :
-    TimMember(parent, scene) {
-
-  m_scene = scene;
+TimWave::TimWave(TimMember *parent, TimingScene *scene) : TimMember(parent, scene) {
 
   m_TimEvent = new TimEvent(this, getScene(), getScene()->getSignalManager()->getDefault());
 
@@ -63,6 +60,7 @@ void TimWave::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
   qreal xpos = mouseEvent->pos().x();
   cout << "POS=" << xpos << endl;
+
   //QGraphicsScene::mouseMoveEvent(mouseEvent);
 }
 

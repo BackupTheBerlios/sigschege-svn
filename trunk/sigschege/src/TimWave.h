@@ -97,11 +97,11 @@ protected:
    */
   virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
       QSizeF()) const;
+
   void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
 private:
   TimEvent *m_TimEvent;
-  TimingScene *m_scene;
 };
 
 #endif /* TIMWAVE_H_ */

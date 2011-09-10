@@ -1,0 +1,13 @@
+ - 18 July 2009
+   - New project target
+     Sigschege was planned as a batch tool to create timing diagrams. Since the creation of a timing 
+     diagram is an interactive task and a batch tool has some usability problems with such a working
+     flow, we decided to drop python and batch support in flavor of a nice GUI application.
+   - Switch graphical framework
+     In the past we were using WxWidget for some GUI example application. After searching around, 
+     we decided to switch to QT.
+   - New build system
+     QT requires a build system that can call some special application. Autotools have no support
+     for QT, so we switched to cmake which has build in support for QT, freetype and many more
+     libraries.
+   

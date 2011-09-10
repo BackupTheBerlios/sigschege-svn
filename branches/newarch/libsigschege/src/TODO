@@ -1,0 +1,13 @@
+ -*- outline -*-
+
+$Id$
+
+* Handle class: remove Object() function usage.
+  Object() still necessary for pointer comparison?
+
+* Event class: constructor with arguments, 
+  absolutify function (remove reference but keep absolute time)
+
+* Python interface: fix all those Py_INCREF's
+
+

@@ -1,0 +1,248 @@
+% Copyright 2004, 2005, 2006 by Ingo Hinrichs, Ulf Klaperski
+%
+% This file is part of Sigschege - Signal Schedule Generator
+% 
+% #############################################################################
+%
+% Sigschege is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2, or (at your option)
+% any later version.
+% 
+% Sigschege is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with the Sigschege sources; see the file COPYING.  
+%
+% #############################################################################
+%
+% $Id$
+%
+% Sigschege User Manual
+%
+
+
+\documentclass[11pt]{article}
+
+\setlength{\parskip}{1.5ex plus0.5ex minus 0.5ex}
+\setlength{\parindent}{0em}
+
+\begin{document}
+
+\begin{center}
+\Huge Sigschege
+
+\vspace{1cm}
+
+\LARGE User Manual
+
+\vspace{3cm}
+
+Written by Ulf Klaperski
+
+\vspace{1cm}
+
+Created from \verb$Revision$
+  
+\end{center}
+
+\eject
+
+\section{Introduction}
+\label{sec:intro}
+
+Sigschege is an application to create timing diagrams for digital electrical circuits.
+
+Currently the only available user interface is a Python plugin. A graphical user
+interface is planned for later releases.
+
+For example scripts please have a look at the examples directory of the
+Sigschege source tree.
+
+\section{Anatomy of a Timing Diagram}
+\label{sec:anatomy}
+
+\subsection{States and State Maps}
+\label{subsec:statemap}
+
+States in Sigschege are defined by a string. The interpretation of this string
+is defined by a state map that is usually a property of the signal.  
+
+If a state is not found in the state map it is drawn as ``X'' and the string
+will be shown. This way every unkown value will automatically be represented as
+a named bus value.
+
+The properties of a state are shown in table \ref{tab:statemap}.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}[l]{l|l}
+    \textbf{Properties}&\textbf{Values}\\\hline
+    Visualization&0, 1, X, Z\\
+    showString&Boolean\\\hline
+  \end{tabular}
+  \caption{Properties of a state}
+  \label{tab:statemap}
+\end{table}
+
+By default every signal has a state map which defines the values 0, 1, Z and
+X. These values are defined to be shown without a label with their expected
+visualization, which is a bottom line for 0, a top line for 1, a middle line for
+Z and top and bottom line for X. If the signal is supposed to represent a bus
+which could accidentally have one of the aforementioned values the state map has
+to be flushed.
+
+
+\section{The Python Interface}
+\label{sec:python}
+
+\subsection{Running Sigschege}
+
+The \texttt{sigschege} binary is simply an enhanced Python interpreter. The
+usual way to create a timing diagram is to write a Python script which uses the
+additional functions. We recommend the extension \texttt{.spy} (Sigschege PYthon) for these
+scripts. To process a sigschege script just run:
+
+\begin{center}
+  \texttt{sigschege my-interface-protocol.spy}
+\end{center}
+
+
+\subsection{Creating a Timing Diagram}
+
+Sigschege implements the \texttt{Sigschege} namespace. To create a timing
+diagram just instantiate a \texttt{TimingDiagram} object from this namespace:
+
+
+\begin{center}
+  \texttt{Sigschege.TimingDiagram(<startTime>, <endTime>, <width>, <sliceHeight>)}
+\end{center}
+
+This method takes the following arguments:
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}[l]{l|l|l}
+    \textbf{Argument}&\textbf{Type}&\textbf{Description}\\\hline
+    startTime&float&Start time of the diagram\\
+    endTime&float&End time of the diagram\\
+    width&float&\texttt{[optional]} Width of the timing diagram\\
+    % TODO:default 8.0
+    sliceHeight&float&\texttt{[optional]}default height of a single
+    slice\\\hline
+    % TODO: default 1.0, explain what a slice is
+  \end{tabular}
+  \caption{Arguments for TimingDiagram}
+  \label{tab:timdiagram}
+\end{table}
+
+The result of this function must be stored in a variable for later access. A real call will
+look like:
+
+\begin{center}
+  \texttt{td = Sigschege.TimingDiagram(0.0, 50.0)}
+\end{center}
+
+Or maybe:
+
+\begin{center}
+  \texttt{td = Sigschege.TimingDiagram(startTime=0.0, endTime=50.0, width=10.0, )}
+\end{center}
+
+\subsection{Implementing Signals}
+\label{sec:sig}
+
+Signals can be created with \texttt{createSignal}. It can take the following
+arguments:
+
+\begin{description}
+\item[label] The label which will be printed in the text area on the left side.
+\item[isBus] If the signal is a bus. This means all signals are displayed with the X visual
+and the state printed. If isBus is 0 the signal is assumed to be a boolean. 
+\item[defaultSlope] \emph{optional} The default slope for all events. Default is 0.
+\item[before] \emph{optional} Another element of the timing diagram to insert this element before.  
+\end{description}
+
+\begin{center}
+  \texttt{sig\_clk = td.createSignal(label='Clock', defaultSlope=0.5)}
+\end{center}
+
+\subsection{Creating Events}
+\label{sec:evt}
+
+Events can be added to an existing signal with the \texttt{addEvent} method.
+
+\texttt{<signal>.addEvent(<time>, <state>)}
+
+The \texttt{state} determines the value of the new state. The visualization of
+the state is defined by the state map of the signal. 
+
+In order to draw a '1' state:
+
+\texttt{clock.addEvent(50, '1')}
+
+If the signal uses the \texttt{boolean} state map, the 1 will be displayed as a
+top line with no label. The \texttt{bus} state map would display it as top and
+bottom line with the 1 as a label.
+
+
+\subsection{Instantiating a Time Scale}
+\label{sec:tis}
+If a time scale is asked for it can be created with \texttt{createTimescale}. 
+
+\texttt{mts = myDiagram.createTimescale()}
+
+With the \texttt{setLabel} method either one or two vertically arranged labels can
+be defined: 
+
+\texttt{mts.setFont('Time', '[ps]')}
+
+The font size of the time scale can be set with:
+
+\texttt{mts.setFont(18)}
+
+
+
+\subsection{Exporting Timing Diagrams}
+\label{sec:exp}
+
+\subsection{Creating State Maps}
+\label{sec:tis}
+
+A new state map can be created with the command:
+
+\begin{center}
+  \texttt{<var> = Sigschege.StateMap()}
+\end{center}
+
+This freshly created state map is empty and thus has the same effect as the
+\texttt{bus} state map. To add state definitions
+
+\begin{center}
+  \texttt{<stateMap>.state(<arguments>)}
+\end{center}
+
+The arguments accepted by the \texttt{state} method are:
+
+\begin{description}
+\item[name] The name of the state.
+\item[showState] The state string will we printed as a label.
+\item[visual] Defines the visual to be used as a string. Possible values are 1, 0, Z and X.
+\end{description}
+
+Example:
+
+\texttt{boolmap = Sigschege.StateMap()}\\
+\texttt{boolmap.state(name='1', showState=False, visual='1')}\\
+\texttt{boolmap.state(name='0', showState=False, visual='0')}\\
+\texttt{boolmap.state(name='Z', showState=False, visual='Z')}\\
+
+This would actually create a map which is identical to the \texttt{boolean}
+state map.
+
+
+\end{document}
+

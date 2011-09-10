@@ -1,0 +1,64 @@
+Best viewed in emacs with -*- outline -*- mode
+
+This is the README for Sigschege, the SIGnal SCHEdule GEnerator
+
+A software for creating timing diagrams for digital electrical circuits  
+
+Subversion Id: $Id$
+
+* Copyright
+
+Sigschege and the associated YaVec library are copyright
+2004-2009 by Ulf Klaperski and Ingo Hinrichs.
+
+Sigschege is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+
+Sigschege is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with the Sigschege sources; see the file COPYING.  
+
+
+* Requirements
+
+ANCI C++ compliant compiler, standard compliant C++ STL
+
+cmake
+
+make
+
+xerces-c library
+
+freetype2 library
+ 
+transfig/fig2dev
+
+Recommended: xfig
+
+* Building from source (distribution tarball)
+
+This project uses the standard GNU configure build flow. See the file
+INSTALL for generic install instructions.
+
+* Building from source (Subversion snapshot)
+
+mkdir build
+cd build
+cmake ../
+make
+
+* Debugging
+
+Disable optimization:
+
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE='Debug' 
+make
+

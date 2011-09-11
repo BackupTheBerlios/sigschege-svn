@@ -88,11 +88,6 @@ double TimLayoutData::get_scale_factor() const {
 }
 
 void TimLayoutData::updateScaleFactor() {
-  double diff = (get_end_time() - get_start_time());
-
-  if(diff == 0.0) {
-    m_scale_factor = 0;
-  } else {
-    m_scale_factor =  get_col_1_width() / diff;
-  }
+  double diff = get_end_time() - get_start_time();
+  m_scale_factor = (diff != 0.0) ? get_col_1_width() / diff : 0.0;
 }

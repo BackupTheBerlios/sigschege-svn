@@ -47,8 +47,7 @@ void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     double       end_time     = getLayoutData()->get_end_time();
     unsigned int end_pos      = getLayoutData()->get_col_1_width();
 
-    double diff               = end_time - start_time;
-    double       scale_factor = (diff != 0.0) ? end_pos / diff : 0;
+    double scale_factor = getLayoutData()->get_scale_factor();
 
     unsigned int ev_abs_setup;
     unsigned int ev_abs_event;
@@ -60,25 +59,68 @@ void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
     // Process the first event
 
-    TimEventSet_t::const_iterator ev = m_event_set.begin();
+    // TimEventSet_t::const_iterator ev = m_event_set.begin();
+    TimEventSet_t::const_iterator ev = m_event_set.lower_bound(TimEvent(start_time));
 
-    while (ev != m_event_set.end()) {
+    // check if we have to draw something before this event.
+    if(ev->getAbsSetupTime() > start_time && ev != m_event_set.begin()) {
+
+      // save for later
+      ev_abs_end = (unsigned int) ((ev->getAbsSetupTime() - start_time) * scale_factor);
+
+      // move to the prev event and get all data that we need
+      --ev;
+
+      double es = (ev->getAbsSetupTime() - start_time);
+      double ee = (ev->getEventTime() - start_time);
+      double eh = (ev->getAbsHoldTime() - start_time);
+
+      if(es < 0.0)
+        es = 0.0;
+      if(ee < 0.0)
+        ee = 0.0;
+      if(eh < 0.0)
+        eh = 0.0;
+
+      ev_abs_setup = (unsigned int) (es * scale_factor);
+      ev_abs_event = (unsigned int) (ee * scale_factor);
+      ev_abs_hold  = (unsigned int) (eh * scale_factor);
+      ev_level     = ev->getEventLevel();
+
+      // TODO : paint setup and hold time
+
+      // paint level part
+      switch(ev_level) {
+      case TimEvent::Low:
+        painter->drawLine(ev_abs_hold, 35, ev_abs_end, 35);
+        break;
+      case TimEvent::High:
+        painter->drawLine(ev_abs_hold, 15, ev_abs_end, 15);
+        break;
+      }
+
+      // set values for next event
+      ++ev;
+      prev_level = ev_level;
+    }
+
+    while (ev != m_event_set.end() && ev->getAbsSetupTime() < end_time) {
       qDebug() << ev->getAbsSetupTime();
       qDebug() << ev->getEventTime();
       qDebug() << ev->getAbsHoldTime();
 
-      ev_abs_setup = (unsigned int) (ev->getAbsSetupTime() * scale_factor);
-      ev_abs_event = (unsigned int) (ev->getEventTime() * scale_factor);
-      ev_abs_hold  = (unsigned int) (ev->getAbsHoldTime() * scale_factor);
+      ev_abs_setup = (unsigned int) ((ev->getAbsSetupTime() - start_time) * scale_factor);
+      ev_abs_event = (unsigned int) ((ev->getEventTime() - start_time) * scale_factor);
+      ev_abs_hold  = (unsigned int) ((ev->getAbsHoldTime() - start_time) * scale_factor);
       ev_level     = ev->getEventLevel();
 
       ++ev;
 
       // check if we handel the last event. If so, then use the end of the diagram as end of event.
-      if(ev == m_event_set.end()) {
+      if(ev == m_event_set.end() || (ev->getAbsSetupTime() - start_time) >= end_time) {
         ev_abs_end = end_pos;
       } else {
-        ev_abs_end = (unsigned int) (ev->getAbsSetupTime() * scale_factor);
+        ev_abs_end = (unsigned int) ((ev->getAbsSetupTime() - start_time) * scale_factor);
       }
 
       // Let's paint
@@ -161,7 +203,9 @@ void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
 
   if (event->button() == Qt::LeftButton) {
 
-    double time = event->pos().x() / getScene()->getLayoutData()->get_scale_factor();
+    double time = event->pos().x() / getLayoutData()->get_scale_factor();
+
+    time += getLayoutData()->get_start_time();
 
     TimEventType* et = getScene()->getSignalManager()->getCurrent();
 

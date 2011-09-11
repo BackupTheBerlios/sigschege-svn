@@ -28,6 +28,7 @@
 #include <QtGui>
 
 #include "TimMember.h"
+
 #include "TimingScene.h"
 #include "TimLayoutData.h"
 #include "TimEvent.h"

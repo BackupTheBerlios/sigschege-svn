@@ -35,7 +35,7 @@ public:
 
   TimEvent();
 
-  TimEvent(double event, EventLevel level);
+  TimEvent(double event, EventLevel level = Low);
 
   TimEvent(double event, EventLevel level, double setup, double hold);
 

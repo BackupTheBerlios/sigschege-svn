@@ -40,19 +40,90 @@ QRectF TimWave::boundingRect() const {
 
 void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-    for(TimEventSet_t::iterator walk = m_event_set.begin(); walk != m_event_set.end(); ++walk)
-    {
-      switch(walk->getEventLevel()) {
+  if(!m_event_set.empty()) {
+
+    // Get information about the timing diagram.
+    double       start_time   = getLayoutData()->get_start_time();
+    double       end_time     = getLayoutData()->get_end_time();
+    unsigned int end_pos      = getLayoutData()->get_col_1_width();
+
+    double diff               = end_time - start_time;
+    double       scale_factor = (diff != 0.0) ? end_pos / diff : 0;
+
+    unsigned int ev_abs_setup;
+    unsigned int ev_abs_event;
+    unsigned int ev_abs_hold;
+    unsigned int ev_abs_end;
+
+    TimEvent::EventLevel prev_level = TimEvent::None;
+    TimEvent::EventLevel ev_level;
+
+    // Process the first event
+
+    TimEventSet_t::const_iterator ev = m_event_set.begin();
+
+    while (ev != m_event_set.end()) {
+      qDebug() << ev->getAbsSetupTime();
+      qDebug() << ev->getEventTime();
+      qDebug() << ev->getAbsHoldTime();
+
+      ev_abs_setup = (unsigned int) (ev->getAbsSetupTime() * scale_factor);
+      ev_abs_event = (unsigned int) (ev->getEventTime() * scale_factor);
+      ev_abs_hold  = (unsigned int) (ev->getAbsHoldTime() * scale_factor);
+      ev_level     = ev->getEventLevel();
+
+      ++ev;
+
+      // check if we handel the last event. If so, then use the end of the diagram as end of event.
+      if(ev == m_event_set.end()) {
+        ev_abs_end = end_pos;
+      } else {
+        ev_abs_end = (unsigned int) (ev->getAbsSetupTime() * scale_factor);
+      }
+
+      // Let's paint
+
+      // paint setup part
+      unsigned int sy;
+      switch(prev_level) {
+      case TimEvent::None:
+        switch(ev_level) {
+        case TimEvent::Low:
+          sy = 35;
+          break;
+        case TimEvent::High:
+          sy = 15;
+          break;
+        }
+        break;
       case TimEvent::Low:
-        painter->drawLine(0, 35, 100, 35);
+        sy = 35;
+        break;
+      case TimEvent::High:
+        sy = 15;
+        break;
+      }
+      painter->drawLine(ev_abs_setup, sy, ev_abs_event, 25);
+
+      // paint hold and level parts
+      switch(ev_level) {
+      case TimEvent::Low:
+        painter->drawLine(ev_abs_event, 25, ev_abs_hold, 35);
+        painter->drawLine(ev_abs_hold, 35, ev_abs_end, 35);
         break;
 
       case TimEvent::High:
-        painter->drawLine(0, 15, 100, 15);
+        painter->drawLine(ev_abs_event, 25, ev_abs_hold, 15);
+        painter->drawLine(ev_abs_hold, 15, ev_abs_end, 15);
         break;
       }
 
+      // save for next round
+      prev_level = ev_level;
+
     }
+
+  }
 
     //  if(isSelected()) {
 
@@ -90,12 +161,13 @@ void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
 
   if (event->button() == Qt::LeftButton) {
 
-    double time = event->pos().x() * getScene()->getLayoutData()->get_scale_factor();
+    double time = event->pos().x() / getScene()->getLayoutData()->get_scale_factor();
 
     TimEventType* et = getScene()->getSignalManager()->getCurrent();
 
     if(et) {
       m_event_set.insert(TimEvent(time, (TimEvent::EventLevel)et->getLevel()));
+      // TODO : Implement tool classes to select the event level.
     }
 
     update();

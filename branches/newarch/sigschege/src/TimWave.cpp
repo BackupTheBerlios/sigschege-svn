@@ -22,7 +22,10 @@
 // #############################################################################
 //
 
+#include <utility>
+
 #include "TimWave.h"
+#include "TimCmdAddEvent.h"
 
 #include "TimEventType.h"
 
@@ -105,9 +108,6 @@ void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     }
 
     while (ev != m_event_set.end() && ev->getAbsSetupTime() < end_time) {
-      qDebug() << ev->getAbsSetupTime();
-      qDebug() << ev->getEventTime();
-      qDebug() << ev->getAbsHoldTime();
 
       ev_abs_setup = (unsigned int) ((ev->getAbsSetupTime() - start_time) * scale_factor);
       ev_abs_event = (unsigned int) ((ev->getEventTime() - start_time) * scale_factor);
@@ -199,6 +199,18 @@ QSizeF TimWave::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
 
 }
 
+bool TimWave::addTimEvent(double time, TimEvent::EventLevel level, double setup, double hold) {
+  std::pair<TimEventSet_t::iterator, bool> ret = m_event_set.insert(TimEvent(time, level, setup, hold));
+  update();
+  return ret.second;
+}
+
+bool TimWave::rmTimEvent(double time) {
+  size_t ret = m_event_set.erase(TimEvent(time));
+  update();
+  return ret;
+}
+
 void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
 
   if (event->button() == Qt::LeftButton) {
@@ -210,8 +222,9 @@ void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
     TimEventType* et = getScene()->getSignalManager()->getCurrent();
 
     if(et) {
-      m_event_set.insert(TimEvent(time, (TimEvent::EventLevel)et->getLevel()));
-      // TODO : Implement tool classes to select the event level.
+
+      getScene()->pushCmd(new TimCmdAddEvent(this, time, (TimEvent::EventLevel)et->getLevel(), 0.0, 0.0));
+
     }
 
     update();

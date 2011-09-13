@@ -28,26 +28,28 @@
 #define TIMCMDADDEVENT_H_
 
 #include <QtGui>
-#include "TimingScene.h"
+
 #include "TimEvent.h"
-#include "TimEventType.h"
+
+class TimWave;
+
 
 class TimCmdAddEvent : public QUndoCommand {
 
 public:
 
-  TimCmdAddEvent(TimingScene *tscene, TimEvent* event, TimEventType *type, double time);
-  ~TimCmdAddEvent();
+  TimCmdAddEvent(TimWave *wave, double time, TimEvent::EventLevel level, double setup, double hold);
+  virtual ~TimCmdAddEvent();
 
   virtual void undo();
   virtual void redo();
 
 private:
-  TimingScene  *m_timingScene;
-  TimEvent     *m_event;
-  TimEvent     *m_newEvent;
-  TimEventType *m_eventType;
-  double       m_time;
+  TimWave              *m_wave;
+  double                m_time;
+  double                m_setup;
+  double                m_hold;
+  TimEvent::EventLevel  m_level;
 };
 
 

@@ -72,6 +72,21 @@ public:
    */
   TimLayoutData* getLayoutData() const;
 
+  /** @brief Adds a new timing event
+   *
+   * @param level Level of the new timing event
+   * @param time Time of the new timing event
+   * @return True on success, false otherwise
+   */
+  bool addTimEvent(double time, TimEvent::EventLevel level, double setup, double hold);
+
+  /** Removes the Timing event at time
+   *
+   * @param time Time of the timing event
+   * @return True on success, false otherwise
+   */
+  bool rmTimEvent(double time);
+
 protected:
 
   /** @brief Get s hint of the required waveform size.

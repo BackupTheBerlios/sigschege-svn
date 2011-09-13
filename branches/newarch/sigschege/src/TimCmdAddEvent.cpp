@@ -24,34 +24,20 @@
 
 #include "TimCmdAddEvent.h"
 #include "TimWave.h"
-#include "TimEventHigh.h"
 
-TimCmdAddEvent::TimCmdAddEvent(TimingScene *tscene, TimEvent *event, TimEventType *type, double time) {
-  m_timingScene = tscene;
-  m_event       = event;
-  m_eventType   = type;
-  m_newEvent    = NULL;
-  m_time        = time;
+TimCmdAddEvent::TimCmdAddEvent(TimWave *wave, double time, TimEvent::EventLevel level, double setup, double hold) :
+  m_wave(wave), m_time(time), m_level(level), m_setup(setup), m_hold(hold)
+{
 }
 
 TimCmdAddEvent::~TimCmdAddEvent() {
-  if(m_newEvent) {
-    delete m_newEvent;
-  }
 }
 
 void TimCmdAddEvent::undo() {
-  // TODO
-
-//  m_newEvent = m_event->removeEvent(); // we gain ownership again
+  m_wave->rmTimEvent(m_time);
 }
 
 void TimCmdAddEvent::redo() {
-// TODO
-//  if(m_newEvent == NULL) {
-//    m_newEvent = new TimEvent(m_event->getWave(), m_timingScene, m_eventType, m_time);
-//  }
-//  m_event->insertEvent(m_newEvent);
-//  m_newEvent = NULL; // ownership was transfered
+  m_wave->addTimEvent(m_time, m_level, m_setup, m_hold);
 }
 

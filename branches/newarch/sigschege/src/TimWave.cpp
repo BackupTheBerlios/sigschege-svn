@@ -222,12 +222,8 @@ void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
     TimEventType* et = getScene()->getSignalManager()->getCurrent();
 
     if(et) {
-
       getScene()->pushCmd(new TimCmdAddEvent(this, time, (TimEvent::EventLevel)et->getLevel(), 0.0, 0.0));
-
     }
-
-    update();
 
   } else {
     TimMember::mousePressEvent(event);

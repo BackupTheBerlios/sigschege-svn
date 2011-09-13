@@ -31,7 +31,9 @@
 
 #include "TimingScene.h"
 #include "TimLayoutData.h"
+
 #include "TimEvent.h"
+#include "TimEventPainter.h"
 
 /** @brief Waveform object of a signals
  */
@@ -74,11 +76,11 @@ public:
 
   /** @brief Adds a new timing event
    *
-   * @param level Level of the new timing event
+   * @param painter Pointer to the painter for this event
    * @param time Time of the new timing event
    * @return True on success, false otherwise
    */
-  bool addTimEvent(double time, TimEvent::EventLevel level, double setup, double hold);
+  bool addTimEvent(double time, TimEventPainter *painter, double setup, double hold);
 
   /** Removes the Timing event at time
    *

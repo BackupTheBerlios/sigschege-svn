@@ -57,8 +57,8 @@ void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     unsigned int ev_abs_hold;
     unsigned int ev_abs_end;
 
-    TimEvent::EventLevel prev_level = TimEvent::None;
-    TimEvent::EventLevel ev_level;
+    TimEventPainter::EventLevel prev_level = TimEventPainter::None;
+    TimEventPainter *ev_painter;
 
     // Process the first event
 
@@ -75,36 +75,26 @@ void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
       --ev;
 
       double es = (ev->getAbsSetupTime() - start_time);
-      double ee = (ev->getEventTime() - start_time);
-      double eh = (ev->getAbsHoldTime() - start_time);
-
       if(es < 0.0)
         es = 0.0;
+
+      double ee = (ev->getEventTime() - start_time);
       if(ee < 0.0)
         ee = 0.0;
+
+      double eh = (ev->getAbsHoldTime() - start_time);
       if(eh < 0.0)
         eh = 0.0;
 
       ev_abs_setup = (unsigned int) (es * scale_factor);
       ev_abs_event = (unsigned int) (ee * scale_factor);
       ev_abs_hold  = (unsigned int) (eh * scale_factor);
-      ev_level     = ev->getEventLevel();
 
-      // TODO : paint setup and hold time
-
-      // paint level part
-      switch(ev_level) {
-      case TimEvent::Low:
-        painter->drawLine(ev_abs_hold, 35, ev_abs_end, 35);
-        break;
-      case TimEvent::High:
-        painter->drawLine(ev_abs_hold, 15, ev_abs_end, 15);
-        break;
-      }
+      ev->getEventPainter()->paint(painter, option, widget, prev_level, ev_abs_event, ev_abs_setup, ev_abs_hold, ev_abs_end);
 
       // set values for next event
       ++ev;
-      prev_level = ev_level;
+      prev_level = ev_painter->getEventLevel();
     }
 
     while (ev != m_event_set.end() && ev->getAbsSetupTime() < end_time) {
@@ -112,7 +102,7 @@ void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
       ev_abs_setup = (unsigned int) ((ev->getAbsSetupTime() - start_time) * scale_factor);
       ev_abs_event = (unsigned int) ((ev->getEventTime() - start_time) * scale_factor);
       ev_abs_hold  = (unsigned int) ((ev->getAbsHoldTime() - start_time) * scale_factor);
-      ev_level     = ev->getEventLevel();
+      ev_painter = ev->getEventPainter();
 
       ++ev;
 
@@ -124,59 +114,12 @@ void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
       }
 
       // Let's paint
-
-      // paint setup part
-      unsigned int sy;
-      switch(prev_level) {
-      case TimEvent::None:
-        switch(ev_level) {
-        case TimEvent::Low:
-          sy = 35;
-          break;
-        case TimEvent::High:
-          sy = 15;
-          break;
-        }
-        break;
-      case TimEvent::Low:
-        sy = 35;
-        break;
-      case TimEvent::High:
-        sy = 15;
-        break;
-      }
-      painter->drawLine(ev_abs_setup, sy, ev_abs_event, 25);
-
-      // paint hold and level parts
-      switch(ev_level) {
-      case TimEvent::Low:
-        painter->drawLine(ev_abs_event, 25, ev_abs_hold, 35);
-        painter->drawLine(ev_abs_hold, 35, ev_abs_end, 35);
-        break;
-
-      case TimEvent::High:
-        painter->drawLine(ev_abs_event, 25, ev_abs_hold, 15);
-        painter->drawLine(ev_abs_hold, 15, ev_abs_end, 15);
-        break;
-      }
+      ev_painter->paint(painter, option, widget, prev_level, ev_abs_event, ev_abs_setup, ev_abs_hold, ev_abs_end);
 
       // save for next round
-      prev_level = ev_level;
-
+      prev_level = ev_painter->getEventLevel();
     }
-
   }
-
-    //  if(isSelected()) {
-
-//        QBrush old = painter->brush();
-
-//        painter->setBrush(QBrush(QColor(255,255,100,100)));
-//        painter->drawRect(boundingRect());
-
-//        painter->setBrush(old);
-    //  }
-
 }
 
 TimLayoutData* TimWave::getLayoutData() const {
@@ -199,8 +142,8 @@ QSizeF TimWave::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
 
 }
 
-bool TimWave::addTimEvent(double time, TimEvent::EventLevel level, double setup, double hold) {
-  std::pair<TimEventSet_t::iterator, bool> ret = m_event_set.insert(TimEvent(time, level, setup, hold));
+bool TimWave::addTimEvent(double time, TimEventPainter *painter, double setup, double hold) {
+  std::pair<TimEventSet_t::iterator, bool> ret = m_event_set.insert(TimEvent(time, painter, setup, hold));
   update();
   return ret.second;
 }
@@ -210,6 +153,9 @@ bool TimWave::rmTimEvent(double time) {
   update();
   return ret;
 }
+
+#include "TimEventPainterLow.h"
+#include "TimEventPainterHigh.h"
 
 void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
 
@@ -222,7 +168,19 @@ void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
     TimEventType* et = getScene()->getSignalManager()->getCurrent();
 
     if(et) {
-      getScene()->pushCmd(new TimCmdAddEvent(this, time, (TimEvent::EventLevel)et->getLevel(), 0.0, 0.0));
+
+      // FIXME : make real tools
+
+      switch((TimEventPainter::EventLevel)et->getLevel())
+      {
+      case TimEventPainter::Low:
+        getScene()->pushCmd(new TimCmdAddEvent(this, time, getScene()->getSignalManager()->p_low, 0.0, 0.0));
+        break;
+      case TimEventPainter::High:
+        getScene()->pushCmd(new TimCmdAddEvent(this, time, getScene()->getSignalManager()->p_high, 0.0, 0.0));
+        break;
+      }
+
     }
 
   } else {

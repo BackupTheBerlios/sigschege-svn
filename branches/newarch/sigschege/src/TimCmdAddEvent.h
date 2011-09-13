@@ -30,6 +30,7 @@
 #include <QtGui>
 
 #include "TimEvent.h"
+#include "TimEventPainter.h"
 
 class TimWave;
 
@@ -38,18 +39,18 @@ class TimCmdAddEvent : public QUndoCommand {
 
 public:
 
-  TimCmdAddEvent(TimWave *wave, double time, TimEvent::EventLevel level, double setup, double hold);
+  TimCmdAddEvent(TimWave *wave, double time, TimEventPainter *painter, double setup, double hold);
   virtual ~TimCmdAddEvent();
 
   virtual void undo();
   virtual void redo();
 
 private:
-  TimWave              *m_wave;
-  double                m_time;
-  double                m_setup;
-  double                m_hold;
-  TimEvent::EventLevel  m_level;
+  TimWave         *m_wave;
+  double           m_time;
+  double           m_setup;
+  double           m_hold;
+  TimEventPainter *m_painter;
 };
 
 

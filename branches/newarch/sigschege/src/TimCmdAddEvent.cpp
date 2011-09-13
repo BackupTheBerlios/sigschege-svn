@@ -25,8 +25,8 @@
 #include "TimCmdAddEvent.h"
 #include "TimWave.h"
 
-TimCmdAddEvent::TimCmdAddEvent(TimWave *wave, double time, TimEvent::EventLevel level, double setup, double hold) :
-  m_wave(wave), m_time(time), m_level(level), m_setup(setup), m_hold(hold)
+TimCmdAddEvent::TimCmdAddEvent(TimWave *wave, double time, TimEventPainter *painter, double setup, double hold) :
+  m_wave(wave), m_time(time), m_painter(painter), m_setup(setup), m_hold(hold)
 {
 }
 
@@ -38,6 +38,6 @@ void TimCmdAddEvent::undo() {
 }
 
 void TimCmdAddEvent::redo() {
-  m_wave->addTimEvent(m_time, m_level, m_setup, m_hold);
+    m_wave->addTimEvent(m_time, m_painter, m_setup, m_hold);
 }
 

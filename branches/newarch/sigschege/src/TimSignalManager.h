@@ -29,6 +29,9 @@
 
 #include <QtGui>
 
+#include "TimEventPainterLow.h"
+#include "TimEventPainterHigh.h"
+
 class TimEvent;
 class TimEventType;
 class TimEventLow;
@@ -45,8 +48,6 @@ public:
 
   TimEventType* getCurrent();
 
-  TimEventType* getDefault();
-
 private:
   TimEventType *m_current;
 
@@ -61,6 +62,11 @@ public slots:
   void selectHigh(bool checked);
   void selectLow(bool checked);
   void selectInvert(bool checked);
+
+  // FIXME : make real tools
+public:
+  TimEventPainterHigh *p_high;
+  TimEventPainterLow  *p_low;
 };
 
 #endif /* TIMSIGNALMANGER_H_ */

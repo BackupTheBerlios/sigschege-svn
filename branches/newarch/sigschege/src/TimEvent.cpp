@@ -26,24 +26,17 @@
 #include "TimEvent.h"
 
 
-TimEvent::TimEvent() {
-  setSetupTime(0.0);
-  setEventTime(0.0);
-  setHoldTime(0.0);
-  setEventLevel(TimEvent::Low);
-}
-
-TimEvent::TimEvent(double event, TimEvent::EventLevel level) {
+TimEvent::TimEvent(double event, TimEventPainter *painter) {
+  setEventPainter(painter);
   setEventTime(event);
-  setEventLevel(level);
 
   setSetupTime(0.0);
   setHoldTime(0.0);
 }
 
-TimEvent::TimEvent(double event, TimEvent::EventLevel level, double setup, double hold) {
+TimEvent::TimEvent(double event, TimEventPainter *painter, double setup, double hold) {
+  setEventPainter(painter);
   setEventTime(event);
-  setEventLevel(level);
 
   setSetupTime(setup);
   setHoldTime(hold);
@@ -77,12 +70,12 @@ void TimEvent::setEventTime(double time) {
   m_event_time = time;
 }
 
-TimEvent::EventLevel TimEvent::getEventLevel() const {
-  return m_event_level;
+TimEventPainter* TimEvent::getEventPainter() const {
+  return m_event_painter;
 }
 
-void TimEvent::setEventLevel(TimEvent::EventLevel level) {
-  m_event_level = level;
+void TimEvent::setEventPainter(TimEventPainter * painter) {
+  m_event_painter = painter;
 }
 
 bool TimEvent::operator < (const TimEvent & rhs) const {

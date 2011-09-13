@@ -1,0 +1,26 @@
+Features:
+- Load/Save/Export
+  - Reimplment save and load
+- Printing
+- Designing
+  - select events
+  - delete events
+  - move events
+  - Reimplement snap feature
+  - move singal
+  - Implement waveform invert tool
+  - Implement bus waveforms
+  - drawing of setup/hold when start time is between them
+  - Copy waveform
+  - Past waveform
+  - Cut waveform
+  + Undo- / Redo
+- Diagram Settings Dialog
+- Documentation
+- Misc
+  ~ Refactor TimEventType(s) to tools
+  + Refactor TimEvent painting
+  - Improve dia settings dialog
+  - use qt designer for user interface
+- Status bar
+- Web

@@ -26,20 +26,21 @@
 #ifndef TIMEVENT_H_
 #define TIMEVENT_H_
 
+#include "TimEventPainter.h"
+
+class QPainter;
+class QStyleOptionGraphicsItem;
+class QWidget;
+
 class TimEvent {
 
 public:
-  enum EventLevel {
-    None, Low, High, Invert
-  };
 
-  TimEvent();
+  TimEvent(double event, TimEventPainter *painter = 0);
 
-  TimEvent(double event, EventLevel level = Low);
+  TimEvent(double event, TimEventPainter *painter, double setup, double hold);
 
-  TimEvent(double event, EventLevel level, double setup, double hold);
-
-  ~TimEvent();
+  virtual ~TimEvent();
 
   double getAbsSetupTime() const;
   double getAbsHoldTime() const;
@@ -53,19 +54,17 @@ public:
   double getEventTime() const;
   void   setEventTime(double time);
 
-  EventLevel getEventLevel() const;
-  void setEventLevel(EventLevel level);
+  TimEventPainter* getEventPainter() const;
+  void setEventPainter(TimEventPainter * painter);
 
   bool operator < (const TimEvent & rhs) const;
 
 private:
   double m_setup_time;
-
   double m_hold_time;
-
   double m_event_time;
 
-  EventLevel m_event_level;
+  TimEventPainter  *m_event_painter;
 
 };
 

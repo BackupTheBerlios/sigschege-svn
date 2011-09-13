@@ -36,6 +36,10 @@ TimWave.cpp
 TimLabel.cpp
 TimLayoutData.cpp
 TimEvent.cpp
+TimEventPainter.cpp
+TimEventPainterLow.cpp
+TimEventPainterHigh.cpp
+TimEventTool.cpp
 TimEventType.cpp
 TimEventLow.cpp
 TimEventInvert.cpp

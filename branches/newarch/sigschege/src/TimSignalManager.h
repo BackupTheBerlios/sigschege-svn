@@ -29,10 +29,10 @@
 
 #include <QtGui>
 
+#include "TimEventTool.h"
 #include "TimEventPainterLow.h"
 #include "TimEventPainterHigh.h"
 
-class TimEvent;
 class TimEventType;
 class TimEventLow;
 class TimEventHigh;
@@ -46,15 +46,13 @@ public:
   TimSignalManager(QObject * parent = 0);
   ~TimSignalManager();
 
-  TimEventType* getCurrent();
+  TimEventTool* getCurrent();
 
 private:
-  TimEventType *m_current;
+  TimEventTool *m_current;
 
-  TimEvent *m_event;
-
-  TimEventHigh *m_high;
-  TimEventLow  *m_low;
+  TimEventHigh    *m_high;
+  TimEventLow     *m_low;
   TimEventInvert  *m_invert;
 
 public slots:

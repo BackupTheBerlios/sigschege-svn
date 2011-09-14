@@ -39,11 +39,9 @@ TimEvent.cpp
 TimEventPainter.cpp
 TimEventPainterLow.cpp
 TimEventPainterHigh.cpp
-TimEventTool.cpp
-TimEventType.cpp
-TimEventLow.cpp
-TimEventInvert.cpp
-TimEventHigh.cpp
+TimEventToolLow.cpp
+TimEventToolInvert.cpp
+TimEventToolHigh.cpp
 TimSignalManager.cpp
 TimCmdAddEvent.cpp
 TimCmdAddListItem.cpp

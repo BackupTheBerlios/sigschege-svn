@@ -1,12 +1,11 @@
 #ifndef TIMEVENTTOOL_H_
 #define TIMEVENTTOOL_H_
 
+#include "TimEventPainter.h"
 
 class TimEventTool {
 public:
-  TimEventTool();
-  virtual ~TimEventTool();
-
+  virtual TimEventPainter* getEventPainter() = 0 ;
 
 };
 

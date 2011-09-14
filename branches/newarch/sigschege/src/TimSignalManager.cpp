@@ -32,8 +32,8 @@
 
 TimSignalManager::TimSignalManager(QObject * parent) : QObject(parent) {
   m_current = NULL;
-  m_high = new TimEventHigh();
-  m_low  = new TimEventLow();
+  m_high    = new TimEventHigh();
+  m_low     = new TimEventLow();
   m_invert  = new TimEventInvert();
 
   // FIXME : make real tools
@@ -42,8 +42,8 @@ TimSignalManager::TimSignalManager(QObject * parent) : QObject(parent) {
 }
 
 TimSignalManager::~TimSignalManager() {
-  if(m_high) delete m_high;
-  if(m_low) delete m_low;
+  if(m_high)   delete m_high;
+  if(m_low)    delete m_low;
   if(m_invert) delete m_invert;
 
   delete p_high;

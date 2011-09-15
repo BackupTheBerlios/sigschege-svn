@@ -159,9 +159,12 @@ void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
 
   if (event->button() == Qt::LeftButton) {
 
+    // get time of the event
     double time = event->pos().x() / getLayoutData()->get_scale_factor();
-
     time += getLayoutData()->get_start_time();
+
+    // snap to the next snap time (if enabled)
+    qreal snap_time = calcSnapTime(event->pos().x(),true);
 
     TimEventTool* et = getScene()->getSignalManager()->getCurrent();
 

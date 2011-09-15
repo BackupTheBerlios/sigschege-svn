@@ -127,6 +127,13 @@ public:
    */
   qreal calcSnapTime(qreal xpos, bool isWave = false);
 
+  /** @brief This method calculates the snap time
+   *
+   * @param time A time.
+   * @return A time that is a multipl of the snap time.
+   */
+  qreal calcSnapTimeT(qreal time);
+
   /** @brief This method returns the current snap time.
    *
    */
@@ -136,6 +143,7 @@ public:
    *
    */
   qreal getSnapDeviation() { return m_snapDeviation; }
+
 
 protected:
 

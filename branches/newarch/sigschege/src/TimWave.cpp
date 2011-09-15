@@ -164,7 +164,7 @@ void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
     time += getLayoutData()->get_start_time();
 
     // snap to the next snap time (if enabled)
-    qreal snap_time = calcSnapTime(event->pos().x(),true);
+    qreal snap_time = calcSnapTimeT(time);
 
     TimEventTool* et = getScene()->getSignalManager()->getCurrent();
 
@@ -173,13 +173,13 @@ void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
 
       TimEventSet_t::const_iterator ev;
       if (!m_event_set.empty()) {
-        ev = m_event_set.upper_bound(TimEvent(time));
+        ev = m_event_set.upper_bound(TimEvent(snap_time));
         if(ev != m_event_set.begin())
           ev--;
         current_painter = ev->getEventPainter();
       }
 
-      getScene()->pushCmd(new TimCmdAddEvent(this, time, et->getEventPainter(current_painter), 0.0, 0.0));
+      getScene()->pushCmd(new TimCmdAddEvent(this, snap_time, et->getEventPainter(current_painter), 0.0, 0.0));
 
     }
 

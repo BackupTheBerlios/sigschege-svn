@@ -72,6 +72,7 @@ TimingScene* TimMember::getScene() const {
 
 qreal TimMember::calcSnapTime(qreal xpos, bool isWave) {
 
+
   TimLayoutData *ld = getLayoutData();
 
   if (!isWave)
@@ -83,6 +84,9 @@ qreal TimMember::calcSnapTime(qreal xpos, bool isWave) {
 
   double time = ((end - start) / width) * xpos;
 
+  if(ld->get_snap_delta_time() <= 0.0)
+    return time;
+
   double lower = ld->get_snap_delta_time() * floor( time / ld->get_snap_delta_time() );
 
   if ( (time-lower) < (ld->get_snap_delta_time()/2.0) )
@@ -93,4 +97,19 @@ qreal TimMember::calcSnapTime(qreal xpos, bool isWave) {
   m_snapDeviation = (time - m_snapTime) * 2.0 / ld->get_snap_delta_time();
 
   return m_snapTime;
+}
+
+qreal TimMember::calcSnapTimeT(qreal time) {
+
+  double snap_delta_time = getLayoutData()->get_snap_delta_time();
+
+  if(snap_delta_time <= 0.0)
+    return time;
+
+  double lower = snap_delta_time * floor( time / snap_delta_time );
+
+  if( (time - lower) >= (snap_delta_time / 2.0))
+    lower += snap_delta_time;
+
+  return lower;
 }

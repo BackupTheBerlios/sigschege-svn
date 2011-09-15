@@ -21,44 +21,18 @@
 // #############################################################################
 //
 
-#include "TimEventInvert.h"
-#include "TimEvent.h"
-#include "TimWave.h"
+#include "TimEventToolInvert.h"
 
-TimEventInvert::TimEventInvert(TimEvent *parent) :
-  TimEventType(parent) {
-  setLevel(Invert);
+TimEventToolInvert::TimEventToolInvert(TimEventPainter *high_painter, TimEventPainter *low_painter)  : m_high_painter(high_painter), m_low_painter(low_painter) {
 }
 
-void TimEventInvert::paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+TimEventToolInvert::~TimEventToolInvert() {
+}
 
-// TODO
-
-//  // draw edge
-//  if (event->getPrev() != NULL) {
-//    EventLevel level = event->getPrev()->getEventType()->getLevel();
-//    switch (level) {
-//    case (High):
-//      painter->drawLine(0, 15, 0, 35);
-//      break;
-//    case (Low):
-//      painter->drawLine(0, 15, 0, 35);
-//      break;
-//    }
-//  }
-//
-//  // draw signal
-//  unsigned int signal_length;
-//  if (event->getNext() == NULL) {
-//    signal_length = event->getWave()->getLayoutData()->get_col_1_width()
-//        - event->x();
-//  } else {
-//    signal_length = event->getNext()->x() - event->x();
-//  }
-//
-//  QRectF rct(0, 0, signal_length, 50);
-//
-//  // painter->fillRect(rct, QColor(100,255,100,100)); // fill the whole boundary rect
-//  painter->drawLine(0, 35, signal_length, 35);
+TimEventPainter* TimEventToolInvert::getEventPainter(TimEventPainter* prev) {
+  if(prev == m_high_painter)
+    return m_low_painter;
+  else
+    return m_high_painter;
 }
 

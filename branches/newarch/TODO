@@ -18,7 +18,7 @@ Features:
 - Diagram Settings Dialog
 - Documentation
 - Misc
-  ~ Refactor TimEventType(s) to tools
+  + Refactor TimEventType(s) to tools
   + Refactor TimEvent painting
   - Improve dia settings dialog
   - use qt designer for user interface

@@ -23,39 +23,25 @@
 //
 
 
-#ifndef TIMEVENTHIGH_H_
-#define TIMEVENTHIGH_H_
+#ifndef TIMEVENTTOOLHIGH_H_
+#define TIMEVENTTOOLHIGH_H_
 
-#include "TimEventType.h"
+#include "TimEventTool.h"
 
 class TimEvent;
+class TimEventPainter;
 
-/** @brief High signal specialisation of @c TimEventType class
- *
- * This class is a specialisation of @c TimEventType class which implements the behaviour of a "high" signal.
- *
- */
-class TimEventHigh: public TimEventType {
+class TimEventToolHigh: public TimEventTool {
 
 public:
 
-  /** @brief The class constructor
-   *
-   * @param parent The TimEvent that owns this event type. Default: 0.
-   */
-  TimEventHigh(TimEvent *parent = 0);
+  TimEventToolHigh(TimEventPainter *painter);
+  virtual ~TimEventToolHigh();
 
-  /** @brief Type specific paint implementation
-   *
-   * This function implements the low signal type paint implementation.
-   *
-   * @param event A pointer to the owning event.
-   * @param painter Painter context
-   * @param option Style options
-   * @param widget  The widget argument is optional. If provided, it points to the widget that is being painted on; otherwise, it is 0. For cached painting, widget is always 0.
-   */
-  virtual void
-      paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+  virtual TimEventPainter* getEventPainter(TimEventPainter* prev);
+
+private:
+  TimEventPainter *m_painter;
 
 };
-#endif /* TIMEVENTHIGH_H_ */
+#endif /* TIMEVENTTOOLHIGH_H_ */

@@ -22,41 +22,14 @@
 // #############################################################################
 //
 
-#include "TimEventHigh.h"
-#include "TimEvent.h"
-#include "TimWave.h"
+#include "TimEventToolHigh.h"
 
-TimEventHigh::TimEventHigh(TimEvent *parent) :
-  TimEventType(parent) {
-  setLevel(High);
+TimEventToolHigh::TimEventToolHigh(TimEventPainter *painter) : m_painter(painter) {
 }
 
-void TimEventHigh::paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-// TODO
-//  if (event->getPrev() != NULL) {
-//    EventLevel level = event->getPrev()->getEventType()->getLevel();
-//    switch (level) {
-//    case (High):
-//      painter->drawLine(0, 20, 0, 15);
-//      break;
-//    case (Low):
-//      painter->drawLine(0, 35, 0, 15);
-//      break;
-//    }
-//  }
-//
-//  // draw signal
-//  unsigned int signal_length;
-//  if (event->getNext() == NULL || event->getNext()->getTime()>event->getWave()->getLayoutData()->get_end_time()) {
-//    signal_length = event->getWave()->getLayoutData()->get_col_1_width()
-//        - event->pos().x();
-//  } else {
-//    signal_length = event->getNext()->x() - event->x();
-//  }
-//
-//  QRectF rct(0, 0, signal_length, 50);
-//
-//  // painter->fillRect(rct, QColor(255,100,100,100)); // fill the whole boundary rect
-//  painter->drawLine(0, 15, signal_length, 15);
+TimEventToolHigh::~TimEventToolHigh() {
 }
 
+TimEventPainter* TimEventToolHigh::getEventPainter(TimEventPainter* prev) {
+  return m_painter;
+}

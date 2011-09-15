@@ -25,20 +25,21 @@
 
 #include "TimSignalManager.h"
 #include "TimEvent.h"
-#include "TimEventType.h"
-#include "TimEventHigh.h"
-#include "TimEventLow.h"
-#include "TimEventInvert.h"
+#include "TimEventTool.h"
+#include "TimEventToolHigh.h"
+#include "TimEventToolLow.h"
+#include "TimEventToolInvert.h"
 
 TimSignalManager::TimSignalManager(QObject * parent) : QObject(parent) {
-  m_current = NULL;
-  m_high    = new TimEventHigh();
-  m_low     = new TimEventLow();
-  m_invert  = new TimEventInvert();
 
-  // FIXME : make real tools
   p_high = new TimEventPainterHigh();
   p_low  = new TimEventPainterLow();
+
+  m_current = NULL;
+  m_high    = new TimEventToolHigh(p_high);
+  m_low     = new TimEventToolLow(p_low);
+  m_invert  = new TimEventToolInvert(p_high, p_low);
+
 }
 
 TimSignalManager::~TimSignalManager() {
@@ -50,7 +51,7 @@ TimSignalManager::~TimSignalManager() {
   delete p_low;
 }
 
-TimEventType* TimSignalManager::getCurrent() {
+TimEventTool* TimSignalManager::getCurrent() {
   return m_current;
 }
 

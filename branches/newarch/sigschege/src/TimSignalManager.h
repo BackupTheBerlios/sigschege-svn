@@ -33,10 +33,9 @@
 #include "TimEventPainterLow.h"
 #include "TimEventPainterHigh.h"
 
-class TimEventType;
-class TimEventLow;
-class TimEventHigh;
-class TimEventInvert;
+class TimEventToolLow;
+class TimEventToolHigh;
+class TimEventToolInvert;
 
 class TimSignalManager : public QObject {
 
@@ -51,9 +50,9 @@ public:
 private:
   TimEventTool *m_current;
 
-  TimEventHigh    *m_high;
-  TimEventLow     *m_low;
-  TimEventInvert  *m_invert;
+  TimEventToolHigh    *m_high;
+  TimEventToolLow     *m_low;
+  TimEventToolInvert  *m_invert;
 
 public slots:
   void selectNone(bool checked);
@@ -61,8 +60,8 @@ public slots:
   void selectLow(bool checked);
   void selectInvert(bool checked);
 
-  // FIXME : make real tools
-public:
+  // TODO : Move to a Painter Manager
+private:
   TimEventPainterHigh *p_high;
   TimEventPainterLow  *p_low;
 };

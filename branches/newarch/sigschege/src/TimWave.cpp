@@ -25,9 +25,8 @@
 #include <utility>
 
 #include "TimWave.h"
+#include "TimEventTool.h"
 #include "TimCmdAddEvent.h"
-
-#include "TimEventType.h"
 
 TimWave::TimWave(TimMember *parent, TimingScene *scene) : TimMember(parent, scene) {
 
@@ -62,7 +61,6 @@ void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
     // Process the first event
 
-    // TimEventSet_t::const_iterator ev = m_event_set.begin();
     TimEventSet_t::const_iterator ev = m_event_set.lower_bound(TimEvent(start_time));
 
     // check if we have to draw something before this event.
@@ -165,21 +163,20 @@ void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
 
     time += getLayoutData()->get_start_time();
 
-    TimEventType* et = getScene()->getSignalManager()->getCurrent();
+    TimEventTool* et = getScene()->getSignalManager()->getCurrent();
 
     if(et) {
+      TimEventPainter *current_painter = 0;
 
-      // FIXME : make real tools
-
-      switch((TimEventPainter::EventLevel)et->getLevel())
-      {
-      case TimEventPainter::Low:
-        getScene()->pushCmd(new TimCmdAddEvent(this, time, getScene()->getSignalManager()->p_low, 0.0, 0.0));
-        break;
-      case TimEventPainter::High:
-        getScene()->pushCmd(new TimCmdAddEvent(this, time, getScene()->getSignalManager()->p_high, 0.0, 0.0));
-        break;
+      TimEventSet_t::const_iterator ev;
+      if (!m_event_set.empty()) {
+        ev = m_event_set.upper_bound(TimEvent(time));
+        if(ev != m_event_set.begin())
+          ev--;
+        current_painter = ev->getEventPainter();
       }
+
+      getScene()->pushCmd(new TimCmdAddEvent(this, time, et->getEventPainter(current_painter), 0.0, 0.0));
 
     }
 

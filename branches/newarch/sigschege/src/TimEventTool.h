@@ -5,8 +5,7 @@
 
 class TimEventTool {
 public:
-  virtual TimEventPainter* getEventPainter() = 0 ;
-
+  virtual TimEventPainter* getEventPainter(TimEventPainter* prev) = 0 ;
 };
 
 #endif /* TIMEVENTTOOL_H_ */

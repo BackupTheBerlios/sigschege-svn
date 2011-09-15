@@ -7,7 +7,7 @@ class TimEventPainter {
 public:
 
   enum EventLevel {
-    None, Low, High, Invert
+    None, Low, High
   };
 
 

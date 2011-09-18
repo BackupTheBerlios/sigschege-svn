@@ -1,1 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE sigschege><sigschege version="0.1"><timescale><primarytext><![CDATA[Time]]></primarytext></timescale><signal><primarytext><![CDATA[Test]]></primarytext></signal><signal><primarytext><![CDATA[Test]]></primarytext></signal><signal><primarytext><![CDATA[Test]]></primarytext></signal></sigschege>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sigschege>
+<sigschege version="0.1">
+  <timescale>
+    <primarytext>
+      <![CDATA[Time]]>
+    </primarytext>
+  </timescale>
+  <signal>
+    <primarytext>
+      <![CDATA[Test]]>
+    </primarytext>
+  </signal>
+  <signal>
+    <primarytext>
+      <![CDATA[Test]]>
+  </primarytext>
+  </signal>
+  <signal>
+    <primarytext>
+      <![CDATA[Test]]>
+    </primarytext>
+  </signal>
+</sigschege>

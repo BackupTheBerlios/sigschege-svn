@@ -1,4 +1,5 @@
 #include "TimEventPainterHigh.h"
+#include "SSGWriter.h"
 
 TimEventPainterHigh::TimEventPainterHigh() {
   m_event_level = TimEventPainter::High;
@@ -28,4 +29,10 @@ void TimEventPainterHigh::paint(QPainter *painter, const QStyleOptionGraphicsIte
   // paint hold and level parts
   painter->drawLine(ev_abs_event, 25, ev_abs_hold, 15);
   painter->drawLine(ev_abs_hold, 15, ev_abs_end, 15);
+}
+
+void TimEventPainterHigh::SSGWrite(SSGWriter *writer) {
+  writer->writeStartElement("painter");
+  writer->writeCharacters("low");
+  writer->writeEndElement();
 }

@@ -31,6 +31,7 @@
 class QPainter;
 class QStyleOptionGraphicsItem;
 class QWidget;
+class SSGWriter;
 
 class TimEvent {
 
@@ -58,6 +59,16 @@ public:
   void setEventPainter(TimEventPainter * painter);
 
   bool operator < (const TimEvent & rhs) const;
+
+  /** @brief Write XML code for this class.
+   *
+   * This function writes the XML code for this object while saving a Sigschege XML file.
+   * It is a pure virtual function which must be implemented by the derived classes (TimSignal,
+   * TimScale, ...)
+   *
+   * @param writer Pointer to the SSGWriter object, needed for callback.
+   */
+  virtual void SSGWrite(SSGWriter *writer) const;
 
 private:
   double m_setup_time;

@@ -27,6 +27,7 @@
 #include "TimWave.h"
 #include "TimEventTool.h"
 #include "TimCmdAddEvent.h"
+#include "SSGWriter.h"
 
 TimWave::TimWave(TimMember *parent, TimingScene *scene) : TimMember(parent, scene) {
 
@@ -190,4 +191,13 @@ void TimWave::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
 
 void TimWave::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event) {
 
+}
+
+void TimWave::SSGWrite(SSGWriter *writer) {
+
+  writer->writeStartElement("wave");
+  for(TimEventSet_t::iterator it = m_event_set.begin() ; it != m_event_set.end(); ++it) {
+    (*it).SSGWrite(writer);
+  }
+  writer->writeEndElement();
 }

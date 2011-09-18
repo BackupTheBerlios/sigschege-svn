@@ -42,12 +42,12 @@ bool SSGReader::read(QIODevice *device)
       readNext();
 
       if (isStartElement()) {
-	if (name() == "sigschege" && attributes().value("version") == "0.1")
-	  readSigschege();
-	else
-	  raiseError(QObject::tr("The file is not a Sigschege version 0.1 file."));
+        if (name() == "sigschege" && attributes().value("version") == "0.1")
+          readSigschege();
+        else
+          raiseError(QObject::tr("The file is not a Sigschege version 0.1 file."));
+        }
       }
-    }
 
     return !error();
 }
@@ -67,8 +67,6 @@ void SSGReader::readSigschege()
                 readSignal();
             else if (name() == "timescale")
                 readTimeScale();
-//            else
-//              readUnknownElement();
         }
     }
 }
@@ -87,10 +85,11 @@ void SSGReader::readSignal()
         if (isStartElement()) {
             if (name() == "primarytext")
                 title = readElementText();
-	}
+        }
     }
     TimSignal *new_signal = scene->addTimSignal();
     new_signal->setText(title);
+
 }
 
 void SSGReader::readTimeScale()
@@ -112,6 +111,4 @@ void SSGReader::readTimeScale()
     TimScale *new_scale = new TimScale(0, scene);
     new_scale->setText(title);
     scene->addTimListItem(-1, new_scale);
-
-    //scene->addTimTimeScale();
 }

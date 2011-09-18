@@ -24,7 +24,7 @@
 
 
 #include "TimEvent.h"
-
+#include "SSGWriter.h"
 
 TimEvent::TimEvent(double event, TimEventPainter *painter) {
   setEventPainter(painter);
@@ -88,4 +88,28 @@ double TimEvent::getAbsSetupTime() const {
 
 double TimEvent::getAbsHoldTime() const {
   return getEventTime() + getHoldTime();
+}
+void TimEvent::SSGWrite(SSGWriter *writer) const {
+
+  writer->writeStartElement("event");
+
+  writer->writeStartElement("setup_time");
+  writer->writeCharacters(QString::number(m_setup_time));
+  writer->writeEndElement();
+
+  writer->writeStartElement("hold_time");
+  writer->writeCharacters(QString::number(m_hold_time));
+  writer->writeEndElement();
+
+  writer->writeStartElement("event_time");
+  writer->writeCharacters(QString::number(m_event_time));
+  writer->writeEndElement();
+
+  m_event_painter->SSGWrite(writer);
+
+  writer->writeEndElement();
+
+
+  TimEventPainter  *m_event_painter;
+
 }

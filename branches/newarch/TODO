@@ -6,7 +6,7 @@ Features:
   - select events
   - delete events
   - move events
-  - Reimplement snap feature
+  ~ Reimplement snap feature
   - move singal
   - Implement waveform invert tool
   - Implement bus waveforms

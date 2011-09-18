@@ -89,6 +89,16 @@ public:
    */
   bool rmTimEvent(double time);
 
+  /** @brief Write XML code for this class.
+   *
+   * This function writes the XML code for this object while saving a Sigschege XML file.
+   * It is a pure virtual function which must be implemented by the derived classes (TimSignal,
+   * TimScale, ...)
+   *
+   * @param writer Pointer to the SSGWriter object, needed for callback.
+   */
+  virtual void SSGWrite(SSGWriter *writer);
+
 protected:
 
   /** @brief Get s hint of the required waveform size.

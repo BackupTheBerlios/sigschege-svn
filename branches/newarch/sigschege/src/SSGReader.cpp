@@ -27,6 +27,7 @@
 #include "TimScale.h"
 #include "TimingScene.h"
 #include "SSGReader.h"
+#include "TimEventPainter.h"
 
 SSGReader::SSGReader(TimingScene *tscene)
 {
@@ -75,7 +76,8 @@ void SSGReader::readSignal()
 {
     Q_ASSERT(isStartElement() && name() == "signal");
 
-    QString title = "";
+    TimSignal *new_signal = scene->addTimSignal();
+
     while (!atEnd()) {
         readNext();
 
@@ -84,12 +86,51 @@ void SSGReader::readSignal()
 
         if (isStartElement()) {
             if (name() == "primarytext")
-                title = readElementText();
+              new_signal->setText(readElementText());
+            else if (name() == "wave") {
+              readWave(new_signal);
+            }
         }
     }
-    TimSignal *new_signal = scene->addTimSignal();
-    new_signal->setText(title);
+}
 
+void SSGReader::readWave(TimSignal *signal) {
+
+  Q_ASSERT(isStartElement() && name() == "wave");
+
+  while(!atEnd()) {
+    readNext();
+
+    if(isEndElement())
+      break;
+
+    if(isStartElement()) {
+      if (name() == "event") {
+        double  setup_time;
+        double  hold_time;
+        double  event_time;
+        QString painter;
+        while(!atEnd()) {
+          readNext();
+          if(isEndElement())
+            break;
+          if(isStartElement()) {
+            if (name() == "setup_time") {
+              setup_time = QString(readElementText()).toDouble();
+            } else if (name() == "hold_time") {
+              hold_time = QString(readElementText()).toDouble();
+            } else if (name() == "event_time") {
+              event_time = QString(readElementText()).toDouble();
+            } else if (name() == "painter") {
+              painter = readElementText();
+            }
+          }
+        }
+        // create TimEvent
+        signal->addTimEvent(event_time, scene->getSignalManager()->getTimEventPainter(painter), setup_time, hold_time);
+      }
+    }
+  }
 }
 
 void SSGReader::readTimeScale()

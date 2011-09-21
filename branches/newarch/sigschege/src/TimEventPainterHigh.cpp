@@ -33,6 +33,6 @@ void TimEventPainterHigh::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 void TimEventPainterHigh::SSGWrite(SSGWriter *writer) {
   writer->writeStartElement("painter");
-  writer->writeCharacters("low");
+  writer->writeCharacters("high");
   writer->writeEndElement();
 }

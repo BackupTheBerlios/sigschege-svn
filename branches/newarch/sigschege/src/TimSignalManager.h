@@ -30,6 +30,7 @@
 #include <QtGui>
 
 #include "TimEventTool.h"
+#include "TimEventPainter.h"
 #include "TimEventPainterLow.h"
 #include "TimEventPainterHigh.h"
 
@@ -46,6 +47,8 @@ public:
   ~TimSignalManager();
 
   TimEventTool* getCurrent();
+
+  TimEventPainter* getTimEventPainter(const QString & name);
 
 private:
   TimEventTool *m_current;

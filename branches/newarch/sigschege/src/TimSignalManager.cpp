@@ -74,3 +74,13 @@ void TimSignalManager::selectInvert(bool checked) {
   if(checked)
     m_current = m_invert;
 }
+
+TimEventPainter * TimSignalManager::getTimEventPainter(const QString & name) {
+  if(name == "low")
+    return p_low;
+  else if(name == "high")
+    return p_high;
+
+  qDebug() << name;
+  return NULL;
+}

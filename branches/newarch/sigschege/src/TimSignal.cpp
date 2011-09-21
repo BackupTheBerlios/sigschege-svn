@@ -108,3 +108,7 @@ QUndoCommand* TimSignal::createDeleteCmd() {
 void TimSignal::timeRangeChange() { 
   m_wave->timeRangeChange();
 }
+
+bool TimSignal::addTimEvent(double time, TimEventPainter *painter, double setup, double hold) {
+  m_wave->addTimEvent(time, painter,setup, hold);
+}

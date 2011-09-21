@@ -21,7 +21,7 @@
         <setup_time>0</setup_time>
         <hold_time>0</hold_time>
         <event_time>20</event_time>
-        <painter>low</painter>
+        <painter>high</painter>
       </event>
       <event>
         <setup_time>0</setup_time>

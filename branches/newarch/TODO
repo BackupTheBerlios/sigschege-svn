@@ -1,6 +1,6 @@
 Features:
 - Load/Save/Export
-  - Reimplment save and load
+  + Reimplment save and load
 - Printing
 - Designing
   - select events
@@ -8,7 +8,7 @@ Features:
   - move events
   ~ Reimplement snap feature
   - move singal
-  - Implement waveform invert tool
+  + Implement waveform invert tool
   - Implement bus waveforms
   - drawing of setup/hold when start time is between them
   - Copy waveform

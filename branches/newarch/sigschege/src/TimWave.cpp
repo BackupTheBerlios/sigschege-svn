@@ -89,7 +89,8 @@ void TimWave::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
       ev_abs_event = (unsigned int) (ee * scale_factor);
       ev_abs_hold  = (unsigned int) (eh * scale_factor);
 
-      ev->getEventPainter()->paint(painter, option, widget, prev_level, ev_abs_event, ev_abs_setup, ev_abs_hold, ev_abs_end);
+      ev_painter = ev->getEventPainter();
+      ev_painter->paint(painter, option, widget, prev_level, ev_abs_event, ev_abs_setup, ev_abs_hold, ev_abs_end);
 
       // set values for next event
       ++ev;

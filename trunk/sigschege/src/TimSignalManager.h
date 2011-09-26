@@ -29,11 +29,14 @@
 
 #include <QtGui>
 
-class TimEvent;
-class TimEventType;
-class TimEventLow;
-class TimEventHigh;
-class TimEventInvert;
+#include "TimEventTool.h"
+#include "TimEventPainter.h"
+#include "TimEventPainterLow.h"
+#include "TimEventPainterHigh.h"
+
+class TimEventToolLow;
+class TimEventToolHigh;
+class TimEventToolInvert;
 
 class TimSignalManager : public QObject {
 
@@ -43,24 +46,27 @@ public:
   TimSignalManager(QObject * parent = 0);
   ~TimSignalManager();
 
-  TimEventType* getCurrent();
+  TimEventTool* getCurrent();
 
-  TimEventType* getDefault();
+  TimEventPainter* getTimEventPainter(const QString & name);
 
 private:
-  TimEventType *m_current;
+  TimEventTool *m_current;
 
-  TimEvent *m_event;
-
-  TimEventHigh *m_high;
-  TimEventLow  *m_low;
-  TimEventInvert  *m_invert;
+  TimEventToolHigh    *m_high;
+  TimEventToolLow     *m_low;
+  TimEventToolInvert  *m_invert;
 
 public slots:
   void selectNone(bool checked);
   void selectHigh(bool checked);
   void selectLow(bool checked);
   void selectInvert(bool checked);
+
+  // TODO : Move to a Painter Manager
+private:
+  TimEventPainterHigh *p_high;
+  TimEventPainterLow  *p_low;
 };
 
 #endif /* TIMSIGNALMANGER_H_ */

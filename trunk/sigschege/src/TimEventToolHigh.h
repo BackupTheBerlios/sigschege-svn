@@ -1,5 +1,5 @@
 // -*- c++ -*-
-// TimCmdAddEvent.h
+// TimEventHigh.h
 // Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
@@ -23,35 +23,25 @@
 //
 
 
+#ifndef TIMEVENTTOOLHIGH_H_
+#define TIMEVENTTOOLHIGH_H_
 
-#ifndef TIMCMDADDEVENT_H_
-#define TIMCMDADDEVENT_H_
+#include "TimEventTool.h"
 
-#include <QtGui>
+class TimEvent;
+class TimEventPainter;
 
-#include "TimEvent.h"
-#include "TimEventPainter.h"
-
-class TimWave;
-
-
-class TimCmdAddEvent : public QUndoCommand {
+class TimEventToolHigh: public TimEventTool {
 
 public:
 
-  TimCmdAddEvent(TimWave *wave, double time, TimEventPainter *painter, double setup, double hold);
-  virtual ~TimCmdAddEvent();
+  TimEventToolHigh(TimEventPainter *painter);
+  virtual ~TimEventToolHigh();
 
-  virtual void undo();
-  virtual void redo();
+  virtual TimEventPainter* getEventPainter(TimEventPainter* prev);
 
 private:
-  TimWave         *m_wave;
-  double           m_time;
-  double           m_setup;
-  double           m_hold;
   TimEventPainter *m_painter;
+
 };
-
-
-#endif /* TIMCMDADDEVENT_H_ */
+#endif /* TIMEVENTTOOLHIGH_H_ */

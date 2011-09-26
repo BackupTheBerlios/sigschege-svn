@@ -1,5 +1,4 @@
 // -*- c++ -*-
-// TimEventType.cpp
 // Copyright 2009 by ingo
 //
 // This file is part of Sigschege - Signal Schedule Generator
@@ -22,28 +21,18 @@
 // #############################################################################
 //
 
-#include "TimEventType.h"
-#include "TimEvent.h"
+#include "TimEventToolInvert.h"
 
-TimEventType::TimEventType(TimEvent* parent) {
-  m_parent = parent;
+TimEventToolInvert::TimEventToolInvert(TimEventPainter *high_painter, TimEventPainter *low_painter)  : m_high_painter(high_painter), m_low_painter(low_painter) {
 }
 
-TimEventType::~TimEventType() {
-
+TimEventToolInvert::~TimEventToolInvert() {
 }
 
-void TimEventType::setParent(TimEvent *parent) {
-  m_parent = parent;
+TimEventPainter* TimEventToolInvert::getEventPainter(TimEventPainter* prev) {
+  if(prev == m_high_painter)
+    return m_low_painter;
+  else
+    return m_high_painter;
 }
 
-void TimEventType::paint(TimEvent *event, QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-}
-
-void TimEventType::setLevel(EventLevel level) {
-  m_level = level;
-}
-
-EventLevel TimEventType::getLevel() {
-  return m_level;
-}

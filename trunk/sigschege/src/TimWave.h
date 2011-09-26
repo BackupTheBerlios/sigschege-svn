@@ -1,38 +1,39 @@
 // -*- c++ -*-
 // TimWave.h
-// Copyright 2009 by ingo
+// Copyright 2011 by Ingo Hinrichs
 //
 // This file is part of Sigschege - Signal Schedule Generator
-// 
+//
 // #############################################################################
 //
 // Sigschege is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
-// 
+//
 // Sigschege is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
-// along with the Sigschege sources; see the file COPYING.  
+// along with the Sigschege sources; see the file COPYING.
 //
 // #############################################################################
 //
 
-
-#ifndef TIMWAVE_H_
-#define TIMWAVE_H_
+#ifndef TIMWAVEFORM_H_
+#define TIMWAVEFORM_H_
 
 #include <QtGui>
+
 #include "TimMember.h"
+
 #include "TimingScene.h"
 #include "TimLayoutData.h"
-#include "TimEvent.h"
 
-class TimSignal;
+#include "TimEvent.h"
+#include "TimEventPainter.h"
 
 /** @brief Waveform object of a signals
  */
@@ -65,14 +66,7 @@ public:
    * @param option Pointer to the paint options.
    * @param widget Pointer to the drawing widget.
    */
-  virtual void
-      paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-
-  /** @brief Set the waveform geometry
-   *
-   * @param rect New geometry.
-   */
-  virtual void setGeometry(const QRectF & rect);
+  virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
   /** @brief Get a pointer to the layout data object.
    *
@@ -80,12 +74,30 @@ public:
    */
   TimLayoutData* getLayoutData() const;
 
-  TimingScene* getScene() const;
+  /** @brief Adds a new timing event
+   *
+   * @param painter Pointer to the painter for this event
+   * @param time Time of the new timing event
+   * @return True on success, false otherwise
+   */
+  bool addTimEvent(double time, TimEventPainter *painter, double setup, double hold);
 
-  virtual void timeRangeChange();
+  /** Removes the Timing event at time
+   *
+   * @param time Time of the timing event
+   * @return True on success, false otherwise
+   */
+  bool rmTimEvent(double time);
 
-  EventLevel getLevel(qreal time);
-
+  /** @brief Write XML code for this class.
+   *
+   * This function writes the XML code for this object while saving a Sigschege XML file.
+   * It is a pure virtual function which must be implemented by the derived classes (TimSignal,
+   * TimScale, ...)
+   *
+   * @param writer Pointer to the SSGWriter object, needed for callback.
+   */
+  virtual void SSGWrite(SSGWriter *writer);
 
 protected:
 
@@ -95,13 +107,16 @@ protected:
    * @param constraint Specifies existing area constrains.
    * @return Size hint.
    */
-  virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint =
-      QSizeF()) const;
+  virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
 
-  void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+  void mousePressEvent ( QGraphicsSceneMouseEvent * event );
+
+  void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event);
 
 private:
-  TimEvent *m_TimEvent;
+
+  TimEventSet_t m_event_set;
+
 };
 
-#endif /* TIMWAVE_H_ */
+#endif /* TIMWAVEFORM_H_ */

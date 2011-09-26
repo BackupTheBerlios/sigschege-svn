@@ -25,30 +25,34 @@
 
 #include "TimSignalManager.h"
 #include "TimEvent.h"
-#include "TimEventType.h"
-#include "TimEventHigh.h"
-#include "TimEventLow.h"
-#include "TimEventInvert.h"
+#include "TimEventTool.h"
+#include "TimEventToolHigh.h"
+#include "TimEventToolLow.h"
+#include "TimEventToolInvert.h"
 
 TimSignalManager::TimSignalManager(QObject * parent) : QObject(parent) {
+
+  p_high = new TimEventPainterHigh();
+  p_low  = new TimEventPainterLow();
+
   m_current = NULL;
-  m_high = new TimEventHigh();
-  m_low  = new TimEventLow();
-  m_invert  = new TimEventInvert();
+  m_high    = new TimEventToolHigh(p_high);
+  m_low     = new TimEventToolLow(p_low);
+  m_invert  = new TimEventToolInvert(p_high, p_low);
+
 }
 
 TimSignalManager::~TimSignalManager() {
-  if(m_high) delete m_high;
-  if(m_low) delete m_low;
+  if(m_high)   delete m_high;
+  if(m_low)    delete m_low;
   if(m_invert) delete m_invert;
+
+  delete p_high;
+  delete p_low;
 }
 
-TimEventType* TimSignalManager::getCurrent() {
+TimEventTool* TimSignalManager::getCurrent() {
   return m_current;
-}
-
-TimEventType* TimSignalManager::getDefault() {
-  return m_low;
 }
 
 void TimSignalManager::selectNone(bool checked) {
@@ -69,4 +73,14 @@ void TimSignalManager::selectLow(bool checked) {
 void TimSignalManager::selectInvert(bool checked) {
   if(checked)
     m_current = m_invert;
+}
+
+TimEventPainter * TimSignalManager::getTimEventPainter(const QString & name) {
+  if(name == "low")
+    return p_low;
+  else if(name == "high")
+    return p_high;
+
+  qDebug() << name;
+  return NULL;
 }

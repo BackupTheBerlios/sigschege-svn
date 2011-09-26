@@ -99,7 +99,16 @@ public:
    */
   void set_col_1_width(unsigned int width);
 
+  /** @brief Returns the scale factor
+   * @return The scale factor
+   */
+  double get_scale_factor() const;
+
 private:
+
+  /** @brief Recalculates the m_scale_factor
+   */
+  void updateScaleFactor();
 
   /** @brief start time of wave form
    */
@@ -124,6 +133,12 @@ private:
   /** @brief Width of wave form (second col)
    */
   unsigned int m_col_1_width;
+
+  /** @brief Defines the scale factor for this diagram.
+   *
+   * The scale factor is calculated (m_end_time - m_start_time) / m_col_1_width
+   */
+  double m_scale_factor;
 
 
 };

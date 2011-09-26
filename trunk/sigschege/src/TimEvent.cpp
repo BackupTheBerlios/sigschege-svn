@@ -22,209 +22,94 @@
 // #############################################################################
 //
 
+
 #include "TimEvent.h"
-#include "TimWave.h"
-#include "TimingScene.h"
-#include "TimEventLow.h"
-#include "TimEventHigh.h"
-#include "TimCmdAddEvent.h"
-#include "TimCmdRmEvent.h"
-#include <iostream>
-using namespace std;
+#include "SSGWriter.h"
 
-TimEvent::TimEvent(TimWave *parent, TimingScene *scene, TimEventType *type) :
-  TimMember(parent, scene), m_prev(NULL), m_next(NULL), m_Wave(parent), m_EventType(type),
-  m_EventTime(0.0) {
+TimEvent::TimEvent(double event, TimEventPainter *painter) {
+  setEventPainter(painter);
+  setEventTime(event);
 
-  setStdPos();
-
-  setFlag(ItemIsSelectable);
+  setSetupTime(0.0);
+  setHoldTime(0.0);
 }
 
-TimEvent::TimEvent(TimWave *parent, TimingScene *scene, TimEventType *type, double time) :
-  TimMember(parent, scene), m_prev(NULL), m_next(NULL), m_Wave(parent), m_EventType(type),
-  m_EventTime(time) {
+TimEvent::TimEvent(double event, TimEventPainter *painter, double setup, double hold) {
+  setEventPainter(painter);
+  setEventTime(event);
 
-  setStdPos();
-
-  setFlag(ItemIsSelectable);
-
+  setSetupTime(setup);
+  setHoldTime(hold);
 }
 
 TimEvent::~TimEvent() {
-}
-
-void TimEvent::insertEvent(TimEvent *node) {
-
-  prepareGeometryChange();
-
-  /*
-   +----+     +----+
-   |    |-----|    |
-   |    |-----|    |
-   +----+     +----+
-   */
-
-  node->setNext(getNext());
-  node->setPrev(this);
-
-  if (getNext() != NULL) {
-    getNext()->setPrev(node);
-  }
-
-  setNext(node);
-
-  node->setParentItem(getWave());
-}
-
-TimEvent* TimEvent::removeEvent() {
-
-  prepareGeometryChange();
-
-  TimEvent* next = getNext();
-
-  if (next != NULL) {
-
-    // remove next from list
-    getNext()->setPrev(this);
-    setNext(next->getNext());
-
-    next->setPrev(NULL);
-    next->setNext(NULL);
-
-    getWave()->getScene()->removeItem(next);
-
-    //next->setParentItem(NULL);
-
-  }
-
-  return next;
-}
-
-void TimEvent::setNext(TimEvent *next) {
-  m_next = next;
-}
-
-void TimEvent::setPrev(TimEvent *prev) {
-  m_prev = prev;
-}
-
-TimEvent* TimEvent::getNext() const {
-  return m_next;
-}
-
-TimEvent* TimEvent::getPrev() const {
-  return m_prev;
-}
-
-unsigned int TimEvent::calcXPos(double time) const {
-  double start_time = getWave()->getLayoutData()->get_start_time();
-  double end_time = getWave()->getLayoutData()->get_end_time();
-  unsigned int width = getWave()->getLayoutData()->get_col_1_width();
-
-  double diff = end_time - start_time;
-
-  double scale = diff / width;
-
-  unsigned int x_pos = (unsigned int) ((time - start_time) / scale);
-
-  return x_pos;
 
 }
 
-TimWave* TimEvent::getWave() const {
-  return m_Wave;
+double TimEvent::getSetupTime() const {
+  return m_setup_time;
 }
 
-void TimEvent::setEventType(TimEventType *type) {
-  m_EventType = type;
+void TimEvent::setSetupTime(double time) {
+  m_setup_time = time;
 }
 
-TimEventType* TimEvent::getEventType() {
-  return m_EventType;
+double TimEvent::getHoldTime() const {
+  return m_hold_time;
 }
 
-QSizeF TimEvent::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const {
-  switch (which) {
-  case Qt::MinimumSize:
-    return QSizeF(200, 50);
-  case Qt::PreferredSize:
-    return QSizeF(200, 50);
-  case Qt::MaximumSize:
-    return QSizeF(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-  default:
-    qWarning("r::TimWave::sizeHint(): Don't know how to handle the value of 'which'");
-    break;
-  }
-  return constraint;
-
+void TimEvent::setHoldTime(double time) {
+  m_hold_time = time;
 }
 
-void TimEvent::setGeometry(const QRectF & rect) {
-
-  setStdPos();
+double TimEvent::getEventTime() const {
+  return m_event_time;
 }
 
-QRectF TimEvent::boundingRect() const {
-
-  TimEvent *next = getNext();
-
-  if (next == NULL) {
-    return QRectF(0, 0, getWave()->getLayoutData()->get_col_1_width() - x(), 50);
-  } else {
-    return QRectF(0, 0, next->x() - x(), 50);
-  }
+void TimEvent::setEventTime(double time) {
+  m_event_time = time;
 }
 
-void TimEvent::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-
-  if (m_EventTime > getWave()->getLayoutData()->get_end_time() || 
-      m_EventTime < getWave()->getLayoutData()->get_start_time()) return;
-
-  if (isSelected()) {
-
-    QBrush old = painter->brush();
-
-    painter->setBrush(QBrush(QColor(100, 255, 100, 100)));
-    painter->drawRect(boundingRect());
-
-    painter->setBrush(old);
-  }
-
-  m_EventType->paint(this, painter, option, widget);
+TimEventPainter* TimEvent::getEventPainter() const {
+  return m_event_painter;
 }
 
-void TimEvent::mousePressEvent(QGraphicsSceneMouseEvent * event) {
-  if (event->button() == Qt::LeftButton) {
-
-    // get a pointer needed objects
-    TimingScene *sc = getWave()->getScene();
-    TimEventType *et = sc->getSignalManager()->getCurrent();
-
-    if (et == NULL) {
-      QGraphicsItem::mousePressEvent(event);
-    } else {
-      // mapping the mouse event position to parent coordinate system make calculation easier
-      QPointF mousePos = mapToParent(event->pos());
-
-      double time = getWave()->calcSnapTime(mousePos.x(), true);
-
-      if (et->getLevel() == Invert) {
-	if (getWave()->getLevel(time) == Low) et = new TimEventHigh;
-	else et = new TimEventLow;
-      }
-      
-      sc->pushCmd(new TimCmdAddEvent(sc, this, et, time));
-    }
-  } else {
-    QGraphicsItem::mousePressEvent(event);
-  }
+void TimEvent::setEventPainter(TimEventPainter * painter) {
+  m_event_painter = painter;
 }
 
-void TimEvent::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event ) {
-
+bool TimEvent::operator < (const TimEvent & rhs) const {
+  return getAbsSetupTime() < rhs.getAbsSetupTime();
 }
 
-QUndoCommand* TimEvent::createDeleteCmd() {
-  return new TimCmdRmEvent(this);
+double TimEvent::getAbsSetupTime() const {
+  return getEventTime() - getSetupTime();
+}
+
+double TimEvent::getAbsHoldTime() const {
+  return getEventTime() + getHoldTime();
+}
+void TimEvent::SSGWrite(SSGWriter *writer) const {
+
+  writer->writeStartElement("event");
+
+  writer->writeStartElement("setup_time");
+  writer->writeCharacters(QString::number(m_setup_time));
+  writer->writeEndElement();
+
+  writer->writeStartElement("hold_time");
+  writer->writeCharacters(QString::number(m_hold_time));
+  writer->writeEndElement();
+
+  writer->writeStartElement("event_time");
+  writer->writeCharacters(QString::number(m_event_time));
+  writer->writeEndElement();
+
+  m_event_painter->SSGWrite(writer);
+
+  writer->writeEndElement();
+
+
+  TimEventPainter  *m_event_painter;
+
 }

@@ -29,7 +29,7 @@ TimCmdRmEvent::TimCmdRmEvent(TimEvent *event) :
   m_event(event) {
   m_owning = false;
   m_first = false;
-  m_prev = m_event->getPrev();
+//  m_prev = m_event->getPrev();
 }
 
 TimCmdRmEvent::~TimCmdRmEvent() {
@@ -41,7 +41,7 @@ TimCmdRmEvent::~TimCmdRmEvent() {
 void TimCmdRmEvent::redo() {
   if (m_prev) {
     m_owning = true;
-    m_prev->removeEvent();
+//    m_prev->removeEvent();
   } else {
     // Check if we have a next event
     qDebug() << "Try to delete last event in waveform. Ignore delete cmd.";
@@ -51,6 +51,6 @@ void TimCmdRmEvent::redo() {
 void TimCmdRmEvent::undo() {
   if (m_owning) {
     m_owning = false;
-    m_prev->insertEvent(m_event);
+//    m_prev->insertEvent(m_event);
   }
 }

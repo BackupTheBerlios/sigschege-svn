@@ -72,21 +72,44 @@ TimingScene* TimMember::getScene() const {
 
 qreal TimMember::calcSnapTime(qreal xpos, bool isWave) {
 
+
   TimLayoutData *ld = getLayoutData();
 
-  if (!isWave) xpos -= ld->get_col_0_width();
+  if (!isWave)
+    xpos -= ld->get_col_0_width();
 
-  int width = ld->get_col_1_width();
+  int width    = ld->get_col_1_width();
   double start = ld->get_start_time();
-  double end = ld->get_end_time();
+  double end   = ld->get_end_time();
 
-  double time = ((((end - start) / width) * xpos));
-  double lower = ld->get_snap_delta_time()*floor(time/ld->get_snap_delta_time());
+  double time = ((end - start) / width) * xpos;
 
-  if ((time-lower)<(ld->get_snap_delta_time()/2.0))	m_snapTime = lower;
-  else m_snapTime = lower + ld->get_snap_delta_time();
+  if(ld->get_snap_delta_time() <= 0.0)
+    return time;
 
-  m_snapDeviation = (time-m_snapTime)*2.0/ld->get_snap_delta_time();
+  double lower = ld->get_snap_delta_time() * floor( time / ld->get_snap_delta_time() );
+
+  if ( (time-lower) < (ld->get_snap_delta_time()/2.0) )
+    m_snapTime = lower;
+  else
+    m_snapTime = lower + ld->get_snap_delta_time();
+
+  m_snapDeviation = (time - m_snapTime) * 2.0 / ld->get_snap_delta_time();
 
   return m_snapTime;
+}
+
+qreal TimMember::calcSnapTimeT(qreal time) {
+
+  double snap_delta_time = getLayoutData()->get_snap_delta_time();
+
+  if(snap_delta_time <= 0.0)
+    return time;
+
+  double lower = snap_delta_time * floor( time / snap_delta_time );
+
+  if( (time - lower) >= (snap_delta_time / 2.0))
+    lower += snap_delta_time;
+
+  return lower;
 }

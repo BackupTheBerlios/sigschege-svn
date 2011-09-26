@@ -36,8 +36,11 @@ TimSignal::TimSignal(TimMember *parent, TimingScene *scene) : TimMember(parent, 
   m_label->setGeometry(QRectF(0, 0, getLayoutData()->get_col_0_width(), 50));
   //m_label->setParentItem(this);
 
+  // m_wave = new TimWave(this, m_scene);
+
+
   m_wave = new TimWave(this, m_scene);
-  //m_wave->setParentItem(this);
+
   m_wave->setGeometry(QRectF(getLayoutData()->get_col_0_width(), 0, getLayoutData()->get_col_1_width(), 50));
 
 }
@@ -67,8 +70,7 @@ void TimSignal::setGeometry(const QRectF & rect) {
 
 QRectF TimSignal::boundingRect() const {
   qreal penWidth = 1;
-  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, getLayoutData()->get_col_0_width()
-      + getLayoutData()->get_col_1_width() + penWidth, 50 + penWidth);
+  return QRectF(0 - penWidth / 2, 0 - penWidth / 2, getLayoutData()->get_col_0_width() + getLayoutData()->get_col_1_width() + penWidth, 50 + penWidth);
 }
 
 void TimSignal::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -77,8 +79,8 @@ void TimSignal::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setBrush(QBrush(QColor(100,100,255,100)));
   }
 
-  painter->drawRoundedRect(0, 0, getLayoutData()->get_col_0_width()
-      + getLayoutData()->get_col_1_width(), 50, 5, 5);
+  painter->drawRoundedRect(boundingRect(), 5, 5);
+
 }
 
 void TimSignal::setText ( const QString & text ) {
@@ -87,9 +89,13 @@ void TimSignal::setText ( const QString & text ) {
 
 void TimSignal::SSGWrite(SSGWriter *writer) {
   writer->writeStartElement("signal");
+
   writer->writeStartElement("primarytext");
   writer->writeCDATA(m_label->getText());
   writer->writeEndElement();
+
+  m_wave->SSGWrite(writer);
+
   writer->writeEndElement();
 
 }
@@ -101,4 +107,8 @@ QUndoCommand* TimSignal::createDeleteCmd() {
 
 void TimSignal::timeRangeChange() { 
   m_wave->timeRangeChange();
+}
+
+bool TimSignal::addTimEvent(double time, TimEventPainter *painter, double setup, double hold) {
+  m_wave->addTimEvent(time, painter,setup, hold);
 }

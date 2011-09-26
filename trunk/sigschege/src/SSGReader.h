@@ -28,6 +28,7 @@
 #include "TimingScene.h"
 #include <QXmlStreamReader>
 
+class TimSignal;
 
 /** @brief The SSG Reader reads a timing diagram in XML format.
  *
@@ -66,6 +67,11 @@ private:
      *
      */
     void readSignal();
+
+    /** @brief Read a wave declaration from the XML file.
+     *
+     */
+    void readWave(TimSignal *signal);
 
     /** @brief Read a timescale declaration from the XML file.
      *

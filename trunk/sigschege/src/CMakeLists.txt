@@ -16,7 +16,7 @@ TimSignal.h
 TimScale.h
 TimWave.h
 TimLabel.h
-TimEvent.h
+# TimEvent.h
 TimSignalManager.h
 TimCmdAddEvent.h
 TimCmdAddListItem.h
@@ -36,10 +36,12 @@ TimWave.cpp
 TimLabel.cpp
 TimLayoutData.cpp
 TimEvent.cpp
-TimEventType.cpp
-TimEventLow.cpp
-TimEventInvert.cpp
-TimEventHigh.cpp
+TimEventPainter.cpp
+TimEventPainterLow.cpp
+TimEventPainterHigh.cpp
+TimEventToolLow.cpp
+TimEventToolInvert.cpp
+TimEventToolHigh.cpp
 TimSignalManager.cpp
 TimCmdAddEvent.cpp
 TimCmdAddListItem.cpp

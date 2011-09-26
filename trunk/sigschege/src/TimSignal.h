@@ -96,6 +96,14 @@ public:
 
   virtual void timeRangeChange();
 
+  /** @brief Adds a new timing event
+    *
+    * @param painter Pointer to the painter for this event
+    * @param time Time of the new timing event
+    * @return True on success, false otherwise
+    */
+   bool addTimEvent(double time, TimEventPainter *painter, double setup, double hold);
+
 protected:
 
   /* @brief Returns a hint to the size of this signal.

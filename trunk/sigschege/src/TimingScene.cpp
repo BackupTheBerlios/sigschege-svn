@@ -338,14 +338,17 @@ void TimingScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
   if (pointerVictim) {
     Range<double> timeRange(m_LayoutData.get_start_time(), m_LayoutData.get_end_time());
     QPointF ppos = pointerVictim->mapFromScene( mouseEvent->scenePos());
+
     time = pointerVictim->calcSnapTime(ppos.x());
-    cout << "Time=" << time << endl;
-    qreal tpos = time/timeRange.distance()*m_LayoutData.get_col_1_width()+m_LayoutData.get_col_0_width()
-      -pointerVictim->mapFromScene( QPointF(0.0,0.0)).x();
-    if (timeRange.contains(time)) {
+
+    qreal tpos = time / timeRange.distance() * m_LayoutData.get_col_1_width() + m_LayoutData.get_col_0_width()
+      - pointerVictim->mapFromScene( QPointF(0.0,0.0)).x();
+
+    if (timeRange.contains(time + m_LayoutData.get_start_time())) {
       QPen myPen = QPen(QColor(128,0,64,255.0*(1.0-0.7*fabs(pointerVictim->getSnapDeviation()))), 2);
       m_posLine = addLine(QLineF(QPointF(tpos,pointerVictim->y()), QPointF(tpos,pointerVictim->y()+pointerVictim->boundingRect().height())), myPen);
     }
+
   }
   
 }
